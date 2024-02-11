@@ -12,11 +12,16 @@ participant App
 database DB
 
 User -> App: Selecciona opción de registro
-User <- App: Muestra pantalla de registro
+User <-- App: Muestra pantalla de registro
 User -> App: Ingresa datos de registro
-App -> DB: Guarda datos de registro
-App <-- DB: Confirma registro exitoso
-User <-- App: Confirma registro e inicia sesión
+App -> DB: Comprueba los datos
+App <-- DB: Valida los datos
+alt usuario válido
+    App -> DB: Guarda datos de registro
+    App <-- DB: Confirma registro
+    User <-- App: Confirma Registro
+alt usuario inválido
+    User <-- App: Deniega registro
 ----
 
 === Inicio de sesión en la aplicación 
@@ -30,7 +35,10 @@ database DB
 User -> App: Ingresa credenciales de inicio de sesión
 App -> DB: Verifica cerdenciales
 App <-- DB: Válida las credenciales
-User --> App:  Confirma inicio de sesión
+alt credenciales válidas
+    User <-- App:  Confirma inicio de sesión
+else credenciales inválidas
+    User <-- App:  Deniega inicio de sesión
 ----
 
 === Respuesta a una pregunta
@@ -41,11 +49,15 @@ actor User
 participant App
 database DB
 
-User <- App: Muestra pregunta con opciones
+User -> App: Pide una pregunta
+User <-- App: Muestra pregunta con opciones
 User -> App: Selecciona opción de respuesta
 App -> DB: Verifica respuesta seleccionada
 App <-- DB: Confirma la respuesta
-User <-- App: Muestra mensaje de respuesta correcta o incorrecta y continua el juego
+alt respuesta correcta
+    User <-- App: Muestra mensaje de respuesta correcta y continua el juego
+else respuesta incorrecta
+    User <-- App: Muestra mensaje de respuesta incorrecta y finaliza el juego
 ----
 
 === Fin de partida
@@ -56,9 +68,10 @@ actor User
 participant App
 database DB
 
+User -> App: Finaliza la partida
 App -> DB: Guarda los datos de la partida
 App <-- DB: Confirma el guardado
-User <- App: Muestra los datos de la partida
+User <-- App: Muestra los datos de la partida
 ----
 
 === Consulta del historial
@@ -69,7 +82,7 @@ actor User
 participant App
 database DB
 
-User -> App: Selecciona opción de historial
+User -> App: Selecciona opción de ver el historial
 App -> DB: Consulta historial
 App <-- DB: Devuelve el historial
 User <-- App: Muestra historial

@@ -42,6 +42,9 @@ Los stakeholders de la aplicación junto con sus expectativas son:
 |===
 | Rol | Contacto | Expectativas
 | Cliente | RTVE | Tener una aplicación que permita acceder a un juego de preguntas y respuestas.
-| Desarrolladores | HappySw | Crear una aplicacion que cumpla los requisitos del cliente.
-| Usuarios | Cualquiera que acceda a la aplicación | Poder jugar sin problemas y acceder a su historial de participaciones.
+| Compañia desarrolladora | HappySw | Satisfacer al cliente.
+| Desarrolladores | Sergio Díaz, Laura Menéndez, Jesús García, Luis Miguel Gómez y Emilio García | Crear una aplicacion que cumpla los requisitos del cliente.
+| Coordinadores | Jose Emilio Labra Gayo y Jorge Álvarez Fidalgo | Proporcionar soporte a los desarrolladores para que consigan su objetivo.
+| Usuarios | Cualquiera que acceda a la aplicación | Poder jugar a un juego de preguntas y respuestas.
+| Tecnologías usadas | JavaScript, React, Wikidata, Node.js, MongoDB... | Conseguir promoción debido a su uso en diferentes proyectos.
 |===
