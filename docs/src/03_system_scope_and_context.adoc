@@ -36,7 +36,7 @@ Aparte de eso también tendrán la opción de visualizar el listado completo de 
 Para el desarrollo de este proyecto usaremos la API de Wikidata tanto para generar automaticamente las preguntas como para obtener 
 las respuestas correctas a las mismas. 
 Respecto al lenguaje de programación se usará JavaScript, utilizando React para el desarrollo del front-end. Además 
-haremos uso de Node.js y la implementación de microservicios para el back-end. Respecto a la base de datos usaremos una NonSQL como MongoDB. 
+haremos uso de Node.js y la implementación de microservicios para el back-end. Respecto a la base de datos usaremos una NonQL como MongoDB. 
 
 |===
 | Interfaz técnica | Explicación
