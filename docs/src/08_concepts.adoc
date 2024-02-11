@@ -8,7 +8,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 ==== Dominio
 [role="arc42help"]
 ****
-* *Dinamismo en temáticas:* En la aplicacion, el juego desarrollado te permite contestar a una gran variedad de preguntas específicas de distintas temáticas como años, lugares y autores de todas las distintas áreas existentes como historia, geografía, música entre otras.
+* *Dinamismo en temáticas:* En la aplicación, el juego desarrollado te permite contestar a una gran variedad de preguntas específicas de distintas temáticas como años, lugares y autores de todas las distintas áreas existentes como historia, geografía y música entre otras.
 * *Registro de actividad:* La aplicación permitirá al usuario registrado ver todo su historial de jugadas realizadas, así como los detalles de cada una: fecha en la que se jugó, número de aciertos/fallos, dinero conseguido y tiempo total de finalización.
 ****
 
@@ -18,7 +18,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 * *Intefaz usable:* 
 |===
 | Facilidad de uso
-| Se mostrará un diseño de interfaz sencilla de uso, predecible y familiar colocando todos los elementos y opciones importantes de la aplicación de forma que sean fácilmente accesibles. Se usará también un estilo que hará lo más posible alusión al famoso juego de "Saber y Ganar" en el que está basado.
+| Se mostrará un diseño de interfaz sencilla de uso, predecible y familiar, colocando todos los elementos y opciones importantes de la aplicación de forma que sean fácilmente accesibles. Se usará también un estilo que hará alusión al famoso juego de "Saber y Ganar" en el que está basado.
 
 | Intuitiva
 | El sistema de juego de la aplicación seguirá lo más fielmente posible el formato de preguntas y respuestas del juego de "Saber y Ganar" en base al número de preguntas que se harán en cada jugada, el tiempo disponible para cada pregunta, el número de respuestas disponibles a seleccionar y la cuantía del premio para generar una sensación de familiaridad.
@@ -51,4 +51,5 @@ ifndef::imagesdir[:imagesdir: ../images]
 * *Implementación:* Para la creación de esta aplicación se usará el lenguaje de programación JavaScript, para el front-end se utilizará React, Node.js y la construccion de microservicios para el back-end y MongoDB para la gestion de la base de datos NoSQL.
 * *Pruebas:* La aplicación será probada con el fin de poder garantizar el buen funcionamiento de todas susfuncionalidades, para ello se llevarán a cabo distintas pruebas unitarias que nos permitan detectar y corregir posibles fallos.
 ****
+
 === Mapa de conceptos
