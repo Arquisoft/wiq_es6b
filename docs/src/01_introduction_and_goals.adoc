@@ -3,21 +3,14 @@ ifndef::imagesdir[:imagesdir: ../images]
 [[section-introduction-and-goals]]
 == Introducción y objetivos
 
-[role="arc42help"]
-****
-
 WIQ se trata de una aplicación web desarrollada por HappySW para RTVE que permite a los usuarios jugar online a un juego de preguntas y respuestas.
 
 Los usuarios tienen la posibilidad de responder a estas preguntas seleccionando una de las opciones proporcionadas y ganar premios por cada acierto. También podrán ver su histórico de participaciones e intentar mejorarlas.
 
 Tanto preguntas cómo las respuestas son generadas de manera automática a partir de los datos de Wikidata para evitar su posible desactualización.
 
-****
-
 === Descripción general de los requisitos
 
-[role="arc42help"]
-****
 Los requisitos principales son:
 
 * Debe poder accederse al juego a través de la Web.
@@ -27,14 +20,10 @@ Los requisitos principales son:
 * Cada pregunta debe tener una única respuesta correcta y varias incorrectas.
 * Se debe poder acceder a la información de los usuarios y de las preguntas a través de un API.
 
-****
-
 === Objetivos de calidad
 
-[role="arc42help"]
-****
-
 Los objetivos de calidad en orden de prioridad son los siguientes:
+
 [options="header",cols="1,3,1"]
 |===
 | Objetivo | Escenario | Prioridad
@@ -45,12 +34,9 @@ Los objetivos de calidad en orden de prioridad son los siguientes:
 | Accesibilidad | Cualquier usuario tendrá las mismas oportunidades que el resto sin importar sus capacidades físicas o cognitivas | Media
 |===
 
-****
-
 === Stakeholders
 
-[role="arc42help"]
-****
+Los stakeholders de la aplicación junto con sus expectativas son:
 
 [options="header",cols="1,2,2"]
 |===
@@ -59,5 +45,3 @@ Los objetivos de calidad en orden de prioridad son los siguientes:
 | Desarrolladores | HappySw | Crear una aplicacion que cumpla los requisitos del cliente
 | Usuarios | Cualquiera que acceda a la aplicación | Poder jugar sin problemas y acceder a su historial de participaciones
 |===
-
-****
