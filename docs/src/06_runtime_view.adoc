@@ -33,7 +33,7 @@ App <-- DB: Válida las credenciales
 User --> App:  Confirma inicio de sesión
 ----
 
-=== Responder a una pregunta
+=== Respuesta a una pregunta
 
 [plantuml,"Sequence diagram",png]
 ----
@@ -45,5 +45,32 @@ User <- App: Muestra pregunta con opciones
 User -> App: Selecciona opción de respuesta
 App -> DB: Verifica respuesta seleccionada
 App <-- DB: Confirma la respuesta
-User <-- App: Muestra mensaje de respuesta correcta
+User <-- App: Muestra mensaje de respuesta correcta o incorrecta y continua el juego
+----
+
+=== Fin de partida
+
+[plantuml,"Sequence diagram",png]
+----
+actor User
+participant App
+database DB
+
+App -> DB: Guarda los datos de la partida
+App <-- DB: Confirma el guardado
+User <- App: Muestra los datos de la partida
+----
+
+=== Consulta del historial
+
+[plantuml,"Sequence diagram",png]
+----
+actor User
+participant App
+database DB
+
+User -> App: Selecciona opción de historial
+App -> DB: Consulta historial
+App <-- DB: Devuelve el historial
+User <-- App: Muestra historial
 ----
