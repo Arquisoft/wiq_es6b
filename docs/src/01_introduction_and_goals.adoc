@@ -19,6 +19,7 @@ Tanto preguntas cómo las respuestas son generadas de manera automática a parti
 [role="arc42help"]
 ****
 Los requisitos principales son:
+
 * Debe poder accederse al juego a través de la Web.
 * Los usuarios deben poder registrarse, acceder mediante sus credenciales y consultar el histórico de su participación en el sistema.
 * Las preguntas y sus posibles respuestas deben ser generadas automáticamente a partir de los datos de Wikidata.
