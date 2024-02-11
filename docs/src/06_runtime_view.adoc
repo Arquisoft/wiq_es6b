@@ -7,43 +7,43 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 [plantuml,"Sequence diagram",png]
 ----
-actor Usuario
+actor User
 participant App
 database DB
 
-Usuario -> App: Selecciona opción de registro
-App -> Usuario: Muestra pantalla de registro
-Usuario -> App: Ingresa datos de registro
+User -> App: Selecciona opción de registro
+User <- App: Muestra pantalla de registro
+User -> App: Ingresa datos de registro
 App -> DB: Guarda datos de registro
-DB --> App: Confirma registro exitoso
-App --> Usuario: Confirma registro e inicia sesión
+App <-- DB: Confirma registro exitoso
+User <-- App: Confirma registro e inicia sesión
 ----
 
 === Inicio de sesión en la aplicación 
 
 [plantuml,"Sequence diagram",png]
 ----
-actor Usuario
+actor User
 participant App
 database DB
 
-Usuario -> App: Ingresa credenciales de inicio de sesión
+User -> App: Ingresa credenciales de inicio de sesión
 App -> DB: Verifica cerdenciales
-DB --> App: Válida las credenciales
-App --> Usuario: Confirma inicio de sesión
+App <-- DB: Válida las credenciales
+User --> App:  Confirma inicio de sesión
 ----
 
 === Responder a una pregunta
 
 [plantuml,"Sequence diagram",png]
 ----
-actor Usuario
+actor User
 participant App
 database DB
 
-App -> Usuario: Muestra pregunta con opciones
-Usuario -> App: Selecciona opción de respuesta
+User <- App: Muestra pregunta con opciones
+User -> App: Selecciona opción de respuesta
 App -> DB: Verifica respuesta seleccionada
-DB --> App: Confirma la respuesta
-App --> Usuario: Muestra mensaje de respuesta correcta
+App <-- DB: Confirma la respuesta
+User <-- App: Muestra mensaje de respuesta correcta
 ----
