@@ -1,7 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-runtime-view]]
-== Vista en tiempo de ejecución
+== Vista en Tiempo de Ejecución
 
 === Registro en la aplicación
 
