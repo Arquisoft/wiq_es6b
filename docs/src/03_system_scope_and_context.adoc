@@ -21,7 +21,7 @@ La aplicación permitirá a los usuarios no solo acumular dinero al participar e
 Al acceder a la página principal de la aplicación, los usuarios podrán ver una interfaz que les permitirá iniciar sesión para acceder a su cuenta. En caso de ser su primera vez y no tener cuenta, tendrá la opción de registrarse. Una vez autenticados, los usuarios se encontrarán con la opción tanto empezar un nuevo juego como de ver su historial 
 de jugadas anteriores. 
 
-Dentro del historial, este le mostrará el número de partidas totales realizadas y por cada una de ellas el número de respuestas acertadas, el dinero conseguido y el tiempo total 
+Dentro del historial, este le mostrará el número de partidas totales realizadas y por cada una de ellas la fecha en la que se jugó, el número de respuestas acertadas, el dinero conseguido y el tiempo total 
 que le llevó completarlo.
 
 Aparte de eso también tendrán la opción de visualizar el listado completo de usuarios registrados hasta la fecha. 
@@ -36,7 +36,7 @@ Aparte de eso también tendrán la opción de visualizar el listado completo de 
 Para el desarrollo de este proyecto usaremos la API de Wikidata tanto para generar automaticamente las preguntas como para obtener 
 las respuestas correctas a las mismas. 
 Respecto al lenguaje de programación se usará JavaScript, utilizando React para el desarrollo del front-end. Además 
-haremos uso de Node.js y la implementación de microservicios para el back-end. Respecto a la base de datos usaremos una NonSQL como MongoDB. 
+haremos uso de Node.js y la implementación de microservicios para el back-end. Respecto a la base de datos usaremos una NonQL como MongoDB. 
 
 |===
 | Interfaz técnica | Explicación
