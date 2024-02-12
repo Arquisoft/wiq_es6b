@@ -53,3 +53,4 @@ ifndef::imagesdir[:imagesdir: ../images]
 ****
 
 === Mapa de conceptos
+image::08-MindMapConceptosTransversales.png["Mind Map conceptos transversales"]
