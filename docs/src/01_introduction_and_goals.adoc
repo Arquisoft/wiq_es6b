@@ -46,5 +46,5 @@ Los stakeholders de la aplicación junto con sus expectativas son:
 | Desarrolladores | Sergio Díaz, Laura Menéndez, Jesús García, Luis Miguel Gómez y Emilio García | Crear una aplicacion que cumpla los requisitos del cliente.
 | Coordinadores | Jose Emilio Labra Gayo y Jorge Álvarez Fidalgo | Proporcionar soporte a los desarrolladores para que consigan su objetivo.
 | Usuarios | Cualquiera que acceda a la aplicación | Poder jugar a un juego de preguntas y respuestas.
-| Tecnologías usadas | JavaScript, React, Wikidata, Node.js, MongoDB... | Conseguir promoción debido a su uso en diferentes proyectos.
+| Tecnologías usadas | JavaScript, React, Wikidata, Node.js, MongoDB, Azure... | Conseguir promoción debido a su uso en diferentes proyectos.
 |===

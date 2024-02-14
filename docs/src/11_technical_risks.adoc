@@ -12,6 +12,7 @@ La lista de riesgos es la siguiente:
 | Falta de tiempo | Hay unos plazos para cada entrega y puede hacersenos corto. | Ser constantes y hacer lo máximo diariamente.
 | Trabajo en equipo | Trabajar en equipo nos puede ser complicado al no haber hecho nunca un proyecto tan grande de esta manera. | Mantener una buena comunicación y ser colaborativos.
 | Reuniones poco productivas | Perder mucho tiempo en reuniones y no conseguir avances puede generar problemas. | Hacer una pequeña preparación de estas para saber que temas tratar en concreto.
+| Abandono de un miembro | Que un miembro deje el trabajo significaría tener que repartir sus tareas y que aumente la carga de trabajo. | Asignar cada tarea a más de una persona e intentar ayudar para evitar un abandono.
 |===
 
 La lista de deudas técnicas es la siguiente:
@@ -21,4 +22,5 @@ La lista de deudas técnicas es la siguiente:
 | Deuda técnica | Explicación | Medida
 | Mala documentación | No documentar adecuadamente puede generarnos problemas a para comprender el sistema en un futuro y dificultar su mantenimiento. | Hacer la documentación de la m,manera más detallada y clara posible. 
 | Mal diseño de la base de datos | Si se hace un mal diseño de la base de datos y se trabaja sobre él puede generar muchos problemas a medida que el sistema va creciendo. | Hacer un buen estudio inicial antes de crear la base de datos o modificarla.
+| Uso abusivo de una IA para generar código | Su código generado puede no ser correcto del todo y suponernos un problema el caso de tener que mejorarlo en un futuro. | Revisar este codigo antes de meterlo en el proyecto e intentar adaptarlo bien.
 |===
