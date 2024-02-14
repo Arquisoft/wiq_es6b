@@ -29,6 +29,31 @@ app.post('/addQuestion', async (req, res) => {
   }
 });
 
+//obtiene una pregunta de forma aleatoria
+app.get('/getQuestionBody', async (req, res) => {
+  try {
+    
+    //modelo mongo
+    const Question = mongoose.model('Question');
+    //saco una pregunta de forma aleatoria
+    const rQuestion = await Question.aggregate([{ $sample: { size: 1 } }]);
+
+    if (rQuestion && rQuestion.length > 0) {
+
+      //obtengo la pregunta
+      const rQuestionResult = rQuestion[0];
+      
+      res.json({ pregunta: rQuestionResult });
+   
+    } else {
+      console.log("No hay preguntas");
+    }
+    
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Start the server
 const server = app.listen(port, () => {
   console.log(`Auth Service listening at http://localhost:${port}`);
