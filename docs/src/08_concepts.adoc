@@ -49,7 +49,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 [role="arc42help"]
 ****
 * *Implementación:* Para la creación de esta aplicación se usará el lenguaje de programación JavaScript, para el front-end se utilizará React, Node.js y la construccion de microservicios para el back-end y MongoDB para la gestion de la base de datos NoSQL.
-* *Pruebas:* La aplicación será probada con el fin de poder garantizar el buen funcionamiento de todas susfuncionalidades, para ello se llevarán a cabo distintas pruebas unitarias que nos permitan detectar y corregir posibles fallos.
+* *Pruebas:* Se llevarán a cabo pruebas unitarias, de integración, de aceptación, de capacidad/rendimiento y de regresión, todas ellas siguiendo los principios FIRST(Fast, Independent, Repeatable, Self-Checking y Timely) para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
 ****
 
 === Mapa de conceptos
