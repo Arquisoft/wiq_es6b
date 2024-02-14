@@ -25,6 +25,15 @@ ifndef::imagesdir[:imagesdir: ../images]
 | MongoDB
 | Sistema de base de datos NoSQL que almacena los datos en formato BSON
 
+| Azure
+| Plataforma de servicios en la nube ofrecida por Microsoft
+
+| Git
+| Sistema de control de versiones distribuido
+
+| Github
+| Plataforma de desarrollo colaborativo de software que utiliza Git
+
 | BSON
 | (Binary JSON) Formato parecido a JSON de intercambio de datos comúnmente utilizado para trnasferir y almacenar datos en MongoDB
 
