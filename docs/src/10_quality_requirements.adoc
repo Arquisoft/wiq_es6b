@@ -30,8 +30,7 @@ Los requisitos de calidad son la piedra angular del desarrollo de nuestro proyec
 
 En este apartado podemos ver de manera más visual cuáles son los requisitos de calidad representados en forma de árbol con el conocido "quality tree" (tal y como se define en ATAM - Arquitecture Tradeoff Analysis Method) que cuenta con los requisitos en forma de hojas en su diagrama.
 
-(insertaré aquí una imagen del quality tree)
-
+image::10_qr_tree.jpg["Quality Tree"]
 
 ****
 
