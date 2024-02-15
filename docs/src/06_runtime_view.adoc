@@ -47,13 +47,15 @@ else credenciales inválidas
 ----
 actor User
 participant App
-database DB
+participant WApis
 
 User -> App: Pide una pregunta
+App -> WApi: Pide una pregunta
+App <-- WApi: Devuelve una pregunta generada
 User <-- App: Muestra pregunta con opciones
 User -> App: Selecciona opción de respuesta
-App -> DB: Verifica respuesta seleccionada
-App <-- DB: Confirma la respuesta
+App -> WApi: Verifica respuesta seleccionada
+App <-- WApi: Confirma la respuesta
 alt respuesta correcta
     User <-- App: Muestra mensaje de respuesta correcta y continua el juego
 else respuesta incorrecta
