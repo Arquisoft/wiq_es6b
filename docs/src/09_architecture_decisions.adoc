@@ -1,8 +1,20 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-design-decisions]]
-== Architecture Decisions
+== Decisiones arquitectonicas
 
+[options="header",cols="1,2"]
+|===
+|Decision |Razones
+|React.js |Hemos decidido usar React.js puesto que es una de las librerias mas populares de java. 
+Tambien hay personas del equipo de desarrollo familiarizadas con el uso de esta libreria, por lo que pueden ayudar al resto del equipo con la implementacion del front-end.
+|Javascript |Elegimos seguir con Javascript para el desarrollo de esta aplicación web porque ya teniamos conocimientos de este lenguaje. Tambien porque es un lenguaje ampliamente
+conocido por su uso en aplicaciones web, permitiendo mejoras en la interfaz de usuario y paginas web dinámicas.
+|Mongodb |Para el back-end hemos decidido usar la base de datos NoSQL Mongodb, creemos que es una opcion adecuada para almacenar los datos necesarios para el desarrollo de la
+aplicacion.
+|Node.js |Para interactuar con la base de datos decidimos usar Node.js. Es una entorno de ejecucion muy conocido para el desarrollo del back-end de aplicaciones web, por lo que creemos que es
+buena idea usarlo.
+|===
 
 [role="arc42help"]
 ****
