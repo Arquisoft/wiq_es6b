@@ -1,7 +1,7 @@
 {
-    "name": "authservice",
+    "name": "createservice",
     "version": "1.0.0",
-    "description": " Authentication service, in charge of authenticating users in the application",
+    "description": " Creacion de preguntas automaticas",
     "main": "service.js",
     "scripts": {
         "start": "node auth-service.js",

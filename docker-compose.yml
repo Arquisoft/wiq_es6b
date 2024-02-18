@@ -85,6 +85,8 @@ services:
     environment:
       AUTH_SERVICE_URL: http://authservice:8002
       USER_SERVICE_URL: http://userservice:8001
+      QUES_SERVICE_URL: http://createservice:8005
+      ANSW_SERVICE_URL: http://answerservice:8004
 
   webapp:
     container_name: webapp-${teamname:-defaultASW}
