@@ -1,65 +1,91 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-runtime-view]]
-== Runtime View
+== Vista en Tiempo de Ejecución
 
-
-[role="arc42help"]
-****
-.Contents
-The runtime view describes concrete behavior and interactions of the system’s building blocks in form of scenarios from the following areas:
-
-* important use cases or features: how do building blocks execute them?
-* interactions at critical external interfaces: how do building blocks cooperate with users and neighboring systems?
-* operation and administration: launch, start-up, stop
-* error and exception scenarios
-
-Remark: The main criterion for the choice of possible scenarios (sequences, workflows) is their *architectural relevance*. It is *not* important to describe a large number of scenarios. You should rather document a representative selection.
-
-.Motivation
-You should understand how (instances of) building blocks of your system perform their job and communicate at runtime.
-You will mainly capture scenarios in your documentation to communicate your architecture to stakeholders that are less willing or able to read and understand the static models (building block view, deployment view).
-
-.Form
-There are many notations for describing scenarios, e.g.
-
-* numbered list of steps (in natural language)
-* activity diagrams or flow charts
-* sequence diagrams
-* BPMN or EPCs (event process chains)
-* state machines
-* ...
-
-
-.Further Information
-
-See https://docs.arc42.org/section-6/[Runtime View] in the arc42 documentation.
-
-****
-
-=== <Runtime Scenario 1>
-
-
-* _<insert runtime diagram or textual description of the scenario>_
-* _<insert description of the notable aspects of the interactions between the
-building block instances depicted in this diagram.>_
-
-It is possible to use a sequence diagram:
+=== Registro en la aplicación
 
 [plantuml,"Sequence diagram",png]
 ----
-actor Alice
-actor Bob
-database Pod as "Bob's Pod"
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
-Alice  --> Pod: Store route
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+actor User
+participant App
+database DB
+
+User -> App: Selecciona opción de registro
+User <-- App: Muestra pantalla de registro
+User -> App: Ingresa datos de registro
+App -> DB: Comprueba los datos
+App <-- DB: Valida los datos
+alt usuario válido
+    App -> DB: Guarda datos de registro
+    App <-- DB: Confirma registro
+    User <-- App: Confirma Registro
+alt usuario inválido
+    User <-- App: Deniega registro
 ----
 
-=== <Runtime Scenario 2>
+=== Inicio de sesión en la aplicación 
 
-=== ...
+[plantuml,"Sequence diagram",png]
+----
+actor User
+participant App
+database DB
 
-=== <Runtime Scenario n>
+User -> App: Ingresa credenciales de inicio de sesión
+App -> DB: Verifica cerdenciales
+App <-- DB: Válida las credenciales
+alt credenciales válidas
+    User <-- App:  Confirma inicio de sesión
+else credenciales inválidas
+    User <-- App:  Deniega inicio de sesión
+----
+
+=== Respuesta a una pregunta
+
+[plantuml,"Sequence diagram",png]
+----
+actor User
+participant App
+participant WApi
+
+User -> App: Pide una pregunta
+App -> WApi: Pide una pregunta
+App <-- WApi: Devuelve una pregunta generada
+User <-- App: Muestra pregunta con opciones
+User -> App: Selecciona opción de respuesta
+App -> WApi: Verifica respuesta seleccionada
+App <-- WApi: Confirma la respuesta
+alt respuesta correcta
+    User <-- App: Muestra mensaje de respuesta correcta y continua el juego
+else respuesta incorrecta
+    User <-- App: Muestra mensaje de respuesta incorrecta y finaliza el juego
+----
+
+=== Fin de partida
+
+[plantuml,"Sequence diagram",png]
+----
+actor User
+participant App
+database DB
+
+User -> App: Finaliza la partida
+App -> DB: Guarda los datos de la partida
+App <-- DB: Confirma el guardado
+User <-- App: Muestra los datos de la partida
+----
+
+=== Consulta del historial
+
+[plantuml,"Sequence diagram",png]
+----
+actor User
+participant App
+database DB
+
+User -> App: Selecciona opción de ver el historial
+App -> DB: Consulta historial
+App <-- DB: Devuelve el historial
+User <-- App: Muestra historial
+----
