@@ -3,6 +3,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
 
+
+import Game from './Game';
+
+import Link from '@mui/material/Link';
+
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -43,6 +48,11 @@ const Login = () => {
           <Typography component="p" variant="body1" sx={{ textAlign: 'center', marginTop: 2 }}>
             Your account was created on {new Date(createdAt).toLocaleDateString()}.
           </Typography>
+     
+          <Link to="/game" name="gameView" component={Game} variant="body2" >
+            vista juego
+          </Link>         
+
         </div>
       ) : (
         <div>

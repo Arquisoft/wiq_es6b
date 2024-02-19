@@ -2,7 +2,7 @@
 FROM node:20
 
 # Set the working directory in the container
-WORKDIR /usr/src/createservice
+WORKDIR /usr/src/recordservice
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expose the port the app runs on
-EXPOSE 8005
+EXPOSE 8006
 
 # Define the command to run your app
-CMD ["node", "create-service.js"]
+CMD ["node", "record-service.js"]

@@ -1,5 +1,5 @@
 {
-    "name": "createservice",
+    "name": "recordservice",
     "version": "1.0.0",
     "description": " Creacion de preguntas automaticas",
     "main": "service.js",
