@@ -20,6 +20,7 @@ app.post('/addQuestion', async (req, res) => {
     const newQuestion1 = new Question({
       questionBody: req.body.questionBody,
       typeQuestion: req.body.typeQuestion,
+      typeAnswer: req.body.typeAnswer,
   });
   newQuestion1.save();
   res.json(newQuestion1);
@@ -30,29 +31,41 @@ app.post('/addQuestion', async (req, res) => {
 });
 
 //obtiene una pregunta de forma aleatoria
-app.get('/getQuestionBody', async (req, res) => {
+app.post('/getQuestionBody', async (req, res) => {
   try {
     
     //modelo mongo
     const Question = mongoose.model('Question');
     //saco una pregunta de forma aleatoria
     const rQuestion = await Question.aggregate([{ $sample: { size: 1 } }]);
-
+    
+    /*const rQuestionResult=null;
     if (rQuestion && rQuestion.length > 0) {
 
       //obtengo la pregunta
       const rQuestionResult = rQuestion[0];
+
+      const newQuestion1 = new Question({
+        questionBody: rQuestionResult.questionBody,
+        typeQuestion: rQuestionResult.typeQuestion,
+        typeAnswer: rQuestionResult.typeAnswer,
+    });
+    
+      res.json(newQuestion1);
       
-      res.json({ pregunta: rQuestionResult });
    
     } else {
       console.log("No hay preguntas");
-    }
+    }*/
     
+    res.json(rQuestion[0]);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+
 
 // Start the server
 const server = app.listen(port, () => {

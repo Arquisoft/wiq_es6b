@@ -47,7 +47,7 @@ else credenciales inválidas
 ----
 actor User
 participant App
-participant WApis
+participant WApi
 
 User -> App: Pide una pregunta
 App -> WApi: Pide una pregunta

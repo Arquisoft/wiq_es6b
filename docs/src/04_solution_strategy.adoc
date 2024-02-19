@@ -1,8 +1,54 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-solution-strategy]]
-== Solution Strategy
+== Estrategia de solución
 
+=== Decisiones tecnologicas
+Para desarrollar la aplicación, seleccionamos las siguientes tecnologías:
+
+* React.js: Biblioteca de JavaScript que usaremos para implementar la interfaz gráfica. 
+* Docker: Es un proyecto de código abierto que automatiza el despliegue de aplicaciones dentro de contenedores de software.
+* JavaScript: Es un lenguaje de programacion orientado a objetos, ​ basado en prototipos, imperativo, débilmente tipado y dinámico.
+* Node.js: Es una entorno de ejecucion muy conocido para el desarrollo del back-end de aplicaciones web
+* Wikidata: Base de conocimientos que usaremos para realizar las preguntasd de nuestra aplicación.
+* MongoDB: Es un sistema de base de datos NoSQL, orientado a documentos y de código abierto.
+* GitHub: Es una plataforma para alojar proyectos utilizando el sistema de control de versiones Git
+
+=== Descomposición de alto nivel
+
+=== Herramientas de diagramado
+Usaremos VisualParadigm y Draw.io para la creacion de diagramas para la documentacion.
+
+=== Enfoques para lograr objetivos de máxima calidad
+
+[cols="1,2,3"]
+|===
+| Objetivo de calidad | Escenario | Enfoque de solución
+
+| Privacidad
+| Los usuarios buscan la seguridad y privacidad de sus datos dentro de la aplicacion
+| Garantizar la seguridad y privacidad de los datos del usuario.
+
+| Usabilidad
+| La ejecución de todas las funciones de la aplicación es crucial para la satisfacción del usuario.
+| Optimizaremos la usabilidad gracias al framework React.
+
+| Mantenibilidad
+| La aplicacion debe poseer la capacidad de ser modificado con facilidad.
+| Gracias al uso de patrones de diseño conseguiremos un codigo limpio y facil de mantener. Ademas, priorizaremos las pruebas durante el desarrollo.
+
+| Escalabilidad
+| La aplicacion debe adapatarse a los cambios futuros sin esfuerzo.
+| Emplearemos microservicios para la minimizacion de la repeticion de codigo y mejorar la comprension de este.
+
+|===
+
+=== Decisiones de organizacion
+
+- *Idioma*: El proyecto, que abarca código y documentación, se desarrollará en español como idioma principal.
+- *Problemas:* Todos los problemas encontrados y las tareas encomendads se documentarán como "issues" en GitHub.
+- *GitHub:* Con esta herramienta conseguiremos trabajar cooperativamente y usar las herramientas que ofrece para juntar los proyectos de los diferentes integrantes del equipo.
+- *Comunicacion*: Para la comunicación entre los integrantes del equipo, usaremos tanto la aplicacion de mensajeria móvil "WhatsApp", como "Discord".
 
 [role="arc42help"]
 ****
