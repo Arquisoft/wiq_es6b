@@ -11,6 +11,20 @@ services:
     networks:
       - mynetwork
 
+  recordservice:
+    container_name: recordservice-${teamname:-defaultASW}
+    image: ghcr.io/arquisoft/wiq_es6b/recordservice:latest
+    profiles: ["dev", "prod"]
+    build: ./questions/recordservice
+    depends_on:
+      - mongodb
+    ports:
+      - "8006:8006"
+    networks:
+      - mynetwork
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/recorddb
+
   createservice:
     container_name: createservice-${teamname:-defaultASW}
     image: ghcr.io/arquisoft/wiq_es6b/createservice:latest
