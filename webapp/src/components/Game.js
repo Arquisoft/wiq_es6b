@@ -28,21 +28,18 @@ const Game=() =>{
            
            
             setquestionBody(response.data.questionBody);//obtengo los datos del cuerpo de la pregunta
-            //setQuestionType(response.data.typeQuestion);
-            //setQuestionType(response.data.typeAnswer);
+            setQuestionType(response.data.typeQuestion);
+            setAnswerType(response.data.typeAnswer);
           
         } catch (error) {
           console.error("Error al obtener la pregunta aleatoria", error);
         }
       };
-  
-
-
-    
+     
   
       // Obtener info de wikidata segun el tipo de la pregunta y la respuesta para esa pregunta
       //questionType, answerType
-      const obtenerInformacionWikidata = async () => {
+      const obtenerPais = async () => {
        
         try {
           // Consulta SPARQL//obtengo  
@@ -76,7 +73,7 @@ const Game=() =>{
           const index = Math.floor(Math.random() * numEles);//index al azar
           const result = data.results.bindings[index];
           
-          setInformacionWikidata(result.countryLabel.value);
+          setInformacionWikidata(result.countryLabel.value+`?`);
 
            } else {
             console.error("Error al realizar la consulta en Wikidata. Estado de respuesta:", respuestaWikidata.status);
@@ -84,37 +81,35 @@ const Game=() =>{
         } catch (error) {
           console.error("Error al realizar la consulta en Wikidata", error);
         }
+
       };
   
+      const handleButtonClick = () => {
+        obtenerPreguntaAleatoria();
+        //pais, libro,actor, edificio 
+        if (questionType=='pais'){
+        obtenerPais();}
+        else if (questionType =='libro'){
+          obtenerPais();}
+        else if (questionType ==='actor'){
+            obtenerPais();}
+        else if (questionType=='edificio'){
+              obtenerPais();}
+        //etc...
 
-          
-      //obtenerInformacionWikidata();
-   /* useEffect(() => {
-      obtenerPreguntaAleatoria();
-  }, []);*/ 
-
-      
-    //obtenerPreguntaAleatoria();
+      };
 
     return (
         
         <div>
-        <h1>Pregunta</h1>
+        <h1>Pregunta: </h1>
         <div>
         <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
-           Base de pregunta al azar de mongo: {questionBody} 
+           {questionBody} {informacionWikidata} 
           </Typography>
 
-          <Button variant="contained" color="primary" onClick={obtenerPreguntaAleatoria}>
-            pregunta
-          </Button>
-
-          <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
-            Prueba de Wikidata, pais al azar:{informacionWikidata} 
-          </Typography>
-
-          <Button variant="contained" color="primary" onClick={obtenerInformacionWikidata}>
-            Wikidata
+          <Button variant="contained" color="primary" onClick={handleButtonClick}>
+            Generar pregunta
           </Button>
         </div>
       </div>

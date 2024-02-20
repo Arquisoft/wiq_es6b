@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const Question = require('./create-model')
+const Question = require('./create-model');
+
+
 
 const app = express();
 const port = 8005;
@@ -29,6 +31,7 @@ app.post('/addQuestion', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 //obtiene una pregunta de forma aleatoria
 app.post('/getQuestionBody', async (req, res) => {
