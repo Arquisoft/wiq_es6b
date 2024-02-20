@@ -96,7 +96,7 @@ const Game=() =>{
         else if (questionType=='edificio'){
               obtenerPais();}
         //etc...
-
+        obtenerPais();//para que de momento genere un pais hasta tener el resto de queries
       };
 
     return (
