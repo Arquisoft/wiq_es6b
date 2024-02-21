@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const Question = require('./create-model')
+const Question = require('./create-model');
+
+
 
 const app = express();
 const port = 8005;
@@ -30,6 +32,7 @@ app.post('/addQuestion', async (req, res) => {
   }
 });
 
+
 //obtiene una pregunta de forma aleatoria
 app.post('/getQuestionBody', async (req, res) => {
   try {
@@ -38,25 +41,6 @@ app.post('/getQuestionBody', async (req, res) => {
     const Question = mongoose.model('Question');
     //saco una pregunta de forma aleatoria
     const rQuestion = await Question.aggregate([{ $sample: { size: 1 } }]);
-    
-    /*const rQuestionResult=null;
-    if (rQuestion && rQuestion.length > 0) {
-
-      //obtengo la pregunta
-      const rQuestionResult = rQuestion[0];
-
-      const newQuestion1 = new Question({
-        questionBody: rQuestionResult.questionBody,
-        typeQuestion: rQuestionResult.typeQuestion,
-        typeAnswer: rQuestionResult.typeAnswer,
-    });
-    
-      res.json(newQuestion1);
-      
-   
-    } else {
-      console.log("No hay preguntas");
-    }*/
     
     res.json(rQuestion[0]);
   } catch (error) {
