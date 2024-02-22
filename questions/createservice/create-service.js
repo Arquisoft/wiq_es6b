@@ -2,8 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const Question = require('./create-model');
-
-
+const getIncorrectAnswers = require('./get-incorrect-answers');
 
 const app = express();
 const port = 8005;
@@ -15,6 +14,8 @@ app.use(bodyParser.json());
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/questiondb';
 mongoose.connect(mongoUri);
 
+// Define the Question model
+const QuestionModel = mongoose.model('Question');
 
   // Route for user login
 app.post('/addQuestion', async (req, res) => {
@@ -24,9 +25,18 @@ app.post('/addQuestion', async (req, res) => {
       typeQuestion: req.body.typeQuestion,
       typeAnswer: req.body.typeAnswer,
   });
-  newQuestion1.save();
+  await newQuestion1.save();
   res.json(newQuestion1);
   
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/getIncorrectAnswers/:questionId', async (req, res) => {
+  try {
+    const incorrectAnswers = await getIncorrectAnswers(req.params.questionId);
+    res.json({ incorrectAnswers });
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
@@ -37,8 +47,6 @@ app.post('/addQuestion', async (req, res) => {
 app.post('/getQuestionBody', async (req, res) => {
   try {
     
-    //modelo mongo
-    const Question = mongoose.model('Question');
     //saco una pregunta de forma aleatoria
     const rQuestion = await Question.aggregate([{ $sample: { size: 1 } }]);
     
