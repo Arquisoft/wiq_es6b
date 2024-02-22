@@ -2,13 +2,10 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-building-block-view]]
 
-
 == Building Block View
 
 === Whitebox Overall System
 
-[role="arc42help"]
-****
 A continuación se muestra el diagrama que muestra una vista completa y genérica de lo que será la estructura de la aplicación en su entorno. Se divide en tres principales componentes que mediante interacciones detalladas en los siguientes apartados lograrán una ejecución correcta del sistema. It contains
 
 ****
@@ -32,12 +29,9 @@ Bloques contenidos::
 === Level 2
 ==== White Box _WIQ_
 
-[role="arc42help"]
-****
 En este apartado pasaré a describir en forma de "white box", bloque que en el diagrama de vista general hacía referencia a la aplicación al completo de manera genérica. En esta vista divisoria de la estructura de la aplicación ya comenzamos a distinguir componentes más concretos. 
 
 * "WebApp" es el componente con el que interactúa el usuario cuando entra en la aplicación y que trabaja con los demás componentes de este diagrama. "Users Management" se trata del microservicio encargado, como su nombre indica, del manejo de los usuarios, tanto los nuevos como los ya registrados en nuestro sistema. "Question Manager" se trata del conjunto de servicios encargado de la generación de preguntas.
-****
 
 image::05_bbv_level02.jpg["Level2"]
 
@@ -56,8 +50,6 @@ Nota: la versión descrita en la imagen superior está abierta a modificaciones 
 
 ==== White Box _Users Management_
 
-[role="arc42help"]
-****
 Este esquema concreta la estructura interna del bloque "Users Management" que se encarga, descrito de manera rápida y locuaz, de gestionar las credenciales, fechas de registro y peticiones de login de los usuarios ya registrados y también de aquellos que traten de registrarse por primera vez en nuestra aplicación. 
 
 El diagrama se divide en cuatro principales componentes que interactuan de manera secuencial mediante dos principales "caminos" de ejecución teniendo siempre en común el uso de la base de datos para garantizar la persistencia de nuestro sistema.
@@ -70,13 +62,9 @@ El diagrama se divide en cuatro principales componentes que interactuan de maner
 |Database|Se encarga de almacenar información de la aplicación para garantizar la persistencia de la misma (p.e: usuarios, contraseñas, registro histórico de puntuaciones...).
 |===
 
-****
-
 
 ==== White Box _Question Manager_
 
-[role="arc42help"]
-****
 Este segundo esquema trata de describir con mayor hondura el funcionamiento interno del bloque "Question Manager". Esta funcionalidad se divide en dos microservicios y ambos interactúan directamente con la API de WikiData para extraer de este servicio externo la información trascendental y necesaria para producir nuevos interrogantes (preguntas) y nuevas respuestas a los mismos.
 
 |===
@@ -84,6 +72,3 @@ Este segundo esquema trata de describir con mayor hondura el funcionamiento inte
 |Create Service|Se encarga de, gracias a la interacción con la API de WikiData, generar las preguntas que vayan a presentarse al usuario durante el transcurso de la partida en curso.
 |Answer Service|Servicio encargado de, trabajando de igual manera que el servicio anterior, generar las respuestas (tanto la correcta como las incorrectas) a las preguntas planteadas por el anterior microservicio.
 |===
-
-****
-

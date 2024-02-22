@@ -4,13 +4,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 == Deployment View
 
-[role="arc42help"]
-****
-
 === Infrastructura Nivel 1
-
-[role="arc42help"]
-****
 
 image::07-Deploy-View.png["Vista de despliegue"]
 
@@ -27,6 +21,5 @@ Mapeo de bloques de construcción a la infraestructura::
 |MongoDB| Es la base de datos elegida para el almacenaje de la información crucial de la aplicación.
 |Client| Navegador con el que interactúa el usuario para hacer uso de la aplicación.
 |===
-
 
 (En desarrollo)
