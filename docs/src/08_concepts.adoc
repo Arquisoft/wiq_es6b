@@ -6,15 +6,13 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 === Descripción de conceptos
 ==== Dominio
-[role="arc42help"]
-****
+
 * *Dinamismo en temáticas:* En la aplicación, el juego desarrollado te permite contestar a una gran variedad de preguntas específicas de distintas temáticas como años, lugares y autores de todas las distintas áreas existentes como historia, geografía y música entre otras.
 * *Registro de actividad:* La aplicación permitirá al usuario registrado ver todo su historial de jugadas realizadas, así como los detalles de cada una: fecha en la que se jugó, número de aciertos/fallos, dinero conseguido y tiempo total de finalización.
-****
+
 
 ==== Experiencia de usuario (UX)
-[role="arc42help"]
-****
+
 * *Intefaz usable:* 
 |===
 | Facilidad de uso
@@ -28,29 +26,31 @@ ifndef::imagesdir[:imagesdir: ../images]
 |===
 
 * *Inmediata retroalimnetacion:* El usuario verá de forma inmediata si ha acertado o no la pregunta contestada. Así como el historial de jugadas estará actualizado en todo momento.
-****
+
 
 ==== Seguridad y protección
-[role="arc42help"]
-****
+
 * *Control de acceso seguro:* Seguridad en la autenticación del usuario, comprobando que sean correctos los datos introducidos y no dejando entrar en caso contrario.
 * *Registro de actividad:* La aplicación está hecha para garantizar la protección de los usuarios respecto a las contraseñas, las cuales se encripta. También el historial de jugadas esta protegido ya que cada usuario solo puede ver su propio historial.
-****
+
 
 ==== "Under-the-hood"
-[role="arc42help"]
-****
+
 * *Persistencia:* Tanto los datos del usuario como de las jugadas quedarán almacenados asegurando su integridad y disponilibilidad.
 * *Mantenibilidad:* El código está escrito de forma clara y legible, se sigue un enfoque modular que permitirá la facilidad en su mantenimiento a la hora de tener que corregir fallos o añadir alguna mejora. 
 * *Extensibilidad:* Aplicación construida de forma que se podrá añadir de una forma sencilla nuevas funcionalidades en el futuro sin afectar en gran manera a partes ya existentes.
-****
+
 
 ==== Desarrollo
-[role="arc42help"]
-****
+
 * *Implementación:* Para la creación de esta aplicación se usará el lenguaje de programación JavaScript, para el front-end se utilizará React, Node.js y la construccion de microservicios para el back-end y MongoDB para la gestion de la base de datos NoSQL.
 * *Pruebas:* Se llevarán a cabo pruebas unitarias, de integración, de aceptación, de capacidad/rendimiento y de regresión, todas ellas siguiendo los principios FIRST(Fast, Independent, Repeatable, Self-Checking y Timely) para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
-****
+
+
+==== Estilo arquitectonico
+
+* *Capas:* Se utilizara un diseño basado en capas: presentacion, negocio y persistencia.
+
 
 === Mapa de conceptos
 image::08-MindMapConceptosTransversales.png["Mind Map conceptos transversales"]

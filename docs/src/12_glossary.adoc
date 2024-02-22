@@ -8,51 +8,24 @@ ifndef::imagesdir[:imagesdir: ../images]
 | Término | Definición
 
 | Distractores
-| Las diferentes respuestas falsas que se mostrarán al usuario 
+| Las diferentes respuestas falsas que se mostrarán al usuario.
 
 | BodyQuestions
-| Los diferentes cuerpos que vamos a utilizar de las preguntas base 
+| Los diferentes cuerpos que vamos a utilizar de las preguntas base.
 
 | TypeQuestions
-| Las distintas categorias que hay de preguntas
+| Las distintas categorias que hay de preguntas.
 
 | TypeAnswers
-| Las distintas categorias que hay de respuestas
+| Las distintas categorias que hay de respuestas.
 
 | Jugada
-| Elemento del historial de jugadas 
+| Elemento del historial de jugadas.
 
 | Arc42
-| Conjunto de distintas pautas a seguir para la documentacion de un proceso de software
-
-| Docker
-| Plataforma de software que permite entre otras cosas desarrollar y probar aplicaciones en contenedores
-
-| React
-| Librería JavaScript de código abierto usada para construir interfaces
-
-| Node.Js
-| De código abierto y basado en el motor V8 de Google. Es un entorno en tiempo de ejecución de JavaScript
+| Conjunto de distintas pautas a seguir para la documentacion de un proceso de software.
 
 | Microservicios
-| Enfoque de arquitectura usado para desarrollar software de manera que se construyan aplicaciones de forma que estas se dividan en elementos pequeños e independientes entre si 
-
-| MongoDB
-| Sistema de base de datos NoSQL que almacena los datos en formato BSON
-
-| Azure
-| Plataforma de servicios en la nube ofrecida por Microsoft
-
-| Git
-| Sistema de control de versiones distribuido
-
-| Github
-| Plataforma de desarrollo colaborativo de software que utiliza Git
-
-| BSON
-| (Binary JSON) Formato parecido a JSON de intercambio de datos comúnmente utilizado para trnasferir y almacenar datos en MongoDB
-
-| JSON
-| (JavaScript Object Notation) Formato de texto sencillo usado para el intercambio de datos 
+| Enfoque de arquitectura que usamos para desarrollar software de manera que se construyan aplicaciones de forma que estas se dividan en elementos pequeños e independientes entre si.
 
 |===
