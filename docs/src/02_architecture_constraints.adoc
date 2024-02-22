@@ -3,10 +3,6 @@ ifndef::imagesdir[:imagesdir: ../images]
 [[section-architecture-constraints]]
 == Restricciones de la arquitectura
 
-
-[role="arc42help"]
-****
-
 Las restricciones de la arquitectura de este proyecto son las siguientes:
 
 |===
@@ -40,4 +36,3 @@ reduciendo drásticamente el uso de software bajo licencia.
 * El uso de Wikidata reducirá la carga de trabajo de la aplicación, al no tener
 que trabajar sobre una base de datos local.
 
-****
