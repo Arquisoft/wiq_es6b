@@ -8,8 +8,6 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 A continuación se muestra el diagrama que muestra una vista completa y genérica de lo que será la estructura de la aplicación en su entorno. Se divide en tres principales componentes que mediante interacciones detalladas en los siguientes apartados lograrán una ejecución correcta del sistema. It contains
 
-****
-
 _**Diagrama de vista general**_
 
 image::05_bbv_scopecontext.jpg["Overview"]
