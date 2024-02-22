@@ -10,6 +10,7 @@ import Link from '@mui/material/Link';
 const Game=() =>{
     const [questionBody, setquestionBody] =  useState('');//pregunta aleatoria cuerpo
     const [informacionWikidata, setInformacionWikidata] =  useState('');
+    const [respuestaCorrecta, setRespuestaCorrecta] =  useState('');
     const [questionType, setQuestionType] = useState('');;//para el tipo de pregunta a buscar
     const [answerType, setAnswerType] = useState('');;//para el tipo de respuesta a buscar
 
@@ -44,9 +45,10 @@ const Game=() =>{
         try {
           // Consulta SPARQL//obtengo  
           const sparqlQuery = `
-          SELECT ?country ?countryLabel
+          SELECT ?country ?countryLabel ?capital ?capitalLabel
           WHERE {
             ?country wdt:P31 wd:Q6256.  # P31 instancias de -> wd:Q6256 (país)
+            ?country wdt:P36 ?capital.  # P36 instancias de -> ?capital (capital)
             SERVICE wikibase:label {
               bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es".
             }
@@ -74,6 +76,8 @@ const Game=() =>{
           const result = data.results.bindings[index];
           
           setInformacionWikidata(result.countryLabel.value+`?`);
+
+          setRespuestaCorrecta(result.capitalLabel.value);
 
            } else {
             console.error("Error al realizar la consulta en Wikidata. Estado de respuesta:", respuestaWikidata.status);
@@ -112,6 +116,9 @@ const Game=() =>{
             Generar pregunta
           </Button>
         </div>
+        <Button variant="contained" color="primary" size="large">
+          {respuestaCorrecta}
+        </Button>
       </div>
     );
   }
