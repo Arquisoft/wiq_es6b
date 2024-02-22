@@ -52,5 +52,11 @@ ifndef::imagesdir[:imagesdir: ../images]
 * *Pruebas:* Se llevarán a cabo pruebas unitarias, de integración, de aceptación, de capacidad/rendimiento y de regresión, todas ellas siguiendo los principios FIRST(Fast, Independent, Repeatable, Self-Checking y Timely) para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
 ****
 
+==== Estilo arquitectonico
+[role="arc42help"]
+****
+* *Capas:* Se utilizara un diseño basado en capas: presentacion, negocio y persistencia.
+****
+
 === Mapa de conceptos
 image::08-MindMapConceptosTransversales.png["Mind Map conceptos transversales"]
