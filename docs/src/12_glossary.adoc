@@ -7,6 +7,21 @@ ifndef::imagesdir[:imagesdir: ../images]
 |===
 | Término | Definición
 
+| Distractores
+| Las diferentes respuestas falsas que se mostrarán al usuario 
+
+| BodyQuestions
+| Los diferentes cuerpos que vamos a utilizar de las preguntas base 
+
+| TypeQuestions
+| Las distintas categorias que hay de preguntas
+
+| TypeAnswers
+| Las distintas categorias que hay de respuestas
+
+| Jugada
+| Elemento del historial de jugadas 
+
 | Arc42
 | Conjunto de distintas pautas a seguir para la documentacion de un proceso de software
 
