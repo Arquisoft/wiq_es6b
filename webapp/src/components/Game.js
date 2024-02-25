@@ -13,7 +13,7 @@ const Game=() =>{
     const [respuestaCorrecta, setRespuestaCorrecta] =  useState('');
     const [questionType, setQuestionType] = useState('');;//para el tipo de pregunta a buscar
     const [answerType, setAnswerType] = useState('');;//para el tipo de respuesta a buscar
-
+    const [numberClics, setNumberClics] = useState(1);
 
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -89,6 +89,9 @@ const Game=() =>{
       };
   
       const handleButtonClick = () => {
+
+        setNumberClics(numberClics + 1);//aumento el numero de clics en 1
+        
         obtenerPreguntaAleatoria();
         //pais, libro,actor, edificio 
         if (questionType=='pais'){
@@ -105,8 +108,14 @@ const Game=() =>{
 
     return (
         
+
+
+
         <div>
-        <h1>Pregunta: </h1>
+        {numberClics > 10 ? (
+        <p>Fin</p>
+        ) : (<>
+        <h1>Pregunta Número {numberClics} :</h1>
         <div>
         <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
            {questionBody} {informacionWikidata} 
@@ -115,9 +124,14 @@ const Game=() =>{
           <Button variant="contained" color="primary" onClick={handleButtonClick}>
           {respuestaCorrecta}
           </Button>
+          
         </div>
+        </>
+        )}
       </div>
-    );
+);
+
+  
   }
 
 export default Game;
