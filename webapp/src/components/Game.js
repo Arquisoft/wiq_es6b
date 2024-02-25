@@ -113,12 +113,9 @@ const Game=() =>{
           </Typography>
 
           <Button variant="contained" color="primary" onClick={handleButtonClick}>
-            Generar pregunta
+          {respuestaCorrecta}
           </Button>
         </div>
-        <Button variant="contained" color="primary" size="large">
-          {respuestaCorrecta}
-        </Button>
       </div>
     );
   }
