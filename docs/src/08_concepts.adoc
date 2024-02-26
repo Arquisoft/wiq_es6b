@@ -12,17 +12,12 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 
 ==== Experiencia de usuario (UX)
-
 * *Interfaz usable:* 
+
 |===
-| Facilidad de uso
-| Se mostrará un diseño de interfaz sencilla de uso, predecible y familiar, colocando todos los elementos y opciones importantes de la aplicación de forma que sean fácilmente accesibles. Se usará también un estilo que hará alusión al famoso juego de "Saber y Ganar" en el que está basado.
-
-| Intuitiva
-| El sistema de juego de la aplicación seguirá lo más fielmente posible el formato de preguntas y respuestas del juego de "Saber y Ganar" en base al número de preguntas que se harán en cada jugada, el tiempo disponible para cada pregunta, el número de respuestas disponibles a seleccionar y la cuantía del premio para generar una sensación de familiaridad.
-
-| Solidez
-| Los tiempos de espera de carga de la aplicación se buscarán que sean los mínimos posibles para que la experiencia sea fluida.
+| Facilidad de uso | Se mostrará un diseño de interfaz sencilla de uso, predecible y familiar, colocando todos los elementos y opciones importantes de la aplicación de forma que sean fácilmente accesibles. Se usará también un estilo que hará alusión al famoso juego de "Saber y Ganar" en el que está basado.
+| Intuitiva | El sistema de juego de la aplicación seguirá lo más fielmente posible el formato de preguntas y respuestas del juego de "Saber y Ganar" en base al número de preguntas que se harán en cada jugada, el tiempo disponible para cada pregunta, el número de respuestas disponibles a seleccionar y la cuantía del premio para generar una sensación de familiaridad.
+| Solidez | Los tiempos de espera de carga de la aplicación se buscarán que sean los mínimos posibles para que la experiencia sea fluida.
 |===
 
 * *Inmediata retroalimnetacion:* El usuario verá de forma inmediata si ha acertado o no la pregunta contestada. Así como el historial de jugadas estará actualizado en todo momento.
@@ -49,7 +44,13 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 ==== Estilo arquitectonico
 
-* *Capas:* Se utilizara un diseño basado en capas: presentacion, negocio y persistencia.
+* *Capas:* Se utilizara un diseño basado en estas 3 capas principales para tener una mejor organización de la aplicación y otorgar a la misma una modularidad
+[options="header",cols="1,2"]
+|===
+|Presentación |Se va a utilizar para operar y generar la interfaz gráfica que se le mostrará al usuario.
+|Negocio |Aquí será donde se llevará a cabo toda la lógica correspondiente que hace posible el correcto funcionamiento de la aplicación, se utilizará para poder generar las direfectes preguntas del juego de forma automática, así como sus posibles respuestas ente otras funcionalidades como la creación del historial de cada jugador.
+|Persistencia |Para almacenar/obtener los diferentes datos que se necesiten tanto para el jugador como para el sistema de juego de preguntas y respuestas.
+|===
 
 
 === Mapa de conceptos
