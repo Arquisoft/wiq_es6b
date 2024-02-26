@@ -13,7 +13,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 ==== Experiencia de usuario (UX)
 
-* *Intefaz usable:* 
+* *Interfaz usable:* 
 |===
 | Facilidad de uso
 | Se mostrará un diseño de interfaz sencilla de uso, predecible y familiar, colocando todos los elementos y opciones importantes de la aplicación de forma que sean fácilmente accesibles. Se usará también un estilo que hará alusión al famoso juego de "Saber y Ganar" en el que está basado.
