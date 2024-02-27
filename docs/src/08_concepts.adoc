@@ -45,14 +45,13 @@ ifndef::imagesdir[:imagesdir: ../images]
 ==== Estilo arquitectonico
 
 * *Capas:* Se utilizara un diseño basado en estas 3 capas principales para tener una mejor organización de la aplicación y otorgar a la misma una modularidad
+
 image::08-capas.png["Capas"]
-[options="header",cols="1,2"]
 |===
 |Presentación |Se va a utilizar para operar y generar la interfaz gráfica que se le mostrará al usuario.
 |Negocio |Aquí será donde se llevará a cabo toda la lógica correspondiente que hace posible el correcto funcionamiento de la aplicación, se utilizará para poder generar las direfectes preguntas del juego de forma automática, así como sus posibles respuestas ente otras funcionalidades como la creación del historial de cada jugador.
 |Persistencia |Para almacenar/obtener los diferentes datos que se necesiten tanto para el jugador como para el sistema de juego de preguntas y respuestas.
 |===
-
 
 === Mapa de conceptos
 image::08-MindMapConceptosTransversales.png["Mind Map conceptos transversales"]
