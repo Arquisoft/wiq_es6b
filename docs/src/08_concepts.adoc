@@ -45,6 +45,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 ==== Estilo arquitectonico
 
 * *Capas:* Se utilizara un diseño basado en estas 3 capas principales para tener una mejor organización de la aplicación y otorgar a la misma una modularidad
+image::08-capas.png["Capas"]
 [options="header",cols="1,2"]
 |===
 |Presentación |Se va a utilizar para operar y generar la interfaz gráfica que se le mostrará al usuario.
