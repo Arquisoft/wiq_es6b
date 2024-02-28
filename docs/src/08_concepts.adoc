@@ -6,9 +6,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 === Descripción de conceptos
 ==== Dominio
-
-* *Dinamismo en temáticas:* En la aplicación, el juego desarrollado te permite contestar a una gran variedad de preguntas específicas de distintas temáticas como años, lugares y autores de todas las distintas áreas existentes como historia, geografía y música entre otras.
-* *Registro de actividad:* La aplicación permitirá al usuario registrado ver todo su historial de jugadas realizadas, así como los detalles de cada una: fecha en la que se jugó, número de aciertos/fallos, dinero conseguido y tiempo total de finalización.
+image::08-Dominio.jpeg["Dominio"]
 
 
 ==== Experiencia de usuario (UX)
@@ -42,9 +40,9 @@ ifndef::imagesdir[:imagesdir: ../images]
 * *Pruebas:* Se llevarán a cabo pruebas unitarias, de integración, de aceptación, de capacidad/rendimiento y de regresión, todas ellas siguiendo los principios FIRST(Fast, Independent, Repeatable, Self-Checking y Timely) para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
 
 
-==== Estilo arquitectonico
+==== Estilo arquitecónico
 
-* *Capas:* Se utilizara un diseño basado en estas 3 capas principales para tener una mejor organización de la aplicación y otorgar a la misma una modularidad
+* *Capas:* Se utilizará un diseño basado en estas 3 capas principales para tener una mejor organización de la aplicación y otorgar a la misma una modularidad
 
 image::08-capas.png["Capas"]
 |===
