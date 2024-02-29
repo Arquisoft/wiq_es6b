@@ -4,19 +4,18 @@ import React, { useState, useEffect } from 'react';
 import { Container, Typography, Button } from '@mui/material';
 
 const Game = () => {
-  const [questionBody, setQuestionBody] = useState(''); // pregunta aleatoria cuerpo
-  const [options, setOptions] = useState([]); // opciones incorrectas y correcta
-  const [selectedOption, setSelectedOption] = useState(''); // opción seleccionada por el usuario
+  const [question, setQuestion] = useState({ body: '', options: [] });
+  const [selectedOption, setSelectedOption] = useState('');
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
   const obtenerPreguntaAleatoria = async () => {
     try {
-      const response = await axios.post(`${apiEndpoint}/getQuestionBody`);
-      setQuestionBody(response.data.questionBody);
-      // Obtener opciones incorrectas y la correcta
-      const optionsResponse = await axios.get(`${apiEndpoint}/getIncorrectAnswers/${response.data._id}`);
-      setOptions([...optionsResponse.data.incorrectAnswers, response.data.typeAnswer]);
+      const response = await axios.post(`${apiEndpoint}/getQuestion`);
+      setQuestion({
+        body: response.data.questionBody,
+        options: [...response.data.incorrectAnswers, response.data.typeAnswer],
+      });
     } catch (error) {
       console.error("Error al obtener la pregunta aleatoria", error);
     }
@@ -27,19 +26,21 @@ const Game = () => {
   };
 
   const handleButtonClick = () => {
-    setSelectedOption(''); // Limpiar la opción seleccionada
+    setSelectedOption('');
     obtenerPreguntaAleatoria();
   };
 
   return (
     <div>
-      <h1>Pregunta: </h1>
+      <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
+        Pregunta:
+      </Typography>
       <div>
         <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
-          {questionBody}
+          {question.body}
         </Typography>
         <div>
-          {options.map((option, index) => (
+          {question.options.map((option, index) => (
             <Button
               key={index}
               variant="contained"
@@ -60,3 +61,4 @@ const Game = () => {
 }
 
 export default Game;
+
