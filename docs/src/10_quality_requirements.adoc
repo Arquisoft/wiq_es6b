@@ -3,10 +3,6 @@ ifndef::imagesdir[:imagesdir: ../images]
 [[section-quality-scenarios]]
 == Requisitos de Calidad
 
-
-[role="arc42help"]
-****
-
 Los requisitos de calidad son la piedra angular del desarrollo de nuestro proyecto/aplicación. En ellos debemos basar nuestra implementación y es nuestra obligación a la hora de desarrollar un producto de calidad el haber garantizado el cumplimiento de la inmensa mayoría (por no decir, de todos). 
 
 * Tabla descriptiva: _(los requisitos marcados con * son aquellos dotados de mayor prioridad)_
@@ -21,23 +17,13 @@ Los requisitos de calidad son la piedra angular del desarrollo de nuestro proyec
 |Accesibilidad|Aseguraremos una experiencia satisfactoria para todo tipo de usuario por lo que nuestra aplicación pondrá especial atención a la accesibilidad de la misma, previniendo las posibles dificultades que le podrían surgir a los distintos grupos de usuarios según sus capacidades físicas y/o cognitivas. |SC4|*
 |===
 
-****
-
 === Quality Tree
-
-[role="arc42help"]
-****
 
 En este apartado podemos ver de manera más visual cuáles son los requisitos de calidad representados en forma de árbol con el conocido "quality tree" (tal y como se define en ATAM - Arquitecture Tradeoff Analysis Method) que cuenta con los requisitos en forma de hojas en su diagrama.
 
 image::10_qr_tree.jpg["Quality Tree"]
 
-****
-
 === Quality Scenarios
-
-[role="arc42help"]
-****
 
 A la hora de describir los requisitos de calidad de la aplicación de generación de preguntas y respuestas que vamos a llevar a cabo es plausible que algunos de los mismos hayan sido explicados de manera excesivamente genérica. Es por esto que en este apartado vamos a mostrar algunos ejemplos más concretos para representar de una manera más comprensible lo que buscamos lograr con nuestra producto.
 
@@ -61,5 +47,3 @@ A la hora de describir los requisitos de calidad de la aplicación de generació
 |===
 | La incorporación de nuevos juegos dentro de la aplicación no debería afectar al sistema puesto que la manera en la que se va a implementar el juego propuesto de preguntas garantiza su flexibilidad ante el cambio y su posible extensión en un futuro.
 |===
-
-****

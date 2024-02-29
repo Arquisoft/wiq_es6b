@@ -6,51 +6,50 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 === Descripción de conceptos
 ==== Dominio
-[role="arc42help"]
-****
-* *Dinamismo en temáticas:* En la aplicación, el juego desarrollado te permite contestar a una gran variedad de preguntas específicas de distintas temáticas como años, lugares y autores de todas las distintas áreas existentes como historia, geografía y música entre otras.
-* *Registro de actividad:* La aplicación permitirá al usuario registrado ver todo su historial de jugadas realizadas, así como los detalles de cada una: fecha en la que se jugó, número de aciertos/fallos, dinero conseguido y tiempo total de finalización.
-****
+image::08-Dominio.jpeg["Dominio"]
+
 
 ==== Experiencia de usuario (UX)
-[role="arc42help"]
-****
-* *Intefaz usable:* 
+* *Interfaz usable:* 
+
 |===
-| Facilidad de uso
-| Se mostrará un diseño de interfaz sencilla de uso, predecible y familiar, colocando todos los elementos y opciones importantes de la aplicación de forma que sean fácilmente accesibles. Se usará también un estilo que hará alusión al famoso juego de "Saber y Ganar" en el que está basado.
-
-| Intuitiva
-| El sistema de juego de la aplicación seguirá lo más fielmente posible el formato de preguntas y respuestas del juego de "Saber y Ganar" en base al número de preguntas que se harán en cada jugada, el tiempo disponible para cada pregunta, el número de respuestas disponibles a seleccionar y la cuantía del premio para generar una sensación de familiaridad.
-
-| Solidez
-| Los tiempos de espera de carga de la aplicación se buscarán que sean los mínimos posibles para que la experiencia sea fluida.
+| Facilidad de uso | Se mostrará un diseño de interfaz sencilla de uso, predecible y familiar, colocando todos los elementos y opciones importantes de la aplicación de forma que sean fácilmente accesibles. Se usará también un estilo que hará alusión al famoso juego de "Saber y Ganar" en el que está basado.
+| Intuitiva | El sistema de juego de la aplicación seguirá lo más fielmente posible el formato de preguntas y respuestas del juego de "Saber y Ganar" en base al número de preguntas que se harán en cada jugada, el tiempo disponible para cada pregunta, el número de respuestas disponibles a seleccionar y la cuantía del premio para generar una sensación de familiaridad.
+| Solidez | Los tiempos de espera de carga de la aplicación se buscarán que sean los mínimos posibles para que la experiencia sea fluida.
 |===
 
 * *Inmediata retroalimnetacion:* El usuario verá de forma inmediata si ha acertado o no la pregunta contestada. Así como el historial de jugadas estará actualizado en todo momento.
-****
+
 
 ==== Seguridad y protección
-[role="arc42help"]
-****
+
 * *Control de acceso seguro:* Seguridad en la autenticación del usuario, comprobando que sean correctos los datos introducidos y no dejando entrar en caso contrario.
 * *Registro de actividad:* La aplicación está hecha para garantizar la protección de los usuarios respecto a las contraseñas, las cuales se encripta. También el historial de jugadas esta protegido ya que cada usuario solo puede ver su propio historial.
-****
+
 
 ==== "Under-the-hood"
-[role="arc42help"]
-****
+
 * *Persistencia:* Tanto los datos del usuario como de las jugadas quedarán almacenados asegurando su integridad y disponilibilidad.
 * *Mantenibilidad:* El código está escrito de forma clara y legible, se sigue un enfoque modular que permitirá la facilidad en su mantenimiento a la hora de tener que corregir fallos o añadir alguna mejora. 
 * *Extensibilidad:* Aplicación construida de forma que se podrá añadir de una forma sencilla nuevas funcionalidades en el futuro sin afectar en gran manera a partes ya existentes.
-****
+
 
 ==== Desarrollo
-[role="arc42help"]
-****
+
 * *Implementación:* Para la creación de esta aplicación se usará el lenguaje de programación JavaScript, para el front-end se utilizará React, Node.js y la construccion de microservicios para el back-end y MongoDB para la gestion de la base de datos NoSQL.
 * *Pruebas:* Se llevarán a cabo pruebas unitarias, de integración, de aceptación, de capacidad/rendimiento y de regresión, todas ellas siguiendo los principios FIRST(Fast, Independent, Repeatable, Self-Checking y Timely) para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
-****
+
+
+==== Estilo arquitecónico
+
+* *Capas:* Se utilizará un diseño basado en estas 3 capas principales para tener una mejor organización de la aplicación y otorgar a la misma una modularidad
+
+image::08-capas.png["Capas"]
+|===
+|Presentación |Se va a utilizar para operar y generar la interfaz gráfica que se le mostrará al usuario.
+|Negocio |Aquí será donde se llevará a cabo toda la lógica correspondiente que hace posible el correcto funcionamiento de la aplicación, se utilizará para poder generar las direfectes preguntas del juego de forma automática, así como sus posibles respuestas ente otras funcionalidades como la creación del historial de cada jugador.
+|Persistencia |Para almacenar/obtener los diferentes datos que se necesiten tanto para el jugador como para el sistema de juego de preguntas y respuestas.
+|===
 
 === Mapa de conceptos
 image::08-MindMapConceptosTransversales.png["Mind Map conceptos transversales"]
