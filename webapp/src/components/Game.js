@@ -109,11 +109,13 @@ const Game=() =>{
     return (
 
         <div>
-        {numberClics > 10 ? (
+        {(numberClics > 10 || timer>180) ? (
         <p>Fin</p>
         ) : (<>
-        <h1>Pregunta Número {numberClics} :</h1>
-        <Typography component="h2" sx={{ textAlign: 'center', color:'red', fontStyle:'italic'}}>
+        <Typography component="h1" variant='h5' sx={{ textAlign: 'center'}}>
+            Pregunta Número {numberClics} :
+        </Typography>
+        <Typography component="h2" sx={{ textAlign: 'center'}}>
             ¡Tiempo restante {handleTimeRemaining()}!
         </Typography>
         <div>
