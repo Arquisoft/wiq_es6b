@@ -25,10 +25,6 @@ Usaremos VisualParadigm y Draw.io para la creacion de diagramas para la document
 |===
 | Objetivo de calidad | Escenario | Enfoque de solución
 
-| Privacidad
-| Los usuarios buscan la seguridad y privacidad de sus datos dentro de la aplicacion
-| Garantizar la seguridad y privacidad de los datos del usuario.
-
 | Usabilidad
 | La ejecución de todas las funciones de la aplicación es crucial para la satisfacción del usuario.
 | Optimizaremos la usabilidad gracias al framework React.
@@ -41,6 +37,17 @@ Usaremos VisualParadigm y Draw.io para la creacion de diagramas para la document
 | La aplicacion debe adapatarse a los cambios futuros sin esfuerzo.
 | Emplearemos microservicios para la minimizacion de la repeticion de codigo y mejorar la comprension de este.
 
+| Accesibilidad 
+| Cualquier usuario tendrá las mismas oportunidades que el resto sin importar sus capacidades físicas o cognitivas. 
+| Haremos una interfaz limpia, clara, sencilla y con colores accesibles
+
+| Rendimiento 
+| Los usuarios tendrán tiempos de respuesta cortos por parte del sistema contando con un máximo de 2 segundos para garantizar una mejor experiencia durante el juego. 
+| Optimizaremos las consultas a Wikidata y el codigo para minimzar los tiempos de respuesta.
+
+| Disponibilidad 
+| La aplicación estará disponible durante al menos el 98% del tiempo para permitir a los usuarios jugar la mayor cantidad de tiempo posible. 
+| Se minimizaran interrupciones dejando unas 3 horas y media de mantenimiento semanales. 
 |===
 
 === Decisiones de organizacion
@@ -50,29 +57,3 @@ Usaremos VisualParadigm y Draw.io para la creacion de diagramas para la document
 - *GitHub:* Con esta herramienta conseguiremos trabajar cooperativamente y usar las herramientas que ofrece para juntar los proyectos de los diferentes integrantes del equipo.
 - *Comunicacion*: Para la comunicación entre los integrantes del equipo, usaremos tanto la aplicacion de mensajeria móvil "WhatsApp", como "Discord".
 
-[role="arc42help"]
-****
-.Contents
-A short summary and explanation of the fundamental decisions and solution strategies, that shape system architecture. It includes
-
-* technology decisions
-* decisions about the top-level decomposition of the system, e.g. usage of an architectural pattern or design pattern
-* decisions on how to achieve key quality goals
-* relevant organizational decisions, e.g. selecting a development process or delegating certain tasks to third parties.
-
-.Motivation
-These decisions form the cornerstones for your architecture. They are the foundation for many other detailed decisions or implementation rules.
-
-.Form
-Keep the explanations of such key decisions short.
-
-Motivate what was decided and why it was decided that way,
-based upon problem statement, quality goals and key constraints.
-Refer to details in the following sections.
-
-
-.Further Information
-
-See https://docs.arc42.org/section-4/[Solution Strategy] in the arc42 documentation.
-
-****
