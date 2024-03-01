@@ -1,27 +1,38 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-architecture-constraints]]
-== Architecture Constraints
+== Restricciones de la arquitectura
+
+Las restricciones de la arquitectura de este proyecto son las siguientes:
+
+|===
+| Restricción | Explicación
+
+| Uso de Wikidata
+| Se debe usar obligatoriamente la API de Wikidata para obtener los datos necesarios
+para generar las preguntas y las respuestas dentro del juego.
+
+| Despliegue
+| La aplicación deberá consistir en una aplicación web, no pudiendo ser una aplicación
+móvil o de escritorio.
+
+| Acceso a datos mediante APIs
+| El acceso a datos relacionados con los usuarios que participan y las respuestas
+a las preguntas deberá realizarse con una API.
+
+| Presupuesto reducido
+| El presupuesto para el proyecto es limitado, reduciéndose únicamente a lo que
+cada desarrollador esté dispuesto a desembolsar de su propio bolsillo.
+|===
 
 
-[role="arc42help"]
-****
-.Contents
-Any requirement that constraints software architects in their freedom of design and implementation decisions or decision about the development process. These constraints sometimes go beyond individual systems and are valid for whole organizations and companies.
+Consecuencias de las limitaciones:
 
-.Motivation
-Architects should know exactly where they are free in their design decisions and where they must adhere to constraints.
-Constraints must always be dealt with; they may be negotiable, though.
+* La aplicación web deberá estar suficientemente optimizada para su uso en
+navegadores, atendiendo a aspectos relacionados con el rendimiento, la usabilidad
+y la disponibilidad.
+* El presupuesto reducido implicará un uso mayor de herramientas de código abierto,
+reduciendo drásticamente el uso de software bajo licencia.
+* El uso de Wikidata reducirá la carga de trabajo de la aplicación, al no tener
+que trabajar sobre una base de datos local.
 
-.Form
-Simple tables of constraints with explanations.
-If needed you can subdivide them into
-technical constraints, organizational and political constraints and
-conventions (e.g. programming or versioning guidelines, documentation or naming conventions)
-
-
-.Further Information
-
-See https://docs.arc42.org/section-2/[Architecture Constraints] in the arc42 documentation.
-
-****

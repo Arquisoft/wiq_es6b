@@ -1,73 +1,55 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-concepts]]
-== Cross-cutting Concepts
+== Conceptos transversales
 
 
-[role="arc42help"]
-****
-.Content
-This section describes overall, principal regulations and solution ideas that are relevant in multiple parts (= cross-cutting) of your system.
-Such concepts are often related to multiple building blocks.
-They can include many different topics, such as
-
-* models, especially domain models
-* architecture or design patterns
-* rules for using specific technology
-* principal, often technical decisions of an overarching (= cross-cutting) nature
-* implementation rules
+=== Descripción de conceptos
+==== Dominio
+image::08-Dominio.jpeg["Dominio"]
 
 
-.Motivation
-Concepts form the basis for _conceptual integrity_ (consistency, homogeneity) of the architecture. 
-Thus, they are an important contribution to achieve inner qualities of your system.
+==== Experiencia de usuario (UX)
+* *Interfaz usable:* 
 
-Some of these concepts cannot be assigned to individual building blocks, e.g. security or safety. 
+|===
+| Facilidad de uso | Se mostrará un diseño de interfaz sencilla de uso, predecible y familiar, colocando todos los elementos y opciones importantes de la aplicación de forma que sean fácilmente accesibles. Se usará también un estilo que hará alusión al famoso juego de "Saber y Ganar" en el que está basado.
+| Intuitiva | El sistema de juego de la aplicación seguirá lo más fielmente posible el formato de preguntas y respuestas del juego de "Saber y Ganar" en base al número de preguntas que se harán en cada jugada, el tiempo disponible para cada pregunta, el número de respuestas disponibles a seleccionar y la cuantía del premio para generar una sensación de familiaridad.
+| Solidez | Los tiempos de espera de carga de la aplicación se buscarán que sean los mínimos posibles para que la experiencia sea fluida.
+|===
 
-
-.Form
-The form can be varied:
-
-* concept papers with any kind of structure
-* cross-cutting model excerpts or scenarios using notations of the architecture views
-* sample implementations, especially for technical concepts
-* reference to typical usage of standard frameworks (e.g. using Hibernate for object/relational mapping)
-
-.Structure
-A potential (but not mandatory) structure for this section could be:
-
-* Domain concepts
-* User Experience concepts (UX)
-* Safety and security concepts
-* Architecture and design patterns
-* "Under-the-hood"
-* development concepts
-* operational concepts
-
-Note: it might be difficult to assign individual concepts to one specific topic
-on this list.
-
-image::08-Crosscutting-Concepts-Structure-EN.png["Possible topics for crosscutting concepts"]
+* *Inmediata retroalimnetacion:* El usuario verá de forma inmediata si ha acertado o no la pregunta contestada. Así como el historial de jugadas estará actualizado en todo momento.
 
 
-.Further Information
+==== Seguridad y protección
 
-See https://docs.arc42.org/section-8/[Concepts] in the arc42 documentation.
-****
-
-
-=== _<Concept 1>_
-
-_<explanation>_
+* *Control de acceso seguro:* Seguridad en la autenticación del usuario, comprobando que sean correctos los datos introducidos y no dejando entrar en caso contrario.
+* *Registro de actividad:* La aplicación está hecha para garantizar la protección de los usuarios respecto a las contraseñas, las cuales se encripta. También el historial de jugadas esta protegido ya que cada usuario solo puede ver su propio historial.
 
 
+==== "Under-the-hood"
 
-=== _<Concept 2>_
+* *Persistencia:* Tanto los datos del usuario como de las jugadas quedarán almacenados asegurando su integridad y disponilibilidad.
+* *Mantenibilidad:* El código está escrito de forma clara y legible, se sigue un enfoque modular que permitirá la facilidad en su mantenimiento a la hora de tener que corregir fallos o añadir alguna mejora. 
+* *Extensibilidad:* Aplicación construida de forma que se podrá añadir de una forma sencilla nuevas funcionalidades en el futuro sin afectar en gran manera a partes ya existentes.
 
-_<explanation>_
 
-...
+==== Desarrollo
 
-=== _<Concept n>_
+* *Implementación:* Para la creación de esta aplicación se usará el lenguaje de programación JavaScript, para el front-end se utilizará React, Node.js y la construccion de microservicios para el back-end y MongoDB para la gestion de la base de datos NoSQL.
+* *Pruebas:* Se llevarán a cabo pruebas unitarias, de integración, de aceptación, de capacidad/rendimiento y de regresión, todas ellas siguiendo los principios FIRST(Fast, Independent, Repeatable, Self-Checking y Timely) para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
 
-_<explanation>_
+
+==== Estilo arquitecónico
+
+* *Capas:* Se utilizará un diseño basado en estas 3 capas principales para tener una mejor organización de la aplicación y otorgar a la misma una modularidad
+
+image::08-capas.png["Capas"]
+|===
+|Presentación |Se va a utilizar para operar y generar la interfaz gráfica que se le mostrará al usuario.
+|Negocio |Aquí será donde se llevará a cabo toda la lógica correspondiente que hace posible el correcto funcionamiento de la aplicación, se utilizará para poder generar las direfectes preguntas del juego de forma automática, así como sus posibles respuestas ente otras funcionalidades como la creación del historial de cada jugador.
+|Persistencia |Para almacenar/obtener los diferentes datos que se necesiten tanto para el jugador como para el sistema de juego de preguntas y respuestas.
+|===
+
+=== Mapa de conceptos
+image::08-MindMapConceptosTransversales.png["Mind Map conceptos transversales"]
