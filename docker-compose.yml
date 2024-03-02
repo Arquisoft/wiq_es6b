@@ -83,6 +83,20 @@ services:
     environment:
       MONGODB_URI: mongodb://mongodb:27017/userdb
 
+  generatedquestservice:
+    container_name: generatedquestservice-${teamname:-defaultASW}
+    image: ghcr.io/arquisoft/wiq_es6b/generatedquestservice:latest
+    profiles: ["dev", "prod"]
+    build: ./questions/generatedquestservice
+    depends_on:
+      - mongodb
+    ports:
+      - "8007:8007"
+    networks:
+      - mynetwork
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/questiondb
+
   gatewayservice:
     container_name: gatewayservice-${teamname:-defaultASW}
     image: ghcr.io/arquisoft/wiq_es6b/gatewayservice:latest
