@@ -891,11 +891,6 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Privacidad</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Los usuarios buscan la seguridad y privacidad de sus datos dentro de la aplicacion</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Garantizar la seguridad y privacidad de los datos del usuario.</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Usabilidad</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">La ejecución de todas las funciones de la aplicación es crucial para la satisfacción del usuario.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Optimizaremos la usabilidad gracias al framework React.</p></td>
@@ -909,6 +904,21 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 <td class="tableblock halign-left valign-top"><p class="tableblock">Escalabilidad</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">La aplicacion debe adapatarse a los cambios futuros sin esfuerzo.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Emplearemos microservicios para la minimizacion de la repeticion de codigo y mejorar la comprension de este.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accesibilidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cualquier usuario tendrá las mismas oportunidades que el resto sin importar sus capacidades físicas o cognitivas.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Haremos una interfaz limpia, clara, sencilla y con colores accesibles</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rendimiento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Los usuarios tendrán tiempos de respuesta cortos por parte del sistema contando con un máximo de 2 segundos para garantizar una mejor experiencia durante el juego.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optimizaremos las consultas a Wikidata y el codigo para minimzar los tiempos de respuesta.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disponibilidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">La aplicación estará disponible durante al menos el 98% del tiempo para permitir a los usuarios jugar la mayor cantidad de tiempo posible.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Se minimizaran interrupciones dejando unas 3 horas y media de mantenimiento semanales.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1206,15 +1216,10 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 <h3 id="_descripción_de_conceptos">8.1. Descripción de conceptos</h3>
 <div class="sect3">
 <h4 id="_dominio">8.1.1. Dominio</h4>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Dinamismo en temáticas:</strong> En la aplicación, el juego desarrollado te permite contestar a una gran variedad de preguntas específicas de distintas temáticas como años, lugares y autores de todas las distintas áreas existentes como historia, geografía y música entre otras.</p>
-</li>
-<li>
-<p><strong>Registro de actividad:</strong> La aplicación permitirá al usuario registrado ver todo su historial de jugadas realizadas, así como los detalles de cada una: fecha en la que se jugó, número de aciertos/fallos, dinero conseguido y tiempo total de finalización.</p>
-</li>
-</ul>
+<div class="imageblock">
+<div class="content">
+<img src="./images/08-Dominio.jpeg" alt="Dominio">
+</div>
 </div>
 </div>
 <div class="sect3">
@@ -1222,31 +1227,26 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Intefaz usable:</strong></p>
+<p><strong>Interfaz usable:</strong></p>
 </li>
 </ul>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 100%;">
+<col style="width: 50%;">
+<col style="width: 50%;">
 </colgroup>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Facilidad de uso</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Se mostrará un diseño de interfaz sencilla de uso, predecible y familiar, colocando todos los elementos y opciones importantes de la aplicación de forma que sean fácilmente accesibles. Se usará también un estilo que hará alusión al famoso juego de "Saber y Ganar" en el que está basado.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Intuitiva</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">El sistema de juego de la aplicación seguirá lo más fielmente posible el formato de preguntas y respuestas del juego de "Saber y Ganar" en base al número de preguntas que se harán en cada jugada, el tiempo disponible para cada pregunta, el número de respuestas disponibles a seleccionar y la cuantía del premio para generar una sensación de familiaridad.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Solidez</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Los tiempos de espera de carga de la aplicación se buscarán que sean los mínimos posibles para que la experiencia sea fluida.</p></td>
 </tr>
 </tbody>
@@ -1302,14 +1302,39 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_estilo_arquitectonico">8.1.6. Estilo arquitectonico</h4>
+<h4 id="_estilo_arquitecónico">8.1.6. Estilo arquitecónico</h4>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Capas:</strong> Se utilizara un diseño basado en capas: presentacion, negocio y persistencia.</p>
+<p><strong>Capas:</strong> Se utilizará un diseño basado en estas 3 capas principales para tener una mejor organización de la aplicación y otorgar a la misma una modularidad</p>
 </li>
 </ul>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/08-capas.png" alt="Capas">
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Presentación</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Se va a utilizar para operar y generar la interfaz gráfica que se le mostrará al usuario.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Negocio</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aquí será donde se llevará a cabo toda la lógica correspondiente que hace posible el correcto funcionamiento de la aplicación, se utilizará para poder generar las direfectes preguntas del juego de forma automática, así como sus posibles respuestas ente otras funcionalidades como la creación del historial de cada jugador.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Persistencia</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Para almacenar/obtener los diferentes datos que se necesiten tanto para el jugador como para el sistema de juego de preguntas y respuestas.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect2">
