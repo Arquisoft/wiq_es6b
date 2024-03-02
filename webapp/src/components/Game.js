@@ -19,9 +19,9 @@ const Game=() =>{
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
     
-    useEffect(() => {
-      obtenerPreguntaAleatoria();
-    }, []);
+    //useEffect(() => {
+    //  obtenerPreguntaAleatoria();
+    //}, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
