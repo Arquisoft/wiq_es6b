@@ -8,7 +8,7 @@ import { Container, Typography, TextField, Button, Snackbar } from '@mui/materia
 import Link from '@mui/material/Link';
 
 const Game=() =>{
-    const [questionBody, setquestionBody] =  useState('');//pregunta aleatoria cuerpo
+    const [questionBody, setQuestionBody] =  useState('');//pregunta aleatoria cuerpo
     const [informacionWikidata, setInformacionWikidata] =  useState('');
     const [respuestaCorrecta, setRespuestaCorrecta] =  useState('');
     const [questionType, setQuestionType] = useState('');//para el tipo de pregunta a buscar
@@ -18,7 +18,19 @@ const Game=() =>{
 
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
+    // se ejecuta una vez cuando se cargue el componente y llena la BD con las plantillas posibles
+    // además de generar la pregunta nº1
+    useEffect(() => {
+        const fetchData = async () => {
+            await peticionPOST(); // Espera a que la primera función se complete
+            obtenerPreguntaAleatoria(); // Luego ejecuta la segunda función
+        };
+        fetchData(); // Llamada a la función async
+    }, []);
 
+
+    // se ejecuta una vez cuando se cargue el componente y establece aumentar "timer" en una
+    // unidad cada 1000ms
     useEffect(() => {
         const interval = setInterval(() => {
             setTimer(prevTime => prevTime + 1);
@@ -26,8 +38,22 @@ const Game=() =>{
         return () => clearInterval(interval);
     }, []);
 
-    //para el tipo de respuesta a buscar
+    // Función para realizar la petición POST para cargar los tipos de pregunta en la base de datos de mongo
+    const peticionPOST = async () => {
+        try {
+            const response = await axios.post(`${apiEndpoint}/addQuestion`, {
+                questionBody: '¿Cuál es la capital de ',
+                typeQuestion: 'pais',
+                typeAnswer: 'capital'
+            });
+            console.log('Respuesta de la petición POST:', response.data);
+        } catch (error) {
+            console.error('Error en la petición POST:', error);
+        }
+    };
 
+
+    //para el tipo de respuesta a buscar
 
       // Obtener pregunta una pregunta aleatoria al acceder a la url 
       const obtenerPreguntaAleatoria = async () => {
@@ -35,7 +61,7 @@ const Game=() =>{
            
             const response = await axios.post(`${apiEndpoint}/getQuestionBody`);
            
-            setquestionBody(response.data.questionBody);//obtengo los datos del cuerpo de la pregunta
+            setQuestionBody(response.data.questionBody);//obtengo los datos del cuerpo de la pregunta
             setQuestionType(response.data.typeQuestion);
             setAnswerType(response.data.typeAnswer);
 
@@ -118,7 +144,7 @@ const Game=() =>{
         <Typography component="h2" sx={{ textAlign: 'center', color: (timer>120 && (timer%60)%2===0)?'red':'inherit', fontStyle:'italic', fontWeight: (timer>150 && (timer%60)%2===0)?'bold':'inherit'}}>
             ¡Tiempo restante {handleTimeRemaining()}!
         </Typography>
-        <div>
+        <div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
             <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
                {questionBody} {informacionWikidata}
             </Typography>

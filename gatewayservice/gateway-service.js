@@ -52,6 +52,20 @@ app.post('/getQuestionBody', async (req, res) => {
   }
 });
 
+app.post('/addQuestion', async (req, res) => {
+  try {
+    // Reenviar los datos recibidos en la solicitud POST al servicio de preguntas
+    const questionResponse = await axios.post(`${questionServiceUrl}/addQuestion`, req.body);
+    res.json(questionResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+});
+
 // Start the gateway service
 const server = app.listen(port, () => {
   console.log(`Gateway Service listening at http://localhost:${port}`);
