@@ -8,7 +8,7 @@ import { Container, Typography, TextField, Button, Snackbar } from '@mui/materia
 import Link from '@mui/material/Link';
 
 const Game=() =>{
-    const [questionBody, setquestionBody] =  useState('');//pregunta aleatoria cuerpo
+    const [questionBody, setQuestionBody] =  useState('');//pregunta aleatoria cuerpo
     const [informacionWikidata, setInformacionWikidata] =  useState('');
     const [respuestaCorrecta, setRespuestaCorrecta] =  useState('');
     const [questionType, setQuestionType] = useState('');//para el tipo de pregunta a buscar
@@ -35,7 +35,7 @@ const Game=() =>{
            
             const response = await axios.post(`${apiEndpoint}/getQuestionBody`);
            
-            setquestionBody(response.data.questionBody);//obtengo los datos del cuerpo de la pregunta
+            setQuestionBody(response.data.questionBody);//obtengo los datos del cuerpo de la pregunta
             setQuestionType(response.data.typeQuestion);
             setAnswerType(response.data.typeAnswer);
 
@@ -92,6 +92,20 @@ const Game=() =>{
           console.error("Error al realizar la consulta en Wikidata", error);
         }
       };
+
+    // Función para realizar la petición POST para cargar los tipos de pregunta en la base de datos de mongo
+    const peticionPOST = async () => {
+        try {
+            const response = await axios.post(`${apiEndpoint}/addQuestion`, {
+                questionBody: '(Probando modificado) ¿Cuál es la capital de ',
+                typeQuestion: 'pais',
+                typeAnswer: 'capital'
+            });
+            console.log('Respuesta de la petición POST:', response.data);
+        } catch (error) {
+            console.error('Error en la petición POST:', error);
+        }
+    };
   
       const handleButtonClick = () => {
         setNumberClics(numberClics + 1);
@@ -112,6 +126,9 @@ const Game=() =>{
         {(numberClics > 10 || timer>180) ? (
         <p>Fin</p>
         ) : (<>
+        <Button variant="contained" color="primary" onClick={peticionPOST}>
+            Presiona para generar los índices
+        </Button>
         <Typography component="h1" variant='h5' sx={{ textAlign: 'center'}}>
             Pregunta Número {numberClics} :
         </Typography>
