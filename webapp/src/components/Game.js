@@ -144,7 +144,7 @@ const Game=() =>{
         <Typography component="h2" sx={{ textAlign: 'center', color: (timer>120 && (timer%60)%2===0)?'red':'inherit', fontStyle:'italic', fontWeight: (timer>150 && (timer%60)%2===0)?'bold':'inherit'}}>
             ¡Tiempo restante {handleTimeRemaining()}!
         </Typography>
-        <div>
+        <div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
             <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
                {questionBody} {informacionWikidata}
             </Typography>
