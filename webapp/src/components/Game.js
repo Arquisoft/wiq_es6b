@@ -18,7 +18,19 @@ const Game=() =>{
 
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
+    // se ejecuta una vez cuando se cargue el componente y llena la BD con las plantillas posibles
+    // además de generar la pregunta nº1
+    useEffect(() => {
+        const fetchData = async () => {
+            await peticionPOST(); // Espera a que la primera función se complete
+            obtenerPreguntaAleatoria(); // Luego ejecuta la segunda función
+        };
+        fetchData(); // Llamada a la función async
+    }, []);
 
+
+    // se ejecuta una vez cuando se cargue el componente y establece aumentar "timer" en una
+    // unidad cada 1000ms
     useEffect(() => {
         const interval = setInterval(() => {
             setTimer(prevTime => prevTime + 1);
@@ -26,8 +38,22 @@ const Game=() =>{
         return () => clearInterval(interval);
     }, []);
 
-    //para el tipo de respuesta a buscar
+    // Función para realizar la petición POST para cargar los tipos de pregunta en la base de datos de mongo
+    const peticionPOST = async () => {
+        try {
+            const response = await axios.post(`${apiEndpoint}/addQuestion`, {
+                questionBody: '¿Cuál es la capital de ',
+                typeQuestion: 'pais',
+                typeAnswer: 'capital'
+            });
+            console.log('Respuesta de la petición POST:', response.data);
+        } catch (error) {
+            console.error('Error en la petición POST:', error);
+        }
+    };
 
+
+    //para el tipo de respuesta a buscar
 
       // Obtener pregunta una pregunta aleatoria al acceder a la url 
       const obtenerPreguntaAleatoria = async () => {
@@ -92,20 +118,6 @@ const Game=() =>{
           console.error("Error al realizar la consulta en Wikidata", error);
         }
       };
-
-    // Función para realizar la petición POST para cargar los tipos de pregunta en la base de datos de mongo
-    const peticionPOST = async () => {
-        try {
-            const response = await axios.post(`${apiEndpoint}/addQuestion`, {
-                questionBody: '(Probando modificado) ¿Cuál es la capital de ',
-                typeQuestion: 'pais',
-                typeAnswer: 'capital'
-            });
-            console.log('Respuesta de la petición POST:', response.data);
-        } catch (error) {
-            console.error('Error en la petición POST:', error);
-        }
-    };
   
       const handleButtonClick = () => {
         setNumberClics(numberClics + 1);
@@ -126,9 +138,6 @@ const Game=() =>{
         {(numberClics > 10 || timer>180) ? (
         <p>Fin</p>
         ) : (<>
-        <Button variant="contained" color="primary" onClick={peticionPOST}>
-            Presiona para generar los índices
-        </Button>
         <Typography component="h1" variant='h5' sx={{ textAlign: 'center'}}>
             Pregunta Número {numberClics} :
         </Typography>
