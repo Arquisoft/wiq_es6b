@@ -11,22 +11,29 @@ const Game=() =>{
     const [questionBody, setquestionBody] =  useState('');//pregunta aleatoria cuerpo
     const [informacionWikidata, setInformacionWikidata] =  useState('');
     const [respuestaCorrecta, setRespuestaCorrecta] =  useState('');
-    const [questionType, setQuestionType] = useState('');;//para el tipo de pregunta a buscar
-    const [answerType, setAnswerType] = useState('');;//para el tipo de respuesta a buscar
+    const [questionType, setQuestionType] = useState('');//para el tipo de pregunta a buscar
+    const [answerType, setAnswerType] = useState('');//para el tipo de respuesta a buscar
     const [numberClics, setNumberClics] = useState(1);
+    const [timer, setTimer] = useState(0); // estado con el temporizador iniciado a 0 seg
 
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-    
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTimer(prevTime => prevTime + 1);
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
     //para el tipo de respuesta a buscar
-  
-    
+
+
       // Obtener pregunta una pregunta aleatoria al acceder a la url 
       const obtenerPreguntaAleatoria = async () => {
         try {
            
             const response = await axios.post(`${apiEndpoint}/getQuestionBody`);
-           
            
             setquestionBody(response.data.questionBody);//obtengo los datos del cuerpo de la pregunta
             setQuestionType(response.data.typeQuestion);
@@ -86,31 +93,39 @@ const Game=() =>{
         }
       };
   
-  
       const handleButtonClick = () => {
         setNumberClics(numberClics + 1);
         obtenerPreguntaAleatoria();
       };
 
+      const handleTimeRemaining = () => {
+          let minsR = Math.floor((3*60-timer)/60);
+          let minsRStr = (minsR<10) ? 0+minsR.toString() : minsR.toString()
+          let secsR = (3*60-timer)%60;
+          let secsRStr = (secsR<10) ? 0+secsR.toString() : secsR.toString()
+          return `${minsRStr}:${secsRStr}`;
+      };
+
     return (
-        
-
-
 
         <div>
-        {numberClics > 10 ? (
+        {(numberClics > 10 || timer>180) ? (
         <p>Fin</p>
         ) : (<>
-        <h1>Pregunta Número {numberClics} :</h1>
+        <Typography component="h1" variant='h5' sx={{ textAlign: 'center'}}>
+            Pregunta Número {numberClics} :
+        </Typography>
+        <Typography component="h2" sx={{ textAlign: 'center', color: (timer>120 && (timer%60)%2===0)?'red':'inherit', fontStyle:'italic', fontWeight: (timer>150 && (timer%60)%2===0)?'bold':'inherit'}}>
+            ¡Tiempo restante {handleTimeRemaining()}!
+        </Typography>
         <div>
-        <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
-           {questionBody} {informacionWikidata} 
-          </Typography>
+            <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
+               {questionBody} {informacionWikidata}
+            </Typography>
 
-          <Button variant="contained" color="primary" onClick={handleButtonClick}>
-          {respuestaCorrecta}
-          </Button>
-          
+            <Button variant="contained" color="primary" onClick={handleButtonClick}>
+              {respuestaCorrecta}
+            </Button>
         </div>
         </>
         )}
