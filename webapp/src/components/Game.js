@@ -67,8 +67,8 @@ const Game=() =>{
             const response = await axios.post(`${apiEndpoint}/getQuestionBody`);
            
             setQuestionBody(response.data.questionBody);//obtengo los datos del cuerpo de la pregunta
-            setQuestionType(response.data.typeQuestion);
-            setAnswerType(response.data.typeAnswer);
+            //setQuestionType(response.data.typeQuestion);
+            //setAnswerType(response.data.typeAnswer);
 
             obtenerDatos(response.data.typeQuestion);
           
