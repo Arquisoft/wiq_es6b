@@ -51,8 +51,8 @@ describe('Record Service', () => {
   });
 
   it('Should get user records by userId /getRecords/:userId', async () => {
-    const response = await request(app).get('/getRecords/${record.userId}');
-    
+    const response = await request(app).get(`/getRecords/${record.userId}`);
+
     expect(response.status).toBe(200);
     expect(response.body.some(record => record.userId === 'testuserid')).toBe(true);
     expect(response.body[0]).toMatchObject(record);
