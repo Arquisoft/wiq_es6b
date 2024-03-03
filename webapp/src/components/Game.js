@@ -1,6 +1,6 @@
 // src/components/Game.js
 import axios from 'axios';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 //import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
 
 import {Typography, Button } from '@mui/material';
@@ -31,7 +31,7 @@ const Game=() =>{
 
 
     // Diccionario con el tipo de pregunta y la consulta SPARQL correspondiente
-    const questionTypes = {
+    const questionTypes = useMemo(() => ({
       "pais": {
         query: `
           SELECT ?country ?countryLabel ?capital ?capitalLabel
@@ -49,7 +49,7 @@ const Game=() =>{
         answerLabel: 'capitalLabel'
       },
       // Añadir el resto de tipos de preguntas
-    };
+    }), []);
 
     // Obtener info de wikidata segun el tipo de la pregunta y la respuesta para esa pregunta
     const obtenerDatos = useCallback(async (questionType) => {
