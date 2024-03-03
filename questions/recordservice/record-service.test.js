@@ -48,7 +48,7 @@ describe('Record Service', () => {
     const response = await request(app).post('/addRecord').send(record);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('userId', 'testuserid');
-  });s
+  });
 
   it('Should get user records by userId /getRecords/:userId', async () => {
     const response = await request(app).get(`/getRecords/${record.userId}`);
