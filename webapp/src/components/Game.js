@@ -41,7 +41,7 @@ const Game=() =>{
         } catch (error) {
             console.error('Error en la petición POST:', error);
         }
-    }, []);
+    }, [apiEndpoint]);
 
     //para el tipo de respuesta a buscar
 
@@ -60,7 +60,7 @@ const Game=() =>{
       } catch (error) {
         console.error("Error al obtener la pregunta aleatoria", error);
       }
-    }, [peticionPOST]);
+    }, [apiEndpoint, obtenerDatos, peticionPOST]);
     
     //useEffect(() => {
     //  obtenerPreguntaAleatoria();
