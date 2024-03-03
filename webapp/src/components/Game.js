@@ -52,7 +52,7 @@ const Game=() =>{
     };
 
     // Obtener info de wikidata segun el tipo de la pregunta y la respuesta para esa pregunta
-    const obtenerDatos = async (questionType) => {
+    const obtenerDatos = useCallback(async (questionType) => {
       try {
         const { query, questionLabel, answerLabel } = questionTypes[questionType];
     
@@ -75,7 +75,7 @@ const Game=() =>{
       } catch (error) {
         console.error("Error al realizar la consulta en Wikidata", error);
       }
-    };
+    }, [questionTypes, setInformacionWikidata, setRespuestaCorrecta]);
 
     // Función para realizar la petición POST para cargar los tipos de pregunta en la base de datos de mongo
     const peticionPOST = useCallback(async () => {
