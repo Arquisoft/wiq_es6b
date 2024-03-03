@@ -1,18 +1,19 @@
 // src/components/Game.js
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
+//import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
+
+import {Typography, Button } from '@mui/material';
 
 
-
-import Link from '@mui/material/Link';
+//import Link from '@mui/material/Link';
 
 const Game=() =>{
     const [questionBody, setQuestionBody] =  useState('');//pregunta aleatoria cuerpo
     const [informacionWikidata, setInformacionWikidata] =  useState('');
     const [respuestaCorrecta, setRespuestaCorrecta] =  useState('');
-    const [questionType, setQuestionType] = useState('');//para el tipo de pregunta a buscar
-    const [answerType, setAnswerType] = useState('');//para el tipo de respuesta a buscar
+    //const [questionType, setQuestionType] = useState('');//para el tipo de pregunta a buscar
+    //const [answerType, setAnswerType] = useState('');//para el tipo de respuesta a buscar
     const [numberClics, setNumberClics] = useState(1);
     const [timer, setTimer] = useState(0); // estado con el temporizador iniciado a 0 seg
 
@@ -30,7 +31,7 @@ const Game=() =>{
             obtenerPreguntaAleatoria(); // Luego ejecuta la segunda función
         };
         fetchData(); // Llamada a la función async
-    }, []);
+    }, [obtenerPreguntaAleatoria, peticionPOST]);
 
 
     // se ejecuta una vez cuando se cargue el componente y establece aumentar "timer" en una
