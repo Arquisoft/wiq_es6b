@@ -4,7 +4,7 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 let mongoserver;
 let userservice;
 let authservice;
-//let gatewayservice;
+let gatewayservice;
 //let createservice;
 //let answerservice;
 
@@ -18,7 +18,7 @@ async function startServer() {
     //createservice = await require("../../questions/createservice/create-service");
     //answerservice = await require("../../questions/answerservice/answer-service");
     //recordservice = await require("../../questions/recordservice/record-service");
-    //gatewayservice = await require("../../gatewayservice/gateway-service");
+    gatewayservice = await require("../../gatewayservice/gateway-service");
     //generatedquestservice = await require("../../questions/generatedquestservice/generatedquest-service");
   }
 
