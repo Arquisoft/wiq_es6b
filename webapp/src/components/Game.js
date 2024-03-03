@@ -18,6 +18,10 @@ const Game=() =>{
 
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
+    
+    //useEffect(() => {
+    //  obtenerPreguntaAleatoria();
+    //}, []);
     // se ejecuta una vez cuando se cargue el componente y llena la BD con las plantillas posibles
     // además de generar la pregunta nº1
     useEffect(() => {
