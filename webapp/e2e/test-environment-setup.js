@@ -19,6 +19,7 @@ async function startServer() {
     answerservice = await require("../../questions/answerservice/answer-service");
     recordservice = await require("../../questions/recordservice/record-service");
     gatewayservice = await require("../../gatewayservice/gateway-service");
+    generatedquestservice = await require("../../questions/generatedquestservice/generatedquest-service");
   }
 
   startServer();
