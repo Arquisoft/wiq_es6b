@@ -30,7 +30,7 @@ const Game=() =>{
     }, []);
 
     // Función para realizar la petición POST para cargar los tipos de pregunta en la base de datos de mongo
-    const peticionPOST = async () => {
+    const peticionPOST = useCallback(async () => {
         try {
             const response = await axios.post(`${apiEndpoint}/addQuestion`, {
                 questionBody: '¿Cuál es la capital de ',
@@ -41,12 +41,12 @@ const Game=() =>{
         } catch (error) {
             console.error('Error en la petición POST:', error);
         }
-    };
+    }, []);
 
     //para el tipo de respuesta a buscar
 
     // Obtener pregunta una pregunta aleatoria al acceder a la url 
-    const obtenerPreguntaAleatoria = async () => {
+    const obtenerPreguntaAleatoria = useCallback(async () => {
       try {
          
           const response = await axios.post(`${apiEndpoint}/getQuestionBody`);
@@ -60,7 +60,7 @@ const Game=() =>{
       } catch (error) {
         console.error("Error al obtener la pregunta aleatoria", error);
       }
-    };
+    }, [peticionPOST]);
     
     //useEffect(() => {
     //  obtenerPreguntaAleatoria();
