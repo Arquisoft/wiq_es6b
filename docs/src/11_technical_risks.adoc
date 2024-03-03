@@ -1,25 +1,26 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-technical-risks]]
-== Risks and Technical Debts
+== Riesgos y Deudas Técnicas
 
+La lista de riesgos es la siguiente:
 
-[role="arc42help"]
-****
-.Contents
-A list of identified technical risks or technical debts, ordered by priority
+[options="header",cols="1,2,2"]
+|===
+| Riesgo | Explicación | Medida
+| Poca experiencia con las tecnologías usadas | No tenemos mucha experiencia con las tecnologías que usaremos (React, Node.js, MongoDB...) y se nos puede complicar su uso. | Investigar sobre ests tecnologías e intentar aprender cómo usarlas correctamente.
+| Falta de tiempo | Hay unos plazos para cada entrega y puede hacersenos corto. | Ser constantes y hacer lo máximo diariamente.
+| Trabajo en equipo | Trabajar en equipo nos puede ser complicado al no haber hecho nunca un proyecto tan grande de esta manera. | Mantener una buena comunicación y ser colaborativos.
+| Reuniones poco productivas | Perder mucho tiempo en reuniones y no conseguir avances puede generar problemas. | Hacer una pequeña preparación de estas para saber que temas tratar en concreto.
+| Abandono de un miembro | Que un miembro deje el trabajo significaría tener que repartir sus tareas y que aumente la carga de trabajo. | Asignar cada tarea a más de una persona e intentar ayudar para evitar un abandono.
+|===
 
-.Motivation
-“Risk management is project management for grown-ups” (Tim Lister, Atlantic Systems Guild.) 
+La lista de deudas técnicas es la siguiente:
 
-This should be your motto for systematic detection and evaluation of risks and technical debts in the architecture, which will be needed by management stakeholders (e.g. project managers, product owners) as part of the overall risk analysis and measurement planning.
-
-.Form
-List of risks and/or technical debts, probably including suggested measures to minimize, mitigate or avoid risks or reduce technical debts.
-
-
-.Further Information
-
-See https://docs.arc42.org/section-11/[Risks and Technical Debt] in the arc42 documentation.
-
-****
+[options="header",cols="1,2,2"]
+|===
+| Deuda técnica | Explicación | Medida
+| Mala documentación | No documentar adecuadamente puede generarnos problemas a para comprender el sistema en un futuro y dificultar su mantenimiento. | Hacer la documentación de la m,manera más detallada y clara posible. 
+| Mal diseño de la base de datos | Si se hace un mal diseño de la base de datos y se trabaja sobre él puede generar muchos problemas a medida que el sistema va creciendo. | Hacer un buen estudio inicial antes de crear la base de datos o modificarla.
+| Uso abusivo de una IA para generar código | Su código generado puede no ser correcto del todo y suponernos un problema el caso de tener que mejorarlo en un futuro. | Revisar este codigo antes de meterlo en el proyecto e intentar adaptarlo bien.
+|===

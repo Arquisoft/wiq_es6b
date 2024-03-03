@@ -1,35 +1,17 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-design-decisions]]
-== Architecture Decisions
+== Decisiones arquitectonicas
 
-
-[role="arc42help"]
-****
-.Contents
-Important, expensive, large scale or risky architecture decisions including rationales.
-With "decisions" we mean selecting one alternative based on given criteria.
-
-Please use your judgement to decide whether an architectural decision should be documented
-here in this central section or whether you better document it locally
-(e.g. within the white box template of one building block).
-
-Avoid redundancy. 
-Refer to section 4, where you already captured the most important decisions of your architecture.
-
-.Motivation
-Stakeholders of your system should be able to comprehend and retrace your decisions.
-
-.Form
-Various options:
-
-* ADR (https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions[Documenting Architecture Decisions]) for every important decision
-* List or table, ordered by importance and consequences or:
-* more detailed in form of separate sections per decision
-
-.Further Information
-
-See https://docs.arc42.org/section-9/[Architecture Decisions] in the arc42 documentation.
-There you will find links and examples about ADR.
-
-****
+[options="header",cols="1,2"]
+|===
+|Decision |Razones
+|React.js |Hemos decidido usar React.js puesto que es una de las librerias mas populares de java. 
+Tambien hay personas del equipo de desarrollo familiarizadas con el uso de esta libreria, por lo que pueden ayudar al resto del equipo con la implementacion del front-end.
+|Javascript |Elegimos seguir con Javascript para el desarrollo de esta aplicación web porque ya teniamos conocimientos de este lenguaje. Tambien porque es un lenguaje ampliamente
+conocido por su uso en aplicaciones web, permitiendo mejoras en la interfaz de usuario y paginas web dinámicas.
+|Mongodb |Para el back-end hemos decidido usar la base de datos NoSQL Mongodb, creemos que es una opcion adecuada para almacenar los datos necesarios para el desarrollo de la
+aplicacion.
+|Node.js |Para interactuar con la base de datos decidimos usar Node.js. Es una entorno de ejecucion muy conocido para el desarrollo del back-end de aplicaciones web, por lo que creemos que es
+buena idea usarlo.
+|===
