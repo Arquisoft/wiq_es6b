@@ -19,20 +19,6 @@ const Game=() =>{
 
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-    
-    //useEffect(() => {
-    //  obtenerPreguntaAleatoria();
-    //}, []);
-    // se ejecuta una vez cuando se cargue el componente y llena la BD con las plantillas posibles
-    // además de generar la pregunta nº1
-    useEffect(() => {
-        const fetchData = async () => {
-            await peticionPOST(); // Espera a que la primera función se complete
-            obtenerPreguntaAleatoria(); // Luego ejecuta la segunda función
-        };
-        fetchData(); // Llamada a la función async
-    }, [obtenerPreguntaAleatoria, peticionPOST]);
-
 
     // se ejecuta una vez cuando se cargue el componente y establece aumentar "timer" en una
     // unidad cada 1000ms
@@ -57,25 +43,40 @@ const Game=() =>{
         }
     };
 
-
     //para el tipo de respuesta a buscar
 
-      // Obtener pregunta una pregunta aleatoria al acceder a la url 
-      const obtenerPreguntaAleatoria = async () => {
-        try {
-           
-            const response = await axios.post(`${apiEndpoint}/getQuestionBody`);
-           
-            setQuestionBody(response.data.questionBody);//obtengo los datos del cuerpo de la pregunta
-            //setQuestionType(response.data.typeQuestion);
-            //setAnswerType(response.data.typeAnswer);
+    // Obtener pregunta una pregunta aleatoria al acceder a la url 
+    const obtenerPreguntaAleatoria = async () => {
+      try {
+         
+          const response = await axios.post(`${apiEndpoint}/getQuestionBody`);
+         
+          setQuestionBody(response.data.questionBody);//obtengo los datos del cuerpo de la pregunta
+          //setQuestionType(response.data.typeQuestion);
+          //setAnswerType(response.data.typeAnswer);
 
-            obtenerDatos(response.data.typeQuestion);
-          
-        } catch (error) {
-          console.error("Error al obtener la pregunta aleatoria", error);
-        }
+          obtenerDatos(response.data.typeQuestion);
+        
+      } catch (error) {
+        console.error("Error al obtener la pregunta aleatoria", error);
+      }
+    };
+    
+    //useEffect(() => {
+    //  obtenerPreguntaAleatoria();
+    //}, []);
+    // se ejecuta una vez cuando se cargue el componente y llena la BD con las plantillas posibles
+    // además de generar la pregunta nº1
+    useEffect(() => {
+      const fetchData = async () => {
+          await peticionPOST(); // Espera a que la primera función se complete
+          obtenerPreguntaAleatoria(); // Luego ejecuta la segunda función
       };
+      fetchData(); // Llamada a la función async
+    }, [obtenerPreguntaAleatoria, peticionPOST]);
+
+
+
 
       // Diccionario con el tipo de pregunta y la consulta SPARQL correspondiente
       const questionTypes = {
@@ -161,9 +162,8 @@ const Game=() =>{
         </>
         )}
       </div>
-);
+    );
 
-  
-  }
+}
 
 export default Game;
