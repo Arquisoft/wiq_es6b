@@ -29,6 +29,54 @@ const Game=() =>{
         return () => clearInterval(interval);
     }, []);
 
+
+    // Diccionario con el tipo de pregunta y la consulta SPARQL correspondiente
+    const questionTypes = {
+      "pais": {
+        query: `
+          SELECT ?country ?countryLabel ?capital ?capitalLabel
+          WHERE {
+            ?country wdt:P31 wd:Q6256.
+            ?country wdt:P36 ?capital.
+            SERVICE wikibase:label {
+              bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es".
+            }
+          }
+          ORDER BY RAND()
+          LIMIT 150
+        `,
+        questionLabel: 'countryLabel',
+        answerLabel: 'capitalLabel'
+      },
+      // Añadir el resto de tipos de preguntas
+    };
+
+    // Obtener info de wikidata segun el tipo de la pregunta y la respuesta para esa pregunta
+    const obtenerDatos = async (questionType) => {
+      try {
+        const { query, questionLabel, answerLabel } = questionTypes[questionType];
+    
+        const apiUrl = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
+        const headers = { "Accept": "application/json" };
+    
+        const respuestaWikidata = await fetch(apiUrl, {headers});
+    
+        if (respuestaWikidata.ok) {
+          const data = await respuestaWikidata.json();
+          const numEles = data.results.bindings.length;
+          const index = Math.floor(Math.random() * numEles);
+          const result = data.results.bindings[index];
+    
+          setInformacionWikidata(result[questionLabel].value + '?');
+          setRespuestaCorrecta(result[answerLabel].value);
+        } else {
+          console.error("Error al realizar la consulta en Wikidata. Estado de respuesta:", respuestaWikidata.status);
+        }
+      } catch (error) {
+        console.error("Error al realizar la consulta en Wikidata", error);
+      }
+    };
+
     // Función para realizar la petición POST para cargar los tipos de pregunta en la base de datos de mongo
     const peticionPOST = useCallback(async () => {
         try {
@@ -60,7 +108,7 @@ const Game=() =>{
       } catch (error) {
         console.error("Error al obtener la pregunta aleatoria", error);
       }
-    }, [apiEndpoint, obtenerDatos, peticionPOST]);
+    }, [apiEndpoint, obtenerDatos]);
     
     //useEffect(() => {
     //  obtenerPreguntaAleatoria();
@@ -76,54 +124,6 @@ const Game=() =>{
     }, [obtenerPreguntaAleatoria, peticionPOST]);
 
 
-
-
-      // Diccionario con el tipo de pregunta y la consulta SPARQL correspondiente
-      const questionTypes = {
-        "pais": {
-          query: `
-            SELECT ?country ?countryLabel ?capital ?capitalLabel
-            WHERE {
-              ?country wdt:P31 wd:Q6256.
-              ?country wdt:P36 ?capital.
-              SERVICE wikibase:label {
-                bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es".
-              }
-            }
-            ORDER BY RAND()
-            LIMIT 150
-          `,
-          questionLabel: 'countryLabel',
-          answerLabel: 'capitalLabel'
-        },
-        // Añadir el resto de tipos de preguntas
-      };
-
-      // Obtener info de wikidata segun el tipo de la pregunta y la respuesta para esa pregunta
-      const obtenerDatos = async (questionType) => {
-        try {
-          const { query, questionLabel, answerLabel } = questionTypes[questionType];
-      
-          const apiUrl = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
-          const headers = { "Accept": "application/json" };
-      
-          const respuestaWikidata = await fetch(apiUrl, {headers});
-      
-          if (respuestaWikidata.ok) {
-            const data = await respuestaWikidata.json();
-            const numEles = data.results.bindings.length;
-            const index = Math.floor(Math.random() * numEles);
-            const result = data.results.bindings[index];
-      
-            setInformacionWikidata(result[questionLabel].value + '?');
-            setRespuestaCorrecta(result[answerLabel].value);
-          } else {
-            console.error("Error al realizar la consulta en Wikidata. Estado de respuesta:", respuestaWikidata.status);
-          }
-        } catch (error) {
-          console.error("Error al realizar la consulta en Wikidata", error);
-        }
-      };
   
       const handleButtonClick = () => {
         setNumberClics(numberClics + 1);
