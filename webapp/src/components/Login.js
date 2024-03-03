@@ -5,6 +5,7 @@ import { Container, Typography, TextField, Button, Snackbar } from '@mui/materia
 
 
 import Game from './Game';
+import UsersList from './UsersList';
 
 import Link from '@mui/material/Link';
 
@@ -16,6 +17,7 @@ const Login = () => {
   const [createdAt, setCreatedAt] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [showGame, setShowGame] = useState(false);
+  const [showUsersList, setShowUsersList] = useState(false);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -43,12 +45,26 @@ const Login = () => {
     setOpenSnackbar(false);
   };
 
+  const handleShowUsersList= () => {
+    setShowUsersList(true);
+  };
+
   return (
       <Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
         {loginSuccess ? (
+          
+
+
             showGame ? (
                 < Game/>
-            ) : (
+            ) : 
+            
+            showUsersList?(
+              < UsersList/>
+            ):
+            (
+
+
                 <div>
                   <Typography component="h1" variant="h5" sx={{textAlign: 'center'}}>
                     Hello {username}!
@@ -58,6 +74,10 @@ const Login = () => {
                   </Typography>
                   <Button variant="contained" color="secondary" onClick={handleShowGame}>
                     Comenzar a jugar
+                  </Button>
+                  
+                  <Button variant="contained" color="secondary" onClick={handleShowUsersList}>
+                    Ver el historial de usuarios
                   </Button>
 
                 </div>
