@@ -4,7 +4,7 @@
     "description": "Almacenamiento de las preguntas automaticas generadas y su respuesta correcta correspondiente",
     "main": "service.js",
     "scripts": {
-        "start": "node auth-service.js",
+        "start": "node generatedquest-service.js",
         "test": "jest"
     },
     "repository": {

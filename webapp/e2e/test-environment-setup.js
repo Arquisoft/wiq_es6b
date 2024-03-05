@@ -7,6 +7,8 @@ let authservice;
 let gatewayservice;
 let createservice;
 let answerservice;
+let recordservice;
+let generatedquestservice;
 
 async function startServer() {
     console.log('Starting MongoDB memory server...');
