@@ -4,7 +4,7 @@
     "description": " Creacion de preguntas automaticas",
     "main": "service.js",
     "scripts": {
-        "start": "node auth-service.js",
+        "start": "node record-service.js",
         "test": "jest"
     },
     "repository": {
