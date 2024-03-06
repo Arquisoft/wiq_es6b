@@ -10,9 +10,8 @@ const port = 8007;
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/questiondb';
+const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/generatedquestdb';
 mongoose.connect(mongoUri);
-
 
   // Route for user login
 app.post('/addGeneratedQuestion', async (req, res) => {
@@ -29,7 +28,7 @@ app.post('/addGeneratedQuestion', async (req, res) => {
   }
 });
 
-//obtencion de todas las preguntas genradas y su respuesta correcta 
+//obtencion de todas las preguntas generadas y su respuesta correcta 
 app.get('/getAllGeneratedQuestions', async (req, res) => {
   try {
     const allQuestions = await GeneratedQuestion.find();
@@ -43,7 +42,7 @@ app.get('/getAllGeneratedQuestions', async (req, res) => {
 
 // Start the server
 const server = app.listen(port, () => {
-  console.log(`Auth Service listening at http://localhost:${port}`);
+  console.log(`GeneratedQuestions Service listening at http://localhost:${port}`);
 });
 
 server.on('close', () => {
