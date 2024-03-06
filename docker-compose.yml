@@ -11,50 +11,6 @@ services:
     networks:
       - mynetwork
 
-  recordservice:
-    container_name: recordservice-${teamname:-defaultASW}
-    image: ghcr.io/arquisoft/wiq_es6b/recordservice:latest
-    profiles: ["dev", "prod"]
-    build: ./questions/recordservice
-    depends_on:
-      - mongodb
-    ports:
-      - "8006:8006"
-    networks:
-      - mynetwork
-    environment:
-      MONGODB_URI: mongodb://mongodb:27017/recorddb
-
-  createservice:
-    container_name: createservice-${teamname:-defaultASW}
-    image: ghcr.io/arquisoft/wiq_es6b/createservice:latest
-    profiles: ["dev", "prod"]
-    build: ./questions/createservice
-    depends_on:
-      - mongodb
-    ports:
-      - "8005:8005"
-    networks:
-      - mynetwork
-    environment:
-      MONGODB_URI: mongodb://mongodb:27017/questiondb
-
-
-  answerservice:
-    container_name: answerservice-${teamname:-defaultASW}
-    image: ghcr.io/arquisoft/wiq_es6b/answerservice:latest
-    profiles: ["dev", "prod"]
-    build: ./questions/answerservice
-    depends_on:
-      - mongodb
-    ports:
-      - "8004:8004"
-    networks:
-      - mynetwork
-    environment:
-      MONGODB_URI: mongodb://mongodb:27017/questiondb
-
-
   authservice:
     container_name: authservice-${teamname:-defaultASW}
     image: ghcr.io/arquisoft/wiq_es6b/authservice:latest
@@ -83,6 +39,48 @@ services:
     environment:
       MONGODB_URI: mongodb://mongodb:27017/userdb
 
+  answerservice:
+    container_name: answerservice-${teamname:-defaultASW}
+    image: ghcr.io/arquisoft/wiq_es6b/answerservice:latest
+    profiles: ["dev", "prod"]
+    build: ./questions/answerservice
+    depends_on:
+      - mongodb
+    ports:
+      - "8004:8004"
+    networks:
+      - mynetwork
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/questiondb
+
+  createservice:
+    container_name: createservice-${teamname:-defaultASW}
+    image: ghcr.io/arquisoft/wiq_es6b/createservice:latest
+    profiles: ["dev", "prod"]
+    build: ./questions/createservice
+    depends_on:
+      - mongodb
+    ports:
+      - "8005:8005"
+    networks:
+      - mynetwork
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/questiondb
+
+  recordservice:
+    container_name: recordservice-${teamname:-defaultASW}
+    image: ghcr.io/arquisoft/wiq_es6b/recordservice:latest
+    profiles: ["dev", "prod"]
+    build: ./questions/recordservice
+    depends_on:
+      - mongodb
+    ports:
+      - "8006:8006"
+    networks:
+      - mynetwork
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/recorddb
+
   generatedquestservice:
     container_name: generatedquestservice-${teamname:-defaultASW}
     image: ghcr.io/arquisoft/wiq_es6b/generatedquestservice:latest
@@ -106,6 +104,10 @@ services:
       - mongodb
       - userservice
       - authservice
+      - answerservice
+      - createservice
+      - recordservice
+      - generatedquestservice
     ports:
       - "8000:8000"
     networks:
@@ -113,8 +115,8 @@ services:
     environment:
       AUTH_SERVICE_URL: http://authservice:8002
       USER_SERVICE_URL: http://userservice:8001
-      QUES_SERVICE_URL: http://createservice:8005
       ANSW_SERVICE_URL: http://answerservice:8004
+      QUES_SERVICE_URL: http://createservice:8005
       REC_SERVICE_URL: http://recordservice:8006
       GEN_SERVICE_URL: http://generatedquestservice:8007
 

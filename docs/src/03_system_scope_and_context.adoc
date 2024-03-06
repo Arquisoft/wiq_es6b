@@ -17,7 +17,7 @@ de jugadas anteriores.
 Dentro del historial, este le mostrará el número de partidas totales realizadas y por cada una de ellas la fecha en la que se jugó, el número de respuestas acertadas, el dinero conseguido y el tiempo total 
 que le llevó completarlo.
 
-Aparte de eso también tendrán la opción de visualizar el listado completo de usuarios registrados hasta la fecha. 
+Aparte de eso también tendra el administrador la opción de visualizar el listado completo de usuarios registrados hasta la fecha. 
 
 
 

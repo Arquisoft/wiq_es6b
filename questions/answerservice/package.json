@@ -4,7 +4,7 @@
     "description": " Authentication service, in charge of authenticating users in the application",
     "main": "service.js",
     "scripts": {
-        "start": "node auth-service.js",
+        "start": "node answer-service.js",
         "test": "jest"
     },
     "repository": {
