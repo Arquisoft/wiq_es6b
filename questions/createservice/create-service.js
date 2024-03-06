@@ -3,8 +3,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const Question = require('./create-model');
 
-
-
 const app = express();
 const port = 8005;
 
@@ -47,9 +45,6 @@ app.post('/getQuestionBody', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
-
-
 
 // Start the server
 const server = app.listen(port, () => {

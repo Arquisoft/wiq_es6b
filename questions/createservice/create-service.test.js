@@ -1,7 +1,5 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const bcrypt = require('bcrypt');
-const Question = require('./create-model');
 
 let mongoServer;
 let app;
@@ -12,24 +10,22 @@ const questionTest = {
     typeQuestion: 'pais',
     typeAnswer: 'capital'
 };
-
-async function addQuestion(questionTest){
-    const newQuestion = new Question({
-        questionBody: questionTest.questionBody,
-        typeQuestion: questionTest.typeQuestion,
-        typeAnswer: questionTest.typeAnswer
-    });
-    
-    await newQuestion.save();
-}
+const questionTest2 = {
+    questionBody: '¿En qué año se descubrió ',
+    typeQuestion: 'pais',
+    typeAnswer: 'año'
+};
+const questionTest3 = {
+    questionBody: '¿Quién pintó  ',
+    typeQuestion: 'cuadro',
+    typeAnswer: 'autor'
+};
 
 beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
     process.env.MONGODB_URI = mongoUri;
-    app = require('./create-service'); 
-    //Load database with initial conditions
-    await addQuestion(questionTest);
+    app = require('./create-service');
 });
 
 afterAll(async () => {
@@ -45,5 +41,27 @@ describe('Create Service', () => {
         expect(response.body).toHaveProperty('typeQuestion', 'pais');
         expect(response.body).toHaveProperty('typeAnswer', 'capital');
     });
+
+    it('Should perform two addRecord operation /addQuestion', async () => {
+        const response2 = await request(app).post('/addQuestion').send(questionTest2);
+        expect(response2.status).toBe(200);
+        expect(response2.body).toHaveProperty('questionBody', '¿En qué año se descubrió ');
+        expect(response2.body).toHaveProperty('typeQuestion', 'pais');
+        expect(response2.body).toHaveProperty('typeAnswer', 'año');
+        const response3 = await request(app).post('/addQuestion').send(questionTest3);
+        expect(response3.status).toBe(200);
+        expect(response3.body).toHaveProperty('questionBody', '¿Quién pintó  ');
+        expect(response3.body).toHaveProperty('typeQuestion', 'cuadro');
+        expect(response3.body).toHaveProperty('typeAnswer', 'autor');
+    });
+
+    it('Should perform a getRecord operation /getQuestionBody', async () => {
+        const response = await request(app).post('/getQuestionBody');
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('questionBody');
+        expect(response.body).toHaveProperty('typeQuestion');
+        expect(response.body).toHaveProperty('typeAnswer');
+    });
+
     
 });
