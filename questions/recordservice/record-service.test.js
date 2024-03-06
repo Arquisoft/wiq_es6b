@@ -1,6 +1,5 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const bcrypt = require('bcrypt');
 const Record = require('./record-model');
 
 let mongoServer;
@@ -32,26 +31,11 @@ const record3 = {
   failedQuestions: 5
 };
 
-async function addRecord(record){
-  const newRecord = new Record({
-    userId: record.userId,
-    date: record.date,
-    time: record.time,
-    money: record.money,
-    correctQuestions: record.correctQuestions,
-    failedQuestions: record.failedQuestions
-  });
-
-  await newRecord.save();
-}
-
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
   process.env.MONGODB_URI = mongoUri;
-  app = require('./record-service'); 
-  //Load database with initial conditions
-  await addRecord(record);
+  app = require('./record-service');
 });
 
 afterAll(async () => {

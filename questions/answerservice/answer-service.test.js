@@ -1,7 +1,5 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const bcrypt = require('bcrypt');
-const Answer = require('./answer-model');
 
 let mongoServer;
 let app;
@@ -20,22 +18,11 @@ const answerTest3 = {
   typeAnswer: "año"
 };
 
-async function addanswer(answerTest){
-    const newAnswer = new Answer({
-      answerBody: answerTest.answerBody,
-      typeAnswer: answerTest.typeAnswer
-    });
-
-  await newAnswer.save();
-}
-
 beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
     process.env.MONGODB_URI = mongoUri;
     app = require('./answer-service'); 
-    //Load database with initial conditions
-    await addanswer(answerTest);
 });
 
 afterAll(async () => {

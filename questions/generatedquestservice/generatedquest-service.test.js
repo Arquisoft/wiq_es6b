@@ -1,8 +1,5 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const bcrypt = require('bcrypt');
-const GeneratedQuestion = require('./generatedquest-model');
-const { it } = require('node:test');
 
 let mongoServer;
 let app;
@@ -21,22 +18,11 @@ const generatedQuestionTest3 = {
     correctAnswer: 'Leonardo da Vinci',
 };
 
-async function addGeneratedQuestion(generatedQuestionTest){
-    const newGeneratedQuestion = new GeneratedQuestion({
-        generatedQuestionBody: generatedQuestionTest.generatedQuestionBody,
-        correctAnswer: generatedQuestionTest.correctAnswer
-    });
-    
-    await newGeneratedQuestion.save();
-}
-
 beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
     process.env.MONGODB_URI = mongoUri;
-    app = require('./generatedquest-service'); 
-    //Load database with initial conditions
-    await addGeneratedQuestion(generatedQuestionTest);
+    app = require('./generatedquest-service');
 });
 
 afterAll(async () => {
