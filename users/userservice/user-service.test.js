@@ -45,7 +45,7 @@ describe('User Service', () => {
   
         });
       // llamo al get
-      const responseGet = await request(app).get('/getAllUsers');
+      const response = await request(app).get('/getAllUsers');
       expect(response.status).toBe(200);
       expect(response.body).toBeInstanceOf(Array);//obtengo elementos
        // miro que esten los dos añadidos
