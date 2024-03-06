@@ -27,4 +27,31 @@ describe('User Service', () => {
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('username', 'testuser');
   });
+
+
+
+      //prueba get
+      it('should get all users on GET /getAllUsers', async () => {
+        
+        // Agrego primero usuarios
+        await request(app).post('/adduser').send({
+          username: 'testuser',
+          password: 'testpassword',
+        });
+    
+        await request(app).post('/adduser').send({
+          username: 'testuser2',
+          password: 'testpassword2',
+  
+        });
+      // llamo al get
+      const responseGet = await request(app).get('/getAllUsers');
+      expect(response.status).toBe(200);
+      expect(response.body).toBeInstanceOf(Array);//obtengo elementos
+       // miro que esten los dos añadidos
+       const usernames = response.body.map(user => user.username);
+       expect(usernames).toContain('testuser');
+       expect(usernames).toContain('testuser2');
+
+      });
 });
