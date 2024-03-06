@@ -1,6 +1,5 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const Question = require('./create-model');
 
 let mongoServer;
 let app;

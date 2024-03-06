@@ -10,11 +10,11 @@ const generatedQuestionTest = {
     correctAnswer: 'Madrid',
 };
 const generatedQuestionTest2 = {
-    generatedQuestionTest2: '¿En qué año se descubrió América?',
+    generatedQuestionBody: '¿En qué año se descubrió América?',
     correctAnswer: '1492',
 };
 const generatedQuestionTest3 = {
-    generatedQuestionTest3: '¿Quién pintó la Mona Lisa?',
+    generatedQuestionBody: '¿Quién pintó la Mona Lisa?',
     correctAnswer: 'Leonardo da Vinci',
 };
 
@@ -58,6 +58,7 @@ describe('Generatedquest Service', () => {
         expect(response2.status).toBe(200);
         expect(response2.body).toHaveProperty('generatedQuestionBody', '¿En qué año se descubrió América?');
         expect(response2.body).toHaveProperty('correctAnswer', '1492');
+
         const response3 = await request(app).post('/addGeneratedQuestion').send(generatedQuestionTest3);
         expect(response3.status).toBe(200);
         expect(response3.body).toHaveProperty('generatedQuestionBody', '¿Quién pintó la Mona Lisa?');
