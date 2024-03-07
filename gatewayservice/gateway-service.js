@@ -42,6 +42,14 @@ app.post('/adduser', async (req, res) => {
   }
 });
 
+app.post('/addRecord', async(req, res) => {
+  try{
+    const recordResponse = await axios.post(questionServiceUrl+'/addRecord', req.body);
+  }catch (error){
+    res.status(error.response.status).json({ error: error.response.data.error });
+  }
+});
+
 app.post('/getQuestionBody', async (req, res) => {
   try {
     // Forward the add user request to the user service
