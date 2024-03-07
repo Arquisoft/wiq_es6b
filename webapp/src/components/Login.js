@@ -9,7 +9,7 @@ import UsersList from './UsersList';
 
 //import Link from '@mui/material/Link';
 
-const Login = () => {
+const Login = ({setLogged}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -38,6 +38,7 @@ const Login = () => {
   };
 
   const handleShowGame = () => {
+    setLogged();
     setShowGame(true);
   };
 
@@ -57,7 +58,7 @@ const Login = () => {
 
             showGame ? (
                 < Game/>
-            ) : 
+            ) :
             
             showUsersList?(
               < UsersList/>
