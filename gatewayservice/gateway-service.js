@@ -66,6 +66,20 @@ app.post('/addQuestion', async (req, res) => {
   }
 });
 
+app.get('/getAllUsers', async (req, res) => {
+  try {
+    // Reenviar la solicitud GET al servicio de usuarios
+    const usersResponse = await axios.get(`${userServiceUrl}/getAllUsers`);
+    res.json(usersResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+})
+
 // Start the gateway service
 const server = app.listen(port, () => {
   console.log(`Gateway Service listening at http://localhost:${port}`);
