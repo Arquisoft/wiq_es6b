@@ -1,6 +1,6 @@
 // src/components/Game.js
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
 
 
