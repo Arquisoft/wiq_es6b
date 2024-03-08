@@ -57,7 +57,7 @@ const Login = ({setLogged}) => {
 
 
             showGame ? (
-                < Game/>
+                < Game username={username}> </Game>
             ) :
             
             showUsersList?(

@@ -9,6 +9,7 @@ const port = 8000;
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
 const questionServiceUrl = process.env.QUES_SERVICE_URL || 'http://localhost:8005';
+const recordServiceUrl = process.env.REC_SERVICE_URL || 'http://localhost:8006';
 
 app.use(cors());
 app.use(express.json());
@@ -44,7 +45,7 @@ app.post('/adduser', async (req, res) => {
 
 app.post('/addRecord', async(req, res) => {
   try{
-    const recordResponse = await axios.post(questionServiceUrl+'/addRecord', req.body);
+    const recordResponse = await axios.post(recordServiceUrl+'/addRecord', req.body);
   }catch (error){
     res.status(error.response.status).json({ error: error.response.data.error });
   }
