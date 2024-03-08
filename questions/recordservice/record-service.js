@@ -36,7 +36,7 @@ app.post('/addRecord', async (req, res) => {
       correctQuestions: req.body.correctQuestions,
       failedQuestions: req.body.failedQuestions
   });
-  newRecord.save();
+  await newRecord.save();
   res.json(newRecord);
   
   } catch (error) {
