@@ -1,10 +1,10 @@
 {
-    "name": "recordservice",
+    "name": "generatedquestservice",
     "version": "1.0.0",
-    "description": " Creacion de preguntas automaticas",
+    "description": "Almacenamiento de las preguntas automaticas generadas y su respuesta correcta correspondiente",
     "main": "service.js",
     "scripts": {
-        "start": "node record-service.js",
+        "start": "node generatedquest-service.js",
         "test": "jest"
     },
     "repository": {

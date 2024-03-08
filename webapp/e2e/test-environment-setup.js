@@ -7,6 +7,8 @@ let authservice;
 let gatewayservice;
 let createservice;
 let answerservice;
+let recordservice;
+let generatedquestservice;
 
 async function startServer() {
     console.log('Starting MongoDB memory server...');
@@ -17,7 +19,9 @@ async function startServer() {
     authservice = await require("../../users/authservice/auth-service");
     createservice = await require("../../questions/createservice/create-service");
     answerservice = await require("../../questions/answerservice/answer-service");
+    recordservice = await require("../../questions/recordservice/record-service");
     gatewayservice = await require("../../gatewayservice/gateway-service");
+    generatedquestservice = await require("../../questions/generatedquestservice/generatedquest-service");
   }
 
   startServer();

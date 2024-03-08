@@ -36,7 +36,7 @@ app.post('/addRecord', async (req, res) => {
       correctQuestions: req.body.correctQuestions,
       failedQuestions: req.body.failedQuestions
   });
-  newRecord.save();
+  await newRecord.save();
   res.json(newRecord);
   
   } catch (error) {
@@ -61,7 +61,7 @@ app.get('/getRecords/:userId', async (req, res) => {
 
 // Start the server
 const server = app.listen(port, () => {
-  console.log(`Auth Service listening at http://localhost:${port}`);
+  console.log(`Record Service listening at http://localhost:${port}`);
 });
 
 server.on('close', () => {
