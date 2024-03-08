@@ -7,13 +7,16 @@ import { Container, Typography, TextField, Button, Snackbar } from '@mui/materia
 
 import Link from '@mui/material/Link';
 
-const Game = () => {
+const Game = ({username}) => {
   const [questionBody, setQuestionBody] = useState('');
   const [informacionWikidata, setInformacionWikidata] = useState('');
   const [respuestaCorrecta, setRespuestaCorrecta] = useState('');
   const [respuestasFalsas, setRespuestasFalsas] = useState([]);
   const [numberClics, setNumberClics] = useState(1);
   const [timer, setTimer] = useState(0);
+  const [correctQuestions, setCorrectQuestions] = useState(0);
+  const [error, setError] = useState('');
+  const [finish, setFinish] = useState(false);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -96,6 +99,11 @@ const Game = () => {
     fetchData();
   }, [obtenerPreguntaAleatoria]);
 
+  const handleButtonClickCorrecta = () => {
+    setCorrectQuestions(correctQuestions+1);
+    handleButtonClick();
+  };
+
   const handleButtonClick = () => {
     setNumberClics(numberClics + 1);
     obtenerPreguntaAleatoria();
@@ -109,10 +117,32 @@ const Game = () => {
     return `${minsRStr}:${secsRStr}`;
   };
 
+  useEffect(() => {
+    const addRecord = async () => {
+      try {
+        const response = await axios.post(`${apiEndpoint}/addRecord`, {
+          userId: username,
+          date: new Date(),
+          time: timer,
+          money: (25*correctQuestions),
+          correctQuestions: correctQuestions,
+          failedQuestions: (10-correctQuestions)
+        });
+      } catch (error) {
+        setError(error.response.data.error);
+      }
+    };
+
+    if((numberClics>10 || timer>180) && !finish){
+      addRecord();
+      setFinish(true);
+    }
+  }, [numberClics, timer]);
+
   return (
     <div>
       {numberClics > 10 || timer > 180 ? (
-        <p>Fin</p>
+        <p>Fin de la partida</p>
       ) : (
         <>
           <Typography component="h1" variant='h5' sx={{ textAlign: 'center' }}>
@@ -125,7 +155,7 @@ const Game = () => {
             <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
               {questionBody} {informacionWikidata}
             </Typography>
-            <Button variant="contained" color="primary" onClick={handleButtonClick}>
+            <Button variant="contained" color="primary" onClick={handleButtonClickCorrecta}>
               {respuestaCorrecta}
             </Button>
 
