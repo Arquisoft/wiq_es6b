@@ -1,8 +1,7 @@
 // src/components/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
-
+import { Container, Typography, TextField, Button, Snackbar, AppBar, Toolbar, Link } from '@mui/material';
 
 import Game from './Game';
 import UsersList from './UsersList';
@@ -25,7 +24,7 @@ const Login = ({setLogged}) => {
     try {
       const response = await axios.post(`${apiEndpoint}/login`, { username, password });
 
-      // Extract data from the response
+      // Extraer datos de la respuesta
       const { createdAt: userCreatedAt } = response.data;
 
       setCreatedAt(userCreatedAt);
@@ -40,80 +39,86 @@ const Login = ({setLogged}) => {
   const handleShowGame = () => {
     setLogged();
     setShowGame(true);
+    setShowUsersList(false);
+  };
+
+  const handleShowUsersList = () => {
+    setShowUsersList(true);
+    setShowGame(false);
   };
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
 
-  const handleShowUsersList= () => {
-    setShowUsersList(true);
-  };
-
   return (
-      <Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
-        {loginSuccess ? (
-          
+<Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
+  {loginSuccess ? (
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <Button color="inherit" onClick={handleShowGame}>
+            Jugar
+          </Button>
+          <Button color="inherit" href="#" onClick={handleShowUsersList}>
+            Historial de Usuarios
+          </Button>
+        </Toolbar>
+      </AppBar>
 
-
-            showGame ? (
-                < Game username={username}> </Game>
-            ) :
-            
-            showUsersList?(
-              < UsersList/>
-            ):
-            (
-
-
-                <div>
-                  <Typography component="h1" variant="h5" sx={{textAlign: 'center'}}>
-                    Hello {username}!
-                  </Typography>
-                  <Typography component="p" variant="body1" sx={{textAlign: 'center', marginTop: 2}}>
-                    Your account was created on {new Date(createdAt).toLocaleDateString()}.
-                  </Typography>
-                  <Button variant="contained" color="secondary" onClick={handleShowGame}>
-                    Comenzar a jugar
-                  </Button>
-                  
-                  <Button variant="contained" color="secondary" onClick={handleShowUsersList}>
-                    Ver el historial de usuarios
-                  </Button>
-
-                </div>
-            )
-        ) : (
-            <div>
-              <Typography component="h1" variant="h5">
-                Login
-              </Typography>
-              <TextField
-                  margin="normal"
-                  fullWidth
-                  label="Username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-              />
-              <TextField
-                  margin="normal"
-                  fullWidth
-                  label="Password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-              />
-              <Button variant="contained" color="primary" onClick={loginUser}>
-                Login
-              </Button>
-              <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="Login successful" />
-              {error && (
-                  <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
-              )}
-            </div>
-        )}
-      </Container>
+      {showGame ? (
+        <Game username={username} />
+      ) : showUsersList ? (
+        <UsersList />
+      ) : (
+        <div>
+          <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
+            Hello {username}!
+          </Typography>
+          <Typography component="p" variant="body1" sx={{ textAlign: 'center', marginTop: 2 }}>
+            Your account was created on {new Date(createdAt).toLocaleDateString()}.
+          </Typography>
+          <Button variant="contained" color="secondary" onClick={handleShowGame}>
+            Comenzar a jugar
+          </Button>
+          <Button variant="contained" color="secondary" onClick={handleShowUsersList}>
+            Ver el historial de usuarios
+          </Button>
+        </div>
+      )}
+    </>
+  ) : (
+    <div>
+      <Typography component="h1" variant="h5">
+        Login
+      </Typography>
+      <TextField
+        margin="normal"
+        fullWidth
+        label="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <TextField
+        margin="normal"
+        fullWidth
+        label="Password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <Button variant="contained" color="primary" onClick={loginUser}>
+        Login
+      </Button>
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="Login successful" />
+      {error && (
+        <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
+      )}
+    </div>
+  )}
+</Container>
   );
-};
+};  
+
 
 export default Login;
