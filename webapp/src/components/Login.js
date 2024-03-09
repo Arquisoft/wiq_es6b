@@ -5,6 +5,7 @@ import { Container, Typography, TextField, Button, Snackbar, AppBar, Toolbar, Li
 
 import Game from './Game';
 import UsersList from './UsersList';
+import GeneratedQuestionsList from './GeneratedQuestionsList';
 
 //import Link from '@mui/material/Link';
 
@@ -17,6 +18,7 @@ const Login = ({setLogged}) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [showGame, setShowGame] = useState(false);
   const [showUsersList, setShowUsersList] = useState(false);
+  const [showQuestionList, setShowQuestionList] = useState(false);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -47,6 +49,11 @@ const Login = ({setLogged}) => {
     setShowGame(false);
   };
 
+
+  const handleShowQuestionList = () => {
+    setShowQuestionList(true);
+    setShowGame(false);
+  };
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
@@ -63,6 +70,9 @@ const Login = ({setLogged}) => {
           <Button color="inherit" href="#" onClick={handleShowUsersList}>
             Historial de Usuarios
           </Button>
+          <Button color="inherit" href="#" onClick={handleShowQuestionList}>
+            Historial de Preguntas Generadas
+          </Button>
         </Toolbar>
       </AppBar>
 
@@ -70,7 +80,13 @@ const Login = ({setLogged}) => {
         <Game username={username} />
       ) : showUsersList ? (
         <UsersList />
-      ) : (
+      ) : 
+      
+      showQuestionList ? (
+        <GeneratedQuestionsList />
+      ) : 
+      
+      (
         <div>
           <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
             Hello {username}!
