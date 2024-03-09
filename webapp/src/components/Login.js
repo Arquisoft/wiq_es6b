@@ -62,19 +62,24 @@ const Login = ({setLogged}) => {
 <Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
   {loginSuccess ? (
     <>
-      <AppBar position="static">
-        <Toolbar>
-          <Button color="inherit" onClick={handleShowGame}>
-            Jugar
-          </Button>
-          <Button color="inherit" href="#" onClick={handleShowUsersList}>
-            Historial de Usuarios
-          </Button>
-          <Button color="inherit" href="#" onClick={handleShowQuestionList}>
-            Historial de Preguntas Generadas
-          </Button>
-        </Toolbar>
-      </AppBar>
+       <AppBar position="static">
+            <Toolbar>
+              <Button color="inherit" onClick={handleShowGame}>
+                Jugar
+              </Button>
+              {username === 'admin' && (
+                <Button color="inherit" href="#" onClick={handleShowUsersList}>
+                  Historial de Usuarios
+                </Button>
+              )}
+              {username === 'admin' && (
+                 <Button color="inherit" href="#" onClick={handleShowQuestionList}>
+                 Historial de Preguntas Generadas
+               </Button>
+              )}
+             
+            </Toolbar>
+          </AppBar>
 
       {showGame ? (
         <Game username={username} />
