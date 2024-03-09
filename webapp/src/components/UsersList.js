@@ -35,13 +35,27 @@ const UsersList = () => {
 
   return (
     <div>
-      <h2>Users List</h2>
-      <ul>
-        {listUsers.map((user,index) => (
-           <li key={index}>Nombre: {user.username}, fecha de registro: {user.createdAt}</li>
+    <h2>Users List</h2>
+    <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+      <thead>
+        <tr style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>
+          <th>ID</th>
+          <th>Nombre de Usuario</th>
+          <th>Fecha de Registro</th>
+        </tr>
+      </thead>
+      <tbody>
+        {listUsers.map((user, index) => (
+          <tr key={index} style={{ border: '1px solid #ddd', padding: '8px' }}>
+            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{index + 1}</td>
+            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.username}</td>
+            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.createdAt}</td>
+          </tr>
         ))}
-      </ul>
-    </div>
+      </tbody>
+    </table>
+  </div>
+  
   );
 };
 

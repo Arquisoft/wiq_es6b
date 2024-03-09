@@ -34,14 +34,29 @@ const GeneratedQuestionsList = () => {
 
 
   return (
-    <div>
-      <h2>Questions List</h2>
-      <ul>
-        {listquestions.map((question,index) => (
-           <li key={index}>Nombre: {question.generatedQuestionBody}, respuesta: {question.correctAnswer}</li>
-        ))}
-      </ul>
-    </div>
+<div>
+  <h2>Questions List</h2>
+  <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+    <thead>
+      <tr style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>
+        <th>ID</th>
+        <th>Pregunta</th>
+        <th>Respuesta Correcta</th>
+      </tr>
+    </thead>
+    <tbody>
+      {listquestions.map((question, index) => (
+        <tr key={index} style={{ border: '1px solid #ddd', padding: '8px' }}>
+          <td style={{ border: '1px solid #ddd', padding: '8px' }}>{index + 1}</td>
+          <td style={{ border: '1px solid #ddd', padding: '8px' }}>{question.generatedQuestionBody}</td>
+          <td style={{ border: '1px solid #ddd', padding: '8px' }}>{question.correctAnswer}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+
   );
 };
 
