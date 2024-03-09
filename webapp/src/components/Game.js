@@ -102,11 +102,14 @@ const Game = ({username}) => {
   const handleButtonClickCorrecta = () => {
     setCorrectQuestions(correctQuestions+1);
     handleButtonClick();
+    addGeneratedQuestionBody();
   };
 
   const handleButtonClick = () => {
     setNumberClics(numberClics + 1);
     obtenerPreguntaAleatoria();
+    addGeneratedQuestionBody();
+    
   };
 
   const handleTimeRemaining = () => {
@@ -116,6 +119,22 @@ const Game = ({username}) => {
     let secsRStr = (secsR < 10) ? '0' + secsR.toString() : secsR.toString();
     return `${minsRStr}:${secsRStr}`;
   };
+
+  const addGeneratedQuestionBody = async () => {
+    try {
+
+      let pregunta=`${questionBody || ''} ${informacionWikidata || ''}`;
+      await axios.post(`${apiEndpoint}/addGeneratedQuestion`, { 
+        generatedQuestionBody: pregunta,
+        correctAnswer: respuestaCorrecta
+      });
+      
+    } catch (error) {
+      setError(error.response.data.error);
+    }
+  };
+
+
 
   useEffect(() => {
     const addRecord = async () => {
@@ -155,7 +174,8 @@ const Game = ({username}) => {
             <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
               {questionBody} {informacionWikidata}
             </Typography>
-            <Button variant="contained" color="primary" onClick={handleButtonClickCorrecta}>
+            <Button variant="contained" color="primary" onClick={handleButtonClickCorrecta} >
+           
               {respuestaCorrecta}
             </Button>
 

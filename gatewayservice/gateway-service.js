@@ -10,6 +10,7 @@ const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
 const questionServiceUrl = process.env.QUES_SERVICE_URL || 'http://localhost:8005';
 const recordServiceUrl = process.env.REC_SERVICE_URL || 'http://localhost:8006';
+const genQuestServiceUrl = process.env.GEN_SERVICE_URL || 'http://localhost:8007';
 
 app.use(cors());
 app.use(express.json());
@@ -89,9 +90,43 @@ app.get('/getAllUsers', async (req, res) => {
   }
 })
 
+
+
+app.post('/addGeneratedQuestion', async (req, res) => {
+  try {
+    // Reenviar la solicitud GET al servicio de usuarios
+   
+    const genQuestResponse = await axios.post(genQuestServiceUrl+'/addGeneratedQuestion', req.body);
+    res.json(genQuestResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+})
+
+app.get('/getAllGeneratedQuestions', async (req, res) => {
+  try {
+    // Reenviar la solicitud GET al servicio de usuarios
+    const genQuestResponse = await axios.get(`${genQuestServiceUrl}/getAllGeneratedQuestions`);
+    
+    res.json(genQuestResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+})
+
+
 // Start the gateway service
 const server = app.listen(port, () => {
   console.log(`Gateway Service listening at http://localhost:${port}`);
 });
+
 
 module.exports = server
