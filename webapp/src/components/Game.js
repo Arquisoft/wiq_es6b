@@ -17,6 +17,7 @@ const Game = ({username}) => {
   const [correctQuestions, setCorrectQuestions] = useState(0);
   const [error, setError] = useState('');
   const [finish, setFinish] = useState(false);
+  const [buttons, setButtons] = useState([]);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -87,10 +88,38 @@ const Game = ({username}) => {
       const response = await axios.post(`${apiEndpoint}/getQuestionBody`);
       setQuestionBody(response.data.questionBody);
       obtenerDatos(response.data.typeQuestion);
+      generarBotonesRespuestas();
     } catch (error) {
       console.error("Error al obtener la pregunta aleatoria", error);
     }
   }, [apiEndpoint, obtenerDatos]);
+
+  const generarBotonesRespuestas = () => {
+    const correctPos = Math.floor(Math.random() * 4) + 1;
+    const buttonsData = [];
+    let contWrongAnsw = 0;
+    for(let i=1; i<=4; i++){
+      if(i==correctPos){
+        buttonsData.push({ answer: respuestaCorrecta, handler: handleButtonClickCorrect() });
+      }else{
+        contWrongAnsw++;
+        buttonsData.push({ answer: respuestasFalsas[contWrongAnsw], handler: handleButtonClickGeneric() });
+      }
+      setButtons(buttonsData);
+    }
+  };
+
+  const handleButtonClickCorrect = () => {
+    setCorrectQuestions(correctQuestions+1);
+    handleButtonClickGeneric();
+  };
+
+  const handleButtonClickGeneric = () => {
+    setNumberClics(numberClics + 1);
+    obtenerPreguntaAleatoria();
+    addGeneratedQuestionBody();
+    generarBotonesRespuestas();
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,19 +127,6 @@ const Game = ({username}) => {
     };
     fetchData();
   }, [obtenerPreguntaAleatoria]);
-
-  const handleButtonClickCorrecta = () => {
-    setCorrectQuestions(correctQuestions+1);
-    handleButtonClick();
-    addGeneratedQuestionBody();
-  };
-
-  const handleButtonClick = () => {
-    setNumberClics(numberClics + 1);
-    obtenerPreguntaAleatoria();
-    addGeneratedQuestionBody();
-    
-  };
 
   const handleTimeRemaining = () => {
     let minsR = Math.floor((3 * 60 - timer) / 60);
@@ -133,8 +149,6 @@ const Game = ({username}) => {
       setError(error.response.data.error);
     }
   };
-
-
 
   useEffect(() => {
     const addRecord = async () => {
@@ -174,17 +188,13 @@ const Game = ({username}) => {
             <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
               {questionBody} {informacionWikidata}
             </Typography>
-            <Button variant="contained" color="primary" onClick={handleButtonClickCorrecta} >
-           
-              {respuestaCorrecta}
-            </Button>
 
-            {/* Mostrar respuestas falsas */}
-            {respuestasFalsas.map((respuestaFalsa, index) => (
-              <Button key={index} variant="contained" color="secondary" onClick={handleButtonClick}>
-                {respuestaFalsa}
-              </Button>
+            { buttons.map((button) => (
+                <Button variant="contained" color="primary" onClick={button.handler} >
+                  (Probando) {button.answer}
+                </Button>
             ))}
+
           </div>
         </>
       )}
