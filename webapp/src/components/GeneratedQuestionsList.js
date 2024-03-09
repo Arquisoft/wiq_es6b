@@ -6,7 +6,8 @@ import axios from 'axios';
 const GeneratedQuestionsList = () => {
  
   const [listquestions, setListquestions] = useState([]);
-
+  const [sortColumn, setSortColumn] = useState(null);
+  const [sortOrder, setSortOrder] = useState('asc');
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
 
@@ -32,29 +33,45 @@ const GeneratedQuestionsList = () => {
     fetchQuestions();
   }, [apiEndpoint]);
 
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      setSortOrder((order) => (order === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortColumn(column);
+      setSortOrder('asc');
+    }
+  };
+
+  const sortedQuestions = [...listquestions].sort((a, b) => {
+    if (sortColumn === 'generatedQuestionBody') {
+      return sortOrder === 'asc' ? a.generatedQuestionBody.localeCompare(b.generatedQuestionBody) : b.generatedQuestionBody.localeCompare(a.generatedQuestionBody);
+    } else if (sortColumn === 'correctAnswer') {
+      return sortOrder === 'asc' ? a.correctAnswer.localeCompare(b.correctAnswer) : b.correctAnswer.localeCompare(a.correctAnswer);
+    } else {
+      return 0;
+    }
+  });
 
   return (
-<div>
-  <h2>Questions List</h2>
-  <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-    <thead>
-      <tr style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>
-        <th>ID</th>
-        <th>Pregunta</th>
-        <th>Respuesta Correcta</th>
-      </tr>
-    </thead>
-    <tbody>
-      {listquestions.map((question, index) => (
-        <tr key={index} style={{ border: '1px solid #ddd', padding: '8px' }}>
-          <td style={{ border: '1px solid #ddd', padding: '8px' }}>{index + 1}</td>
-          <td style={{ border: '1px solid #ddd', padding: '8px' }}>{question.generatedQuestionBody}</td>
-          <td style={{ border: '1px solid #ddd', padding: '8px' }}>{question.correctAnswer}</td>
+    <div>
+    <h2>Questions List</h2>
+    <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+      <thead>
+        <tr style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>
+          <th onClick={() => handleSort('generatedQuestionBody')}>Pregunta {sortColumn === 'generatedQuestionBody' && sortOrder === 'asc' ? '▲' : '▼'}</th>
+          <th onClick={() => handleSort('correctAnswer')}>Respuesta Correcta {sortColumn === 'correctAnswer' && sortOrder === 'asc' ? '▲' : '▼'}</th>
         </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        {sortedQuestions.map((question, index) => (
+          <tr key={index} style={{ border: '1px solid #ddd', padding: '8px' }}>
+            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{question.generatedQuestionBody}</td>
+            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{question.correctAnswer}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 
 
   );

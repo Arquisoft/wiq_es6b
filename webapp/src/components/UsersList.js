@@ -8,7 +8,8 @@ const UsersList = () => {
   const [listUsers, setListUsers] = useState([]);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
-
+  const [sortColumn, setSortColumn] = useState(null);
+  const [sortOrder, setSortOrder] = useState('asc');
 
 
   useEffect(() => {
@@ -32,6 +33,26 @@ const UsersList = () => {
     fetchUsers();
   }, [apiEndpoint]);
 
+  const sortedUsers = [...listUsers].sort((a, b) => {
+    if (sortColumn === 'username') {
+      return sortOrder === 'asc' ? a.username.localeCompare(b.username) : b.username.localeCompare(a.username);
+    } else if (sortColumn === 'createdAt') {
+      return sortOrder === 'asc' ? a.createdAt.localeCompare(b.createdAt) : b.createdAt.localeCompare(a.createdAt);
+    } else {
+      return sortOrder === 'asc' ? a.id - b.id : b.id - a.id;
+    }
+  });
+
+
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      setSortOrder((order) => (order === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortColumn(column);
+      setSortOrder('asc');
+    }
+  };  
 
   return (
     <div>
@@ -39,15 +60,15 @@ const UsersList = () => {
     <table style={{ borderCollapse: 'collapse', width: '100%' }}>
       <thead>
         <tr style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>
-          <th>ID</th>
-          <th>Nombre de Usuario</th>
-          <th>Fecha de Registro</th>
+         
+          <th onClick={() => handleSort('username')}>Nombre de Usuario {sortColumn === 'username' && sortOrder === 'asc' ? '▲' : '▼'}</th>
+          <th onClick={() => handleSort('createdAt')}>Fecha de Registro {sortColumn === 'createdAt' && sortOrder === 'asc' ? '▲' : '▼'}</th>
         </tr>
       </thead>
       <tbody>
-        {listUsers.map((user, index) => (
+        {sortedUsers.map((user, index) => (
           <tr key={index} style={{ border: '1px solid #ddd', padding: '8px' }}>
-            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{index + 1}</td>
+           
             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.username}</td>
             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.createdAt}</td>
           </tr>
@@ -55,7 +76,6 @@ const UsersList = () => {
       </tbody>
     </table>
   </div>
-  
   );
 };
 
