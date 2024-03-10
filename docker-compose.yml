@@ -1,7 +1,7 @@
 version: '3'
 services:
   mongodb:
-    container_name: mongodb-${teamname:-defaultASW}
+    container_name: mongodb-${teamname:-wiq_es06b}
     image: mongo
     profiles: ["dev", "prod"]
     volumes:
@@ -12,7 +12,7 @@ services:
       - mynetwork
 
   authservice:
-    container_name: authservice-${teamname:-defaultASW}
+    container_name: authservice-${teamname:-wiq_es06b}
     image: ghcr.io/arquisoft/wiq_es6b/authservice:latest
     profiles: ["dev", "prod"]
     build: ./users/authservice
@@ -26,7 +26,7 @@ services:
       MONGODB_URI: mongodb://mongodb:27017/userdb
 
   userservice:
-    container_name: userservice-${teamname:-defaultASW}
+    container_name: userservice-${teamname:-wiq_es06b}
     image: ghcr.io/arquisoft/wiq_es6b/userservice:latest
     profiles: ["dev", "prod"]
     build: ./users/userservice
@@ -40,7 +40,7 @@ services:
       MONGODB_URI: mongodb://mongodb:27017/userdb
 
   answerservice:
-    container_name: answerservice-${teamname:-defaultASW}
+    container_name: answerservice-${teamname:-wiq_es06b}
     image: ghcr.io/arquisoft/wiq_es6b/answerservice:latest
     profiles: ["dev", "prod"]
     build: ./questions/answerservice
@@ -54,7 +54,7 @@ services:
       MONGODB_URI: mongodb://mongodb:27017/questiondb
 
   createservice:
-    container_name: createservice-${teamname:-defaultASW}
+    container_name: createservice-${teamname:-wiq_es06b}
     image: ghcr.io/arquisoft/wiq_es6b/createservice:latest
     profiles: ["dev", "prod"]
     build: ./questions/createservice
@@ -68,7 +68,7 @@ services:
       MONGODB_URI: mongodb://mongodb:27017/questiondb
 
   recordservice:
-    container_name: recordservice-${teamname:-defaultASW}
+    container_name: recordservice-${teamname:-wiq_es06b}
     image: ghcr.io/arquisoft/wiq_es6b/recordservice:latest
     profiles: ["dev", "prod"]
     build: ./questions/recordservice
@@ -82,7 +82,7 @@ services:
       MONGODB_URI: mongodb://mongodb:27017/recorddb
 
   generatedquestservice:
-    container_name: generatedquestservice-${teamname:-defaultASW}
+    container_name: generatedquestservice-${teamname:-wiq_es06b}
     image: ghcr.io/arquisoft/wiq_es6b/generatedquestservice:latest
     profiles: ["dev", "prod"]
     build: ./questions/generatedquestservice
@@ -96,7 +96,7 @@ services:
       MONGODB_URI: mongodb://mongodb:27017/questiondb
 
   gatewayservice:
-    container_name: gatewayservice-${teamname:-defaultASW}
+    container_name: gatewayservice-${teamname:-wiq_es06b}
     image: ghcr.io/arquisoft/wiq_es6b/gatewayservice:latest
     profiles: ["dev", "prod"]
     build: ./gatewayservice
@@ -121,7 +121,7 @@ services:
       GEN_SERVICE_URL: http://generatedquestservice:8007
 
   webapp:
-    container_name: webapp-${teamname:-defaultASW}
+    container_name: webapp-${teamname:-wiq_es06b}
     image: ghcr.io/arquisoft/wiq_es6b/webapp:latest
     profiles: ["dev", "prod"]
     build: ./webapp
@@ -132,7 +132,7 @@ services:
 
   prometheus:
     image: prom/prometheus
-    container_name: prometheus-${teamname:-defaultASW}
+    container_name: prometheus-${teamname:-wiq_es06b}
     profiles: ["dev"]
     networks:
       - mynetwork
@@ -146,7 +146,7 @@ services:
       
   grafana:
     image: grafana/grafana
-    container_name: grafana-${teamname:-defaultASW}
+    container_name: grafana-${teamname:-wiq_es06b}
     profiles: ["dev"]
     networks:
       - mynetwork
