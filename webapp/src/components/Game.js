@@ -94,6 +94,36 @@ const Game = ({username}) => {
     }
   }, [apiEndpoint, obtenerDatos]);
 
+  const addGeneratedQuestionBody = useCallback(async () => {
+    try {
+
+      let pregunta=`${questionBody || ''} ${informacionWikidata || ''}`;
+      await axios.post(`${apiEndpoint}/addGeneratedQuestion`, { 
+        generatedQuestionBody: pregunta,
+        correctAnswer: respuestaCorrecta
+      });
+      
+    } catch (error) {
+      setError(error.response.data.error);
+    }
+  }, [apiEndpoint, questionBody, informacionWikidata, respuestaCorrecta]);
+
+  const handleButtonClickGeneric = useCallback(async () => {
+    try{
+      setNumberClics(numberClics + 1);
+      await obtenerPreguntaAleatoria();
+      addGeneratedQuestionBody();
+    }catch(error)
+    {
+    console.error("Error",error)
+    }
+  }, [numberClics, obtenerPreguntaAleatoria, addGeneratedQuestionBody]);
+
+  const handleButtonClickCorrect = useCallback(() => {
+    setCorrectQuestions(correctQuestions+1);
+    handleButtonClickGeneric();
+  }, [correctQuestions, handleButtonClickGeneric]);
+
   const generarBotonesRespuestas = useCallback(async () => {
     try{
       console.log("Generando botones");
@@ -123,22 +153,6 @@ const Game = ({username}) => {
     generarBotonesRespuestas();
   }, [respuestaCorrecta, respuestasFalsas, generarBotonesRespuestas]);
 
-  const handleButtonClickCorrect = () => {
-    setCorrectQuestions(correctQuestions+1);
-    handleButtonClickGeneric();
-  };
-
-  const handleButtonClickGeneric = async () => {
-    try{
-      setNumberClics(numberClics + 1);
-      await obtenerPreguntaAleatoria();
-      addGeneratedQuestionBody();
-    }catch(error)
-    {
-    console.error("Error",error)
-    }
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       await obtenerPreguntaAleatoria();
@@ -152,20 +166,6 @@ const Game = ({username}) => {
     let secsR = (3 * 60 - timer) % 60;
     let secsRStr = (secsR < 10) ? '0' + secsR.toString() : secsR.toString();
     return `${minsRStr}:${secsRStr}`;
-  };
-
-  const addGeneratedQuestionBody = async () => {
-    try {
-
-      let pregunta=`${questionBody || ''} ${informacionWikidata || ''}`;
-      await axios.post(`${apiEndpoint}/addGeneratedQuestion`, { 
-        generatedQuestionBody: pregunta,
-        correctAnswer: respuestaCorrecta
-      });
-      
-    } catch (error) {
-      setError(error.response.data.error);
-    }
   };
 
   useEffect(() => {
