@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const GeneratedQuestion = require('./generatedquest-model');
 
 const app = express();
-const port = 8007;
+const port = 8003;
 
 // Middleware to parse JSON in request body
 app.use(bodyParser.json());
