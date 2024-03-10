@@ -1,7 +1,7 @@
 // src/components/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, TextField, Button, Snackbar, AppBar, Toolbar, Link } from '@mui/material';
+import { Container, Typography, TextField, Button, Snackbar, AppBar, Toolbar, Link, Paper } from '@mui/material';
 
 import Game from './Game';
 import UsersList from './UsersList';
@@ -59,27 +59,30 @@ const Login = ({setLogged}) => {
   };
 
   return (
-<Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
-  {loginSuccess ? (
     <>
-       <AppBar position="static">
-            <Toolbar>
-              <Button color="inherit" onClick={handleShowGame}>
-                Jugar
-              </Button>
-              {username === 'admin' && (
-                <Button color="inherit" href="#" onClick={handleShowUsersList}>
-                  Historial de Usuarios
-                </Button>
-              )}
-              {username === 'admin' && (
-                 <Button color="inherit" href="#" onClick={handleShowQuestionList}>
-                 Historial de Preguntas Generadas
-               </Button>
-              )}
-             
-            </Toolbar>
-          </AppBar>
+   {loginSuccess === true && (
+  <AppBar position="static">
+    <Toolbar>
+      <Button color="inherit" onClick={handleShowGame}>
+        Jugar
+      </Button>
+      {username === 'admin' && (
+        <Button color="inherit" href="#" onClick={handleShowUsersList}>
+          Historial de Usuarios
+        </Button>
+      )}
+      {username === 'admin' && (
+        <Button color="inherit" href="#" onClick={handleShowQuestionList}>
+          Historial de Preguntas Generadas
+        </Button>
+      )}
+    </Toolbar>
+  </AppBar>
+)}
+
+    <Container maxWidth="md" style={{ marginTop: '2rem' }}>
+      {loginSuccess ? (
+        <>
 
       {showGame ? (
         <Game username={username} />
@@ -102,9 +105,7 @@ const Login = ({setLogged}) => {
           <Button variant="contained" color="secondary" onClick={handleShowGame}>
             Comenzar a jugar
           </Button>
-          <Button variant="contained" color="secondary" onClick={handleShowUsersList}>
-            Ver el historial de usuarios
-          </Button>
+
         </div>
       )}
     </>
@@ -137,7 +138,9 @@ const Login = ({setLogged}) => {
       )}
     </div>
   )}
+    
 </Container>
+</>
   );
 };  
 

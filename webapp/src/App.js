@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
 
 function App() {
   const [showLogin, setShowLogin] = useState(true);
@@ -19,11 +20,9 @@ function App() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Typography component="h1" variant="h5" align="center" sx={{ marginTop: 2 }}>
-        Welcome to wiq_6B
-      </Typography>
+    <Container component="main" maxWidth="sm"  style={{ marginTop: '2rem' }}>
+     <Paper elevation={3} style={{ padding: '2rem', textAlign: 'center' }}>
+
       {showLogin ? <Login setLogged={handleIsLogged}/> : <AddUser />}
         {!isLogged ? (<Typography component="div" align="center" sx={{ marginTop: 2 }}>
             {showLogin ? (
@@ -39,7 +38,7 @@ function App() {
         ) : (
             <></>
         ) }
-
+    </Paper>
     </Container>
   );
 }
