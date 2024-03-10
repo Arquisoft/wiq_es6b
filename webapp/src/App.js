@@ -20,12 +20,18 @@ function App() {
   };
 
   return (
-    <Container component="main" maxWidth="sm"  style={{ marginTop: '2rem' }}>
-     <Paper elevation={3} style={{ padding: '2rem', textAlign: 'center' }}>
+    <Container component="main" maxWidth="lg" style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+  <Paper elevation={3} style={{ padding: '2rem', textAlign: 'center', height: '500px', width: '800px', overflow: 'auto' }}>
+ 
 
       {showLogin ? <Login setLogged={handleIsLogged}/> : <AddUser />}
-        {!isLogged ? (<Typography component="div" align="center" sx={{ marginTop: 2 }}>
+        {!isLogged ? (<Typography component="div" align="center" sx={{ marginTop: 4 }}>
             {showLogin ? (
+
+
+
+
                 <Link name="gotoregister" component="button" variant="body2" onClick={handleToggleView}>
                     Don't have an account? Register here.
                 </Link>

@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
   <Typography component="h1" variant="h5" align="center" sx={{ marginTop: 2 }}>
-   Bienvenido a Saber y ganar
+   Bienvenido a Saber y Ganar
   </Typography>
   <App />
   <Typography component="h1" variant="h5" align="center" sx={{ marginTop: 4 }}>
