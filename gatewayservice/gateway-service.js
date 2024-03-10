@@ -122,6 +122,22 @@ app.get('/getAllGeneratedQuestions', async (req, res) => {
   }
 })
 
+app.get('/getRecords/:userId', async (req, res) => {
+  try {
+ 
+    const userId = req.params.userId;
+
+    const recordsResponse = await axios.get(`${recordServiceUrl}/getRecords/${userId}`);
+    res.json(recordsResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+});
+
 
 // Start the gateway service
 const server = app.listen(port, () => {
