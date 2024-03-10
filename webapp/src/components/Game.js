@@ -66,6 +66,7 @@ const Game = ({username}) => {
         const resultCorrecta = data.results.bindings[indexCorrecta];
         setInformacionWikidata(resultCorrecta[questionLabel].value + '?');
         setRespuestaCorrecta(resultCorrecta[answerLabel].value);
+        //console.log("Obtener datos: answerCorrect: " + respuestaCorrecta);
 
         // Obtener respuestas falsas
         const respuestas = [];
@@ -87,26 +88,39 @@ const Game = ({username}) => {
     try {
       const response = await axios.post(`${apiEndpoint}/getQuestionBody`);
       setQuestionBody(response.data.questionBody);
-      obtenerDatos(response.data.typeQuestion);
-      generarBotonesRespuestas();
+      await obtenerDatos(response.data.typeQuestion);
     } catch (error) {
       console.error("Error al obtener la pregunta aleatoria", error);
     }
   }, [apiEndpoint, obtenerDatos]);
 
-  const generarBotonesRespuestas = () => {
-    const correctPos = Math.floor(Math.random() * 4) + 1;
-    const buttonsData = [];
-    let contWrongAnsw = 0;
-    for(let i=1; i<=4; i++){
-      if(i==correctPos){
-        buttonsData.push({ answer: respuestaCorrecta, handler: handleButtonClickCorrect() });
-      }else{
-        contWrongAnsw++;
-        buttonsData.push({ answer: respuestasFalsas[contWrongAnsw], handler: handleButtonClickGeneric() });
+  useEffect(() => {
+    console.log("Bien: "+respuestaCorrecta);
+    console.log("Mal: "+respuestasFalsas);
+    generarBotonesRespuestas();
+  }, [respuestaCorrecta, respuestasFalsas]);
+
+  const generarBotonesRespuestas = async () => {
+    try{
+      console.log("Generando botones");
+      const correctPos = Math.floor(Math.random() * 4) + 1;
+      console.log(correctPos);
+      const buttonsData = [];
+      let contWrongAnsw = 0;
+      for(let i=1; i<=4; i++){
+        if(i==correctPos){
+          console.log("Generando boton correcta: "+respuestaCorrecta);
+          buttonsData.push({ answer: respuestaCorrecta, handler: handleButtonClickCorrect });
+        }else{
+          buttonsData.push({ answer: respuestasFalsas[contWrongAnsw], handler: handleButtonClickGeneric });
+          contWrongAnsw++;
+        }
       }
       setButtons(buttonsData);
+    }catch(error){
+      console.error("Error generando botones", error);
     }
+
   };
 
   const handleButtonClickCorrect = () => {
@@ -114,11 +128,15 @@ const Game = ({username}) => {
     handleButtonClickGeneric();
   };
 
-  const handleButtonClickGeneric = () => {
-    setNumberClics(numberClics + 1);
-    obtenerPreguntaAleatoria();
-    addGeneratedQuestionBody();
-    generarBotonesRespuestas();
+  const handleButtonClickGeneric = async () => {
+    try{
+      setNumberClics(numberClics + 1);
+      await obtenerPreguntaAleatoria();
+      addGeneratedQuestionBody();
+    }catch(error)
+    {
+    console.error("Error",error)
+    }
   };
 
   useEffect(() => {
@@ -191,7 +209,7 @@ const Game = ({username}) => {
 
             { buttons.map((button) => (
                 <Button variant="contained" color="primary" onClick={button.handler} >
-                  (Probando) {button.answer}
+                  {button.answer}
                 </Button>
             ))}
 
