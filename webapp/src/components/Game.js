@@ -94,12 +94,6 @@ const Game = ({username}) => {
     }
   }, [apiEndpoint, obtenerDatos]);
 
-  useEffect(() => {
-    console.log("Bien: "+respuestaCorrecta);
-    console.log("Mal: "+respuestasFalsas);
-    generarBotonesRespuestas();
-  }, [respuestaCorrecta, respuestasFalsas, generarBotonesRespuestas]);
-
   const generarBotonesRespuestas = async () => {
     try{
       console.log("Generando botones");
@@ -122,6 +116,12 @@ const Game = ({username}) => {
     }
 
   };
+
+  useEffect(() => {
+    console.log("Bien: "+respuestaCorrecta);
+    console.log("Mal: "+respuestasFalsas);
+    generarBotonesRespuestas();
+  }, [respuestaCorrecta, respuestasFalsas, generarBotonesRespuestas]);
 
   const handleButtonClickCorrect = () => {
     setCorrectQuestions(correctQuestions+1);
