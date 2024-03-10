@@ -98,7 +98,7 @@ const Game = ({username}) => {
     console.log("Bien: "+respuestaCorrecta);
     console.log("Mal: "+respuestasFalsas);
     generarBotonesRespuestas();
-  }, [respuestaCorrecta, respuestasFalsas]);
+  }, [respuestaCorrecta, respuestasFalsas, generarBotonesRespuestas]);
 
   const generarBotonesRespuestas = async () => {
     try{
@@ -108,7 +108,7 @@ const Game = ({username}) => {
       const buttonsData = [];
       let contWrongAnsw = 0;
       for(let i=1; i<=4; i++){
-        if(i==correctPos){
+        if(i===correctPos){
           console.log("Generando boton correcta: "+respuestaCorrecta);
           buttonsData.push({ answer: respuestaCorrecta, handler: handleButtonClickCorrect });
         }else{
@@ -171,7 +171,8 @@ const Game = ({username}) => {
   useEffect(() => {
     const addRecord = async () => {
       try {
-        const response = await axios.post(`${apiEndpoint}/addRecord`, {
+        //const response = 
+        await axios.post(`${apiEndpoint}/addRecord`, {
           userId: username,
           date: new Date(),
           time: timer,
@@ -188,7 +189,7 @@ const Game = ({username}) => {
       addRecord();
       setFinish(true);
     }
-  }, [numberClics, timer]);
+  }, [apiEndpoint, correctQuestions, finish, username, numberClics, timer]);
 
   return (
     <Container maxWidth="sm">
@@ -217,6 +218,9 @@ const Game = ({username}) => {
           </div>
         </>
       )}
+    {error && (
+        <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
+    )}
     </div>
     </Container>
   );
