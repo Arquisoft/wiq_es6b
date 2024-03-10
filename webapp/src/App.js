@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import AddUser from './components/AddUser';
 import Login from './components/Login';
-import CssBaseline from '@mui/material/CssBaseline';
+//import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
 
 function App() {
   const [showLogin, setShowLogin] = useState(true);
@@ -19,14 +20,18 @@ function App() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Typography component="h1" variant="h5" align="center" sx={{ marginTop: 2 }}>
-        Welcome to wiq_6B
-      </Typography>
+    <Container component="main" maxWidth="lg" style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+  <Paper elevation={3} style={{ padding: '2rem', textAlign: 'center', height: '500px', width: '800px', overflow: 'auto' }}>
+ 
+
       {showLogin ? <Login setLogged={handleIsLogged}/> : <AddUser />}
-        {!isLogged ? (<Typography component="div" align="center" sx={{ marginTop: 2 }}>
+        {!isLogged ? (<Typography component="div" align="center" sx={{ marginTop: 4 }}>
             {showLogin ? (
+
+
+
+
                 <Link name="gotoregister" component="button" variant="body2" onClick={handleToggleView}>
                     Don't have an account? Register here.
                 </Link>
@@ -39,7 +44,7 @@ function App() {
         ) : (
             <></>
         ) }
-
+    </Paper>
     </Container>
   );
 }
