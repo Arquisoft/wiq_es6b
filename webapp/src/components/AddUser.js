@@ -25,7 +25,7 @@ const AddUser = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
+    <Container component="main" maxWidth="lg" sx={{ marginTop: 4 }}>
       <Typography component="h1" variant="h5">
         Add User
       </Typography>

@@ -80,7 +80,7 @@ const Login = ({setLogged}) => {
   </AppBar>
 )}
 
-    <Container maxWidth="md" style={{ marginTop: '2rem' }}>
+    <Container maxWidth="lg" style={{ marginTop: '2rem' }}>
       {loginSuccess ? (
         <>
 

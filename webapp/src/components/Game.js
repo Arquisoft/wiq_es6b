@@ -191,7 +191,7 @@ const Game = ({username}) => {
   }, [numberClics, timer]);
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="lg">
     <div>
       {numberClics > 10 || timer > 180 ? (
         <p>Fin de la partida</p>
