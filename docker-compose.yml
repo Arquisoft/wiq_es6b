@@ -89,7 +89,7 @@ services:
     depends_on:
       - mongodb
     ports:
-      - "8007:8007"
+      - "8003:8003"
     networks:
       - mynetwork
     environment:
@@ -118,7 +118,7 @@ services:
       ANSW_SERVICE_URL: http://answerservice:8004
       QUES_SERVICE_URL: http://createservice:8005
       REC_SERVICE_URL: http://recordservice:8006
-      GEN_SERVICE_URL: http://generatedquestservice:8007
+      GEN_SERVICE_URL: http://generatedquestservice:8003
 
   webapp:
     container_name: webapp-${teamname:-defaultASW}
