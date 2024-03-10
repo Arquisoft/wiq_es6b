@@ -1,11 +1,11 @@
 // src/components/Game.js
 import axios from 'axios';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
+//import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
+import { Container, Typography, Button, Snackbar } from '@mui/material';
 
 
-
-import Link from '@mui/material/Link';
+//import Link from '@mui/material/Link';
 
 const Game = ({username}) => {
   const [questionBody, setQuestionBody] = useState('');
@@ -94,13 +94,37 @@ const Game = ({username}) => {
     }
   }, [apiEndpoint, obtenerDatos]);
 
-  useEffect(() => {
-    console.log("Bien: "+respuestaCorrecta);
-    console.log("Mal: "+respuestasFalsas);
-    generarBotonesRespuestas();
-  }, [respuestaCorrecta, respuestasFalsas]);
+  const addGeneratedQuestionBody = useCallback(async () => {
+    try {
 
-  const generarBotonesRespuestas = async () => {
+      let pregunta=`${questionBody || ''} ${informacionWikidata || ''}`;
+      await axios.post(`${apiEndpoint}/addGeneratedQuestion`, { 
+        generatedQuestionBody: pregunta,
+        correctAnswer: respuestaCorrecta
+      });
+      
+    } catch (error) {
+      setError(error.response.data.error);
+    }
+  }, [apiEndpoint, questionBody, informacionWikidata, respuestaCorrecta]);
+
+  const handleButtonClickGeneric = useCallback(async () => {
+    try{
+      setNumberClics(numberClics + 1);
+      await obtenerPreguntaAleatoria();
+      addGeneratedQuestionBody();
+    }catch(error)
+    {
+    console.error("Error",error)
+    }
+  }, [numberClics, obtenerPreguntaAleatoria, addGeneratedQuestionBody]);
+
+  const handleButtonClickCorrect = useCallback(() => {
+    setCorrectQuestions(correctQuestions+1);
+    handleButtonClickGeneric();
+  }, [correctQuestions, handleButtonClickGeneric]);
+
+  const generarBotonesRespuestas = useCallback(async () => {
     try{
       console.log("Generando botones");
       const correctPos = Math.floor(Math.random() * 4) + 1;
@@ -108,7 +132,7 @@ const Game = ({username}) => {
       const buttonsData = [];
       let contWrongAnsw = 0;
       for(let i=1; i<=4; i++){
-        if(i==correctPos){
+        if(i===correctPos){
           console.log("Generando boton correcta: "+respuestaCorrecta);
           buttonsData.push({ answer: respuestaCorrecta, handler: handleButtonClickCorrect });
         }else{
@@ -121,23 +145,13 @@ const Game = ({username}) => {
       console.error("Error generando botones", error);
     }
 
-  };
+  }, [respuestaCorrecta, respuestasFalsas, handleButtonClickCorrect, handleButtonClickGeneric]);
 
-  const handleButtonClickCorrect = () => {
-    setCorrectQuestions(correctQuestions+1);
-    handleButtonClickGeneric();
-  };
-
-  const handleButtonClickGeneric = async () => {
-    try{
-      setNumberClics(numberClics + 1);
-      await obtenerPreguntaAleatoria();
-      addGeneratedQuestionBody();
-    }catch(error)
-    {
-    console.error("Error",error)
-    }
-  };
+  useEffect(() => {
+    console.log("Bien: "+respuestaCorrecta);
+    console.log("Mal: "+respuestasFalsas);
+    generarBotonesRespuestas();
+  }, [respuestaCorrecta, respuestasFalsas, generarBotonesRespuestas]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -154,24 +168,11 @@ const Game = ({username}) => {
     return `${minsRStr}:${secsRStr}`;
   };
 
-  const addGeneratedQuestionBody = async () => {
-    try {
-
-      let pregunta=`${questionBody || ''} ${informacionWikidata || ''}`;
-      await axios.post(`${apiEndpoint}/addGeneratedQuestion`, { 
-        generatedQuestionBody: pregunta,
-        correctAnswer: respuestaCorrecta
-      });
-      
-    } catch (error) {
-      setError(error.response.data.error);
-    }
-  };
-
   useEffect(() => {
     const addRecord = async () => {
       try {
-        const response = await axios.post(`${apiEndpoint}/addRecord`, {
+        //const response = 
+        await axios.post(`${apiEndpoint}/addRecord`, {
           userId: username,
           date: new Date(),
           time: timer,
@@ -188,7 +189,7 @@ const Game = ({username}) => {
       addRecord();
       setFinish(true);
     }
-  }, [numberClics, timer]);
+  }, [apiEndpoint, correctQuestions, finish, username, numberClics, timer]);
 
   return (
     <Container maxWidth="lg">
@@ -217,6 +218,9 @@ const Game = ({username}) => {
           </div>
         </>
       )}
+    {error && (
+        <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
+    )}
     </div>
     </Container>
   );
