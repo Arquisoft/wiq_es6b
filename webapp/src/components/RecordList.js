@@ -26,7 +26,7 @@ const RecordList = ({ username }) => {
 
   return (
     <div>
-      <h2>Your Play History</h2>
+      <h2>Tu historial de jugadas</h2>
       <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <thead>
           <tr style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>
