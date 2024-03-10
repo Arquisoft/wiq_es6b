@@ -94,7 +94,7 @@ const Game = ({username}) => {
     }
   }, [apiEndpoint, obtenerDatos]);
 
-  const generarBotonesRespuestas = async () => {
+  const generarBotonesRespuestas = useCallback(async () => {
     try{
       console.log("Generando botones");
       const correctPos = Math.floor(Math.random() * 4) + 1;
@@ -115,7 +115,7 @@ const Game = ({username}) => {
       console.error("Error generando botones", error);
     }
 
-  };
+  }, [respuestaCorrecta, respuestasFalsas, handleButtonClickCorrect, handleButtonClickGeneric]);
 
   useEffect(() => {
     console.log("Bien: "+respuestaCorrecta);
