@@ -1,10 +1,12 @@
 // src/components/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, TextField, Button, Snackbar, AppBar, Toolbar, Link } from '@mui/material';
+//import { Container, Typography, TextField, Button, Snackbar, AppBar, Toolbar, Link, Paper } from '@mui/material';
+import { Container, Typography, TextField, Button, Snackbar, AppBar, Toolbar } from '@mui/material';
 
 import Game from './Game';
 import UsersList from './UsersList';
+import GeneratedQuestionsList from './GeneratedQuestionsList';
 
 //import Link from '@mui/material/Link';
 
@@ -17,6 +19,7 @@ const Login = ({setLogged}) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [showGame, setShowGame] = useState(false);
   const [showUsersList, setShowUsersList] = useState(false);
+  const [showQuestionList, setShowQuestionList] = useState(false);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -47,30 +50,52 @@ const Login = ({setLogged}) => {
     setShowGame(false);
   };
 
+
+  const handleShowQuestionList = () => {
+    setShowQuestionList(true);
+    setShowGame(false);
+  };
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
 
   return (
-<Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
-  {loginSuccess ? (
     <>
-      <AppBar position="static">
-        <Toolbar>
-          <Button color="inherit" onClick={handleShowGame}>
-            Jugar
-          </Button>
-          <Button color="inherit" href="#" onClick={handleShowUsersList}>
-            Historial de Usuarios
-          </Button>
-        </Toolbar>
-      </AppBar>
+   {loginSuccess === true && (
+  <AppBar position="static">
+    <Toolbar>
+      <Button color="inherit" onClick={handleShowGame}>
+        Jugar
+      </Button>
+      {username === 'admin' && (
+        <Button color="inherit" href="#" onClick={handleShowUsersList}>
+          Historial de Usuarios
+        </Button>
+      )}
+      {username === 'admin' && (
+        <Button color="inherit" href="#" onClick={handleShowQuestionList}>
+          Historial de Preguntas Generadas
+        </Button>
+      )}
+    </Toolbar>
+  </AppBar>
+)}
+
+    <Container maxWidth="md" style={{ marginTop: '2rem' }}>
+      {loginSuccess ? (
+        <>
 
       {showGame ? (
         <Game username={username} />
       ) : showUsersList ? (
         <UsersList />
-      ) : (
+      ) : 
+      
+      showQuestionList ? (
+        <GeneratedQuestionsList />
+      ) : 
+      
+      (
         <div>
           <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
             Hello {username}!
@@ -81,9 +106,7 @@ const Login = ({setLogged}) => {
           <Button variant="contained" color="secondary" onClick={handleShowGame}>
             Comenzar a jugar
           </Button>
-          <Button variant="contained" color="secondary" onClick={handleShowUsersList}>
-            Ver el historial de usuarios
-          </Button>
+
         </div>
       )}
     </>
@@ -116,7 +139,9 @@ const Login = ({setLogged}) => {
       )}
     </div>
   )}
+    
 </Container>
+</>
   );
 };  
 

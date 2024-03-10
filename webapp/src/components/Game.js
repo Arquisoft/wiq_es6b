@@ -1,11 +1,11 @@
 // src/components/Game.js
 import axios from 'axios';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
+//import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
+import { Container, Typography, Button, Snackbar } from '@mui/material';
 
 
-
-import Link from '@mui/material/Link';
+//import Link from '@mui/material/Link';
 
 const Game = ({username}) => {
   const [questionBody, setQuestionBody] = useState('');
@@ -17,6 +17,7 @@ const Game = ({username}) => {
   const [correctQuestions, setCorrectQuestions] = useState(0);
   const [error, setError] = useState('');
   const [finish, setFinish] = useState(false);
+  const [buttons, setButtons] = useState([]);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -65,6 +66,7 @@ const Game = ({username}) => {
         const resultCorrecta = data.results.bindings[indexCorrecta];
         setInformacionWikidata(resultCorrecta[questionLabel].value + '?');
         setRespuestaCorrecta(resultCorrecta[answerLabel].value);
+        //console.log("Obtener datos: answerCorrect: " + respuestaCorrecta);
 
         // Obtener respuestas falsas
         const respuestas = [];
@@ -86,11 +88,70 @@ const Game = ({username}) => {
     try {
       const response = await axios.post(`${apiEndpoint}/getQuestionBody`);
       setQuestionBody(response.data.questionBody);
-      obtenerDatos(response.data.typeQuestion);
+      await obtenerDatos(response.data.typeQuestion);
     } catch (error) {
       console.error("Error al obtener la pregunta aleatoria", error);
     }
   }, [apiEndpoint, obtenerDatos]);
+
+  const addGeneratedQuestionBody = useCallback(async () => {
+    try {
+
+      let pregunta=`${questionBody || ''} ${informacionWikidata || ''}`;
+      await axios.post(`${apiEndpoint}/addGeneratedQuestion`, { 
+        generatedQuestionBody: pregunta,
+        correctAnswer: respuestaCorrecta
+      });
+      
+    } catch (error) {
+      setError(error.response.data.error);
+    }
+  }, [apiEndpoint, questionBody, informacionWikidata, respuestaCorrecta]);
+
+  const handleButtonClickGeneric = useCallback(async () => {
+    try{
+      setNumberClics(numberClics + 1);
+      await obtenerPreguntaAleatoria();
+      addGeneratedQuestionBody();
+    }catch(error)
+    {
+    console.error("Error",error)
+    }
+  }, [numberClics, obtenerPreguntaAleatoria, addGeneratedQuestionBody]);
+
+  const handleButtonClickCorrect = useCallback(() => {
+    setCorrectQuestions(correctQuestions+1);
+    handleButtonClickGeneric();
+  }, [correctQuestions, handleButtonClickGeneric]);
+
+  const generarBotonesRespuestas = useCallback(async () => {
+    try{
+      console.log("Generando botones");
+      const correctPos = Math.floor(Math.random() * 4) + 1;
+      console.log(correctPos);
+      const buttonsData = [];
+      let contWrongAnsw = 0;
+      for(let i=1; i<=4; i++){
+        if(i===correctPos){
+          console.log("Generando boton correcta: "+respuestaCorrecta);
+          buttonsData.push({ answer: respuestaCorrecta, handler: handleButtonClickCorrect });
+        }else{
+          buttonsData.push({ answer: respuestasFalsas[contWrongAnsw], handler: handleButtonClickGeneric });
+          contWrongAnsw++;
+        }
+      }
+      setButtons(buttonsData);
+    }catch(error){
+      console.error("Error generando botones", error);
+    }
+
+  }, [respuestaCorrecta, respuestasFalsas, handleButtonClickCorrect, handleButtonClickGeneric]);
+
+  useEffect(() => {
+    console.log("Bien: "+respuestaCorrecta);
+    console.log("Mal: "+respuestasFalsas);
+    generarBotonesRespuestas();
+  }, [respuestaCorrecta, respuestasFalsas, generarBotonesRespuestas]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,16 +159,6 @@ const Game = ({username}) => {
     };
     fetchData();
   }, [obtenerPreguntaAleatoria]);
-
-  const handleButtonClickCorrecta = () => {
-    setCorrectQuestions(correctQuestions+1);
-    handleButtonClick();
-  };
-
-  const handleButtonClick = () => {
-    setNumberClics(numberClics + 1);
-    obtenerPreguntaAleatoria();
-  };
 
   const handleTimeRemaining = () => {
     let minsR = Math.floor((3 * 60 - timer) / 60);
@@ -120,7 +171,8 @@ const Game = ({username}) => {
   useEffect(() => {
     const addRecord = async () => {
       try {
-        const response = await axios.post(`${apiEndpoint}/addRecord`, {
+        //const response = 
+        await axios.post(`${apiEndpoint}/addRecord`, {
           userId: username,
           date: new Date(),
           time: timer,
@@ -137,9 +189,10 @@ const Game = ({username}) => {
       addRecord();
       setFinish(true);
     }
-  }, [numberClics, timer]);
+  }, [apiEndpoint, correctQuestions, finish, username, numberClics, timer]);
 
   return (
+    <Container maxWidth="sm">
     <div>
       {numberClics > 10 || timer > 180 ? (
         <p>Fin de la partida</p>
@@ -155,20 +208,21 @@ const Game = ({username}) => {
             <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
               {questionBody} {informacionWikidata}
             </Typography>
-            <Button variant="contained" color="primary" onClick={handleButtonClickCorrecta}>
-              {respuestaCorrecta}
-            </Button>
 
-            {/* Mostrar respuestas falsas */}
-            {respuestasFalsas.map((respuestaFalsa, index) => (
-              <Button key={index} variant="contained" color="secondary" onClick={handleButtonClick}>
-                {respuestaFalsa}
-              </Button>
+            { buttons.map((button) => (
+                <Button variant="contained" color="primary" onClick={button.handler} >
+                  {button.answer}
+                </Button>
             ))}
+
           </div>
         </>
       )}
+    {error && (
+        <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
+    )}
     </div>
+    </Container>
   );
 }
 
