@@ -66,7 +66,6 @@ const Game = ({username}) => {
         const resultCorrecta = data.results.bindings[indexCorrecta];
         setInformacionWikidata(resultCorrecta[questionLabel].value + '?');
         setRespuestaCorrecta(resultCorrecta[answerLabel].value);
-        //console.log("Obtener datos: answerCorrect: " + respuestaCorrecta);
 
         // Obtener respuestas falsas
         const respuestas = [];
@@ -126,14 +125,11 @@ const Game = ({username}) => {
 
   const generarBotonesRespuestas = useCallback(async () => {
     try{
-      console.log("Generando botones");
       const correctPos = Math.floor(Math.random() * 4) + 1;
-      console.log(correctPos);
       const buttonsData = [];
       let contWrongAnsw = 0;
       for(let i=1; i<=4; i++){
         if(i===correctPos){
-          console.log("Generando boton correcta: "+respuestaCorrecta);
           buttonsData.push({ answer: respuestaCorrecta, handler: handleButtonClickCorrect });
         }else{
           buttonsData.push({ answer: respuestasFalsas[contWrongAnsw], handler: handleButtonClickGeneric });
@@ -148,8 +144,6 @@ const Game = ({username}) => {
   }, [respuestaCorrecta, respuestasFalsas, handleButtonClickCorrect, handleButtonClickGeneric]);
 
   useEffect(() => {
-    console.log("Bien: "+respuestaCorrecta);
-    console.log("Mal: "+respuestasFalsas);
     generarBotonesRespuestas();
   }, [respuestaCorrecta, respuestasFalsas, generarBotonesRespuestas]);
 
@@ -192,7 +186,7 @@ const Game = ({username}) => {
   }, [apiEndpoint, correctQuestions, finish, username, numberClics, timer]);
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="lg">
     <div>
       {numberClics > 10 || timer > 180 ? (
         <p>Fin de la partida</p>
