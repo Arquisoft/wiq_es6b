@@ -10,7 +10,7 @@ const port = 8003;
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/generatedquestdb?retryWrites=true&w=majority&appName=wiq06b';
+const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b';
 mongoose.connect(mongoUri);
 
   // Route for user login
