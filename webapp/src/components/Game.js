@@ -111,6 +111,7 @@ const Game = ({username}) => {
     try{
       setNumberClics(numberClics + 1);
       await obtenerPreguntaAleatoria();
+      
       addGeneratedQuestionBody();
     }catch(error)
     {
