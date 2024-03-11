@@ -66,7 +66,7 @@ const Login = ({setLogged}) => {
 
   const handleShowQuestionList = () => {
     setShowQuestionList(true);
-   
+    setShowGame(false);
     setShowUsersList(false);
     setShowRecordList(false);
   };
