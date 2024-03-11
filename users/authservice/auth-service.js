@@ -11,7 +11,7 @@ const port = 8002;
 app.use(express.json());
 
 // Connect to MongoDB
-const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/userdb';
+const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/userdb?retryWrites=true&w=majority&appName=wiq06b';
 mongoose.connect(mongoUri);
 
 // Function to validate required fields in the request body

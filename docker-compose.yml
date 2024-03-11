@@ -23,7 +23,7 @@ services:
     networks:
       - mynetwork
     environment:
-      MONGODB_URI: mongodb://mongodb:27017/userdb
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/userdb?retryWrites=true&w=majority&appName=wiq06b
 
   userservice:
     container_name: userservice-${teamname:-wiq_es06b}
@@ -37,7 +37,7 @@ services:
     networks:
       - mynetwork
     environment:
-      MONGODB_URI: mongodb://mongodb:27017/userdb
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/userdb?retryWrites=true&w=majority&appName=wiq06b
 
   answerservice:
     container_name: answerservice-${teamname:-wiq_es06b}
@@ -51,7 +51,7 @@ services:
     networks:
       - mynetwork
     environment:
-      MONGODB_URI: mongodb://mongodb:27017/questiondb
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b
 
   createservice:
     container_name: createservice-${teamname:-wiq_es06b}
@@ -65,7 +65,7 @@ services:
     networks:
       - mynetwork
     environment:
-      MONGODB_URI: mongodb://mongodb:27017/questiondb
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b
 
   recordservice:
     container_name: recordservice-${teamname:-wiq_es06b}
@@ -79,7 +79,7 @@ services:
     networks:
       - mynetwork
     environment:
-      MONGODB_URI: mongodb://mongodb:27017/recorddb
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/recorddb?retryWrites=true&w=majority&appName=wiq06b
 
   generatedquestservice:
     container_name: generatedquestservice-${teamname:-wiq_es06b}
@@ -93,7 +93,7 @@ services:
     networks:
       - mynetwork
     environment:
-      MONGODB_URI: mongodb://mongodb:27017/questiondb
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b
 
   gatewayservice:
     container_name: gatewayservice-${teamname:-wiq_es06b}
