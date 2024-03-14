@@ -1,11 +1,6 @@
-// src/components/Game.js
 import axios from 'axios';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-//import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
-import { Container, Typography, Button, Snackbar } from '@mui/material';
-
-
-//import Link from '@mui/material/Link';
+import { Container, Typography, Button, Snackbar, CircularProgress } from '@mui/material';
 
 const Game = ({username}) => {
   const [questionBody, setQuestionBody] = useState('');
@@ -18,6 +13,7 @@ const Game = ({username}) => {
   const [error, setError] = useState('');
   const [finish, setFinish] = useState(false);
   const [buttons, setButtons] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Nuevo estado para controlar la pantalla de carga
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -111,6 +107,7 @@ const Game = ({username}) => {
     try{
       setNumberClics(numberClics + 1);
       await obtenerPreguntaAleatoria();
+      
       addGeneratedQuestionBody();
     }catch(error)
     {
@@ -150,6 +147,7 @@ const Game = ({username}) => {
   useEffect(() => {
     const fetchData = async () => {
       await obtenerPreguntaAleatoria();
+      setIsLoading(false); // Cuando se carga la pregunta, se cambia el estado para dejar de mostrar la pantalla de carga
     };
     fetchData();
   }, [obtenerPreguntaAleatoria]);
@@ -188,28 +186,39 @@ const Game = ({username}) => {
   return (
     <Container maxWidth="lg">
     <div>
-      {numberClics > 10 || timer > 180 ? (
-        <p>Fin de la partida</p>
+      {isLoading ? ( // Mostrar la pantalla de carga si isLoading es verdadero
+        <div style={{ textAlign: 'center', marginTop: '50px' }}>
+          <CircularProgress />
+          <Typography variant="h6" gutterBottom>
+            Cargando...
+          </Typography>
+        </div>
       ) : (
         <>
-          <Typography component="h1" variant='h5' sx={{ textAlign: 'center' }}>
-            Pregunta Número {numberClics} :
-          </Typography>
-          <Typography component="h2" sx={{ textAlign: 'center', color: (timer > 120 && (timer % 60) % 2 === 0) ? 'red' : 'inherit', fontStyle: 'italic', fontWeight: (timer > 150 && (timer % 60) % 2 === 0) ? 'bold' : 'inherit' }}>
-            ¡Tiempo restante {handleTimeRemaining()}!
-          </Typography>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
-              {questionBody} {informacionWikidata}
-            </Typography>
+          {numberClics > 10 || timer > 180 ? (
+            <p>Fin de la partida</p>
+          ) : (
+            <>
+              <Typography component="h1" variant='h5' sx={{ textAlign: 'center' }}>
+                Pregunta Número {numberClics} :
+              </Typography>
+              <Typography component="h2" sx={{ textAlign: 'center', color: (timer > 120 && (timer % 60) % 2 === 0) ? 'red' : 'inherit', fontStyle: 'italic', fontWeight: (timer > 150 && (timer % 60) % 2 === 0) ? 'bold' : 'inherit' }}>
+                ¡Tiempo restante {handleTimeRemaining()}!
+              </Typography>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
+                  {questionBody} {informacionWikidata}
+                </Typography>
 
-            { buttons.map((button) => (
-                <Button variant="contained" color="primary" onClick={button.handler} >
-                  {button.answer}
-                </Button>
-            ))}
+                { buttons.map((button) => (
+                    <Button variant="contained" color="primary" onClick={button.handler} >
+                      {button.answer}
+                    </Button>
+                ))}
 
-          </div>
+              </div>
+            </>
+          )}
         </>
       )}
     {error && (

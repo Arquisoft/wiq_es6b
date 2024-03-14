@@ -4,11 +4,11 @@ const generatedQuest = new mongoose.Schema({
 
     generatedQuestionBody: {
         type: String,
-        required: true,
+        required: false,
       },
       correctAnswer: {
         type: String,
-        required: true,
+        required: false,
       },
 });
 
