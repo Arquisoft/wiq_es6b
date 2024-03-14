@@ -34,7 +34,7 @@ const Login = ({setLogged}) => {
 
       setCreatedAt(userCreatedAt);
       setLoginSuccess(true);
-
+      setLogged();
       setOpenSnackbar(true);
     } catch (error) {
       setError(error.response.data.error);
@@ -123,6 +123,7 @@ const Login = ({setLogged}) => {
 
       :
       (
+
         <div>
           <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
             Hello {username}!
