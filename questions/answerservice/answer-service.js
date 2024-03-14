@@ -11,7 +11,7 @@ const port = 8004;
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/questiondb';
+const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b';
 mongoose.connect(mongoUri);
 
 
