@@ -4,13 +4,13 @@ const bodyParser = require('body-parser');
 const GeneratedQuestion = require('./generatedquest-model');
 
 const app = express();
-const port = 8007;
+const port = 8003;
 
 // Middleware to parse JSON in request body
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/generatedquestdb';
+const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b';
 mongoose.connect(mongoUri);
 
   // Route for user login

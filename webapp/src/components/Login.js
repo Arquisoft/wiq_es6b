@@ -7,6 +7,7 @@ import { Container, Typography, TextField, Button, Snackbar, AppBar, Toolbar } f
 import Game from './Game';
 import UsersList from './UsersList';
 import GeneratedQuestionsList from './GeneratedQuestionsList';
+import RecordList from './RecordList';
 
 //import Link from '@mui/material/Link';
 
@@ -20,6 +21,7 @@ const Login = ({setLogged}) => {
   const [showGame, setShowGame] = useState(false);
   const [showUsersList, setShowUsersList] = useState(false);
   const [showQuestionList, setShowQuestionList] = useState(false);
+  const [showRecordList, setShowRecordList] = useState(false);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -32,7 +34,7 @@ const Login = ({setLogged}) => {
 
       setCreatedAt(userCreatedAt);
       setLoginSuccess(true);
-
+      setLogged();
       setOpenSnackbar(true);
     } catch (error) {
       setError(error.response.data.error);
@@ -43,17 +45,33 @@ const Login = ({setLogged}) => {
     setLogged();
     setShowGame(true);
     setShowUsersList(false);
+    setShowQuestionList(false);
+    setShowRecordList(false);
   };
 
   const handleShowUsersList = () => {
+    setLogged();
     setShowUsersList(true);
     setShowGame(false);
+    setShowQuestionList(false);
+    setShowRecordList(false);
+  };
+
+  const handleShowRecordList = () => {
+    setLogged();
+    setShowRecordList(true);
+    setShowGame(false);
+    setShowUsersList(false);
+    setShowQuestionList(false);
   };
 
 
   const handleShowQuestionList = () => {
+    setLogged();
     setShowQuestionList(true);
     setShowGame(false);
+    setShowUsersList(false);
+    setShowRecordList(false);
   };
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
@@ -77,6 +95,11 @@ const Login = ({setLogged}) => {
           Historial de Preguntas Generadas
         </Button>
       )}
+
+        <Button color="inherit" onClick={handleShowRecordList}>
+        Historial de jugadas
+      </Button>
+
     </Toolbar>
   </AppBar>
 )}
@@ -94,8 +117,13 @@ const Login = ({setLogged}) => {
       showQuestionList ? (
         <GeneratedQuestionsList />
       ) : 
-      
+      showRecordList ? (
+        <RecordList username={username} />
+      )
+
+      :
       (
+
         <div>
           <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
             Hello {username}!

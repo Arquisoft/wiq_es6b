@@ -23,7 +23,7 @@ services:
     networks:
       - mynetwork
     environment:
-      MONGODB_URI: mongodb://mongodb:27017/userdb
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/userdb?retryWrites=true&w=majority&appName=wiq06b
 
   userservice:
     container_name: userservice-${teamname:-wiq_es06b}
@@ -37,7 +37,7 @@ services:
     networks:
       - mynetwork
     environment:
-      MONGODB_URI: mongodb://mongodb:27017/userdb
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/userdb?retryWrites=true&w=majority&appName=wiq06b
 
   answerservice:
     container_name: answerservice-${teamname:-wiq_es06b}
@@ -51,7 +51,7 @@ services:
     networks:
       - mynetwork
     environment:
-      MONGODB_URI: mongodb://mongodb:27017/questiondb
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b
 
   createservice:
     container_name: createservice-${teamname:-wiq_es06b}
@@ -65,7 +65,7 @@ services:
     networks:
       - mynetwork
     environment:
-      MONGODB_URI: mongodb://mongodb:27017/questiondb
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b
 
   recordservice:
     container_name: recordservice-${teamname:-wiq_es06b}
@@ -79,7 +79,7 @@ services:
     networks:
       - mynetwork
     environment:
-      MONGODB_URI: mongodb://mongodb:27017/recorddb
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/recorddb?retryWrites=true&w=majority&appName=wiq06b
 
   generatedquestservice:
     container_name: generatedquestservice-${teamname:-wiq_es06b}
@@ -89,11 +89,11 @@ services:
     depends_on:
       - mongodb
     ports:
-      - "8007:8007"
+      - "8003:8003"
     networks:
       - mynetwork
     environment:
-      MONGODB_URI: mongodb://mongodb:27017/questiondb
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b
 
   gatewayservice:
     container_name: gatewayservice-${teamname:-wiq_es06b}
@@ -118,7 +118,7 @@ services:
       ANSW_SERVICE_URL: http://answerservice:8004
       QUES_SERVICE_URL: http://createservice:8005
       REC_SERVICE_URL: http://recordservice:8006
-      GEN_SERVICE_URL: http://generatedquestservice:8007
+      GEN_SERVICE_URL: http://generatedquestservice:8003
 
   webapp:
     container_name: webapp-${teamname:-wiq_es06b}
