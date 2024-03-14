@@ -50,6 +50,7 @@ const Login = ({setLogged}) => {
   };
 
   const handleShowUsersList = () => {
+    setLogged();
     setShowUsersList(true);
     setShowGame(false);
     setShowQuestionList(false);
@@ -57,6 +58,7 @@ const Login = ({setLogged}) => {
   };
 
   const handleShowRecordList = () => {
+    setLogged();
     setShowRecordList(true);
     setShowGame(false);
     setShowUsersList(false);
@@ -65,6 +67,7 @@ const Login = ({setLogged}) => {
 
 
   const handleShowQuestionList = () => {
+    setLogged();
     setShowQuestionList(true);
     setShowGame(false);
     setShowUsersList(false);
