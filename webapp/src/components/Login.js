@@ -37,7 +37,13 @@ const Login = ({setLogged}) => {
       setLogged();
       setOpenSnackbar(true);
     } catch (error) {
-      setError(error.response.data.error);
+      if (error.response) {
+        setError(error.response.data.error);
+      } else if (error.request) {
+        setError('No response from server. Please try again later.');
+      } else {
+        setError('An unexpected error occurred.');
+      }
     }
   };
 
