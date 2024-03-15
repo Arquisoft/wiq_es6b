@@ -22,7 +22,7 @@ const RecordList = ({ username }) => {
     };
 
     fetchRecords();
-  }, [apiEndpoint]);
+  }, [apiEndpoint, username]);
 
   return (
     <div>

@@ -34,10 +34,16 @@ const Login = ({setLogged}) => {
 
       setCreatedAt(userCreatedAt);
       setLoginSuccess(true);
-
+      setLogged();
       setOpenSnackbar(true);
     } catch (error) {
-      setError(error.response.data.error);
+      if (error.response) {
+        setError(error.response.data.error);
+      } else if (error.request) {
+        setError('No response from server. Please try again later.');
+      } else {
+        setError('An unexpected error occurred.');
+      }
     }
   };
 
@@ -50,6 +56,7 @@ const Login = ({setLogged}) => {
   };
 
   const handleShowUsersList = () => {
+    setLogged();
     setShowUsersList(true);
     setShowGame(false);
     setShowQuestionList(false);
@@ -57,6 +64,7 @@ const Login = ({setLogged}) => {
   };
 
   const handleShowRecordList = () => {
+    setLogged();
     setShowRecordList(true);
     setShowGame(false);
     setShowUsersList(false);
@@ -65,6 +73,7 @@ const Login = ({setLogged}) => {
 
 
   const handleShowQuestionList = () => {
+    setLogged();
     setShowQuestionList(true);
     setShowGame(false);
     setShowUsersList(false);
@@ -120,6 +129,7 @@ const Login = ({setLogged}) => {
 
       :
       (
+
         <div>
           <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
             Hello {username}!
