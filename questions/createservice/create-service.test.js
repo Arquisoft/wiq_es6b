@@ -59,8 +59,8 @@ describe('Create Service', () => {
         const response = await request(app).get('/getFullQuestion');
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
-        expect(response.body).toHaveProperty('typeQuestion');
-        expect(response.body).toHaveProperty('typeAnswer');
+        expect(response.body).toHaveProperty('correctAnswer');
+        expect(response.body).toHaveProperty('incorrectAnswers');
     });
 
     
