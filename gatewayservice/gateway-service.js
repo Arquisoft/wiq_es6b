@@ -52,16 +52,6 @@ app.post('/addRecord', async(req, res) => {
   }
 });
 
-app.post('/getQuestionBody', async (req, res) => {
-  try {
-    // Forward the add user request to the user service
-    const questionResponse = await axios.post(`${questionServiceUrl}/getQuestionBody`);
-    res.json(questionResponse.data);
-  } catch (error) {
-    res.status(error.response.status).json({ error: error.response.data.error });
-  }
-});
-
 app.post('/addQuestion', async (req, res) => {
   try {
     // Reenviar los datos recibidos en la solicitud POST al servicio de preguntas

@@ -50,16 +50,6 @@ app.post('/addQuestion', async (req, res) => {
   }
 });
 
-// Ruta para obtener una pregunta de forma aleatoria
-app.post('/getQuestionBody', async (req, res) => {
-  try {
-    const rQuestion = await Question.aggregate([{ $sample: { size: 1 } }]);
-    res.json(rQuestion[0]);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
 // Nuevo endpoint para obtener una pregunta completa
 app.get('/getFullQuestion', async (req, res) => {
   try {
