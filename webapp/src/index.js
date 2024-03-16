@@ -13,7 +13,7 @@ root.render(
   </Typography>
   <App />
   <Typography component="h1" variant="h5" align="center" sx={{ marginTop: 4 }}>
-    wiq_6B
+  &copy; wiq_6B
   </Typography>
 </React.StrictMode>
 );
