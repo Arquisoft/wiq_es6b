@@ -138,6 +138,20 @@ app.get('/getRecords/:userId', async (req, res) => {
   }
 });
 
+app.get('/getFullQuestion', async (req, res) => {
+  try {
+    // Realizar una solicitud GET al servicio de preguntas para obtener una pregunta completa
+    const questionResponse = await axios.get(`${questionServiceUrl}/getFullQuestion`);
+    res.json(questionResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+});
+
 
 // Start the gateway service
 const server = app.listen(port, () => {
