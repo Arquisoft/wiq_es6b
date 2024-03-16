@@ -4,9 +4,9 @@ import { Container, Typography, Button, Snackbar, CircularProgress } from '@mui/
 
 const Game = ({username}) => {
   const [questionBody, setQuestionBody] = useState('');
-  const [informacionWikidata, setInformacionWikidata] = useState('');
   const [respuestaCorrecta, setRespuestaCorrecta] = useState('');
   const [respuestasFalsas, setRespuestasFalsas] = useState([]);
+
   const [numberClics, setNumberClics] = useState(1);
   const [timer, setTimer] = useState(0);
   const [correctQuestions, setCorrectQuestions] = useState(0);
@@ -24,75 +24,21 @@ const Game = ({username}) => {
     return () => clearInterval(interval);
   }, []);
 
-  const questionTypes = useMemo(() => ({
-    "pais": {
-      query: `
-        SELECT ?country ?countryLabel ?capital ?capitalLabel
-        WHERE {
-          ?country wdt:P31 wd:Q6256.
-          ?country wdt:P36 ?capital.
-          SERVICE wikibase:label {
-            bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es".
-          }
-        }
-        ORDER BY RAND()
-        LIMIT 150
-      `,
-      questionLabel: 'countryLabel',
-      answerLabel: 'capitalLabel'
-    },
-    // Añadir el resto de tipos de preguntas
-  }), []);
-
-  const obtenerDatos = useCallback(async (questionType) => {
-    try {
-      const { query, questionLabel, answerLabel } = questionTypes[questionType];
-
-      const apiUrl = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
-      const headers = { "Accept": "application/json" };
-
-      const respuestaWikidata = await fetch(apiUrl, { headers });
-
-      if (respuestaWikidata.ok) {
-        const data = await respuestaWikidata.json();
-        const numEles = data.results.bindings.length;
-
-        // Obtener la respuesta correcta
-        const indexCorrecta = Math.floor(Math.random() * numEles);
-        const resultCorrecta = data.results.bindings[indexCorrecta];
-        setInformacionWikidata(resultCorrecta[questionLabel].value + '?');
-        setRespuestaCorrecta(resultCorrecta[answerLabel].value);
-
-        // Obtener respuestas falsas
-        const respuestas = [];
-        for (let i = 0; i < 3; i++) {
-          const indexFalsa = Math.floor(Math.random() * numEles);
-          const resultFalsa = data.results.bindings[indexFalsa];
-          respuestas.push(resultFalsa[answerLabel].value);
-        }
-        setRespuestasFalsas(respuestas);
-      } else {
-        console.error("Error al realizar la consulta en Wikidata. Estado de respuesta:", respuestaWikidata.status);
-      }
-    } catch (error) {
-      console.error("Error al realizar la consulta en Wikidata", error);
-    }
-  }, [questionTypes, setInformacionWikidata, setRespuestaCorrecta, setRespuestasFalsas]);
-
   const obtenerPreguntaAleatoria = useCallback(async () => {
     try {
-      const response = await axios.post(`${apiEndpoint}/getQuestionBody`);
+      const response = await axios.get(`${apiEndpoint}/getFullQuestion`);
       setQuestionBody(response.data.questionBody);
-      await obtenerDatos(response.data.typeQuestion);
+      setRespuestaCorrecta(response.data.correctAnswer);
+      setRespuestasFalsas(response.data.incorrectAnswers);
     } catch (error) {
       console.error("Error al obtener la pregunta aleatoria", error);
     }
-  }, [apiEndpoint, obtenerDatos]);
+  }, [apiEndpoint, questionBody, respuestaCorrecta, respuestasFalsas]);
 
   const addGeneratedQuestionBody = useCallback(async () => {
     try {
 
-      let pregunta=`${questionBody || ''} ${informacionWikidata || ''}`;
+      let pregunta=questionBody;
       await axios.post(`${apiEndpoint}/addGeneratedQuestion`, { 
         generatedQuestionBody: pregunta,
         correctAnswer: respuestaCorrecta
@@ -101,7 +47,7 @@ const Game = ({username}) => {
     } catch (error) {
       setError(error.response.data.error);
     }
-  }, [apiEndpoint, questionBody, informacionWikidata, respuestaCorrecta]);
+  }, [apiEndpoint, questionBody, respuestaCorrecta]);
 
   const handleButtonClickGeneric = useCallback(async () => {
     try{
@@ -141,16 +87,21 @@ const Game = ({username}) => {
   }, [respuestaCorrecta, respuestasFalsas, handleButtonClickCorrect, handleButtonClickGeneric]);
 
   useEffect(() => {
-    generarBotonesRespuestas();
-  }, [respuestaCorrecta, respuestasFalsas, generarBotonesRespuestas]);
-
-  useEffect(() => {
     const fetchData = async () => {
-      await obtenerPreguntaAleatoria();
-      setIsLoading(false); // Cuando se carga la pregunta, se cambia el estado para dejar de mostrar la pantalla de carga
+      setIsLoading(true); 
+      try {
+        await obtenerPreguntaAleatoria();
+        await generarBotonesRespuestas();
+      } catch (error) {
+        console.error("Error al obtener la pregunta o generar botones", error);
+        setError("Error al obtener la pregunta o generar botones");
+      } finally {
+        setIsLoading(false); 
+      }
     };
-    fetchData();
-  }, [obtenerPreguntaAleatoria]);
+  
+    fetchData(); 
+  }, [obtenerPreguntaAleatoria, generarBotonesRespuestas]);
 
   const handleTimeRemaining = () => {
     let minsR = Math.floor((3 * 60 - timer) / 60);
@@ -207,7 +158,7 @@ const Game = ({username}) => {
               </Typography>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
-                  {questionBody} {informacionWikidata}
+                  {questionBody} 
                 </Typography>
 
                 { buttons.map((button) => (
