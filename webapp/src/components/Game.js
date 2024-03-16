@@ -87,16 +87,21 @@ const Game = ({username}) => {
   }, [respuestaCorrecta, respuestasFalsas, handleButtonClickCorrect, handleButtonClickGeneric]);
 
   useEffect(() => {
-    generarBotonesRespuestas();
-  }, [respuestaCorrecta, respuestasFalsas, generarBotonesRespuestas]);
-
-  useEffect(() => {
     const fetchData = async () => {
-      await obtenerPreguntaAleatoria();
-      setIsLoading(false); // Cuando se carga la pregunta, se cambia el estado para dejar de mostrar la pantalla de carga
+      setIsLoading(true); 
+      try {
+        await obtenerPreguntaAleatoria();
+        await generarBotonesRespuestas();
+      } catch (error) {
+        console.error("Error al obtener la pregunta o generar botones", error);
+        setError("Error al obtener la pregunta o generar botones");
+      } finally {
+        setIsLoading(false); 
+      }
     };
-    fetchData();
-  }, [obtenerPreguntaAleatoria]);
+  
+    fetchData(); 
+  }, [obtenerPreguntaAleatoria, generarBotonesRespuestas]);
 
   const handleTimeRemaining = () => {
     let minsR = Math.floor((3 * 60 - timer) / 60);
