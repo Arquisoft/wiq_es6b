@@ -33,7 +33,7 @@ const Game = ({username}) => {
     } catch (error) {
       console.error("Error al obtener la pregunta aleatoria", error);
     }
-  }, [apiEndpoint, questionBody, respuestaCorrecta, respuestasFalsas]);
+  }, [apiEndpoint]);
 
   const addGeneratedQuestionBody = useCallback(async () => {
     try {
