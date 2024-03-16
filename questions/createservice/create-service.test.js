@@ -55,8 +55,8 @@ describe('Create Service', () => {
         expect(response3.body).toHaveProperty('typeAnswer', 'autor');
     });
 
-    it('Should perform a getRecord operation /getQuestionBody', async () => {
-        const response = await request(app).post('/getQuestionBody');
+    it('Should perform a getFullQuestion operation /getFullQuestion', async () => {
+        const response = await request(app).post('/getFullQuestion');
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
         expect(response.body).toHaveProperty('typeQuestion');
