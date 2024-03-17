@@ -33,7 +33,7 @@ const Game = ({username}) => {
     } catch (error) {
       console.error("Error al obtener la pregunta aleatoria", error);
     }
-  }, [apiEndpoint]);
+  }, [apiEndpoint, questionBody, respuestaCorrecta, respuestasFalsas]);
 
   const addGeneratedQuestionBody = useCallback(async () => {
     try {
@@ -52,14 +52,14 @@ const Game = ({username}) => {
   const handleButtonClickGeneric = useCallback(async () => {
     try{
       setNumberClics(numberClics + 1);
-      await obtenerPreguntaAleatoria();
+      //await obtenerPreguntaAleatoria();
       
       addGeneratedQuestionBody();
     }catch(error)
     {
     console.error("Error",error)
     }
-  }, [numberClics, obtenerPreguntaAleatoria, addGeneratedQuestionBody]);
+  }, [numberClics, addGeneratedQuestionBody]);
 
   const handleButtonClickCorrect = useCallback(() => {
     setCorrectQuestions(correctQuestions+1);
@@ -88,7 +88,10 @@ const Game = ({username}) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true); 
+      if((numberClics<=10 && timer<=180) ){
+        setIsLoading(true); 
+      }
+      
       try {
         await obtenerPreguntaAleatoria();
         await generarBotonesRespuestas();
