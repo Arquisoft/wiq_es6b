@@ -16,17 +16,38 @@ mongoose.connect(mongoUri);
   // Route for user login
 app.post('/addGeneratedQuestion', async (req, res) => {
   try {
+    const { generatedQuestionBody, correctAnswer } = req.body;
+
+  const questionExists = await doesQuestionExist(generatedQuestionBody);
+  if (!questionExists) {
     const newQuestion = new GeneratedQuestion({
       generatedQuestionBody: req.body.generatedQuestionBody,
       correctAnswer: req.body.correctAnswer,
   });
-  newQuestion.save();
-  res.json(newQuestion);
+    newQuestion.save();
+    res.json(newQuestion);
+  }
+
   
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+const doesQuestionExist = async (questionBody) => {
+ 
+ //devuelve true si la pregunta ya existe 
+  try {
+    const existingQuestion = await GeneratedQuestion.findOne({
+      generatedQuestionBody: questionBody
+    });
+
+    return !!existingQuestion; // Convertir el resultado en un booleano
+  } catch (error) {
+    console.error('Error al verificar la existencia de la pregunta:', error);
+    return true; // Tratar cualquier error como si la pregunta existiera
+  }
+};
 
 //obtencion de todas las preguntas generadas y su respuesta correcta 
 app.get('/getAllGeneratedQuestions', async (req, res) => {
