@@ -11,6 +11,7 @@ const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
 const questionServiceUrl = process.env.QUES_SERVICE_URL || 'http://localhost:8005';
 const recordServiceUrl = process.env.REC_SERVICE_URL || 'http://localhost:8006';
 const genQuestServiceUrl = process.env.GEN_SERVICE_URL || 'http://localhost:8003';
+const rankingServiceUrl = process.env.RANK_SERVICE_URL || 'http://localhost:8004';
 
 app.use(cors());
 app.use(express.json());
@@ -142,6 +143,52 @@ app.get('/getFullQuestion', async (req, res) => {
   }
 });
 
+
+////////////////////////ranking
+app.post('/createUserRank', async (req, res) => {
+  try {
+      const { username } = req.body;
+
+      // Reenviar la solicitud POST al servicio de ranking para crear un ranking para el usuario
+      const rankingResponse = await axios.post(`${rankingServiceUrl}/createUserRank`, req.body);
+      res.json(rankingResponse.data);
+  } catch (error) {
+      if (error.response) {
+          res.status(error.response.status).json({ error: error.response.data.error });
+      } else {
+          res.status(500).json({ error: 'Error interno del servidor' });
+      }
+  }
+});
+
+
+app.get('/obtainRank', async (req, res) => {
+  try {
+      // Reenviar la solicitud GET al servicio de ranking para obtener toda la lista de rankings
+      const rankingsResponse = await axios.get(`${rankingServiceUrl}/obtainRank`);
+      res.json(rankingsResponse.data);
+  } catch (error) {
+      if (error.response) {
+          res.status(error.response.status).json({ error: error.response.data.error });
+      } else {
+          res.status(500).json({ error: 'Error interno del servidor' });
+      }
+  }
+});
+
+app.post('/updateRanking', async (req, res) => {
+  try {
+      // Reenviar la solicitud POST al servicio de ranking para actualizar el ranking de un usuario
+      const rankingResponse = await axios.post(`${rankingServiceUrl}/updateRanking`, req.body);
+      res.json(rankingResponse.data);
+  } catch (error) {
+      if (error.response) {
+          res.status(error.response.status).json({ error: error.response.data.error });
+      } else {
+          res.status(500).json({ error: 'Error interno del servidor' });
+      }
+  }
+});
 
 // Start the gateway service
 const server = app.listen(port, () => {
