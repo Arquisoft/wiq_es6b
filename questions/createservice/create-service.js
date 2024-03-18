@@ -27,7 +27,7 @@ const questionTypes = {
         }
       }
       ORDER BY RAND()
-      LIMIT 35
+      LIMIT 30
     `,
     questionLabel: 'countryLabel',
     answerLabel: 'capitalLabel'
@@ -54,7 +54,7 @@ const questionTypes = {
       }
     }
      ORDER BY RAND()
-     LIMIT 30`
+     LIMIT 25`
     ,
     questionLabel: 'cityLabel',
     answerLabel: 'population'
