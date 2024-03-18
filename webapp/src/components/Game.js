@@ -78,6 +78,7 @@ const Game = ({ username }) => {
     addGeneratedQuestionBody();
     if (numberClics > 10) {
       setFinish(true);
+      setIsLoading(false);     
     }
   }, [numberClics, obtenerPreguntaAleatoria, addGeneratedQuestionBody, correctQuestions]);
 
@@ -107,7 +108,8 @@ const Game = ({ username }) => {
 
     if ((numberClics > 10 || timer > 180) && !finish) {
       addRecord();
-      setFinish(true);
+      setFinish(true); 
+      setIsLoading(false);    
     }
   }, [apiEndpoint, correctQuestions, finish, username, numberClics, timer]);
 
@@ -142,7 +144,7 @@ const Game = ({ username }) => {
 
 
                   {allanswers.map((respuesta, index) => (
-                    <Button key={index} variant="contained" color="primary" onClick={handleButtonClick}>
+                    <Button key={index} variant="contained" color="primary" onClick={() => handleButtonClick(respuesta)}>
                       {respuesta}
                     </Button>
                   ))}
