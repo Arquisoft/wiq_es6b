@@ -27,12 +27,38 @@ const questionTypes = {
         }
       }
       ORDER BY RAND()
-      LIMIT 150
+      LIMIT 35
     `,
     questionLabel: 'countryLabel',
     answerLabel: 'capitalLabel'
   },
   // Agregar otros tipos de preguntas aquí
+  poblacion: {
+    query: `
+    SELECT DISTINCT ?city ?cityLabel ?population ?country ?countryLabel ?loc WHERE {
+      {
+        SELECT (MAX(?population_) AS ?population) ?country WHERE {
+          ?city wdt:P31/wdt:P279* wd:Q515 .
+          ?city wdt:P1082 ?population_ .
+          ?city wdt:P17 ?country .
+        }
+        GROUP BY ?country
+        ORDER BY DESC(?population)
+      }
+      ?city wdt:P31/wdt:P279* wd:Q515 .
+      ?city wdt:P1082 ?population .
+      ?city wdt:P17 ?country .
+      ?city wdt:P625 ?loc .
+      SERVICE wikibase:label {
+        bd:serviceParam wikibase:language "en" .
+      }
+    }
+     ORDER BY RAND()
+     LIMIT 30`
+    ,
+    questionLabel: 'cityLabel',
+    answerLabel: 'population'
+  },
 };
 
 // Ruta para agregar una nueva pregunta
