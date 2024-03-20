@@ -45,11 +45,25 @@ const Game = ({ username }) => {
   };
 
   const handleButtonClick = (respuestaSeleccionada) => {
+    
     if (respuestaSeleccionada === question.correcta) {
       setCorrectQuestions(correctQuestions + 1);
     }
+    addGeneratedQuestionBody();
     setNumberClics(numberClics+1);
     obtenerPreguntaAleatoria();
+  };
+
+  const addGeneratedQuestionBody = async () => {
+    try {
+      await axios.post(`${apiEndpoint}/addGeneratedQuestion`, {
+        generatedQuestionBody: question.questionBody,
+        correctAnswer: question.correcta
+      });
+
+    } catch (error) {
+      setError(error.response.data.error);
+    }
   };
 
   return (
