@@ -23,14 +23,19 @@ const Login = ({setLogged}) => {
   const [showQuestionList, setShowQuestionList] = useState(false);
   const [showRecordList, setShowRecordList] = useState(false);
 
+
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
   const loginUser = async () => {
     try {
+      //await axios.delete(`${apiEndpoint}/deleteAllQuestionTest`);
+      //obtenerPreguntaspartida();
       const response = await axios.post(`${apiEndpoint}/login`, { username, password });
 
       // Extraer datos de la respuesta
       const { createdAt: userCreatedAt } = response.data;
+      
+      
 
       setCreatedAt(userCreatedAt);
       setLoginSuccess(true);
@@ -47,7 +52,31 @@ const Login = ({setLogged}) => {
     }
   };
 
-  const handleShowGame = () => {
+  const obtenerPreguntaspartida = async () => {
+    
+    try {
+      for (let i = 1; i <= 10; i++) { // Bucle del 1 al 10 para obtener 10 preguntas
+        const response = await axios.get(`${apiEndpoint}/getFullQuestion`);
+        const { questionBody, correctAnswer, incorrectAnswers } = response.data;
+        const numquest = i; // Asignar el número de pregunta en el bucle
+  
+        // Enviar la pregunta al servicio de preguntas de prueba
+        await axios.post(`${apiEndpoint}/addQuestionTest`, {
+          questionBody,
+          correcta: correctAnswer,
+          incorrectas: incorrectAnswers,
+          numquest
+        });
+      }
+      
+    } catch (error) {
+      console.error("Error al obtener la pregunta aleatoria", error);
+   
+    }
+  };
+
+  const handleShowGame = async () => {
+
     setLogged();
     setShowGame(true);
     setShowUsersList(false);
