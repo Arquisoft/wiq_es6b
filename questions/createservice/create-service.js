@@ -27,36 +27,25 @@ const questionTypes = {
         }
       }
       ORDER BY RAND()
-      LIMIT 35
+      LIMIT 30
     `,
     questionLabel: 'countryLabel',
     answerLabel: 'capitalLabel'
   },
-  // Agregar otros tipos de preguntas aquí
-  poblacion: {
+
+ poblacion: {
     query: `
-    SELECT DISTINCT ?city ?cityLabel ?population ?country ?countryLabel ?loc WHERE {
-      {
-        SELECT (MAX(?population_) AS ?population) ?country WHERE {
-          ?city wdt:P31/wdt:P279* wd:Q515 .
-          ?city wdt:P1082 ?population_ .
-          ?city wdt:P17 ?country .
-        }
-        GROUP BY ?country
-        ORDER BY DESC(?population)
-      }
-      ?city wdt:P31/wdt:P279* wd:Q515 .
-      ?city wdt:P1082 ?population .
-      ?city wdt:P17 ?country .
-      ?city wdt:P625 ?loc .
-      SERVICE wikibase:label {
-        bd:serviceParam wikibase:language "en" .
-      }
-    }
+    SELECT DISTINCT ?countryLabel ?population
+{
+  ?country wdt:P31 wd:Q6256 ;
+           wdt:P1082 ?population .
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es" }
+}
+GROUP BY ?population ?countryLabel
      ORDER BY RAND()
      LIMIT 30`
     ,
-    questionLabel: 'cityLabel',
+    questionLabel: 'countryLabel',
     answerLabel: 'population'
   },
 };

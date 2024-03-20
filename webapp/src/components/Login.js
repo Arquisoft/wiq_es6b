@@ -23,14 +23,19 @@ const Login = ({setLogged}) => {
   const [showQuestionList, setShowQuestionList] = useState(false);
   const [showRecordList, setShowRecordList] = useState(false);
 
+
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
   const loginUser = async () => {
     try {
+      //await axios.delete(`${apiEndpoint}/deleteAllQuestionTest`);
+      //obtenerPreguntaspartida();
       const response = await axios.post(`${apiEndpoint}/login`, { username, password });
 
       // Extraer datos de la respuesta
       const { createdAt: userCreatedAt } = response.data;
+      
+      
 
       setCreatedAt(userCreatedAt);
       setLoginSuccess(true);
@@ -47,68 +52,64 @@ const Login = ({setLogged}) => {
     }
   };
 
+
+
   const handleShowGame = () => {
-    setLogged();
-    setShowGame(true);
     setShowUsersList(false);
     setShowQuestionList(false);
     setShowRecordList(false);
+    setShowGame(true);
   };
 
   const handleShowUsersList = () => {
-    setLogged();
-    setShowUsersList(true);
     setShowGame(false);
     setShowQuestionList(false);
     setShowRecordList(false);
+    setShowUsersList(true);
+  };
+
+  const handleShowQuestionList = () => {
+    setShowGame(false);
+    setShowUsersList(false);
+    setShowRecordList(false);
+    setShowQuestionList(true);
   };
 
   const handleShowRecordList = () => {
-    setLogged();
-    setShowRecordList(true);
     setShowGame(false);
     setShowUsersList(false);
     setShowQuestionList(false);
-  };
-
-
-  const handleShowQuestionList = () => {
-    setLogged();
-    setShowQuestionList(true);
-    setShowGame(false);
-    setShowUsersList(false);
-    setShowRecordList(false);
+    setShowRecordList(true);
   };
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
+  
 
   return (
     <>
-   {loginSuccess === true && (
-  <AppBar position="static">
-    <Toolbar>
-      <Button color="inherit" onClick={handleShowGame}>
-        Jugar
-      </Button>
-      {username === 'admin' && (
-        <Button color="inherit" href="#" onClick={handleShowUsersList}>
-          Historial de Usuarios
-        </Button>
-      )}
-      {username === 'admin' && (
-        <Button color="inherit" href="#" onClick={handleShowQuestionList}>
-          Historial de Preguntas Generadas
-        </Button>
-      )}
-
-        <Button color="inherit" onClick={handleShowRecordList}>
-        Historial de jugadas
-      </Button>
-
-    </Toolbar>
-  </AppBar>
-)}
+    {loginSuccess && (
+      <AppBar position="static">
+        <Toolbar>
+          <Button color="inherit" onClick={handleShowGame}>
+            Jugar
+          </Button>
+          {username === 'admin' && (
+            <Button color="inherit" onClick={handleShowUsersList}>
+              Historial de Usuarios
+            </Button>
+          )}
+          {username === 'admin' && (
+            <Button color="inherit" onClick={handleShowQuestionList}>
+              Historial de Preguntas Generadas
+            </Button>
+          )}
+          <Button color="inherit" onClick={handleShowRecordList}>
+            Historial de jugadas
+          </Button>
+        </Toolbar>
+      </AppBar>
+    )}
 
     <Container maxWidth="lg" style={{ marginTop: '2rem' }}>
       {loginSuccess ? (
