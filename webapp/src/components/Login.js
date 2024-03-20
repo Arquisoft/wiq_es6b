@@ -52,92 +52,64 @@ const Login = ({setLogged}) => {
     }
   };
 
-  const obtenerPreguntaspartida = async () => {
-    
-    try {
-      for (let i = 1; i <= 10; i++) { // Bucle del 1 al 10 para obtener 10 preguntas
-        const response = await axios.get(`${apiEndpoint}/getFullQuestion`);
-        const { questionBody, correctAnswer, incorrectAnswers } = response.data;
-        const numquest = i; // Asignar el número de pregunta en el bucle
-  
-        // Enviar la pregunta al servicio de preguntas de prueba
-        await axios.post(`${apiEndpoint}/addQuestionTest`, {
-          questionBody,
-          correcta: correctAnswer,
-          incorrectas: incorrectAnswers,
-          numquest
-        });
-      }
-      
-    } catch (error) {
-      console.error("Error al obtener la pregunta aleatoria", error);
-   
-    }
-  };
 
-  const handleShowGame = async () => {
 
-    setLogged();
-    setShowGame(true);
+  const handleShowGame = () => {
     setShowUsersList(false);
     setShowQuestionList(false);
     setShowRecordList(false);
+    setShowGame(true);
   };
 
   const handleShowUsersList = () => {
-    setLogged();
-    setShowUsersList(true);
     setShowGame(false);
     setShowQuestionList(false);
     setShowRecordList(false);
+    setShowUsersList(true);
+  };
+
+  const handleShowQuestionList = () => {
+    setShowGame(false);
+    setShowUsersList(false);
+    setShowRecordList(false);
+    setShowQuestionList(true);
   };
 
   const handleShowRecordList = () => {
-    setLogged();
-    setShowRecordList(true);
     setShowGame(false);
     setShowUsersList(false);
     setShowQuestionList(false);
-  };
-
-
-  const handleShowQuestionList = () => {
-    setLogged();
-    setShowQuestionList(true);
-    setShowGame(false);
-    setShowUsersList(false);
-    setShowRecordList(false);
+    setShowRecordList(true);
   };
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
+  
 
   return (
     <>
-   {loginSuccess === true && (
-  <AppBar position="static">
-    <Toolbar>
-      <Button color="inherit" onClick={handleShowGame}>
-        Jugar
-      </Button>
-      {username === 'admin' && (
-        <Button color="inherit" href="#" onClick={handleShowUsersList}>
-          Historial de Usuarios
-        </Button>
-      )}
-      {username === 'admin' && (
-        <Button color="inherit" href="#" onClick={handleShowQuestionList}>
-          Historial de Preguntas Generadas
-        </Button>
-      )}
-
-        <Button color="inherit" onClick={handleShowRecordList}>
-        Historial de jugadas
-      </Button>
-
-    </Toolbar>
-  </AppBar>
-)}
+    {loginSuccess && (
+      <AppBar position="static">
+        <Toolbar>
+          <Button color="inherit" onClick={handleShowGame}>
+            Jugar
+          </Button>
+          {username === 'admin' && (
+            <Button color="inherit" onClick={handleShowUsersList}>
+              Historial de Usuarios
+            </Button>
+          )}
+          {username === 'admin' && (
+            <Button color="inherit" onClick={handleShowQuestionList}>
+              Historial de Preguntas Generadas
+            </Button>
+          )}
+          <Button color="inherit" onClick={handleShowRecordList}>
+            Historial de jugadas
+          </Button>
+        </Toolbar>
+      </AppBar>
+    )}
 
     <Container maxWidth="lg" style={{ marginTop: '2rem' }}>
       {loginSuccess ? (

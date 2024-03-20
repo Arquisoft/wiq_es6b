@@ -49,7 +49,8 @@ const Game = ({ username }) => {
     if (respuestaSeleccionada === question.correcta) {
       setCorrectQuestions(correctQuestions + 1);
     }
-    addGeneratedQuestionBody();
+    //addGeneratedQuestionBody();
+    //addRecord();
     setNumberClics(numberClics+1);
     obtenerPreguntaAleatoria();
   };
@@ -65,6 +66,28 @@ const Game = ({ username }) => {
       setError(error.response.data.error);
     }
   };
+
+
+  const addRecord = async () => {
+    try {
+      if (numberClics > 10 || timer > 180) {
+         
+      
+
+      await axios.post(`${apiEndpoint}/addRecord`, {
+        userId: username,
+        date: new Date(),
+        time: timer,
+        money: (25 * correctQuestions),
+        correctQuestions: correctQuestions,
+        failedQuestions: (10 - correctQuestions)
+      });
+    }
+    } catch (error) {
+      setError(error.response.data.error);
+    }
+  };
+
 
   return (
     <Container maxWidth="lg">
