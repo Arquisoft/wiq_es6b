@@ -8,6 +8,7 @@ const Game = ({ username }) => {
   const [error, setError] = useState('');
   const [correctQuestions, setCorrectQuestions] = useState(0);
   const [timer, setTimer] = useState(0);
+  const [numberClics, setNumberClics] = useState(1);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -47,17 +48,21 @@ const Game = ({ username }) => {
     if (respuestaSeleccionada === question.correcta) {
       setCorrectQuestions(correctQuestions + 1);
     }
+    setNumberClics(numberClics+1);
     obtenerPreguntaAleatoria();
   };
 
   return (
     <Container maxWidth="lg">
-      {timer > 180 ? (
+      {numberClics > 10 || timer > 180 ? (
         <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
           Fin de la partida
         </Typography>
       ) : (
         <>
+        <Typography component="h1" variant='h5' sx={{ textAlign: 'center' }}>
+                  Pregunta Número {numberClics} :
+          </Typography>
           <Typography component="h2" sx={{ textAlign: 'center', color: (timer > 120 && (timer % 60) % 2 === 0) ? 'red' : 'inherit', fontStyle: 'italic', fontWeight: (timer > 150 && (timer % 60) % 2 === 0) ? 'bold' : 'inherit' }}>
             ¡Tiempo restante {handleTimeRemaining()}!
           </Typography>
