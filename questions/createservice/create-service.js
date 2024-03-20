@@ -27,12 +27,27 @@ const questionTypes = {
         }
       }
       ORDER BY RAND()
-      LIMIT 150
+      LIMIT 30
     `,
     questionLabel: 'countryLabel',
     answerLabel: 'capitalLabel'
   },
-  // Agregar otros tipos de preguntas aquí
+
+ poblacion: {
+    query: `
+    SELECT DISTINCT ?countryLabel ?population
+{
+  ?country wdt:P31 wd:Q6256 ;
+           wdt:P1082 ?population .
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es" }
+}
+GROUP BY ?population ?countryLabel
+     ORDER BY RAND()
+     LIMIT 30`
+    ,
+    questionLabel: 'countryLabel',
+    answerLabel: 'population'
+  },
 };
 
 // Ruta para agregar una nueva pregunta
