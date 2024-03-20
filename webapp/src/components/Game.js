@@ -4,8 +4,9 @@ import { Container, Typography, Button, Snackbar } from '@mui/material';
 
 const Game = ({ username }) => {
   const [question, setQuestion] = useState({});
+  const [respuestasAleatorias, setRespuestasAleatorias] = useState([]);
   const [error, setError] = useState('');
-  const [correctQuestions,setCorrectQuestions] = useState(0);
+  const [correctQuestions, setCorrectQuestions] = useState(0);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -17,16 +18,18 @@ const Game = ({ username }) => {
     try {
       const response = await axios.get(`${apiEndpoint}/getRandomQuestionTest`);
       setQuestion(response.data);
+      const respuestas = [...response.data.incorrectas, response.data.correcta];
+      setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5));
     } catch (error) {
       console.error("Error al obtener la pregunta aleatoria", error);
       setError('Error al obtener la pregunta aleatoria');
     }
   };
 
-  const handleButtonClick = (esCorrecta) => {
-    if (esCorrecta) {
+  const handleButtonClick = (respuestaSeleccionada) => {
+    if (respuestaSeleccionada === question.correcta) {
       setCorrectQuestions(correctQuestions+1);
-    } 
+    }
     obtenerPreguntaAleatoria();
   };
 
@@ -35,20 +38,16 @@ const Game = ({ username }) => {
       <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
         {question.questionBody}
       </Typography>
-      {question.incorrectas && question.correcta && (
-        <>
-          {[...question.incorrectas, question.correcta].sort(() => Math.random() - 0.5).map((respuesta, index) => (
-            <Button
-              key={index}
-              variant="contained"
-              color="primary"
-              onClick={() => handleButtonClick(respuesta === question.correcta)}
-            >
-              {respuesta}
-            </Button>
-          ))}
-        </>
-      )}
+      {respuestasAleatorias.map((respuesta, index) => (
+        <Button
+          key={index}
+          variant="contained"
+          color="primary"
+          onClick={() => handleButtonClick(respuesta)}
+        >
+          {respuesta}
+        </Button>
+      ))}
       {error && (
         <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
       )}
@@ -57,3 +56,6 @@ const Game = ({ username }) => {
 };
 
 export default Game;
+
+
+
