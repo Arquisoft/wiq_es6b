@@ -31,17 +31,22 @@ const RootComponent = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      obtenerPreguntaspartida(numquest); // Pass current numquest value
-      setNumquest(prevNumquest => prevNumquest + 1); // Increment numquest
-    }, 2000); // Execute every 3 seconds
-
+      if (numquest <= 40) {
+        obtenerPreguntaspartida(numquest); // Pass current numquest value
+        setNumquest(prevNumquest => prevNumquest + 1); // Increment numquest
+      } else {
+        clearInterval(intervalId); // Detener la generación de preguntas después de 30 iteraciones
+      }
+    }, 2000); // Ejecutar cada 2 segundos
+  
     window.addEventListener('beforeunload', handleBeforeUnload);
-
+  
     return () => {
-      clearInterval(intervalId); // Cleanup function to stop interval when component unmounts
+      clearInterval(intervalId); // Función de limpieza para detener el intervalo cuando se desmonta el componente
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [numquest]); // Re-run effect when numquest changes
+  }, [numquest]); // Volver a ejecutar el efecto cuando cambia numquest
+  
 
   const handleBeforeUnload = async () => {
     try {

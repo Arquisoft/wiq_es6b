@@ -55,12 +55,12 @@ const Game = ({ username }) => {
     obtenerPreguntaAleatoria();
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (numberClics > 10 || timer > 180) {
       
       addRecord();
     }
-  }, [numberClics, timer]);
+  }, [numberClics, timer]);*/
 
   const addGeneratedQuestionBody = async () => {
     try {
