@@ -55,6 +55,13 @@ const Game = ({ username }) => {
     obtenerPreguntaAleatoria();
   };
 
+  useEffect(() => {
+    if (numberClics > 10 || timer > 180) {
+      
+      addRecord();
+    }
+  }, [numberClics, timer]);
+
   const addGeneratedQuestionBody = async () => {
     try {
       await axios.post(`${apiEndpoint}/addGeneratedQuestion`, {
