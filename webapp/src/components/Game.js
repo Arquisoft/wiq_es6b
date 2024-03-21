@@ -59,28 +59,6 @@ const Game = ({ username }) => {
     }
   };
 
-  const handleButtonClick = (respuestaSeleccionada) => {
-    let newNumberClics = numberClics + 1;
-    
-    if (respuestaSeleccionada === question.correcta) {
-      setCorrectQuestions(correctQuestions + 1);
-    }
-    //addGeneratedQuestionBody();
-    //addRecord();
-    setNumberClics(newNumberClics);
-    obtenerPreguntaAleatoria();
-
-    if (newNumberClics > 10 || timer > 180) {
-      addRecord();
-    }
-  };
-
-  /*useEffect(() => {
-    if (numberClics > 10 || timer > 180) {
-      addRecord();
-    }
-  }, [numberClics, timer, addRecord]);*/
-
   const addGeneratedQuestionBody = async () => {
     try {
       await axios.post(`${apiEndpoint}/addGeneratedQuestion`, {
@@ -90,6 +68,21 @@ const Game = ({ username }) => {
 
     } catch (error) {
       setError(error.response.data.error);
+    }
+  };
+
+  const handleButtonClick = (respuestaSeleccionada) => {
+    let newNumberClics = numberClics + 1;
+    
+    if (respuestaSeleccionada === question.correcta) {
+      setCorrectQuestions(correctQuestions + 1);
+    }
+    addGeneratedQuestionBody();
+    setNumberClics(newNumberClics);
+    obtenerPreguntaAleatoria();
+
+    if (newNumberClics > 10 || timer > 180) {
+      addRecord();
     }
   };
 
