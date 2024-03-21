@@ -44,23 +44,20 @@ const Game = ({ username }) => {
     return `${minsRStr}:${secsRStr}`;
   };
 
-  const handleButtonClick = (respuestaSeleccionada) => {
-    
-    if (respuestaSeleccionada === question.correcta) {
-      setCorrectQuestions(correctQuestions + 1);
+  const addRecord = async () => {
+    try {
+      await axios.post(`${apiEndpoint}/addRecord`, {
+        userId: username,
+        date: new Date(),
+        time: timer,
+        money: (25 * correctQuestions),
+        correctQuestions: correctQuestions,
+        failedQuestions: (10 - correctQuestions)
+      });
+    } catch (error) {
+      setError(error.response.data.error);
     }
-    //addGeneratedQuestionBody();
-    //addRecord();
-    setNumberClics(numberClics+1);
-    obtenerPreguntaAleatoria();
   };
-
-  /*useEffect(() => {
-    if (numberClics > 10 || timer > 180) {
-      
-      addRecord();
-    }
-  }, [numberClics, timer]);*/
 
   const addGeneratedQuestionBody = async () => {
     try {
@@ -74,24 +71,18 @@ const Game = ({ username }) => {
     }
   };
 
-
-  const addRecord = async () => {
-    try {
-      if (numberClics > 10 || timer > 180) {
-         
-      
-
-      await axios.post(`${apiEndpoint}/addRecord`, {
-        userId: username,
-        date: new Date(),
-        time: timer,
-        money: (25 * correctQuestions),
-        correctQuestions: correctQuestions,
-        failedQuestions: (10 - correctQuestions)
-      });
+  const handleButtonClick = (respuestaSeleccionada) => {
+    let newNumberClics = numberClics + 1;
+    
+    if (respuestaSeleccionada === question.correcta) {
+      setCorrectQuestions(correctQuestions + 1);
     }
-    } catch (error) {
-      setError(error.response.data.error);
+    addGeneratedQuestionBody();
+    setNumberClics(newNumberClics);
+    obtenerPreguntaAleatoria();
+
+    if (newNumberClics > 10 || timer > 180) {
+      addRecord();
     }
   };
 
