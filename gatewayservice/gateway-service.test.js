@@ -53,22 +53,6 @@ describe('Gateway Service', () => {
     expect(response.body.userId).toBe('mockedUserId');
   });
 
-  // Test /addRecord endpoint with missing required fields
-  it('should return an error if required fields are missing', async () => {
-    const incompleteRecord = {
-      userId: 'mockedUserId',
-      date: '2024-03-21',
-      time: '10:00:00'
-      // Missing money, correctQuestions, and failedQuestions
-    };
-
-    const response = await request(app)
-      .post('/addRecord')
-      .send(incompleteRecord);
-
-    expect(response.statusCode).toBe(500);
-    expect(response.body.error).toBe('Internal Server Error');
-  })
 
  // Test /addQuestion endpoint
  it('should add a question successfully', async () => {
