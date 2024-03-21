@@ -16,7 +16,8 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { userId: 'mockedUserId' } });
     } else if (url.endsWith('/addRecord')) {
       // Mock response for addRecord endpoint
-      return Promise.resolve({ data: { recordId: 'mockedRecordId' } });
+      const recordData = { ...data }; // Assuming data is an object containing record data
+      return Promise.resolve({ data: { recordId: recordData.recordId } });
     } else if (url.endsWith('/addQuestion')) {
       // Mock response for addQuestion endpoint
       return Promise.resolve({ data: { questionId: 'mockedQuestionId' } });
@@ -83,15 +84,22 @@ describe('Gateway Service', () => {
     expect(response.body.userId).toBe('mockedUserId');
   });
 
-  // Test /addRecord endpoint
-  it('should forward add record request to record service', async () => {
+  // Test /addRecord endpoint with missing required fields
+  it('should return an error if required fields are missing', async () => {
+    const incompleteRecord = {
+      userId: 'mockedUserId',
+      date: '2024-03-21',
+      time: '10:00:00'
+      // Missing money, correctQuestions, and failedQuestions
+    };
+
     const response = await request(app)
       .post('/addRecord')
-      .send({ data: 'someData' });
+      .send(incompleteRecord);
 
-    expect(response.statusCode).toBe(200);
-    expect(response.body.recordId).toBe('mockedRecordId');
-  });
+    expect(response.statusCode).toBe(500);
+    expect(response.body.error).toBe('Internal Server Error');
+  })
 
   // Test /addQuestion endpoint
   it('should forward add question request to question service', async () => {
