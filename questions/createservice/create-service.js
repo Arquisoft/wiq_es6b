@@ -16,7 +16,7 @@ mongoose.connect(mongoUri);
 
 // Tipos de preguntas y consultas a Wikidata
 const questionTypes = {
-  pais: {
+  pais_capital: {
     query: `
       SELECT ?country ?countryLabel ?capital ?capitalLabel
       WHERE {
@@ -32,21 +32,54 @@ const questionTypes = {
     questionLabel: 'countryLabel',
     answerLabel: 'capitalLabel'
   },
-
- poblacion: {
+  pais_poblacion: {
     query: `
-    SELECT DISTINCT ?countryLabel ?population
-{
-  ?country wdt:P31 wd:Q6256 ;
-           wdt:P1082 ?population .
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es" }
-}
-GROUP BY ?population ?countryLabel
-     ORDER BY RAND()
-     LIMIT 30`
-    ,
+      SELECT DISTINCT ?countryLabel ?population
+      {
+        ?country wdt:P31 wd:Q6256 ;
+                wdt:P1082 ?population .
+        SERVICE wikibase:label { 
+          bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es" 
+        }
+      }
+      GROUP BY ?population ?countryLabel
+      ORDER BY RAND()
+      LIMIT 30
+    `,
     questionLabel: 'countryLabel',
     answerLabel: 'population'
+  },
+  ciudad_pais: {
+    query: `
+      SELECT ?city ?cityLabel ?country ?countryLabel
+      WHERE {
+        ?city wdt:P31 wd:Q515.
+        ?city wdt:P17 ?country.
+        SERVICE wikibase:label {
+          bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es".
+        }
+      }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'cityLabel',
+    answerLabel: 'countryLabel'
+  },
+  pais_moneda: {
+    query: `
+      SELECT ?country ?countryLabel ?currency ?currencyLabel
+      WHERE {
+        ?currency wdt:P31 wd:Q8142.
+        ?currency wdt:P17 ?country.
+        SERVICE wikibase:label {
+          bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es".
+        }
+      }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'countryLabel',
+    answerLabel: 'currencyLabel'
   },
 };
 
@@ -86,10 +119,15 @@ app.get('/getFullQuestion', async (req, res) => {
       const respuestaCorrecta = resultCorrecta[answerLabel].value;
 
       const respuestasFalsas = [];
-      for (let i = 0; i < 3; i++) {
+      while (respuestasFalsas.length < 3) {
         const indexFalsa = Math.floor(Math.random() * numEles);
         const resultFalsa = data.results.bindings[indexFalsa];
-        respuestasFalsas.push(resultFalsa[answerLabel].value);
+        const respuestaFalsa = resultFalsa[answerLabel].value;
+
+        // Comprueba si la respuesta falsa coincide con la respuesta correcta o con alguna de las respuestas falsas ya generadas
+        if (respuestaFalsa !== respuestaCorrecta && !respuestasFalsas.includes(respuestaFalsa)) {
+          respuestasFalsas.push(respuestaFalsa);
+        }
       }
 
       const body=rQuestion[0].questionBody+informacionWikidata;
