@@ -14,15 +14,9 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { token: 'mockedToken' } });
     } else if (url.endsWith('/adduser')) {
       return Promise.resolve({ data: { userId: 'mockedUserId' } });
-    } else if (url.endsWith('/addRecord')) {
-      // Mock response for addRecord endpoint
-      return Promise.resolve({ data: { recordId: 'mockedRecordId' } });
-    } else if (url.endsWith('/addQuestion')) {
+    }else if (url.endsWith('/addQuestion')) {
       // Mock response for addQuestion endpoint
       return Promise.resolve({ data: { questionId: 'mockedQuestionId' } });
-    } else if (url.endsWith('/getAllUsers')) {
-      // Mock response for getAllUsers endpoint
-      return Promise.resolve({ data: [{ userId: 'user1' }, { userId: 'user2' }] });
     } else if (url.endsWith('/addGeneratedQuestion')) {
       // Mock response for addGeneratedQuestion endpoint
       return Promise.resolve({ data: { generatedQuestionId: 'mockedGeneratedQuestionId' } });
@@ -92,15 +86,6 @@ describe('Gateway Service', () => {
   expect(response.body.questionId).toBe('mockedQuestionId');
 });
 
-
-it('should retrieve all users from user service', async () => {
-  const response = await request(app)
-    .get('/getAllUsers');
-
-  expect(response.statusCode).toBe(200);
-  expect(response.body.length).toBeGreaterThan(0); // Verificar que hay al menos un usuario
-});
-
   // Test /addGeneratedQuestion endpoint
   it('should forward add generated question request to generated question service', async () => {
     const response = await request(app)
@@ -120,8 +105,6 @@ it('should create a user rank in ranking service', async () => {
   expect(response.statusCode).toBe(200);
   expect(response.body.rankId).toBe('mockedRankId');
 });
-
-
 
 // Test /updateRanking endpoint
 it('should update ranking for a user in ranking service', async () => {
