@@ -39,20 +39,6 @@ services:
     environment:
       MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/userdb?retryWrites=true&w=majority&appName=wiq06b
 
-  answerservice:
-    container_name: answerservice-${teamname:-wiq_es06b}
-    image: ghcr.io/arquisoft/wiq_es6b/answerservice:latest
-    profiles: ["dev", "prod"]
-    build: ./questions/answerservice
-    depends_on:
-      - mongodb
-    ports:
-      - "8004:8004"
-    networks:
-      - mynetwork
-    environment:
-      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b
-
   createservice:
     container_name: createservice-${teamname:-wiq_es06b}
     image: ghcr.io/arquisoft/wiq_es6b/createservice:latest
@@ -95,6 +81,36 @@ services:
     environment:
       MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b
 
+  rankingservice:
+    container_name: rankingservice-${teamname:-wiq_es06b}
+    image: ghcr.io/arquisoft/wiq_es6b/rankingservice:latest
+    profiles: ["dev", "prod"]
+    build: ./users/rankingservice
+    depends_on:
+      - mongodb
+    ports:
+      - "8004:8004"
+    networks:
+      - mynetwork
+    environment:
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/rankingdb?retryWrites=true&w=majority&appName=wiq06b
+
+
+  questiontestservice:
+    container_name: questiontestservice-${teamname:-wiq_es06b}
+    image: ghcr.io/arquisoft/wiq_es6b/questiontestservice:latest
+    profiles: ["dev", "prod"]
+    build: ./questions/questiontestservice
+    depends_on:
+      - mongodb
+    ports:
+      - "8007:8007"
+    networks:
+      - mynetwork
+    environment:
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiontestdb?retryWrites=true&w=majority&appName=wiq06b
+
+
   gatewayservice:
     container_name: gatewayservice-${teamname:-wiq_es06b}
     image: ghcr.io/arquisoft/wiq_es6b/gatewayservice:latest
@@ -104,10 +120,11 @@ services:
       - mongodb
       - userservice
       - authservice
-      - answerservice
       - createservice
       - recordservice
       - generatedquestservice
+      - rankingservice
+      - questiontestservice
     ports:
       - "8000:8000"
     networks:
@@ -115,10 +132,11 @@ services:
     environment:
       AUTH_SERVICE_URL: http://authservice:8002
       USER_SERVICE_URL: http://userservice:8001
-      ANSW_SERVICE_URL: http://answerservice:8004
       QUES_SERVICE_URL: http://createservice:8005
       REC_SERVICE_URL: http://recordservice:8006
       GEN_SERVICE_URL: http://generatedquestservice:8003
+      RANK_SERVICE_URL: http://rankingservice:8004
+      QTEST_SERVICE_URL: http://questiontestservice:8007
 
   webapp:
     container_name: webapp-${teamname:-wiq_es06b}

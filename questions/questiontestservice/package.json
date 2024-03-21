@@ -1,10 +1,10 @@
 {
-    "name": "authservice",
+    "name": "createquestiontestserviceservice",
     "version": "1.0.0",
-    "description": " Authentication service, in charge of authenticating users in the application",
+    "description": "Preguntas automaticas para el juego",
     "main": "service.js",
     "scripts": {
-        "start": "node answer-service.js",
+        "start": "node create-service.js",
         "test": "jest"
     },
     "repository": {

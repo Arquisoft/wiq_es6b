@@ -14,7 +14,6 @@ jobs:
         node-version: 20
     - run: npm --prefix users/authservice ci
     - run: npm --prefix users/userservice ci
-    - run: npm --prefix questions/answerservice ci
     - run: npm --prefix questions/createservice ci
     - run: npm --prefix questions/generatedquestservice ci
     - run: npm --prefix questions/recordservice ci
@@ -22,7 +21,6 @@ jobs:
     - run: npm --prefix webapp ci
     - run: npm --prefix users/authservice test -- --coverage
     - run: npm --prefix users/userservice test -- --coverage
-    - run: npm --prefix questions/answerservice test -- --coverage
     - run: npm --prefix questions/createservice test -- --coverage
     - run: npm --prefix questions/generatedquestservice test -- --coverage
     - run: npm --prefix questions/recordservice test -- --coverage
@@ -43,7 +41,6 @@ jobs:
         node-version: 20
     - run: npm --prefix users/authservice install
     - run: npm --prefix users/userservice install
-    - run: npm --prefix questions/answerservice install
     - run: npm --prefix questions/createservice install
     - run: npm --prefix questions/generatedquestservice install
     - run: npm --prefix questions/recordservice install
@@ -105,23 +102,6 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: ghcr.io
         workdir: users/userservice
-  docker-push-answerservice:
-    name: Push answer service Docker Image to GitHub Packages
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    needs: [e2e-tests]
-    steps:
-    - uses: actions/checkout@v4
-    - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@v5
-      with:
-        name: arquisoft/wiq_es6b/answerservice
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-        registry: ghcr.io
-        workdir: questions/answerservice
   docker-push-createservice:
     name: Push create service Docker Image to GitHub Packages
     runs-on: ubuntu-latest
@@ -193,7 +173,7 @@ jobs:
   deploy:
     name: Deploy over SSH
     runs-on: ubuntu-latest
-    needs: [docker-push-userservice,docker-push-authservice,docker-push-gatewayservice,docker-push-webapp,docker-push-createservice,docker-push-answerservice,docker-push-recordservice,docker-push-generatedquestservice]
+    needs: [docker-push-userservice,docker-push-authservice,docker-push-gatewayservice,docker-push-webapp,docker-push-createservice,docker-push-recordservice,docker-push-generatedquestservice]
     steps:
     - name: Deploy over SSH
       uses: fifsky/ssh-action@master
@@ -205,4 +185,4 @@ jobs:
           wget https://raw.githubusercontent.com/arquisoft/wiq_es6b/master/docker-compose.yml -O docker-compose.yml
           wget https://raw.githubusercontent.com/arquisoft/wiq_es6b/master/.env -O .env
           docker compose --profile prod down
-          docker compose --profile prod up -d
+          docker compose --profile prod up -d --pull always
