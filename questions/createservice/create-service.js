@@ -86,10 +86,15 @@ app.get('/getFullQuestion', async (req, res) => {
       const respuestaCorrecta = resultCorrecta[answerLabel].value;
 
       const respuestasFalsas = [];
-      for (let i = 0; i < 3; i++) {
+      while (respuestasFalsas.length < 3) {
         const indexFalsa = Math.floor(Math.random() * numEles);
         const resultFalsa = data.results.bindings[indexFalsa];
-        respuestasFalsas.push(resultFalsa[answerLabel].value);
+        const respuestaFalsa = resultFalsa[answerLabel].value;
+
+        // Comprueba si la respuesta falsa coincide con la respuesta correcta o con alguna de las respuestas falsas ya generadas
+        if (respuestaFalsa !== respuestaCorrecta && !respuestasFalsas.includes(respuestaFalsa)) {
+          respuestasFalsas.push(respuestaFalsa);
+        }
       }
 
       const body=rQuestion[0].questionBody+informacionWikidata;
