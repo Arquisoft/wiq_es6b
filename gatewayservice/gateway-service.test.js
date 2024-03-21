@@ -16,8 +16,7 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { userId: 'mockedUserId' } });
     } else if (url.endsWith('/addRecord')) {
       // Mock response for addRecord endpoint
-      const recordData = { ...data }; // Assuming data is an object containing record data
-      return Promise.resolve({ data: { recordId: recordData.recordId } });
+      return Promise.resolve({ data: { recordId: 'mockedRecordId' } });
     } else if (url.endsWith('/addQuestion')) {
       // Mock response for addQuestion endpoint
       return Promise.resolve({ data: { questionId: 'mockedQuestionId' } });
@@ -101,15 +100,21 @@ describe('Gateway Service', () => {
     expect(response.body.error).toBe('Internal Server Error');
   })
 
-  // Test /addQuestion endpoint
-  it('should forward add question request to question service', async () => {
-    const response = await request(app)
-      .post('/addQuestion')
-      .send({ question: 'What is your name?', answer: 'My name is John' });
+ // Test /addQuestion endpoint
+ it('should add a question successfully', async () => {
+  const mockQuestion = {
+    questionBody: 'What is the capital of France?',
+    typeQuestion: 'pais',
+    typeAnswer: 'capital'
+  };
 
-    expect(response.statusCode).toBe(200);
-    expect(response.body.questionId).toBe('mockedQuestionId');
-  });
+  const response = await request(app)
+    .post('/addQuestion')
+    .send(mockQuestion);
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.questionId).toBe('mockedQuestionId');
+});
 
 
   // Test /getAllUsers endpoint
