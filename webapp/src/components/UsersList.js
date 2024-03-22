@@ -18,8 +18,10 @@ const UsersList = () => {
        
         const response = await axios.get(`${apiEndpoint}/getAllUsers`);
         if (response.status === 200)  {
-
-            const uList = response.data;
+          const uList = response.data.map(record => ({
+            ...record,
+            createdAt: new Date(record.createdAt).toLocaleString(),
+          }));
           setListUsers(uList);
 
         } else {
