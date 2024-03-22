@@ -33,11 +33,11 @@ const RecordList = ({ username }) => {
       <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <thead>
           <tr style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>
-            <th>Date</th>
-            <th>Time (seconds)</th>
-            <th>Money Earned</th>
-            <th>Correct Questions</th>
-            <th>Failed Questions</th>
+            <th>Fecha</th>
+            <th>Tiempo (segundos)</th>
+            <th>Dinero conseguido</th>
+            <th>Respuestas correctas</th>
+            <th>Respuestas falladas</th>
           </tr>
         </thead>
         <tbody>
