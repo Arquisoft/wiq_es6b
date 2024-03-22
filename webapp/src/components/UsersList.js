@@ -18,8 +18,10 @@ const UsersList = () => {
        
         const response = await axios.get(`${apiEndpoint}/getAllUsers`);
         if (response.status === 200)  {
-
-            const uList = response.data;
+          const uList = response.data.map(record => ({
+            ...record,
+            createdAt: new Date(record.createdAt).toLocaleString(),
+          }));
           setListUsers(uList);
 
         } else {
@@ -56,7 +58,7 @@ const UsersList = () => {
 
   return (
     <div>
-    <h2>Users List</h2>
+    <h2>Lista de usuarios</h2>
     <table style={{ borderCollapse: 'collapse', width: '100%' }}>
       <thead>
         <tr style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>

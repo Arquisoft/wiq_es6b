@@ -54,7 +54,7 @@ const GeneratedQuestionsList = () => {
 
   return (
     <div>
-    <h2>Questions List</h2>
+    <h2>Lista de preguntas</h2>
     <table style={{ borderCollapse: 'collapse', width: '100%' }}>
       <thead>
         <tr style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>
