@@ -16,7 +16,7 @@ describe('Login component', () => {
 
     const usernameInput = screen.getByLabelText(/Username/i);
     const passwordInput = screen.getByLabelText(/Password/i);
-    const loginButton = screen.getByRole('button', { name: /Login/i });
+    const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
 
     // Mock the axios.post request to simulate a successful response
     mockAxios.onPost('http://localhost:8000/login').reply(200, { createdAt: '2024-01-01T12:34:56Z' });
@@ -29,8 +29,8 @@ describe('Login component', () => {
       });
 
     // Verify that the user information is displayed
-    expect(screen.getByText(/Hello testUser!/i)).toBeInTheDocument();
-    expect(screen.getByText(/Your account was created on 1\/1\/2024/i)).toBeInTheDocument();
+    expect(screen.getByText(/Hola testUser!/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tu cuenta fue creada el 1\/1\/2024/i)).toBeInTheDocument();
   });
 
   it('should handle error when logging in', async () => {
@@ -38,7 +38,7 @@ describe('Login component', () => {
 
     const usernameInput = screen.getByLabelText(/Username/i);
     const passwordInput = screen.getByLabelText(/Password/i);
-    const loginButton = screen.getByRole('button', { name: /Login/i });
+    const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
 
     // Mock the axios.post request to simulate an error response
     mockAxios.onPost('http://localhost:8000/login').reply(401, { error: 'Unauthorized' });
@@ -56,7 +56,7 @@ describe('Login component', () => {
     });
 
     // Verify that the user information is not displayed
-    expect(screen.queryByText(/Hello testUser!/i)).toBeNull();
-    expect(screen.queryByText(/Your account was created on/i)).toBeNull();
+    expect(screen.queryByText(/Hola testUser!/i)).toBeNull();
+    expect(screen.queryByText(/Tu cuenta fue creada el/i)).toBeNull();
   });
 });
