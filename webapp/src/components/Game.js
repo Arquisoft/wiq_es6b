@@ -9,6 +9,7 @@ const Game = ({ username }) => {
   const [correctQuestions, setCorrectQuestions] = useState(0);
   const [timer, setTimer] = useState(0);
   const [numberClics, setNumberClics] = useState(1);
+  const [finished, setFinished] = useState(false);
   const totalQuestions = 10;
   const timeLimit = 180;
   const pricePerQuestion = 25;
@@ -21,7 +22,7 @@ const Game = ({ username }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if(timer<timeLimit){
+      if(!finished){
         setTimer(timer + 1);
       }else{
         clearInterval(interval);
@@ -29,7 +30,7 @@ const Game = ({ username }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timer]);
+  }, [timer, finished]);
 
   const obtenerPreguntaAleatoria = async () => {
     try {
@@ -98,6 +99,7 @@ const Game = ({ username }) => {
 
     if (newNumberClics > totalQuestions || timer > timeLimit) {
       addRecord();
+      setFinished(true);
     }
   };
 
@@ -112,22 +114,22 @@ const Game = ({ username }) => {
                 <List>
                   <ListItem>
                     <ListItemText
-                        primary='Tiempo transcurrido: ${handleTimeUsed()}'
+                        primary={`Tiempo transcurrido: ${handleTimeUsed()}`}
                     />
                   </ListItem>
                   <ListItem>
                     <ListItemText
-                        primary='Respuestas correctas: ${correctQuestions}'
+                        primary={`Respuestas correctas: ${correctQuestions}`}
                     />
                   </ListItem>
                   <ListItem>
                     <ListItemText
-                        primary='Respuestas incorrectas: ${totalQuestions-correctQuestions}'
+                        primary={`Respuestas incorrectas: ${totalQuestions-correctQuestions}`}
                     />
                   </ListItem>
                   <ListItem>
                     <ListItemText
-                        primary='Dinero recaudado: ${pricePerQuestion*correctQuestions}'
+                        primary={`Dinero recaudado: ${pricePerQuestion*correctQuestions}`}
                     />
                   </ListItem>
                 </List>
