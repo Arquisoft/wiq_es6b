@@ -33,10 +33,12 @@ app.post('/adduser', async (req, res) => {
 
         // Siguiente comprobación: NO puede haber otro usuario en la BD con el mismo valor de username
         const existingUser = await User.findOne({ username : req.body.username });
+        console.log("USERNAME TO SEARCH IN DB -> "+req.body.username);
         if(existingUser!=null){
-            throw new Error('The username "${req.body.username}" is already in use.`);
+            console.log("EXISTING USER -> "+existingUser);
+            throw new Error(`The username "${req.body.username}" is already in use.`);
         }
-
+        console.log("EXISTING USER INSERT-> "+existingUser);
         // Encrypt the password before saving it
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
