@@ -11,7 +11,10 @@ const RecordList = ({ username }) => {
         const response = await axios.get(`${apiEndpoint}/getRecords/${username}`);
 
         if (response.status === 200) {
-          const userRecords = response.data;
+          const userRecords = response.data.map(record => ({
+            ...record,
+            date: new Date(record.date).toLocaleString(),
+          }));
           setListRecords(userRecords);
         } else {
           console.error('Error obtaining the user records list');
