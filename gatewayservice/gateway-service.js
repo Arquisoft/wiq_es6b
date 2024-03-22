@@ -43,7 +43,12 @@ app.post('/adduser', async (req, res) => {
     const userResponse = await axios.post(userServiceUrl+'/adduser', req.body);
     res.json(userResponse.data);
   } catch (error) {
-    res.status(error.response.status).json({ error: error.response.data.error });
+    if(error.response==undefined){
+      // usuario ya registrado
+      res.status(500).json( { error : "That username is already registered"} );
+    }else{
+      res.status(error.response.status).json({ error: error.response.data.error });
+    }
   }
 });
 
