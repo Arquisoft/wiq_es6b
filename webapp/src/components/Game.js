@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Typography, Button, Snackbar } from '@mui/material';
+import { Container, Typography, Button, Snackbar, Grid, List, ListItem, ListItemText } from '@mui/material';
 
 const Game = ({ username }) => {
   const [question, setQuestion] = useState({});
@@ -9,6 +9,9 @@ const Game = ({ username }) => {
   const [correctQuestions, setCorrectQuestions] = useState(0);
   const [timer, setTimer] = useState(0);
   const [numberClics, setNumberClics] = useState(1);
+  const totalQuestions = 10;
+  const timeLimit = 180;
+  const pricePerQuestion = 25;
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -18,7 +21,11 @@ const Game = ({ username }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimer(timer + 1);
+      if(timer<timeLimit){
+        setTimer(timer + 1);
+      }else{
+        clearInterval(interval);
+      }
     }, 1000);
 
     return () => clearInterval(interval);
@@ -37,12 +44,20 @@ const Game = ({ username }) => {
   };
 
   const handleTimeRemaining = () => {
-    let minsR = Math.floor((3 * 60 - timer) / 60);
+    let minsR = Math.floor((timeLimit - timer) / 60);
     let minsRStr = (minsR < 10) ? '0' + minsR.toString() : minsR.toString();
-    let secsR = (3 * 60 - timer) % 60;
+    let secsR = (timeLimit - timer) % 60;
     let secsRStr = (secsR < 10) ? '0' + secsR.toString() : secsR.toString();
     return `${minsRStr}:${secsRStr}`;
   };
+
+  const handleTimeUsed = () => {
+    let minsR = Math.floor(timer / 60);
+    let minsRStr = (minsR < 10) ? '0' + minsR.toString() : minsR.toString();
+    let secsR = timer % 60;
+    let secsRStr = (secsR < 10) ? '0' + secsR.toString() : secsR.toString();
+    return `${minsRStr}:${secsRStr}`;
+  }
 
   const addRecord = async () => {
     try {
@@ -50,9 +65,9 @@ const Game = ({ username }) => {
         userId: username,
         date: new Date(),
         time: timer,
-        money: (25 * correctQuestions),
+        money: (pricePerQuestion * correctQuestions),
         correctQuestions: correctQuestions,
-        failedQuestions: (10 - correctQuestions)
+        failedQuestions: (totalQuestions - correctQuestions)
       });
     } catch (error) {
       setError(error.response.data.error);
@@ -81,7 +96,7 @@ const Game = ({ username }) => {
     setNumberClics(newNumberClics);
     obtenerPreguntaAleatoria();
 
-    if (newNumberClics > 10 || timer > 180) {
+    if (newNumberClics > totalQuestions || timer > timeLimit) {
       addRecord();
     }
   };
@@ -89,16 +104,44 @@ const Game = ({ username }) => {
 
   return (
     <Container maxWidth="lg">
-      {numberClics > 10 || timer > 180 ? (
-        <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
-          Fin de la partida
-        </Typography>
+      {numberClics > totalQuestions || timer > timeLimit ? (
+            <Grid item xs={12} md={6}>
+              <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+                ¡Gracias por jugar!
+              </Typography>
+                <List>
+                  <ListItem>
+                    <ListItemText
+                        primary='Tiempo transcurrido: ${handleTimeUsed()}'
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                        primary='Respuestas correctas: ${correctQuestions}'
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                        primary='Respuestas incorrectas: ${totalQuestions-correctQuestions}'
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                        primary='Dinero recaudado: ${pricePerQuestion*correctQuestions}'
+                    />
+                  </ListItem>
+                </List>
+            </Grid>
       ) : (
-        <>
-        <Typography component="h1" variant='h5' sx={{ textAlign: 'center' }}>
+          <>
+            <Typography component="h1" variant='h5' sx={{ textAlign: 'center' }}>
                   Pregunta Número {numberClics} :
           </Typography>
-          <Typography component="h2" sx={{ textAlign: 'center', color: (timer > 120 && (timer % 60) % 2 === 0) ? 'red' : 'inherit', fontStyle: 'italic', fontWeight: (timer > 150 && (timer % 60) % 2 === 0) ? 'bold' : 'inherit' }}>
+          <Typography component="h2" sx={{ textAlign: 'center', color: ((timeLimit-timer) <= 60 && (timer % 60) % 2 === 0) ?
+                                                                  'red' : 'inherit',
+                                                                fontStyle: 'italic',
+                                                                fontWeight: (timer > 150 && (timer % 60) % 2 === 0) ?
+                                                                    'bold' : 'inherit' }}>
             ¡Tiempo restante {handleTimeRemaining()}!
           </Typography>
           <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
