@@ -35,7 +35,7 @@ const Login = ({setLogged}) => {
       // Extraer datos de la respuesta
       const { createdAt: userCreatedAt } = response.data;
       
-      
+      await axios.post(`${apiEndpoint}/createUserRank`, { username });
 
       setCreatedAt(userCreatedAt);
       setLoginSuccess(true);
