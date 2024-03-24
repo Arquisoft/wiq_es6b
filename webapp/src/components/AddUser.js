@@ -27,7 +27,7 @@ const AddUser = () => {
   return (
     <Container component="main" maxWidth="lg" sx={{ marginTop: 4 }}>
       <Typography component="h1" variant="h5">
-        Add User
+        Añadir usuario
       </Typography>
       <TextField
         name="username"
@@ -47,9 +47,9 @@ const AddUser = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <Button variant="contained" color="primary" onClick={addUser}>
-        Add User
+        Añadir usuario
       </Button>
-      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="User added successfully" />
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="Usuario añadido correctamente" />
       {error && (
         <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
       )}

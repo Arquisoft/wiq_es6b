@@ -32,11 +32,11 @@ function App() {
 
 
                 <Link name="gotoregister" component="button" variant="body2" onClick={handleToggleView}>
-                    Don't have an account? Register here.
+                    ¿No tienes cuenta? Registrate aqui.
                 </Link>
             ) : (
                 <Link component="button" variant="body2" onClick={handleToggleView}>
-                    Already have an account? Login here.
+                    ¿Ya tienes cuenta? Inicia sesión aqui.
                 </Link>
             )}
         </Typography>
