@@ -15,7 +15,7 @@ const obtenerPreguntaspartida = async (numquest) => {
     const { questionBody, correctAnswer, incorrectAnswers } = response.data;
     
     // Enviar la pregunta al servicio de preguntas de prueba
-    await axios.post(`${apiEndpoint}/addQuestionTest`, {
+    await axios.post(`${apiEndpoint}/addOrUpdateQuestionTest`, {
       questionBody,
       correcta: correctAnswer,
       incorrectas: incorrectAnswers,

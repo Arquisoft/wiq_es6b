@@ -200,7 +200,7 @@ app.post('/updateRanking', async (req, res) => {
 
 ///////////////para los question del juego
 // Ruta para agregar una pregunta de prueba
-app.post('/addQuestionTest', async (req, res) => {
+app.post('/addOrUpdateQuestionTest', async (req, res) => {
   try {
     const questionTestResponse = await axios.post(`${questiontestservice}/addQuestionTest`, req.body);
     res.json(questionTestResponse.data);
