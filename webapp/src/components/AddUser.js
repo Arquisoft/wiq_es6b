@@ -14,7 +14,7 @@ const AddUser = () => {
   const addUser = async () => {
     try {
       await axios.post(`${apiEndpoint}/adduser`, { username, password });
-      await axios.post(`${apiEndpoint}/createUserRank`, { username });
+      //await axios.post(`${apiEndpoint}/createUserRank`, { username });
       setOpenSnackbar(true);
     } catch (error) {
       setError(error.response.data.error);
