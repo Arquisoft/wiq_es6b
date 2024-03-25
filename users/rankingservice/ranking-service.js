@@ -45,28 +45,27 @@ app.post('/updateRanking', async (req, res) => {
 
 
 app.post('/createUserRank', async (req, res) => {
-    try {
-        const { username } = req.body;
+  try {
+    const { username } = req.body;
 
-       
-        const existingUser = await UserRank.findOne({ username });
-        if (!existingUser) {
-          
-        
+    // Verificar si el usuario ya existe
+    const existingUser = await UserRank.findOne({ username });
+    if (existingUser) {
+        // Si el usuario ya existe, simplemente termina la ejecución de la función
+        return;
+    }
 
-        // Crear un nuevo ranking para el usuario
-        const newUserRank = new UserRank({
-            username,
-            porcentajeAciertos: 0, 
-            preguntasCorrectas: 0, 
-            preguntasFalladas: 0, 
-            numPartidas: 0 
-        });
+    // Crear un nuevo ranking para el usuario
+    const newUserRank = new UserRank({
+        username,
+        porcentajeAciertos: 0, 
+        preguntasCorrectas: 0, 
+        preguntasFalladas: 0, 
+        numPartidas: 0 
+    });
 
-        
-        await newUserRank.save();
-
-        res.json(newUserRank);}
+    await newUserRank.save();
+    res.json(newUserRank);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
