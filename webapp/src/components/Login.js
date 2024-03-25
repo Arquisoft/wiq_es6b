@@ -34,7 +34,17 @@ const Login = ({setLogged}) => {
 
       // Extraer datos de la respuesta
       const { createdAt: userCreatedAt } = response.data;
-      
+  
+    // Obtener todos los usuarios
+    const usersResponse = await axios.get(`${apiEndpoint}/getAllUsers`);
+    const users = usersResponse.data;
+
+    // Para cada usuario, crear su ranking
+    for (const user of users) {
+      await axios.post(`${apiEndpoint}/createUserRank`, { username: user.username });
+    }
+      const { data: updatedRankingData } = await axios.get(`${apiEndpoint}/actRanking`);//obtengo datos actualizados del ranking
+      await axios.post(`${apiEndpoint}/updateAllRanking`, updatedRankingData); //los actualizo
       
 
       setCreatedAt(userCreatedAt);

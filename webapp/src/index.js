@@ -15,7 +15,7 @@ const obtenerPreguntaspartida = async (numquest) => {
     const { questionBody, correctAnswer, incorrectAnswers } = response.data;
     
     // Enviar la pregunta al servicio de preguntas de prueba
-    await axios.post(`${apiEndpoint}/addQuestionTest`, {
+    await axios.post(`${apiEndpoint}/addOrUpdateQuestionTest`, {
       questionBody,
       correcta: correctAnswer,
       incorrectas: incorrectAnswers,
@@ -31,30 +31,14 @@ const RootComponent = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (numquest <= 40) {
-        obtenerPreguntaspartida(numquest); // Pass current numquest value
-        setNumquest(prevNumquest => prevNumquest + 1); // Increment numquest
-      } else {
-        clearInterval(intervalId); // Detener la generación de preguntas después de 30 iteraciones
-      }
-    }, 2000); // Ejecutar cada 2 segundos
-  
-    window.addEventListener('beforeunload', handleBeforeUnload);
-  
-    return () => {
-      clearInterval(intervalId); // Función de limpieza para detener el intervalo cuando se desmonta el componente
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [numquest]); // Volver a ejecutar el efecto cuando cambia numquest
-  
+      obtenerPreguntaspartida(numquest); // Pass current numquest value
+      setNumquest(prevNumquest => prevNumquest + 1); // Increment numquest
+    }, 2000); // Execute every 2 seconds
 
-  const handleBeforeUnload = async () => {
-    try {
-      await axios.delete(`${apiEndpoint}/deleteAllQuestionTest`);
-    } catch (error) {
-      console.error("Error al ejecutar la limpieza al cerrar la página", error);
-    }
-  };
+    return () => {
+      clearInterval(intervalId); // Cleanup function to stop interval when component unmounts
+    };
+  }, [numquest]); // Re-run effect when numquest changes
 
   return (
     <React.StrictMode>

@@ -150,6 +150,19 @@ app.get('/getFullQuestion', async (req, res) => {
   }
 });
 
+app.get('/actRanking', async (req, res) => {
+  try {      
+      const rankingResponse = await axios.get(`${recordServiceUrl}/actRanking`);
+      res.json(rankingResponse.data);
+  } catch (error) {
+      if (error.response) {
+          res.status(error.response.status).json({ error: error.response.data.error });
+      } else {
+          res.status(500).json({ error: 'Error interno del servidor' });
+      }
+  }
+});
+
 
 ////////////////////////ranking
 app.post('/createUserRank', async (req, res) => {
@@ -197,10 +210,25 @@ app.post('/updateRanking', async (req, res) => {
   }
 });
 
+app.post('/updateAllRanking', async (req, res) => {
+  try {
+      // Reenviar la solicitud POST al servicio de ranking para actualizar el ranking de un usuario
+      const rankingResponse = await axios.post(`${rankingServiceUrl}/updateAllRanking`, req.body);
+      res.json(rankingResponse.data);
+  } catch (error) {
+      if (error.response) {
+          res.status(error.response.status).json({ error: error.response.data.error });
+      } else {
+          res.status(500).json({ error: 'Error interno del servidor' });
+      }
+  }
+});
+
+
 
 ///////////////para los question del juego
 // Ruta para agregar una pregunta de prueba
-app.post('/addQuestionTest', async (req, res) => {
+app.post('/addOrUpdateQuestionTest', async (req, res) => {
   try {
     const questionTestResponse = await axios.post(`${questiontestservice}/addQuestionTest`, req.body);
     res.json(questionTestResponse.data);
