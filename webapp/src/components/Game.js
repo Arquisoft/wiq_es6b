@@ -70,6 +70,19 @@ const Game = ({ username }) => {
         correctQuestions: correctQuestions,
         failedQuestions: (totalQuestions - correctQuestions)
       });
+      
+    } catch (error) {
+      setError(error.response.data.error);
+    }
+  };
+
+  const updateRanking = async () => {
+    try {
+      await axios.post(`${apiEndpoint}/updateRanking`, {
+        username: username,
+        preguntasCorrectas: correctQuestions,
+        preguntasFalladas: totalQuestions - correctQuestions
+      });
     } catch (error) {
       setError(error.response.data.error);
     }
@@ -99,6 +112,7 @@ const Game = ({ username }) => {
 
     if (newNumberClics > totalQuestions || timer > timeLimit) {
       addRecord();
+      updateRanking();
       setFinished(true);
     }
   };

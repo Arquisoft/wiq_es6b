@@ -46,15 +46,7 @@ app.post('/updateRanking', async (req, res) => {
 
 app.post('/createUserRank', async (req, res) => {
   try {
-    const { username } = req.body;
-
-    // Verificar si el usuario ya existe
-    const existingUser = await UserRank.findOne({ username });
-    if (existingUser) {
-        // Si el usuario ya existe, simplemente termina la ejecución de la función
-        return;
-    }
-
+    const { username } = req.body;   
     // Crear un nuevo ranking para el usuario
     const newUserRank = new UserRank({
         username,
