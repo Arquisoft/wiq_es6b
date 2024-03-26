@@ -45,6 +45,7 @@ jobs:
     - run: npm --prefix questions/createservice install
     - run: npm --prefix questions/generatedquestservice install
     - run: npm --prefix questions/recordservice install
+    - run: npm --prefix users/rankingservice install
     - run: npm --prefix gatewayservice install
     - run: npm --prefix webapp install
     - run: npm --prefix webapp run build
