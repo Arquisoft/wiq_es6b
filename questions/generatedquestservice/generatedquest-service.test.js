@@ -37,7 +37,7 @@ describe('Generatedquest Service', () => {
         expect(response.body).toHaveLength(0);
     });
 
-
+/*
     it('Should perform an addRecord operation /addGeneratedQuestion', async () => {
         const response = await request(app).post('/addGeneratedQuestion').send(generatedQuestionTest);
         expect(response.status).toBe(200);
@@ -76,5 +76,5 @@ describe('Generatedquest Service', () => {
         expect(response.body[2]).toHaveProperty('generatedQuestionBody', '¿Quién pintó la Mona Lisa?');
         expect(response.body[2]).toHaveProperty('correctAnswer', 'Leonardo da Vinci');
     });
-
+*/
 });

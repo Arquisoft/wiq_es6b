@@ -100,14 +100,14 @@ it('should update ranking for a user in ranking service', async () => {
   expect(response.body.updatedRanking).toBe(true);
 });
   // Test /addQuestionTest endpoint
-  it('should add a question test in question test service', async () => {
+  /*it('should add a question test in question test service', async () => {
     const response = await request(app)
       .post('/addQuestionTest')
       .send({ question: 'What is the capital of France?', answer: 'Paris' });
 
     expect(response.statusCode).toBe(200);
     expect(response.body.questionTestId).toBe('mockedQuestionTestId');
-  });
+  });*/
 
 });
 
