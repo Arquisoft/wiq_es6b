@@ -34,7 +34,17 @@ const Login = ({setLogged}) => {
 
       // Extraer datos de la respuesta
       const { createdAt: userCreatedAt } = response.data;
-      
+  
+    // Obtener todos los usuarios
+    const usersResponse = await axios.get(`${apiEndpoint}/getAllUsers`);
+    const users = usersResponse.data;
+
+    // Para cada usuario, crear su ranking
+    for (const user of users) {
+      await axios.post(`${apiEndpoint}/createUserRank`, { username: user.username });
+    }
+      const { data: updatedRankingData } = await axios.get(`${apiEndpoint}/actRanking`);//obtengo datos actualizados del ranking
+      await axios.post(`${apiEndpoint}/updateAllRanking`, updatedRankingData); //los actualizo
       
 
       setCreatedAt(userCreatedAt);
@@ -133,10 +143,10 @@ const Login = ({setLogged}) => {
 
         <div>
           <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
-            Hello {username}!
+            Hola {username}!
           </Typography>
           <Typography component="p" variant="body1" sx={{ textAlign: 'center', marginTop: 2 }}>
-            Your account was created on {new Date(createdAt).toLocaleDateString()}.
+            Tu cuenta fue creada el {new Date(createdAt).toLocaleDateString()}.
           </Typography>
           <Button variant="contained" color="secondary" onClick={handleShowGame}>
             Comenzar a jugar
@@ -148,7 +158,7 @@ const Login = ({setLogged}) => {
   ) : (
     <div>
       <Typography component="h1" variant="h5">
-        Login
+        Iniciar sesión
       </Typography>
       <TextField
         margin="normal"
@@ -166,7 +176,7 @@ const Login = ({setLogged}) => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <Button variant="contained" color="primary" onClick={loginUser}>
-        Login
+        Iniciar sesión
       </Button>
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="Login successful" />
       {error && (
