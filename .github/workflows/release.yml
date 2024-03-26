@@ -15,6 +15,7 @@ jobs:
     - run: npm --prefix users/authservice ci
     - run: npm --prefix users/userservice ci
     - run: npm --prefix questions/createservice ci
+    - run: npm --prefix users/rankingservice ci
     - run: npm --prefix questions/generatedquestservice ci
     - run: npm --prefix questions/recordservice ci
     - run: npm --prefix gatewayservice ci
@@ -138,6 +139,23 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: ghcr.io
         workdir: questions/recordservice
+  docker-push-rankingservice:
+    name: Push record service Docker Image to GitHub Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs: [e2e-tests]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@v5
+      with:
+        name: arquisoft/wiq_es6b/rankingservice
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: ghcr.io
+        workdir: users/rankingservice
   docker-push-generatedquestservice:
     name: Push generated quest service Docker Image to GitHub Packages
     runs-on: ubuntu-latest
@@ -175,7 +193,7 @@ jobs:
   deploy:
     name: Deploy over SSH
     runs-on: ubuntu-latest
-    needs: [docker-push-userservice,docker-push-authservice,docker-push-gatewayservice,docker-push-webapp,docker-push-createservice,docker-push-recordservice,docker-push-generatedquestservice]
+    needs: [docker-push-userservice,docker-push-authservice,docker-push-gatewayservice,docker-push-webapp,docker-push-createservice,docker-push-recordservice,docker-push-generatedquestservice,docker-push-rankingservice]
     steps:
     - name: Deploy over SSH
       uses: fifsky/ssh-action@master

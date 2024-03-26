@@ -20,6 +20,7 @@ jobs:
     - run: npm --prefix questions/createservice ci
     - run: npm --prefix questions/generatedquestservice ci
     - run: npm --prefix questions/recordservice ci
+    - run: npm --prefix users/rankingservice ci
     - run: npm --prefix gatewayservice ci
     - run: npm --prefix webapp ci
     - run: npm --prefix users/authservice test -- --coverage
