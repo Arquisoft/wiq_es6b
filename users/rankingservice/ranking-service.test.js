@@ -1,11 +1,20 @@
-const request = require('supertest');
-const mongoose = require('mongoose');
 const UserRank = require('./ranking-model');
-const app = require('./ranking-service');
+const request = require('supertest');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
-// Función para eliminar todos los documentos de la colección UserRank después de cada prueba
-afterEach(async () => {
-  await UserRank.deleteMany({});
+let mongoServer;
+let app;
+
+beforeAll(async () => {
+  mongoServer = await MongoMemoryServer.create();
+  const mongoUri = mongoServer.getUri();
+  process.env.MONGODB_URI = mongoUri;
+  app = require('./ranking-service');
+});
+
+afterAll(async () => {
+  app.close();
+  await mongoServer.stop();
 });
 
 describe('User Service', () => {
