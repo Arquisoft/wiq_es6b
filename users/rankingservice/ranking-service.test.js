@@ -17,6 +17,11 @@ afterAll(async () => {
   await mongoServer.stop();
 });
 
+// Función para eliminar todos los documentos de la colección UserRank después de cada prueba
+afterEach(async () => {
+  await UserRank.deleteMany({});
+});
+
 describe('User Service', () => {
   // Prueba para el endpoint POST /createUserRank
   describe('POST /createUserRank', () => {
