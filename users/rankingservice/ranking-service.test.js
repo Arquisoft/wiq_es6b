@@ -1,7 +1,7 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
 const UserRank = require('./ranking-model');
-const app = require('./user-service');
+const app = require('./ranking-service');
 
 // Función para eliminar todos los documentos de la colección UserRank después de cada prueba
 afterEach(async () => {
