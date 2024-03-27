@@ -42,6 +42,11 @@ const Login = ({setLogged}) => {
     const usersResponse = await axios.get(`${apiEndpoint}/getAllUsers`);
     const users = usersResponse.data;
 
+
+    setCreatedAt(userCreatedAt);
+    setLoginSuccess(true);
+    setLogged();
+
     setLoading(true);
     // Para cada usuario, crear su ranking
     for (const user of users) {
@@ -51,9 +56,9 @@ const Login = ({setLogged}) => {
       await axios.post(`${apiEndpoint}/updateAllRanking`, updatedRankingData); //los actualizo
       setLoading(false);
 
-      setCreatedAt(userCreatedAt);
-      setLoginSuccess(true);
-      setLogged();
+      //setCreatedAt(userCreatedAt);
+     // setLoginSuccess(true);
+      //setLogged();
       setOpenSnackbar(true);
     } catch (error) {
       if (error.response) {
