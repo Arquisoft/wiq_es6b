@@ -8,6 +8,7 @@ import Game from './Game';
 import UsersList from './UsersList';
 import GeneratedQuestionsList from './GeneratedQuestionsList';
 import RecordList from './RecordList';
+import RankingList from './RankingList';
 
 //import Link from '@mui/material/Link';
 
@@ -22,6 +23,7 @@ const Login = ({setLogged}) => {
   const [showUsersList, setShowUsersList] = useState(false);
   const [showQuestionList, setShowQuestionList] = useState(false);
   const [showRecordList, setShowRecordList] = useState(false);
+  const [showRankingList, setShowRankingList] = useState(false);
 
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
@@ -68,13 +70,16 @@ const Login = ({setLogged}) => {
     setShowUsersList(false);
     setShowQuestionList(false);
     setShowRecordList(false);
+    setShowRankingList(false);
     setShowGame(true);
+
   };
 
   const handleShowUsersList = () => {
     setShowGame(false);
     setShowQuestionList(false);
     setShowRecordList(false);
+    setShowRankingList(false);
     setShowUsersList(true);
   };
 
@@ -82,6 +87,7 @@ const Login = ({setLogged}) => {
     setShowGame(false);
     setShowUsersList(false);
     setShowRecordList(false);
+    setShowRankingList(false);
     setShowQuestionList(true);
   };
 
@@ -89,8 +95,20 @@ const Login = ({setLogged}) => {
     setShowGame(false);
     setShowUsersList(false);
     setShowQuestionList(false);
+    setShowRankingList(false);
     setShowRecordList(true);
   };
+
+  const handleShowRankingList = () => {
+    setShowGame(false);
+    setShowUsersList(false);
+    setShowQuestionList(false);
+    setShowRecordList(false);
+    setShowRankingList(true);
+
+  };
+
+  
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
@@ -117,6 +135,9 @@ const Login = ({setLogged}) => {
           <Button color="inherit" onClick={handleShowRecordList}>
             Historial de jugadas
           </Button>
+          <Button color="inherit" onClick={handleShowRankingList}>
+            Ranking
+          </Button>
         </Toolbar>
       </AppBar>
     )}
@@ -136,6 +157,11 @@ const Login = ({setLogged}) => {
       ) : 
       showRecordList ? (
         <RecordList username={username} />
+      )
+
+      :
+      showRankingList ? (
+        <RankingList />
       )
 
       :
