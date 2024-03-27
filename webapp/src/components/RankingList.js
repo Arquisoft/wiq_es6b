@@ -5,6 +5,7 @@ const RankingList = () => {
   const [listUsers, setListUsers] = useState([]);
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState('asc');
+  const [topThreeUsers, setTopThreeUsers] = useState([]);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -13,15 +14,15 @@ const RankingList = () => {
       try {
         const response = await axios.get(`${apiEndpoint}/obtainRank`);
 
-        if (response.status === 200)  {
+        if (response.status === 200) {
           const uList = response.data.map(record => ({
             ...record,
             createdAt: new Date(record.createdAt).toLocaleString(),
           }));
-          setListUsers(uList);}
-        
-        
-        else {
+          setListUsers(uList);
+          const sortedUsers = [...uList].sort((a, b) => b.porcentajeAciertos - a.porcentajeAciertos);
+          setTopThreeUsers(sortedUsers.slice(0, 3));
+        } else {
           console.error('Error obteniendo la lista de usuarios');
         }
       } catch (error) {
@@ -60,6 +61,17 @@ const RankingList = () => {
 
   return (
     <div>
+      <h2>Top 3 usurios con mejor porcentaje de aciertos</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px' }}>
+        {topThreeUsers.map((user, index) => (
+          <div key={index} style={{ width: '30%', padding: '20px', backgroundColor: index === 0 ? '#ffd700' : index === 1 ? '#c0c0c0' : '#cd7f32', color: 'white', textAlign: 'center', borderRadius: '10px', boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)', transition: '0.3s', border: '1px solid #ddd' }}>
+            <h3 style={{ margin: '0' }}>{index + 1}</h3>
+            <p style={{ fontWeight: 'bold', fontSize: '20px' }}>{user.username}</p>
+            <p style={{ marginBottom: '5px' }}>{user.porcentajeAciertos}% Aciertos</p>
+          </div>
+        ))}
+      </div>
+      
       <h2>Ranking</h2>
       <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <thead>
