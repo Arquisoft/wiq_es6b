@@ -9,6 +9,7 @@ import UsersList from './UsersList';
 import GeneratedQuestionsList from './GeneratedQuestionsList';
 import RecordList from './RecordList';
 import RankingList from './RankingList';
+import CircularProgress from '@mui/material/CircularProgress';
 
 //import Link from '@mui/material/Link';
 
@@ -24,7 +25,7 @@ const Login = ({setLogged}) => {
   const [showQuestionList, setShowQuestionList] = useState(false);
   const [showRecordList, setShowRecordList] = useState(false);
   const [showRankingList, setShowRankingList] = useState(false);
-
+  const [loading, setLoading] = useState(false);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -41,13 +42,14 @@ const Login = ({setLogged}) => {
     const usersResponse = await axios.get(`${apiEndpoint}/getAllUsers`);
     const users = usersResponse.data;
 
+    setLoading(true);
     // Para cada usuario, crear su ranking
     for (const user of users) {
       await axios.post(`${apiEndpoint}/createUserRank`, { username: user.username });
     }
       const { data: updatedRankingData } = await axios.get(`${apiEndpoint}/actRanking`);//obtengo datos actualizados del ranking
       await axios.post(`${apiEndpoint}/updateAllRanking`, updatedRankingData); //los actualizo
-      
+      setLoading(false);
 
       setCreatedAt(userCreatedAt);
       setLoginSuccess(true);
@@ -116,105 +118,105 @@ const Login = ({setLogged}) => {
 
   return (
     <>
-    {loginSuccess && (
-      <AppBar position="static">
-        <Toolbar>
-          <Button color="inherit" onClick={handleShowGame}>
-            Jugar
-          </Button>
-          {username === 'admin' && (
-            <Button color="inherit" onClick={handleShowUsersList}>
-              Historial de Usuarios
+      {loginSuccess && (
+        <AppBar position="static">
+          <Toolbar>
+            <Button color="inherit" onClick={handleShowGame}>
+              Jugar
             </Button>
-          )}
-          {username === 'admin' && (
-            <Button color="inherit" onClick={handleShowQuestionList}>
-              Historial de Preguntas Generadas
+            {username === 'admin' && (
+              <Button color="inherit" onClick={handleShowUsersList}>
+                Historial de Usuarios
+              </Button>
+            )}
+            {username === 'admin' && (
+              <Button color="inherit" onClick={handleShowQuestionList}>
+                Historial de Preguntas Generadas
+              </Button>
+            )}
+            <Button color="inherit" onClick={handleShowRecordList}>
+              Historial de jugadas
             </Button>
-          )}
-          <Button color="inherit" onClick={handleShowRecordList}>
-            Historial de jugadas
-          </Button>
-          <Button color="inherit" onClick={handleShowRankingList}>
-            Ranking
-          </Button>
-        </Toolbar>
-      </AppBar>
-    )}
-
-    <Container maxWidth="lg" style={{ marginTop: '2rem' }}>
-      {loginSuccess ? (
-        <>
-
-      {showGame ? (
-        <Game username={username} />
-      ) : showUsersList ? (
-        <UsersList />
-      ) : 
-      
-      showQuestionList ? (
-        <GeneratedQuestionsList />
-      ) : 
-      showRecordList ? (
-        <RecordList username={username} />
-      )
-
-      :
-      showRankingList ? (
-        <RankingList />
-      )
-
-      :
-      (
-
-        <div>
-          <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
-            Hola {username}!
-          </Typography>
-          <Typography component="p" variant="body1" sx={{ textAlign: 'center', marginTop: 2 }}>
-            Tu cuenta fue creada el {new Date(createdAt).toLocaleDateString()}.
-          </Typography>
-          <Button variant="contained" color="secondary" onClick={handleShowGame}>
-            Comenzar a jugar
-          </Button>
-
-        </div>
+            <Button color="inherit" onClick={handleShowRankingList}>
+              Ranking
+            </Button>
+          </Toolbar>
+        </AppBar>
       )}
+
+      <Container maxWidth="lg" style={{ marginTop: '2rem' }}>
+        {loading ? ( // Mostrar CircularProgress si loading es true
+          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+            <CircularProgress />
+            <Typography variant="body1" sx={{ marginTop: 2 }}>
+              Espere, estamos cargando sus datos...
+            </Typography>
+          </div>
+        ) : (
+          loginSuccess ? (
+            <>
+              {showGame ? (
+                <Game username={username} />
+              ) : showUsersList ? (
+                <UsersList />
+              ) : 
+              showQuestionList ? (
+                <GeneratedQuestionsList />
+              ) : 
+              showRecordList ? (
+                <RecordList username={username} />
+              ) :
+              showRankingList ? (
+                <RankingList />
+              ) :
+              (
+                <div>
+                  <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
+                    Hola {username}!
+                  </Typography>
+                  <Typography component="p" variant="body1" sx={{ textAlign: 'center', marginTop: 2 }}>
+                    Tu cuenta fue creada el {new Date(createdAt).toLocaleDateString()}.
+                  </Typography>
+                  <Button variant="contained" color="secondary" onClick={handleShowGame}>
+                    Comenzar a jugar
+                  </Button>
+                </div>
+              )}
+            </>
+          ) : (
+            <div>
+              <Typography component="h1" variant="h5">
+                Iniciar sesión
+              </Typography>
+              <TextField
+                margin="normal"
+                fullWidth
+                label="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <TextField
+                margin="normal"
+                fullWidth
+                label="Password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Button variant="contained" color="primary" onClick={loginUser}>
+                Iniciar sesión
+              </Button>
+              <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="Login successful" />
+              {error && (
+                <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
+              )}
+            </div>
+          )
+        )}
+      </Container>
     </>
-  ) : (
-    <div>
-      <Typography component="h1" variant="h5">
-        Iniciar sesión
-      </Typography>
-      <TextField
-        margin="normal"
-        fullWidth
-        label="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <TextField
-        margin="normal"
-        fullWidth
-        label="Password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <Button variant="contained" color="primary" onClick={loginUser}>
-        Iniciar sesión
-      </Button>
-      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar} message="Login successful" />
-      {error && (
-        <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
-      )}
-    </div>
-  )}
-    
-</Container>
-</>
   );
-};  
+};
 
 
 export default Login;
