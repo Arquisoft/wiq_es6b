@@ -22,9 +22,9 @@ const Game = ({ username }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if(!finished){
+      if (!finished) {
         setTimer(timer + 1);
-      }else{
+      } else {
         clearInterval(interval);
       }
     }, 1000);
@@ -70,7 +70,7 @@ const Game = ({ username }) => {
         correctQuestions: correctQuestions,
         failedQuestions: (totalQuestions - correctQuestions)
       });
-      
+
     } catch (error) {
       setError(error.response.data.error);
     }
@@ -102,7 +102,7 @@ const Game = ({ username }) => {
 
   const handleButtonClick = (respuestaSeleccionada) => {
     let newNumberClics = numberClics + 1;
-    
+
     if (respuestaSeleccionada === question.correcta) {
       setCorrectQuestions(correctQuestions + 1);
     }
@@ -121,58 +121,79 @@ const Game = ({ username }) => {
   return (
     <Container maxWidth="lg">
       {numberClics > totalQuestions || timer > timeLimit ? (
-            <Grid item xs={12} md={6}>
-              <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-                ¡Gracias por jugar!
-              </Typography>
-                <List>
-                  <ListItem>
-                    <ListItemText
-                        primary={`Tiempo transcurrido: ${handleTimeUsed()}`}
-                    />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText
-                        primary={`Respuestas correctas: ${correctQuestions}`}
-                    />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText
-                        primary={`Respuestas incorrectas: ${totalQuestions-correctQuestions}`}
-                    />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText
-                        primary={`Dinero recaudado: ${pricePerQuestion*correctQuestions}`}
-                    />
-                  </ListItem>
-                </List>
-            </Grid>
-      ) : (
-          <>
-            <Typography component="h1" variant='h5' sx={{ textAlign: 'center' }}>
-                  Pregunta Número {numberClics} :
+        <Grid item xs={12} md={6}>
+          <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+            ¡Gracias por jugar!
           </Typography>
-          <Typography component="h2" sx={{ textAlign: 'center', color: ((timeLimit-timer) <= 60 && (timer % 60) % 2 === 0) ?
-                                                                  'red' : 'inherit',
-                                                                fontStyle: 'italic',
-                                                                fontWeight: (timer > 150 && (timer % 60) % 2 === 0) ?
-                                                                    'bold' : 'inherit' }}>
+          <List>
+            <ListItem>
+              <ListItemText
+                primary={`Tiempo transcurrido: ${handleTimeUsed()}`}
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary={`Respuestas correctas: ${correctQuestions}`}
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary={`Respuestas incorrectas: ${totalQuestions - correctQuestions}`}
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary={`Dinero recaudado: ${pricePerQuestion * correctQuestions}`}
+              />
+            </ListItem>
+          </List>
+        </Grid>
+      ) : (
+        <>
+          <Typography component="h1" variant='h5' sx={{ textAlign: 'center' }}>
+            Pregunta Número {numberClics} :
+          </Typography>
+          <Typography component="h2" sx={{
+            textAlign: 'center',
+            color: ((timeLimit - timer) <= 60 && (timer % 60) % 2 === 0) ?
+              'red' : 'inherit',
+            fontStyle: 'italic',
+            fontWeight: (timer > 150 && (timer % 60) % 2 === 0) ?
+              'bold' : 'inherit'
+          }}>
             ¡Tiempo restante {handleTimeRemaining()}!
           </Typography>
           <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
             {question.questionBody}
           </Typography>
-          {respuestasAleatorias.map((respuesta, index) => (
-            <Button
-              key={index}
-              variant="contained"
-              color="primary"
-              onClick={() => handleButtonClick(respuesta)}
-            >
-              {respuesta}
-            </Button>
-          ))}
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={12} sm={6}>
+              {respuestasAleatorias.slice(0, respuestasAleatorias.length / 2).map((respuesta, index) => (
+                <Button
+                  key={index}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleButtonClick(respuesta)}
+                  sx={{ margin: '8px', textTransform: 'none', width: '100%' }}
+                >
+                  {respuesta}
+                </Button>
+              ))}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              {respuestasAleatorias.slice(respuestasAleatorias.length / 2).map((respuesta, index) => (
+                <Button
+                  key={index}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleButtonClick(respuesta)}
+                  sx={{ margin: '8px', textTransform: 'none', width: '100%' }}
+                >
+                  {respuesta}
+                </Button>
+              ))}
+            </Grid>
+          </Grid>
         </>
       )}
       {error && (
