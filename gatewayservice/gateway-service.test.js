@@ -58,8 +58,7 @@ describe('Gateway Service', () => {
  it('should add a question successfully', async () => {
   const mockQuestion = {
     questionBody: 'What is the capital of France?',
-    typeQuestion: 'pais',
-    typeAnswer: 'capital'
+    typeQuestion: 'pais'
   };
 
   const response = await request(app)

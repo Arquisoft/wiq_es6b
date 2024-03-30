@@ -27,9 +27,6 @@ paths:
                 typeQuestion:
                   type: string
                   description: The type of the question.
-                typeAnswer:
-                  type: string
-                  description: The type of the answer.
       responses:
         '200':
           description: Question added successfully.
@@ -44,9 +41,6 @@ paths:
                   typeQuestion:
                     type: string
                     description: The type of the question.
-                  typeAnswer:
-                    type: string
-                    description: The type of the answer.
         '400':
           description: Failed to add question.
           content:

@@ -88,8 +88,7 @@ app.post('/addQuestion', async (req, res) => {
   try {
     const newQuestion = new Question({
       questionBody: req.body.questionBody,
-      typeQuestion: req.body.typeQuestion,
-      typeAnswer: req.body.typeAnswer,
+      typeQuestion: req.body.typeQuestion
     });
     await newQuestion.save();
     res.json(newQuestion);
