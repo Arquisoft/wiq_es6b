@@ -1,0 +1,105 @@
+openapi: 3.0.0
+info:
+  title: Createservice API
+  description: Create OpenAPI specification.
+  version: 0.2.0
+servers:
+  - url: http://localhost:8005
+    description: Development server
+  - url: http://51.142.17.139:8005
+    description: Production server
+paths:
+  /addQuestion:
+    post:
+      summary: Add a new question.
+      operationId: addQuestion
+      requestBody:
+        description: The question data to add.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                questionBody:
+                  type: string
+                  description: The body of the question.
+                typeQuestion:
+                  type: string
+                  description: The type of the question.
+                typeAnswer:
+                  type: string
+                  description: The type of the answer.
+      responses:
+        '200':
+          description: Question added successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionBody:
+                    type: string
+                    description: The body of the question.
+                  typeQuestion:
+                    type: string
+                    description: The type of the question.
+                  typeAnswer:
+                    type: string
+                    description: The type of the answer.
+        '400':
+          description: Failed to add question.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error message
+  /getFullQuestion:
+    get:
+      summary: Retrieve a full question with correct and incorrect answers.
+      operationId: getFullQuestion
+      responses:
+        '200':
+          description: Full question retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionBody:
+                    type: string
+                    description: The body of the question.
+                  correctAnswer:
+                    type: string
+                    description: The correct answer.
+                  incorrectAnswers:
+                    type: array
+                    items:
+                      type: string
+                    description: The incorrect answers.
+        '400':
+          description: Failed to retrieve question from Wikidata.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error al realizar la consulta en Wikidata. Estado de respuesta: 400
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error al realizar la consulta en Wikidata

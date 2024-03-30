@@ -84,7 +84,7 @@ app.get('/obtainRank', async (req, res) => {
       const rankings = await UserRank.find({});
       res.json(rankings);
   } catch (error) {
-      res.status(500).json({ error: 'Error al obtener la lista de rankings.' });
+      res.status(400).json({ error: 'Error al obtener la lista de rankings.' });
   }
 });
 
