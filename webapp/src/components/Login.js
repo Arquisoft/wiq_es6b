@@ -61,7 +61,7 @@ const Login = ({setLogged}) => {
       //setLogged();
       setOpenSnackbar(true);
     } catch (error) {
-      if (error.response) {
+      if (error.response && error.response.data) {
         setError(error.response.data.error);
       } else if (error.request) {
         setError('No response from server. Please try again later.');
