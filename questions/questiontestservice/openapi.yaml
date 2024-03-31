@@ -1,0 +1,228 @@
+openapi: 3.0.0
+info:
+  title: Questiontestservice API
+  description: QuestionTest OpenAPI specification.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8007
+    description: Development server
+  - url: http://51.142.17.139:8007
+    description: Production server
+paths:
+  /addQuestionTest:
+    post:
+      summary: Add a new question test.
+      operationId: addQuestionTest
+      requestBody:
+        description: The question test data to add.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                questionBody:
+                  type: string
+                  description: The body of the question.
+                correcta:
+                  type: string
+                  description: The correct answer.
+                incorrectas:
+                  type: array
+                  items:
+                    type: string
+                  description: The incorrect answers.
+                numquest:
+                  type: integer
+                  description: The number of the question.
+      responses:
+        '200':
+          description: Question test added successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionBody:
+                    type: string
+                    description: The body of the question.
+                  correcta:
+                    type: string
+                    description: The correct answer.
+                  incorrectas:
+                    type: array
+                    items:
+                      type: string
+                    description: The incorrect answers.
+                  numquest:
+                    type: integer
+                    description: The number of the question.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /getQuestionTest/{numquest}:
+    get:
+      summary: Retrieve a question test by its number.
+      operationId: getQuestionTest
+      parameters:
+        - name: numquest
+          in: path
+          description: The number of the question test.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Question test retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionBody:
+                    type: string
+                    description: The body of the question.
+                  correcta:
+                    type: string
+                    description: The correct answer.
+                  incorrectas:
+                    type: array
+                    items:
+                      type: string
+                    description: The incorrect answers.
+                  numquest:
+                    type: integer
+                    description: The number of the question.
+        '404':
+          description: Question test not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Question not found
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /getAllQuestionTest:
+    get:
+      summary: Retrieve all question tests.
+      operationId: getAllQuestionTest
+      responses:
+        '200':
+          description: Question tests retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    questionBody:
+                      type: string
+                      description: The body of the question.
+                    correcta:
+                      type: string
+                      description: The correct answer.
+                    incorrectas:
+                      type: array
+                      items:
+                        type: string
+                      description: The incorrect answers.
+                    numquest:
+                      type: integer
+                      description: The number of the question.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /deleteAllQuestionTest:
+    delete:
+      summary: Delete all question tests.
+      operationId: deleteAllQuestionTest
+      responses:
+        '200':
+          description: Question tests deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message.
+                    example: All questions deleted successfully.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /getRandomQuestionTest:
+    get:
+      summary: Retrieve a random question test.
+      operationId: getRandomQuestionTest
+      responses:
+        '200':
+          description: Random question test retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionBody:
+                    type: string
+                    description: The body of the question.
+                  correcta:
+                    type: string
+                    description: The correct answer.
+                  incorrectas:
+                    type: array
+                    items:
+                      type: string
+                    description: The incorrect answers.
+                  numquest:
+                    type: integer
+                    description: The number of the question.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error

@@ -40,7 +40,7 @@ app.post('/addRecord', async (req, res) => {
   res.json(newRecord);
   
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: error.message }); 
   }
 });
 
@@ -55,7 +55,7 @@ app.get('/getRecords/:userId', async (req, res) => {
     res.json(userRecords);
 
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: error.message }); 
   }
 });
 
@@ -86,7 +86,7 @@ app.get('/actRanking', async (req, res) => {
 
     res.json(rankingArray);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: error.message }); 
   }
 });
 
