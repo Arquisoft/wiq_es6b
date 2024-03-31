@@ -1,0 +1,68 @@
+openapi: 3.0.0
+info:
+  title: Auth Service API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8002
+    description: Development server
+  - url: http://51.142.17.139:8002
+    description: Production server
+paths:
+  /login:
+    post:
+      summary: User login.
+      operationId: loginUser
+      requestBody:
+        description: The user's login data.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The username of the user.
+                password:
+                  type: string
+                  description: The password of the user.
+      responses:
+        '200':
+          description: Login successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: The JWT token.
+                  username:
+                    type: string
+                    description: The username of the user.
+                  createdAt:
+                    type: string
+                    format: date-time
+                    description: The creation date of the user.
+        '401':
+          description: Invalid credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Invalid credentials
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error

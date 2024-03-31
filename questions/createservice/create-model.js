@@ -11,12 +11,6 @@ const questionSchema = new mongoose.Schema({
         required: true,
       },//para filtrar por el tipo de pregunta
       //autor, year etc...
-      typeAnswer: {
-        type: String,
-        required: true,
-      },//para sacar el tipo de respuesta->p.ej 
-      //quien escribio...typeQuestion: libro
-      //typeAnswer : autor
       //en wikidata se buscaria aleatoriamente para la pregunta un libro y para su respuesta un autor
 });
 

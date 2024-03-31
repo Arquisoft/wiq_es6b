@@ -1,0 +1,53 @@
+openapi: 3.0.0
+info:
+  title: User Service API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8001
+    description: Development server
+  - url: http://51.142.17.139:8001
+    description: Production server
+paths:
+  /adduser:
+    post:
+      summary: Add a new user.
+      operationId: addUser
+      requestBody:
+        description: The user's data to add.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The username of the user.
+                password:
+                  type: string
+                  description: The password of the user.
+      responses:
+        '200':
+          description: User added successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    description: The username of the user.
+                  password:
+                    type: string
+                    description: The hashed password of the user.
+        '400':
+          description: Failed to add user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error message

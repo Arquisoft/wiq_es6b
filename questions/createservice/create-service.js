@@ -88,13 +88,12 @@ app.post('/addQuestion', async (req, res) => {
   try {
     const newQuestion = new Question({
       questionBody: req.body.questionBody,
-      typeQuestion: req.body.typeQuestion,
-      typeAnswer: req.body.typeAnswer,
+      typeQuestion: req.body.typeQuestion
     });
     await newQuestion.save();
     res.json(newQuestion);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: error.message }); 
   }
 });
 
@@ -140,7 +139,7 @@ app.get('/getFullQuestion', async (req, res) => {
 
       res.json(fullQuestion);
     } else {
-      res.status(500).json({ error: "Error al realizar la consulta en Wikidata. Estado de respuesta:" + respuestaWikidata.status });
+      res.status(400).json({ error: "Error al realizar la consulta en Wikidata. Estado de respuesta:" + respuestaWikidata.status });
     }
   } catch (error) {
     res.status(500).json({ error: "Error al realizar la consulta en Wikidata" });
