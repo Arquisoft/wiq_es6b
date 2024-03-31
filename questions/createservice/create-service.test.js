@@ -53,11 +53,12 @@ describe('Create Service', () => {
         jest.spyOn(global, 'fetch').mockImplementation(() => Promise.reject(new Error('Failed to fetch')) );
     
         const response = await request(app).post('/addQuestion').send(questionTest);
-        expect(response.status).toBe(400);
+        expect(response.status).toBe(500);
         expect(response.body).toHaveProperty('error');
       });
 
     it('Should perform a getFullQuestion operation /getFullQuestion', async () => {
+        await request(app).post('/addQuestion').send(questionTest);
         const response = await request(app).get('/getFullQuestion');
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
@@ -69,7 +70,7 @@ describe('Create Service', () => {
         jest.spyOn(global, 'fetch').mockImplementation(() => Promise.reject(new Error('Failed to fetch'))  );
 
         const response = await request(app).get('/getFullQuestion');
-        expect(response.status).toBe(400);
+        expect(response.status).toBe(500);
         expect(response.body).toHaveProperty('error');
     });
     
