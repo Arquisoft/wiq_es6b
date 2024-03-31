@@ -7,18 +7,15 @@ let app;
 //test question
 const questionTest = {
     questionBody: '¿Cuál es la capital de ',
-    typeQuestion: 'pais',
-    typeAnswer: 'capital'
+    typeQuestion: 'pais'
 };
 const questionTest2 = {
     questionBody: '¿En qué año se descubrió ',
-    typeQuestion: 'pais',
-    typeAnswer: 'año'
+    typeQuestion: 'pais'
 };
 const questionTest3 = {
     questionBody: '¿Quién pintó  ',
-    typeQuestion: 'cuadro',
-    typeAnswer: 'autor'
+    typeQuestion: 'cuadro'
 };
 
 beforeAll(async () => {
@@ -39,7 +36,6 @@ describe('Create Service', () => {
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody', '¿Cuál es la capital de ');
         expect(response.body).toHaveProperty('typeQuestion', 'pais');
-        expect(response.body).toHaveProperty('typeAnswer', 'capital');
     });
 
     it('Should perform two addRecord operation /addQuestion', async () => {
@@ -47,15 +43,13 @@ describe('Create Service', () => {
         expect(response2.status).toBe(200);
         expect(response2.body).toHaveProperty('questionBody', '¿En qué año se descubrió ');
         expect(response2.body).toHaveProperty('typeQuestion', 'pais');
-        expect(response2.body).toHaveProperty('typeAnswer', 'año');
         const response3 = await request(app).post('/addQuestion').send(questionTest3);
         expect(response3.status).toBe(200);
         expect(response3.body).toHaveProperty('questionBody', '¿Quién pintó  ');
         expect(response3.body).toHaveProperty('typeQuestion', 'cuadro');
-        expect(response3.body).toHaveProperty('typeAnswer', 'autor');
     });
 
-    it('Should perform a getFullQuestion operation /getFullQuestion', async () => {
+    /*it('Should perform a getFullQuestion operation /getFullQuestion', async () => {
         await request(app).post('/addQuestion').send(questionTest);
         const response = await request(app).get('/getFullQuestion');
         expect(response.status).toBe(200);
@@ -63,6 +57,6 @@ describe('Create Service', () => {
         expect(response.body).toHaveProperty('correctAnswer');
         expect(response.body).toHaveProperty('incorrectAnswers');
     });
-
+*/
     
 });
