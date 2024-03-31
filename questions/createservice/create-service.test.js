@@ -49,14 +49,28 @@ describe('Create Service', () => {
         expect(response3.body).toHaveProperty('typeQuestion', 'cuadro');
     });
 
-    /*it('Should perform a getFullQuestion operation /getFullQuestion', async () => {
-        await request(app).post('/addQuestion').send(questionTest);
+    it('should respond with an error when the request fails', async () => {
+        jest.spyOn(global, 'fetch').mockImplementation(() => Promise.reject(new Error('Failed to fetch')) );
+    
+        const response = await request(app).post('/addQuestion').send(questionTest);
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('error');
+      });
+
+    it('Should perform a getFullQuestion operation /getFullQuestion', async () => {
         const response = await request(app).get('/getFullQuestion');
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
         expect(response.body).toHaveProperty('correctAnswer');
         expect(response.body).toHaveProperty('incorrectAnswers');
     });
-*/
+
+    it('should respond with an error when the request fails', async () => {
+        jest.spyOn(global, 'fetch').mockImplementation(() => Promise.reject(new Error('Failed to fetch'))  );
+
+        const response = await request(app).get('/getFullQuestion');
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('error');
+    });
     
 });
