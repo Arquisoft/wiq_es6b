@@ -50,12 +50,15 @@ describe('Create Service', () => {
     });
 
     it('Should respond with an error when /addQuestion fails', async () => {
-        jest.spyOn(global, 'fetch').mockImplementation(() => Promise.reject(new Error('Failed to fetch')) );
+        const failTest = {
+            question: '¿Cuál es la capital de ',
+            type: 'pais'
+        };
     
-        const response = await request(app).post('/addQuestion').send(questionTest);
-        expect(response.status).toBe(500);
+        const response = await request(app).post('/addQuestion').send(failTest);
+        expect(response.status).toBe(400);
         expect(response.body).toHaveProperty('error');
-      });
+    });
 
     it('Should perform a getFullQuestion operation /getFullQuestion', async () => {
         await request(app).post('/addQuestion').send(questionTest);
