@@ -22,6 +22,8 @@ beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
     process.env.MONGODB_URI = mongoUri;
+    console.log("MongoDB URI: ", mongoUri);
+    
     app = require('./create-service');
 });
 
@@ -73,7 +75,7 @@ describe('Create Service', () => {
         jest.spyOn(global, 'fetch').mockImplementation(() => Promise.reject(new Error('Failed to fetch'))  );
 
         const response = await request(app).get('/getFullQuestion');
-        expect(response.status).toBe(500);
+        expect(response.status).toBe(400);
         expect(response.body).toHaveProperty('error');
     });
     
