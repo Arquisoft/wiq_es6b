@@ -2,88 +2,91 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Typography, Button, Snackbar, Grid, List, ListItem, ListItemText } from '@mui/material';
 
-const Game = ({ username }) => {
-  const [question, setQuestion] = useState({});
-  const [respuestasAleatorias, setRespuestasAleatorias] = useState([]);
-  const [error, setError] = useState('');
-  const [correctQuestions, setCorrectQuestions] = useState(0);
-  const [timer, setTimer] = useState(0);
-  const [numberClics, setNumberClics] = useState(0);
-  const [finished, setFinished] = useState(false);
-  const [selectedAnswer, setSelectedAnswer] = useState('');
-  const [selectedOption, setSelectedOption] = useState(null); // Opción seleccionada actualmente
-  const totalQuestions = 10;
-  const timeLimit = 180;
-  const pricePerQuestion = 25;
-  const delayBeforeNextQuestion = 3000; // 3 segundos de retardo antes de pasar a la siguiente pregunta
+const Game = ({ username, totalQuestions, timeLimit }) => {
+    const [question, setQuestion] = useState({});
+    const [respuestasAleatorias, setRespuestasAleatorias] = useState([]);
+    const [error, setError] = useState('');
+    const [correctQuestions, setCorrectQuestions] = useState(0);
+    const [timer, setTimer] = useState(0);
+    const [numberClics, setNumberClics] = useState(0);
+    const [finished, setFinished] = useState(false);
+    const [selectedAnswer, setSelectedAnswer] = useState('');
+    const [selectedOption, setSelectedOption] = useState(null); // Opción seleccionada actualmente
+    const pricePerQuestion = 25;
+    const delayBeforeNextQuestion = 3000; // 3 segundos de retardo antes de pasar a la siguiente pregunta
 
-  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-  useEffect(() => {
-    obtenerPreguntaAleatoria();
-  }, [numberClics]);
+    useEffect(() => {
+        obtenerPreguntaAleatoria();
+    }, [numberClics]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!finished) {
-        setTimer(timer + 1);
-      } else {
-        clearInterval(interval);
-      }
-    }, 1000);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (!finished) {
+                setTimer(timer + 1);
+            } else {
+                clearInterval(interval);
+            }
+        }, 1000);
 
-    return () => clearInterval(interval);
-  }, [timer, finished]);
+        return () => clearInterval(interval);
+    }, [timer, finished]);
 
-  const obtenerPreguntaAleatoria = async () => {
-    try {
-      const response = await axios.get(`${apiEndpoint}/getRandomQuestionTest`);
-      setQuestion(response.data);
-      const respuestas = [...response.data.incorrectas, response.data.correcta];
-      setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
-    } catch (error) {
-      console.error("Error al obtener la pregunta aleatoria", error);
-      setError('Error al obtener la pregunta aleatoria');
+    const obtenerPreguntaAleatoria = async () => {
+        try {
+            const response = await axios.get(`${apiEndpoint}/getRandomQuestionTest`);
+            setQuestion(response.data);
+            const respuestas = [...response.data.incorrectas, response.data.correcta];
+            setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
+        } catch (error) {
+            console.error("Error al obtener la pregunta aleatoria", error);
+            setError('Error al obtener la pregunta aleatoria');
+        }
+    };
+
+    const handleTimeRemaining = () => {
+        let minsR = Math.floor((timeLimit - timer) / 60);
+        let minsRStr = (minsR < 10) ? '0' + minsR.toString() : minsR.toString();
+        let secsR = (timeLimit - timer) % 60;
+        let secsRStr = (secsR < 10) ? '0' + secsR.toString() : secsR.toString();
+        return `${minsRStr}:${secsRStr}`;
+    };
+
+    const handleTimeUsed = () => {
+        let minsR = Math.floor(timer / 60);
+        let minsRStr = (minsR < 10) ? '0' + minsR.toString() : minsR.toString();
+        let secsR = timer % 60;
+        let secsRStr = (secsR < 10) ? '0' + secsR.toString() : secsR.toString();
+        return `${minsRStr}:${secsRStr}`;
     }
-  };
 
-  const handleTimeRemaining = () => {
-    let minsR = Math.floor((timeLimit - timer) / 60);
-    let minsRStr = (minsR < 10) ? '0' + minsR.toString() : minsR.toString();
-    let secsR = (timeLimit - timer) % 60;
-    let secsRStr = (secsR < 10) ? '0' + secsR.toString() : secsR.toString();
-    return `${minsRStr}:${secsRStr}`;
-  };
+    const handleButtonClick = async (respuestaSeleccionada, index) => {
+        if (!finished) {
+            if (selectedOption !== null) return; // Si ya se seleccionó una opción, no hacer nada
 
-  const handleTimeUsed = () => {
-    let minsR = Math.floor(timer / 60);
-    let minsRStr = (minsR < 10) ? '0' + minsR.toString() : minsR.toString();
-    let secsR = timer % 60;
-    let secsRStr = (secsR < 10) ? '0' + secsR.toString() : secsR.toString();
-    return `${minsRStr}:${secsRStr}`;
-  }
+            setSelectedOption(index); // Guardar la opción seleccionada actualmente
 
-  const handleButtonClick = async (respuestaSeleccionada, index) => {
-    if (!finished) {
-      if (selectedOption !== null) return; // Si ya se seleccionó una opción, no hacer nada
+            if (respuestaSeleccionada === question.correcta) {
+                setCorrectQuestions(correctQuestions + 1);
+                setSelectedAnswer('correct');
+            } else {
+                setSelectedAnswer('incorrect');
+            }
 
-      setSelectedOption(index); // Guardar la opción seleccionada actualmente
+            // Si ya llegamos a la última pregunta, acabamos la partida para que se muestre el resultado
+            if(numberClics===totalQuestions-1){
+                setFinished(true);
+            }
 
-      if (respuestaSeleccionada === question.correcta) {
-        setCorrectQuestions(correctQuestions + 1);
-        setSelectedAnswer('correct');
-      } else {
-        setSelectedAnswer('incorrect');
-      }
-
-      // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
-      setTimeout(() => {
-        setSelectedOption(null);
-        setNumberClics(numberClics + 1);
-        setSelectedAnswer('');
-      }, delayBeforeNextQuestion);
-    }
-  };
+            // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
+            setTimeout(() => {
+                setSelectedOption(null);
+                setNumberClics(numberClics + 1);
+                setSelectedAnswer('');
+            }, delayBeforeNextQuestion);
+        }
+    };
 
   return (
     <Container maxWidth="lg">
