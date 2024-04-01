@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import GeneratedQuestionsList from './GeneratedQuestionsList';
@@ -25,7 +25,14 @@ describe('GeneratedQuestionsList component', () => {
     expect(table).toBeInTheDocument();
   });
 
-  it('renders the table with "Pregunta" and "Respuesta Correcta" headers', () => {
+  it('should display "Pregunta" and "Respuesta Correcta" headers', async () => {
+    // Mocking the response for the GET request
+    const mockData = [
+      { generatedQuestionBody: 'Pregunta 1', correctAnswer: 'Respuesta 1' },
+      { generatedQuestionBody: 'Pregunta 2', correctAnswer: 'Respuesta 2' },
+    ];
+    mockAxios.onGet('/getAllGeneratedQuestions').reply(200, mockData);
+
     render(<GeneratedQuestionsList />);
     
     const preguntaHeader = screen.getByText(/Pregunta/i);
