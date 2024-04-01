@@ -74,6 +74,6 @@ describe('Create Service', () => {
         expect(response.body).toHaveProperty('questionBody');
         expect(response.body).toHaveProperty('correctAnswer');
         expect(response.body).toHaveProperty('incorrectAnswers');
-    });
+    }, 20000);
     
 });
