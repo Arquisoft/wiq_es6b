@@ -75,6 +75,20 @@ app.get('/getRandomQuestionTest', async (req, res) => {
   }
 });
 
+// Ruta para eliminar la primera pregunta de la base de datos
+app.delete('/deleteFirstQuestionTest', async (req, res) => {
+  try {
+    const firstQuestion = await QuestionTest.findOneAndDelete({}).sort({ createdAt: 1 });
+    if (firstQuestion) {
+      res.json(firstQuestion);
+    } else {
+      res.status(404).json({ error: 'No question found in the database' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 // Iniciar el servidor
 const server = app.listen(port, () => {

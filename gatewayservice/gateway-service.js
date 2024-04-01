@@ -303,6 +303,20 @@ app.delete('/deleteAllQuestionTest', async (req, res) => {
   }
 });
 
+// Ruta para eliminar todas las preguntas de prueba
+app.delete('/deleteFirstQuestionTest', async (req, res) => {
+  try {
+    const questionTestResponse = await axios.delete(`${questiontestservice}/deleteFirstQuestionTest`);
+    res.json(questionTestResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+});
+
 
 // Start the gateway service
 const server = app.listen(port, () => {
