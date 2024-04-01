@@ -88,87 +88,87 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         }
     };
 
-  return (
-    <Container maxWidth="lg">
-      {numberClics >= totalQuestions || timer >= timeLimit ? (
-        <Grid item xs={12} md={6}>
-          <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-            ¡Gracias por jugar!
-          </Typography>
-          <List>
-            <ListItem>
-              <ListItemText
-                primary={`Tiempo transcurrido: ${handleTimeUsed()}`}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={`Respuestas correctas: ${correctQuestions}`}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={`Respuestas incorrectas: ${totalQuestions - correctQuestions}`}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={`Dinero recaudado: ${pricePerQuestion * correctQuestions}`}
-              />
-            </ListItem>
-          </List>
-        </Grid>
-      ) : (
-        <>
-          <Typography component="h1" variant='h5' sx={{ textAlign: 'center' }}>
-            Pregunta Número {numberClics + 1} :
-          </Typography>
-          <Typography component="h2" sx={{
-            textAlign: 'center',
-            color: ((timeLimit - timer) <= 60 && (timer % 60) % 2 === 0) ?
-              'red' : 'inherit',
-            fontStyle: 'italic',
-            fontWeight: (timer > 150 && (timer % 60) % 2 === 0) ?
-              'bold' : 'inherit'
-          }}>
-            ¡Tiempo restante {handleTimeRemaining()}!
-          </Typography>
-          <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
-            {question.questionBody}
-          </Typography>
-          <Grid container spacing={2} justifyContent="center">
-            {respuestasAleatorias.map((respuesta, index) => (
-              <Grid item xs={6} key={index}>
-                <Button
-                  variant="contained"
-                  color={
-                    selectedOption !== null
-                      ? respuesta === question.correcta
-                        ? 'success'
-                        : index === selectedOption
-                        ? 'error'
-                        : 'primary'
-                      : 'primary'
-                  }
-                  onClick={() => handleButtonClick(respuesta, index)}
-                  sx={{
-                    margin: '8px',
-                    textTransform: 'none',
-                    width: '100%',
-                  }}
-                >
-                  {respuesta}
-                </Button>
-              </Grid>
-            ))}
-          </Grid>
-        </>
-      )}
-      {error && (
-        <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
-      )}
-    </Container>
-  );
+    return (
+        <Container maxWidth="lg">
+            {numberClics >= totalQuestions || timer >= timeLimit ? (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+                        ¡Gracias por jugar!
+                    </Typography>
+                    <List>
+                        <ListItem>
+                            <ListItemText
+                                primary={`Tiempo transcurrido: ${handleTimeUsed()}`}
+                            />
+                        </ListItem>
+                        <ListItem>
+                            <ListItemText
+                                primary={`Respuestas correctas: ${correctQuestions}`}
+                            />
+                        </ListItem>
+                        <ListItem>
+                            <ListItemText
+                                primary={`Respuestas incorrectas: ${totalQuestions - correctQuestions}`}
+                            />
+                        </ListItem>
+                        <ListItem>
+                            <ListItemText
+                                primary={`Dinero recaudado: ${pricePerQuestion * correctQuestions}`}
+                            />
+                        </ListItem>
+                    </List>
+                </div>
+            ) : (
+                <>
+                    <Typography component="h1" variant='h5' sx={{ textAlign: 'center' }}>
+                        Pregunta Número {numberClics + 1} :
+                    </Typography>
+                    <Typography component="h2" sx={{
+                        textAlign: 'center',
+                        color: ((timeLimit - timer) <= 60 && (timer % 60) % 2 === 0) ?
+                            'red' : 'inherit',
+                        fontStyle: 'italic',
+                        fontWeight: (timer > 150 && (timer % 60) % 2 === 0) ?
+                            'bold' : 'inherit'
+                    }}>
+                        ¡Tiempo restante {handleTimeRemaining()}!
+                    </Typography>
+                    <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
+                        {question.questionBody}
+                    </Typography>
+                    <Grid container spacing={2} justifyContent="center">
+                        {respuestasAleatorias.map((respuesta, index) => (
+                            <Grid item xs={6} key={index}>
+                                <Button
+                                    variant="contained"
+                                    color={
+                                        selectedOption !== null
+                                            ? respuesta === question.correcta
+                                                ? 'success'
+                                                : index === selectedOption
+                                                    ? 'error'
+                                                    : 'primary'
+                                            : 'primary'
+                                    }
+                                    onClick={() => handleButtonClick(respuesta, index)}
+                                    sx={{
+                                        margin: '8px',
+                                        textTransform: 'none',
+                                        width: '100%',
+                                    }}
+                                >
+                                    {respuesta}
+                                </Button>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </>
+            )}
+            {error && (
+                <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
+            )}
+        </Container>
+    );
 };
 
 export default Game;

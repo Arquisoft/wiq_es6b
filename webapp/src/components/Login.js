@@ -1,8 +1,8 @@
 // src/components/Login.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 //import { Container, Typography, TextField, Button, Snackbar, AppBar, Toolbar, Link, Paper } from '@mui/material';
-import { Container, Typography, TextField, Button, Snackbar, AppBar, Toolbar, Box, Slider } from '@mui/material';
+import { Container, Typography, Button, Snackbar, AppBar, Toolbar, Box, Slider, TextField } from '@mui/material';
 
 import Game from './Game';
 import UsersList from './UsersList';
@@ -10,7 +10,7 @@ import GeneratedQuestionsList from './GeneratedQuestionsList';
 import RecordList from './RecordList';
 import RankingList from './RankingList';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import GameSettings from './GameSettings';
 //import Link from '@mui/material/Link';
 
 const Login = ({setLogged}) => {
@@ -27,16 +27,10 @@ const Login = ({setLogged}) => {
   const [showRankingList, setShowRankingList] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [numberQuestions, setNumberQuestions] = useState(10); // 10 preguntas por defecto
-  const markQuestions = [
-    {value:5},
-    {value:10},
-    {value:15},
-    {value:20},
-    {value:25},
-    {value:30},
-  ];
-  const [totalTime, setTotalTime] = useState(180); // tiempo por defecto de 3 mins
+
+  const [settings, setSettings] = useState({}); // aquí recibiremos los ajustes proporcionados por GameSettings
+  const [totalTime, setTotalTime] = useState(180);
+
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -82,15 +76,13 @@ const Login = ({setLogged}) => {
     }
   };
 
-
-
   const handleShowGame = () => {
     setShowUsersList(false);
     setShowQuestionList(false);
     setShowRecordList(false);
     setShowRankingList(false);
     setShowGame(true);
-
+    setShowSettings(false);
   };
   const handleShowUsersList = () => {
     setShowGame(false);
@@ -98,6 +90,7 @@ const Login = ({setLogged}) => {
     setShowRecordList(false);
     setShowRankingList(false);
     setShowUsersList(true);
+    setShowSettings(false);
   };
   const handleShowQuestionList = () => {
     setShowGame(false);
@@ -105,6 +98,7 @@ const Login = ({setLogged}) => {
     setShowRecordList(false);
     setShowRankingList(false);
     setShowQuestionList(true);
+    setShowSettings(false);
   };
   const handleShowRecordList = () => {
     setShowGame(false);
@@ -112,6 +106,7 @@ const Login = ({setLogged}) => {
     setShowQuestionList(false);
     setShowRankingList(false);
     setShowRecordList(true);
+    setShowSettings(false);
   };
   const handleShowRankingList = () => {
     setShowGame(false);
@@ -119,20 +114,28 @@ const Login = ({setLogged}) => {
     setShowQuestionList(false);
     setShowRecordList(false);
     setShowRankingList(true);
-
+    setShowSettings(false);
   };
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
   const handleShowSettings = () => {
+    setShowGame(false);
+    setShowUsersList(false);
+    setShowQuestionList(false);
+    setShowRecordList(false);
+    setShowRankingList(false);
     setShowSettings(true);
   };
-  function valuetext(value){
-    return `${value} preguntas`;
+
+  const calculateTotalTime = () => {
+    const totalTimeCalculated = (parseInt(settings.totalMins) * 60) + parseInt(settings.totalSecs);
+    setTotalTime(totalTimeCalculated);
   };
-  const handleQuestionsSlider = (event, newValue) => {
-    setNumberQuestions(newValue); // Cambio el número de preguntas establecidas en ajustes de partida
-  };
+
+  useEffect(() => {
+    calculateTotalTime();
+  },[settings]);
 
   return (
       <>
@@ -177,7 +180,7 @@ const Login = ({setLogged}) => {
               loginSuccess ? (
                   <>
                     {showGame ? (
-                        <Game username={username} totalQuestions={numberQuestions} timeLimit={totalTime} />
+                        <Game username={username} totalQuestions={settings.numberQuestions} timeLimit={totalTime} />
                     ) : showUsersList ? (
                             <UsersList />
                         ) :
@@ -191,26 +194,15 @@ const Login = ({setLogged}) => {
                                         <RankingList />
                                     ) :
                                     showSettings ? (
-                                            <Box sx={{ width: 300, display: 'flex', justifyContent: 'center' }}>
-                                              <Slider
-                                                  aria-label="Custom marks"
-                                                  defaultValue={10}
-                                                  value={numberQuestions}
-                                                  onChange={handleQuestionsSlider} // manejador cambio en slider
-                                                  getAriaValueText={valuetext} // valor mostrado en la etiqueta
-                                                  step={5}
-                                                  valueLabelDisplay="auto"
-                                                  marks={markQuestions}
-                                                  max={markQuestions[markQuestions.length-1].value} // valor máximo seleccionable
-                                              />
-                                            </Box>
+                                            <GameSettings setSettings={setSettings}/>
                                         ) :
                                         (
                                             <div>
-                                              <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
+                                              <Typography component="h1" variant="h5" sx={{textAlign: 'center'}}>
                                                 Hola {username}!
                                               </Typography>
-                                              <Typography component="p" variant="body1" sx={{ textAlign: 'center', marginTop: 2 }}>
+                                              <Typography component="p" variant="body1"
+                                                          sx={{textAlign: 'center', marginTop: 2}}>
                                                 Tu cuenta fue creada el {new Date(createdAt).toLocaleDateString()}.
                                               </Typography>
                                               <Button variant="contained" color="secondary" onClick={handleShowGame}>
@@ -253,6 +245,5 @@ const Login = ({setLogged}) => {
       </>
   );
 };
-
 
 export default Login;
