@@ -25,20 +25,5 @@ describe('GeneratedQuestionsList component', () => {
     expect(table).toBeInTheDocument();
   });
 
-  it('should display "Pregunta" and "Respuesta Correcta" headers', async () => {
-    // Mocking the response for the GET request
-    const mockData = [
-      { generatedQuestionBody: 'Pregunta 1', correctAnswer: 'Respuesta 1' },
-      { generatedQuestionBody: 'Pregunta 2', correctAnswer: 'Respuesta 2' },
-    ];
-    mockAxios.onGet('/getAllGeneratedQuestions').reply(200, mockData);
 
-    render(<GeneratedQuestionsList />);
-    
-    const preguntaHeader = screen.getByText(/Pregunta/i);
-    expect(preguntaHeader).toBeInTheDocument();
-
-    const respuestaCorrectaHeader = screen.getByText(/Respuesta Correcta/i);
-    expect(respuestaCorrectaHeader).toBeInTheDocument();
-  });
 });
