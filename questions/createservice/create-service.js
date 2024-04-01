@@ -101,13 +101,8 @@ app.post('/addQuestion', async (req, res) => {
 app.get('/getFullQuestion', async (req, res) => {
   try {
     const rQuestion = await Question.aggregate([{ $sample: { size: 1 } }]);
-    console.log(rQuestion);
     const questionType = rQuestion[0].typeQuestion;
-    console.log(questionType);
     const { query, questionLabel, answerLabel } = questionTypes[questionType];
-    console.log(query);
-    console.log(questionLabel);
-    console.log(answerLabel);
 
     const apiUrl = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
     const headers = { "Accept": "application/json" };

@@ -7,15 +7,15 @@ let app;
 //test question
 const questionTest = {
     questionBody: '¿Cuál es la capital de ',
-    typeQuestion: 'pais'
+    typeQuestion: 'pais_capital'
 };
 const questionTest2 = {
-    questionBody: '¿En qué año se descubrió ',
-    typeQuestion: 'pais'
+    questionBody: '¿Cual es la poblacion de ',
+    typeQuestion: 'pais_poblacion'
 };
 const questionTest3 = {
-    questionBody: '¿Quién pintó  ',
-    typeQuestion: 'cuadro'
+    questionBody: '¿En que país está  ',
+    typeQuestion: 'ciudad_pais'
 };
 
 beforeAll(async () => {
