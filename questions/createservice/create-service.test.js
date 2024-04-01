@@ -64,6 +64,9 @@ describe('Create Service', () => {
 
     it('Should perform a getFullQuestion operation /getFullQuestion', async () => {
         await request(app).post('/addQuestion').send(questionTest);
+        await request(app).post('/addQuestion').send(questionTest2);
+        await request(app).post('/addQuestion').send(questionTest3);
+
         const response = await request(app).get('/getFullQuestion');
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
