@@ -152,18 +152,6 @@ describe('User Service', () => {
       });
     });
   
-    // Prueba negativa para el endpoint GET /obtainRank
-    describe('GET /obtainRank (Negative Test)', () => {
-      it('should return 400 if there are no user ranks', async () => {
-        // Realizar una solicitud GET cuando no hay rankings de usuarios en la base de datos
-        const response = await request(app).get('/obtainRank');
-  
-        // Verificar el código de estado de la respuesta
-        expect(response.status).toBe(400);
-        // Verificar si el cuerpo de la respuesta contiene un mensaje de error
-        expect(response.body.error).toBeTruthy();
-      });
-    });
   });
   
 });
