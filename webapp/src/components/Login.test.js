@@ -12,7 +12,7 @@ describe('Login component', () => {
   });
 
   it('should log in successfully', async () => {
-    render(<Login />);
+    render(<Login setLogged={() => {}} />);
 
     const usernameInput = screen.getByLabelText(/Username/i);
     const passwordInput = screen.getByLabelText(/Password/i);
@@ -36,7 +36,7 @@ describe('Login component', () => {
   });
 
   it('should handle error when logging in', async () => {
-    render(<Login />);
+    render(<Login setLogged={() => {}} />);
 
     const usernameInput = screen.getByLabelText(/Username/i);
     const passwordInput = screen.getByLabelText(/Password/i);
