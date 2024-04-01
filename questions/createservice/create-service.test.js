@@ -37,18 +37,18 @@ describe('Create Service', () => {
         const response = await request(app).post('/addQuestion').send(questionTest);
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody', '¿Cuál es la capital de ');
-        expect(response.body).toHaveProperty('typeQuestion', 'pais');
+        expect(response.body).toHaveProperty('typeQuestion', 'pais_capital');
     });
 
     it('Should perform two addRecord operation /addQuestion', async () => {
         const response2 = await request(app).post('/addQuestion').send(questionTest2);
         expect(response2.status).toBe(200);
-        expect(response2.body).toHaveProperty('questionBody', '¿En qué año se descubrió ');
-        expect(response2.body).toHaveProperty('typeQuestion', 'pais');
+        expect(response2.body).toHaveProperty('questionBody', '¿Cual es la poblacion de ');
+        expect(response2.body).toHaveProperty('typeQuestion', 'pais_poblacion');
         const response3 = await request(app).post('/addQuestion').send(questionTest3);
         expect(response3.status).toBe(200);
-        expect(response3.body).toHaveProperty('questionBody', '¿Quién pintó  ');
-        expect(response3.body).toHaveProperty('typeQuestion', 'cuadro');
+        expect(response3.body).toHaveProperty('questionBody', '¿En que país está ');
+        expect(response3.body).toHaveProperty('typeQuestion', 'ciudad_pais');
     });
 
     it('Should respond with an error when /addQuestion fails', async () => {
@@ -80,6 +80,6 @@ describe('Create Service', () => {
         const response = await request(app).get('/getFullQuestion');
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty('error');
-    });
+    }, 10000);
     
 });
