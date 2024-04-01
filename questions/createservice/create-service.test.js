@@ -33,6 +33,23 @@ afterAll(async () => {
 });
 
 describe('Create Service', () => {
+    it('Should respond with an error when /addQuestion fails', async () => {
+        const failTest = {
+            question: '¿Cuál es la capital de ',
+            type: 'pais'
+        };
+    
+        const response = await request(app).post('/addQuestion').send(failTest);
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('error');
+    });
+    
+    it('Should respond with an error when /getFullQuestion fails', async () => {
+        const response = await request(app).get('/getFullQuestion');
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('error');
+    }, 10000);
+
     it('Should perform an addRecord operation /addQuestion', async () => {
         const response = await request(app).post('/addQuestion').send(questionTest);
         expect(response.status).toBe(200);
@@ -51,35 +68,12 @@ describe('Create Service', () => {
         expect(response3.body).toHaveProperty('typeQuestion', 'ciudad_pais');
     });
 
-    it('Should respond with an error when /addQuestion fails', async () => {
-        const failTest = {
-            question: '¿Cuál es la capital de ',
-            type: 'pais'
-        };
-    
-        const response = await request(app).post('/addQuestion').send(failTest);
-        expect(response.status).toBe(400);
-        expect(response.body).toHaveProperty('error');
-    });
-
     it('Should perform a getFullQuestion operation /getFullQuestion', async () => {
-        await request(app).post('/addQuestion').send(questionTest);
-        await request(app).post('/addQuestion').send(questionTest2);
-        await request(app).post('/addQuestion').send(questionTest3);
-
         const response = await request(app).get('/getFullQuestion');
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
         expect(response.body).toHaveProperty('correctAnswer');
         expect(response.body).toHaveProperty('incorrectAnswers');
-    }, 10000);
-
-    it('Should respond with an error when /getFullQuestion fails', async () => {
-        jest.spyOn(fetch, 'fetch').mockImplementation(() => Promise.reject(new Error('Failed to fetch')));
-
-        const response = await request(app).get('/getFullQuestion');
-        expect(response.status).toBe(400);
-        expect(response.body).toHaveProperty('error');
     });
     
 });
