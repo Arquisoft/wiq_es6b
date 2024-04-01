@@ -88,6 +88,13 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         }
     };
 
+    if(isNaN(totalQuestions)){
+        totalQuestions=10;
+    }
+    if(isNaN(timeLimit)){
+        timeLimit=180;
+    }
+
     return (
         <Container maxWidth="lg">
             {numberClics >= totalQuestions || timer >= timeLimit ? (
