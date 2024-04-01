@@ -24,4 +24,14 @@ describe('GeneratedQuestionsList component', () => {
     const table = screen.getByRole('table');
     expect(table).toBeInTheDocument();
   });
+
+  it('renders the table with "Pregunta" and "Respuesta Correcta" headers', () => {
+    render(<GeneratedQuestionsList />);
+    
+    const preguntaHeader = screen.getByText(/Pregunta/i);
+    expect(preguntaHeader).toBeInTheDocument();
+
+    const respuestaCorrectaHeader = screen.getByText(/Respuesta Correcta/i);
+    expect(respuestaCorrectaHeader).toBeInTheDocument();
+  });
 });

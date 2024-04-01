@@ -11,7 +11,7 @@ describe('Login component', () => {
     mockAxios.reset();
   });
 
-  /*it('should log in successfully', async () => {
+  it('should log in successfully', async () => {
     render(<Login />);
 
     const usernameInput = screen.getByLabelText(/Username/i);
@@ -34,7 +34,7 @@ describe('Login component', () => {
     const accountCreationMessage = await waitFor(() => screen.getByText(/Tu cuenta fue creada el 1\/1\/2024/i));
     expect(accountCreationMessage).toBeInTheDocument();
   });
-*/
+
   /*
   it('should handle error when logging in', async () => {
     render(<Login />);
