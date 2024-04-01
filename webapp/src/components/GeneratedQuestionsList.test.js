@@ -1,38 +1,40 @@
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
+import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import GeneratedQuestionsList from './GeneratedQuestionsList';
+import '@testing-library/jest-dom';
+import GeneratedQuestionsList from '../components/GeneratedQuestionsList';
+import axios from 'axios';
 
-// Configura el adaptador de mock de axios
-const mock = new MockAdapter(axios);
-
-// Configura el comportamiento para la solicitud de getAllGeneratedQuestions
-mock.onGet('http://localhost:8000/getAllGeneratedQuestions').reply(200, {
-  generatedQuestions: [
-    {
-      id: 1,
-      generatedQuestionBody: "¿Cuál es la capital de Francia?",
-      correctAnswer: "París"
-    },
-    {
-      id: 2,
-      generatedQuestionBody: "¿En qué año comenzó la Primera Guerra Mundial?",
-      correctAnswer: "1914"
-    },
-    // Agrega más preguntas según sea necesario
-  ]
-});
+jest.mock('axios');
 
 describe('GeneratedQuestionsList component', () => {
-  it('should render correctly', async () => {
-    // Renderizar el componente
+  test('should render list of generated questions', async () => {
+    // Define el mock de axios para simular una respuesta exitosa
+    const mockedQuestions = [
+      { generatedQuestionBody: 'Question 1', correctAnswer: 'Answer 1' },
+      { generatedQuestionBody: 'Question 2', correctAnswer: 'Answer 2' }
+    ];
+    axios.get.mockResolvedValueOnce({ data: mockedQuestions });
+
     render(<GeneratedQuestionsList />);
 
-    // Esperar a que se muestre la lista de preguntas generadas
+    // Espera a que las preguntas se muestren en la lista
     await waitFor(() => {
-      expect(screen.getByText("¿Cuál es la capital de Francia?")).toBeInTheDocument();
-      expect(screen.getByText("¿En qué año comenzó la Primera Guerra Mundial?")).toBeInTheDocument();
-      // Agrega más aserciones según sea necesario para verificar que todas las preguntas se muestran correctamente
+      mockedQuestions.forEach(question => {
+        expect(screen.getByText(question.generatedQuestionBody)).toBeInTheDocument();
+        expect(screen.getByText(question.correctAnswer)).toBeInTheDocument();
+      });
+    });
+  });
+
+  test('should handle error when fetching questions', async () => {
+    // Define el mock de axios para simular una respuesta con error 500
+    axios.get.mockRejectedValueOnce({ response: { status: 500 } });
+
+    render(<GeneratedQuestionsList />);
+
+    // Espera a que el mensaje de error se muestre en la pantalla
+    await waitFor(() => {
+      expect(screen.getByText('Error obteniendo la lista de preguntas generadas')).toBeInTheDocument();
     });
   });
 });
