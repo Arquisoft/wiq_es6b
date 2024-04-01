@@ -14,7 +14,7 @@ const questionTest2 = {
     typeQuestion: 'pais_poblacion'
 };
 const questionTest3 = {
-    questionBody: '¿En que país está  ',
+    questionBody: '¿En que país está ',
     typeQuestion: 'ciudad_pais'
 };
 
@@ -72,14 +72,14 @@ describe('Create Service', () => {
         expect(response.body).toHaveProperty('questionBody');
         expect(response.body).toHaveProperty('correctAnswer');
         expect(response.body).toHaveProperty('incorrectAnswers');
-    });
+    }, 10000);
 
     it('Should respond with an error when /getFullQuestion fails', async () => {
-        jest.spyOn(global, 'fetch').mockImplementation(() => Promise.reject(new Error('Failed to fetch'))  );
+        jest.spyOn(fetch, 'fetch').mockImplementation(() => Promise.reject(new Error('Failed to fetch')));
 
         const response = await request(app).get('/getFullQuestion');
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty('error');
-    }, 10000);
+    });
     
 });
