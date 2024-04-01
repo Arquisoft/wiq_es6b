@@ -12,7 +12,7 @@ describe('Login component', () => {
   });
 
   it('should log in successfully', async () => {
-    render(<Login />);
+    render(<Login setLogged={() => {}} />);
 
     const usernameInput = screen.getByLabelText(/Username/i);
     const passwordInput = screen.getByLabelText(/Password/i);
@@ -36,7 +36,8 @@ describe('Login component', () => {
   });
 
   it('should handle error when logging in', async () => {
-    render(<Login />);
+    const setLoggedMock = jest.fn();
+    render(<Login setLogged={setLoggedMock} />);
 
     const usernameInput = screen.getByLabelText(/Username/i);
     const passwordInput = screen.getByLabelText(/Password/i);
@@ -60,5 +61,7 @@ describe('Login component', () => {
     // Verify that the user information is not displayed
     expect(screen.queryByText(/Hola testUser!/i)).toBeNull();
     expect(screen.queryByText(/Tu cuenta fue creada el/i)).toBeNull();
+
+    expect(setLoggedMock).toHaveBeenCalled();
   });
 });
