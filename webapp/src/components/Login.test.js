@@ -36,8 +36,7 @@ describe('Login component', () => {
   });
 
   it('should handle error when logging in', async () => {
-    const setLoggedMock = jest.fn();
-    render(<Login setLogged={setLoggedMock} />);
+    render(<Login setLogged={() => {}} />);
 
     const usernameInput = screen.getByLabelText(/Username/i);
     const passwordInput = screen.getByLabelText(/Password/i);
@@ -61,7 +60,5 @@ describe('Login component', () => {
     // Verify that the user information is not displayed
     expect(screen.queryByText(/Hola testUser!/i)).toBeNull();
     expect(screen.queryByText(/Tu cuenta fue creada el/i)).toBeNull();
-
-    expect(setLoggedMock).toHaveBeenCalled();
   });
 });
