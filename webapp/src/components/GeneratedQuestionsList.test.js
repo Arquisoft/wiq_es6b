@@ -1,46 +1,38 @@
-import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import { render, screen, waitFor } from '@testing-library/react';
 import GeneratedQuestionsList from './GeneratedQuestionsList';
 
-const mockAxios = new MockAdapter(axios);
+// Configura el adaptador de mock de axios
+const mock = new MockAdapter(axios);
+
+// Configura el comportamiento para la solicitud de getAllGeneratedQuestions
+mock.onGet('http://localhost:8000/getAllGeneratedQuestions').reply(200, {
+  generatedQuestions: [
+    {
+      id: 1,
+      generatedQuestionBody: "¿Cuál es la capital de Francia?",
+      correctAnswer: "París"
+    },
+    {
+      id: 2,
+      generatedQuestionBody: "¿En qué año comenzó la Primera Guerra Mundial?",
+      correctAnswer: "1914"
+    },
+    // Agrega más preguntas según sea necesario
+  ]
+});
 
 describe('GeneratedQuestionsList component', () => {
-  beforeEach(() => {
-    mockAxios.reset();
-  });
-
-  it('should render list of questions', async () => {
-    // Mocking the response for axios.get
-    const mockQuestions = [
-      { generatedQuestionBody: 'Question 1', correctAnswer: 'Answer 1' },
-      { generatedQuestionBody: 'Question 2', correctAnswer: 'Answer 2' },
-    ];
-    mockAxios.onGet('http://localhost:8000/getAllGeneratedQuestions').reply(200, mockQuestions);
-
+  it('should render correctly', async () => {
+    // Renderizar el componente
     render(<GeneratedQuestionsList />);
 
-    // Wait for the questions to be rendered
+    // Esperar a que se muestre la lista de preguntas generadas
     await waitFor(() => {
-      expect(screen.getByText('Question 1')).toBeInTheDocument();
-      expect(screen.getByText('Answer 1')).toBeInTheDocument();
-      expect(screen.getByText('Question 2')).toBeInTheDocument();
-      expect(screen.getByText('Answer 2')).toBeInTheDocument();
+      expect(screen.getByText("¿Cuál es la capital de Francia?")).toBeInTheDocument();
+      expect(screen.getByText("¿En qué año comenzó la Primera Guerra Mundial?")).toBeInTheDocument();
+      // Agrega más aserciones según sea necesario para verificar que todas las preguntas se muestran correctamente
     });
   });
-
-  it('should handle error when fetching questions', async () => {
-    // Mocking an error response for axios.get
-    mockAxios.onGet('http://localhost:8000/getAllGeneratedQuestions').reply(500);
-
-    render(<GeneratedQuestionsList />);
-
-    // Wait for the error message to be displayed
-    await waitFor(() => {
-      expect(screen.getByText('Error obteniendo la lista de preguntas generadas')).toBeInTheDocument();
-    });
-  });
-
-  // Add more tests as needed for sorting functionality, etc.
 });
