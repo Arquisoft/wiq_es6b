@@ -35,9 +35,12 @@ describe('Gateway Service', () => {
 
   // Test /login endpoint
   it('should forward login request to auth service', async () => {
+    const mockUsername = 'testuser';
+    const mockPassword = 'testpassword';
+
     const response = await request(app)
       .post('/login')
-      .send({ username: 'testuser', password: 'testpassword' });
+      .send({ username: mockUsername, password: mockPassword });
 
     expect(response.statusCode).toBe(200);
     expect(response.body.token).toBe('mockedToken');
@@ -45,9 +48,12 @@ describe('Gateway Service', () => {
 
   // Test /adduser endpoint
   it('should forward add user request to user service', async () => {
+    const mockUsername = 'newuser';
+    const mockPassword = 'newpassword';
+
     const response = await request(app)
       .post('/adduser')
-      .send({ username: 'newuser', password: 'newpassword' });
+      .send({ username: mockUsername, password: mockPassword });
 
     expect(response.statusCode).toBe(200);
     expect(response.body.userId).toBe('mockedUserId');
