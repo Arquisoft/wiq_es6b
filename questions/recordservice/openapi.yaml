@@ -1,0 +1,117 @@
+openapi: 3.0.0
+info:
+  title: Recordservice API
+  description: Record OpenAPI specification.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8006
+    description: Development server
+  - url: http://51.142.17.139:8006
+    description: Production server
+paths:
+  /addRecord:
+    post:
+      summary: Add a new record.
+      operationId: addRecord
+      requestBody:
+        description: The record data to add.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: The ID of the user.
+                correctQuestions:
+                  type: integer
+                  description: The number of correct questions.
+                failedQuestions:
+                  type: integer
+                  description: The number of failed questions.
+      responses:
+        '200':
+          description: Record added successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: string
+                    description: The ID of the user.
+                  correctQuestions:
+                    type: integer
+                    description: The number of correct questions.
+                  failedQuestions:
+                    type: integer
+                    description: The number of failed questions.
+        '400':
+          description: Failed to add record.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error message
+  /getRecords/{userId}:
+    get:
+      summary: Retrieve all records for a user.
+      operationId: getRecords
+      parameters:
+        - name: userId
+          in: path
+          description: The ID of the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Records retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: The record object.
+        '400':
+          description: Failed to retrieve records.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error message
+  /actRanking:
+    get:
+      summary: Update the ranking.
+      operationId: actRanking
+      responses:
+        '200':
+          description: Ranking updated successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: The ranking object.
+        '400':
+          description: Failed to update ranking.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error message

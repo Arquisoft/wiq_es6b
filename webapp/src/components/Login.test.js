@@ -12,7 +12,7 @@ describe('Login component', () => {
   });
 
   it('should log in successfully', async () => {
-    render(<Login />);
+    render(<Login setLogged={() => {}} />);
 
     const usernameInput = screen.getByLabelText(/Username/i);
     const passwordInput = screen.getByLabelText(/Password/i);
@@ -29,12 +29,14 @@ describe('Login component', () => {
       });
 
     // Verify that the user information is displayed
-    expect(screen.getByText(/Hola testUser!/i)).toBeInTheDocument();
-    expect(screen.getByText(/Tu cuenta fue creada el 1\/1\/2024/i)).toBeInTheDocument();
+    const welcomeMessage = await waitFor(() => screen.getByText(/Hola testUser!/i));
+    expect(welcomeMessage).toBeInTheDocument();
+    const accountCreationMessage = await waitFor(() => screen.getByText(/Tu cuenta fue creada el 1\/1\/2024/i));
+    expect(accountCreationMessage).toBeInTheDocument();
   });
 
   it('should handle error when logging in', async () => {
-    render(<Login />);
+    render(<Login setLogged={() => {}} />);
 
     const usernameInput = screen.getByLabelText(/Username/i);
     const passwordInput = screen.getByLabelText(/Password/i);

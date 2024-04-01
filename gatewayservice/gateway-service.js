@@ -55,8 +55,13 @@ app.post('/adduser', async (req, res) => {
 app.post('/addRecord', async(req, res) => {
   try{
     const recordResponse = await axios.post(recordServiceUrl+'/addRecord', req.body);
+    res.json(recordResponse.data);
   }catch (error){
-    res.status(error.response.status).json({ error: error.response.data.error });
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
   }
 });
 
@@ -90,20 +95,20 @@ app.get('/getAllUsers', async (req, res) => {
 
 
 
-app.post('/addGeneratedQuestion', async (req, res) => {
-  try {
-    // Reenviar la solicitud GET al servicio de usuarios
-   
-    const genQuestResponse = await axios.post(genQuestServiceUrl+'/addGeneratedQuestion', req.body);
-    res.json(genQuestResponse.data);
-  } catch (error) {
-    if (error.response) {
-      res.status(error.response.status).json({ error: error.response.data.error });
-    } else {
-      res.status(500).json({ error: 'Error interno del servidor' });
-    }
-  }
-})
+//app.post('/addGeneratedQuestion', async (req, res) => {
+//  try {
+//    // Reenviar la solicitud GET al servicio de usuarios
+//   
+//    const genQuestResponse = await axios.post(genQuestServiceUrl+'/addGeneratedQuestion', req.body);
+//    res.json(genQuestResponse.data);
+//  } catch (error) {
+//    if (error.response) {
+//      res.status(error.response.status).json({ error: error.response.data.error });
+//    } else {
+//      res.status(500).json({ error: 'Error interno del servidor' });
+//    }
+//  }
+//})
 
 app.get('/getAllGeneratedQuestions', async (req, res) => {
   try {

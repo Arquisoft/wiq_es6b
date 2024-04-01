@@ -16,9 +16,6 @@ ifndef::imagesdir[:imagesdir: ../images]
 | TypeQuestions
 | Las distintas categorias que hay de preguntas.
 
-| TypeAnswers
-| Las distintas categorias que hay de respuestas.
-
 | Jugada
 | Elemento del historial de jugadas.
 
