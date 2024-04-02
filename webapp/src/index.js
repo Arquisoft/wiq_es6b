@@ -21,6 +21,15 @@ const obtenerPreguntaspartida = async (numquest) => {
       incorrectas: incorrectAnswers,
       numquest
     });
+
+    // Verificar si el número de preguntas en la base de datos es mayor que 20
+    const countResponse = await axios.get(`${apiEndpoint}/countQuestionTest`);
+    const count = countResponse.data.count;
+    if (count > 500) {
+      // Llamar a la función deleteFirstQuestionTest para eliminar la primera pregunta
+      await axios.delete(`${apiEndpoint}/deleteFirstQuestionTest`);
+      console.log('Se ha eliminado la primera pregunta de prueba');
+    }
   } catch (error) {
     console.error("Error al obtener la pregunta aleatoria", error);
   }
@@ -47,7 +56,7 @@ const RootComponent = () => {
       </Typography>
       <App />
       <Typography component="h1" variant="h5" align="center" sx={{ marginTop: 4 }}>
-        &copy; wiq_6B
+        &copy; wiq_6b
       </Typography>
     </React.StrictMode>
   );

@@ -289,6 +289,20 @@ app.get('/getAllQuestionTest', async (req, res) => {
   }
 });
 
+// Ruta para obtener todas las preguntas de prueba
+app.get('/countQuestionTest', async (req, res) => {
+  try {
+    const questionTestResponse = await axios.get(`${questiontestservice}/countQuestionTest`);
+    res.json(questionTestResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+});
+
 // Ruta para eliminar todas las preguntas de prueba
 app.delete('/deleteAllQuestionTest', async (req, res) => {
   try {

@@ -89,6 +89,15 @@ app.delete('/deleteFirstQuestionTest', async (req, res) => {
   }
 });
 
+// Ruta para obtener el número de preguntas en la base de datos
+app.get('/countQuestionTest', async (req, res) => {
+  try {
+    const count = await QuestionTest.countDocuments();
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 // Iniciar el servidor
 const server = app.listen(port, () => {
