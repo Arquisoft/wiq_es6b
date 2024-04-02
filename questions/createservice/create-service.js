@@ -81,6 +81,49 @@ const questionTypes = {
     questionLabel: 'countryLabel',
     answerLabel: 'currencyLabel'
   },
+  libro_autor: {
+    query: `
+    SELECT DISTINCT ?libro ?libroLabel ?autor ?autorLabel
+    WHERE {
+      ?libro wdt:P31 wd:Q571;  # Q571 es el identificador para libro
+             wdt:P50 ?autor.   # P50 es la propiedad para autor
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'libroLabel',
+    answerLabel: 'autorLabel'
+  },
+  libro_genero: {
+    query: `
+    SELECT DISTINCT ?libro ?libroLabel ?genero ?generoLabel
+WHERE {
+  ?libro wdt:P31 wd:Q571;   # Q571 es el identificador para libro
+         wdt:P136 ?genero.  # P136 es la propiedad para género
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+}
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'libroLabel',
+    answerLabel: 'generoLabel'
+  },
+  libro_anno: {
+    query: `
+    SELECT DISTINCT ?libro ?libroLabel ?anio_publicacion
+    WHERE {
+      ?libro wdt:P31 wd:Q571;                        # Q571 es el identificador para libro
+             wdt:P577 ?fecha_publicacion.           # P577 es la propiedad para fecha de publicación
+      BIND(YEAR(?fecha_publicacion) AS ?anio_publicacion)
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'libroLabel',
+    answerLabel: 'anio_publicacion'
+  },
 };
 
 // Ruta para agregar una nueva pregunta
@@ -112,10 +155,16 @@ app.get('/getFullQuestion', async (req, res) => {
       const data = await respuestaWikidata.json();
       const numEles = data.results.bindings.length;
 
-      const indexCorrecta = Math.floor(Math.random() * numEles);
-      const resultCorrecta = data.results.bindings[indexCorrecta];
-      const informacionWikidata = resultCorrecta[questionLabel].value + '?';
-      const respuestaCorrecta = resultCorrecta[answerLabel].value;
+      let resultCorrecta;
+      let informacionWikidata;
+      let respuestaCorrecta;
+
+      do {
+        const indexCorrecta = Math.floor(Math.random() * numEles);
+        resultCorrecta = data.results.bindings[indexCorrecta];
+        informacionWikidata = resultCorrecta[questionLabel].value + '?';
+        respuestaCorrecta = resultCorrecta[answerLabel].value;
+      } while (informacionWikidata.startsWith('Q') || respuestaCorrecta.startsWith('Q')); // Solo se aceptan respuestas que no comienzan con 'Q'
 
       const respuestasFalsas = [];
       while (respuestasFalsas.length < 3) {
@@ -124,12 +173,12 @@ app.get('/getFullQuestion', async (req, res) => {
         const respuestaFalsa = resultFalsa[answerLabel].value;
 
         // Comprueba si la respuesta falsa coincide con la respuesta correcta o con alguna de las respuestas falsas ya generadas
-        if (respuestaFalsa !== respuestaCorrecta && !respuestasFalsas.includes(respuestaFalsa)) {
+        if (respuestaFalsa !== respuestaCorrecta && !respuestasFalsas.includes(respuestaFalsa) && !respuestaFalsa.startsWith('Q')) { // Solo se aceptan respuestas que no comienzan con 'Q'
           respuestasFalsas.push(respuestaFalsa);
         }
       }
 
-      const body=rQuestion[0].questionBody+informacionWikidata;
+      const body = rQuestion[0].questionBody + informacionWikidata;
 
       const fullQuestion = {
         questionBody: body,

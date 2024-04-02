@@ -100,4 +100,58 @@ describe('User Service', () => {
       expect(response.body.length).toBe(2); // Se espera que haya 2 rankings de usuarios
     });
   });
+
+  describe('User Service (Negative Tests)', () => {
+    // Prueba negativa para el endpoint POST /createUserRank
+    describe('POST /createUserRank (Negative Test)', () => {
+      it('should return 400 if username is missing', async () => {
+        // Realizar una solicitud POST sin proporcionar el nombre de usuario
+        const response = await request(app)
+          .post('/createUserRank')
+          .send({});
+  
+        // Verificar el código de estado de la respuesta
+        expect(response.status).toBe(400);
+        // Verificar si el cuerpo de la respuesta contiene un mensaje de error
+        expect(response.body.error).toBeTruthy();
+      });
+    });
+  
+    // Prueba negativa para el endpoint POST /updateRanking
+    describe('POST /updateRanking (Negative Test)', () => {
+      it('should return 400 if username is missing', async () => {
+        // Realizar una solicitud POST sin proporcionar el nombre de usuario
+        const response = await request(app)
+          .post('/updateRanking')
+          .send({});
+  
+        // Verificar el código de estado de la respuesta
+        expect(response.status).toBe(400);
+        // Verificar si el cuerpo de la respuesta contiene un mensaje de error
+        expect(response.body.error).toBeTruthy();
+      });
+  
+      it('should return 400 if user does not exist', async () => {
+        // Datos para la solicitud POST de actualización del ranking de usuario
+        const updateData = {
+          username: 'nonexistentuser',
+          preguntasCorrectas: 5,
+          preguntasFalladas: 2,
+          numPartidas: 1
+        };
+  
+        // Realizar una solicitud POST para actualizar el ranking de un usuario inexistente
+        const response = await request(app)
+          .post('/updateRanking')
+          .send(updateData);
+  
+        // Verificar el código de estado de la respuesta
+        expect(response.status).toBe(400);
+        // Verificar si el cuerpo de la respuesta contiene un mensaje de error
+        expect(response.body.error).toBeTruthy();
+      });
+    });
+  
+  });
+  
 });
