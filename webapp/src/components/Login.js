@@ -75,7 +75,7 @@ const Login = ({ setLogged }) => {
       {loginSuccess && (
         <AppBar position="static">
           <Toolbar>
-            <Button color="inherit" onClick={() => handleComponentChange('game')}>
+            <Button color="inherit" onClick={() => handleComponentChange('login')}>
               Jugar
             </Button>
             {username === 'admin' && (
@@ -113,9 +113,9 @@ const Login = ({ setLogged }) => {
           <>
             {loginSuccess && (
               <>
-                {showComponent === 'game' && (
+                {showComponent === 'game' &&
                   <Game username={username} totalQuestions={settings.numberQuestions} timeLimit={totalTime} />
-                )}
+                }
                 {showComponent === 'userList' && <UsersList />}
                 {showComponent === 'questionList' && <GeneratedQuestionsList />}
                 {showComponent === 'recordList' && <RecordList username={username} />}
