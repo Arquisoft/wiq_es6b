@@ -22,8 +22,8 @@ const Login = ({ setLogged }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showComponent, setShowComponent] = useState('login');
-  const [settings, setSettings] = useState({});
   const [totalTime, setTotalTime] = useState(180);
+  const [settings, setSettings] = useState({});
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
   const loginUser = async () => {
