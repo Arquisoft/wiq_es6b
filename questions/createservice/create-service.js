@@ -164,7 +164,7 @@ app.get('/getFullQuestion', async (req, res) => {
         resultCorrecta = data.results.bindings[indexCorrecta];
         informacionWikidata = resultCorrecta[questionLabel].value + '?';
         respuestaCorrecta = resultCorrecta[answerLabel].value;
-      } while (informacionWikidata.startsWith('Q'));
+      } while (informacionWikidata.startsWith('Q') || respuestaCorrecta.startsWith('Q')); // Solo se aceptan respuestas que no comienzan con 'Q'
 
       const respuestasFalsas = [];
       while (respuestasFalsas.length < 3) {
@@ -173,7 +173,7 @@ app.get('/getFullQuestion', async (req, res) => {
         const respuestaFalsa = resultFalsa[answerLabel].value;
 
         // Comprueba si la respuesta falsa coincide con la respuesta correcta o con alguna de las respuestas falsas ya generadas
-        if (respuestaFalsa !== respuestaCorrecta && !respuestasFalsas.includes(respuestaFalsa)) {
+        if (respuestaFalsa !== respuestaCorrecta && !respuestasFalsas.includes(respuestaFalsa) && !respuestaFalsa.startsWith('Q')) { // Solo se aceptan respuestas que no comienzan con 'Q'
           respuestasFalsas.push(respuestaFalsa);
         }
       }
