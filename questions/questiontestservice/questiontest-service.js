@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const QuestionTest = require('./questiontest-model');
+const QuestionGenerator = require('./questiongenerator-model');
 
 const app = express();
 const port = 8007;
@@ -10,14 +10,14 @@ const port = 8007;
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiontestdb?retryWrites=true&w=majority&appName=wiq06b';
+const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiongeneratordb?retryWrites=true&w=majority&appName=wiq06b';
 mongoose.connect(mongoUri);
 
 
 // Ruta para agregar una nueva pregunta
-app.post('/addQuestionTest', async (req, res) => {
+app.post('/addQuestionGenerator', async (req, res) => {
   try {
-    const newQuestion = new QuestionTest({
+    const newQuestion = new QuestionGenerator({
       questionBody: req.body.questionBody,
       correcta: req.body.correcta,
       incorrectas: req.body.incorrectas,
@@ -31,9 +31,9 @@ app.post('/addQuestionTest', async (req, res) => {
 });
 
 // Ruta para obtener una pregunta por su número de pregunta (numquest)
-app.get('/getQuestionTest/:numquest', async (req, res) => {
+app.get('/getQuestionGenerator/:numquest', async (req, res) => {
   try {
-    const question = await QuestionTest.findOne({ numquest: req.params.numquest });
+    const question = await QuestionGenerator.findOne({ numquest: req.params.numquest });
     if (!question) {
       return res.status(404).json({ error: 'Question not found' });
     }
@@ -44,9 +44,9 @@ app.get('/getQuestionTest/:numquest', async (req, res) => {
 });
 
 // Ruta para obtener todas las preguntas
-app.get('/getAllQuestionTest', async (req, res) => {
+app.get('/getAllQuestionGenerator', async (req, res) => {
   try {
-    const questions = await QuestionTest.find();
+    const questions = await QuestionGenerator.find();
     res.json(questions);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
@@ -54,9 +54,9 @@ app.get('/getAllQuestionTest', async (req, res) => {
 });
 
 // Ruta para eliminar todas las preguntas
-app.delete('/deleteAllQuestionTest', async (req, res) => {
+app.delete('/deleteAllQuestionGenerator', async (req, res) => {
   try {
-    await QuestionTest.deleteMany();
+    await QuestionGenerator.deleteMany();
     res.json({ message: 'All questions deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
@@ -64,9 +64,9 @@ app.delete('/deleteAllQuestionTest', async (req, res) => {
 });
 
 // Ruta para obtener una pregunta de manera aleatoria
-app.get('/getRandomQuestionTest', async (req, res) => {
+app.get('/getRandomQuestionGenerator', async (req, res) => {
   try {
-    const rQuestion = await QuestionTest.aggregate([{ $sample: { size: 1 } }]);
+    const rQuestion = await QuestionGenerator.aggregate([{ $sample: { size: 1 } }]);
     const q = rQuestion[0];
       
     res.json(q);
@@ -76,9 +76,9 @@ app.get('/getRandomQuestionTest', async (req, res) => {
 });
 
 // Ruta para eliminar la primera pregunta de la base de datos
-app.delete('/deleteFirstQuestionTest', async (req, res) => {
+app.delete('/deleteFirstQuestionGenerator', async (req, res) => {
   try {
-    const firstQuestion = await QuestionTest.findOneAndDelete({}).sort({ createdAt: 1 });
+    const firstQuestion = await QuestionGenerator.findOneAndDelete({}).sort({ createdAt: 1 });
     if (firstQuestion) {
       res.json(firstQuestion);
     } else {
@@ -90,9 +90,9 @@ app.delete('/deleteFirstQuestionTest', async (req, res) => {
 });
 
 // Ruta para obtener el número de preguntas en la base de datos
-app.get('/countQuestionTest', async (req, res) => {
+app.get('/countQuestionGenerator', async (req, res) => {
   try {
-    const count = await QuestionTest.countDocuments();
+    const count = await QuestionGenerator.countDocuments();
     res.json({ count });
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });

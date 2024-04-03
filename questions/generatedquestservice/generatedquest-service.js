@@ -29,10 +29,10 @@ const doesQuestionExist = async (questionBody) => {
 };
 
 // Ruta para agregar una nueva pregunta o actualizar si ya existe
-app.post('/addOrUpdateQuestionTest', async (req, res) => {
+app.post('/addOrUpdateQuestionGenerator', async (req, res) => {
   try {
     // Buscar si ya existe una pregunta con el mismo questionBody
-    const existingQuestion = await QuestionTest.findOne({ questionBody: req.body.questionBody });
+    const existingQuestion = await QuestionGenerator.findOne({ questionBody: req.body.questionBody });
 
     if (existingQuestion) {
       // Si la pregunta ya existe, realizar una actualización
@@ -44,7 +44,7 @@ app.post('/addOrUpdateQuestionTest', async (req, res) => {
       res.json(existingQuestion); // Devolver la pregunta actualizada
     } else {
       // Si la pregunta no existe, crear una nueva pregunta
-      const newQuestion = new QuestionTest({
+      const newQuestion = new QuestionGenerator({
         questionBody: req.body.questionBody,
         correcta: req.body.correcta,
         incorrectas: req.body.incorrectas,

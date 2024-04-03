@@ -1,5 +1,5 @@
 {
-    "name": "createquestiontestserviceservice",
+    "name": "questiongeneratorservice",
     "version": "1.0.0",
     "description": "Preguntas automaticas para el juego",
     "main": "service.js",

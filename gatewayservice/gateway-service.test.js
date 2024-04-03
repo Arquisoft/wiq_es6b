@@ -26,9 +26,9 @@ describe('Gateway Service', () => {
     } else if (url.endsWith('/updateRanking')) {
       // Mock response for updateRanking endpoint
       return Promise.resolve({ data: { updatedRanking: true } });
-    } else if (url.endsWith('/addQuestionTest')) {
-      // Mock response for addQuestionTest endpoint
-      return Promise.resolve({ data: { questionTestId: 'mockedQuestionTestId' } });
+    } else if (url.endsWith('/addQuestionGenerator')) {
+      // Mock response for addQuestionGenerator endpoint
+      return Promise.resolve({ data: { questionGeneratorId: 'mockedQuestionGeneratorId' } });
     } 
   });
 
@@ -104,14 +104,14 @@ it('should update ranking for a user in ranking service', async () => {
   expect(response.statusCode).toBe(200);
   expect(response.body.updatedRanking).toBe(true);
 });
-  // Test /addQuestionTest endpoint
+  // Test /addQuestionGenerator endpoint
   /*it('should add a question test in question test service', async () => {
     const response = await request(app)
-      .post('/addQuestionTest')
+      .post('/addQuestionGenerator')
       .send({ question: 'What is the capital of France?', answer: 'Paris' });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.questionTestId).toBe('mockedQuestionTestId');
+    expect(response.body.questionGeneratorId).toBe('mockedQuestionGeneratorId');
   });*/
 
 });

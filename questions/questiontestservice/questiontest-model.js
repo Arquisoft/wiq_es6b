@@ -20,6 +20,6 @@ const questionSchema = new mongoose.Schema({
       },
 });
 
-const QuestionTest = mongoose.model('QuestionTest', questionSchema);
+const QuestionGenerator = mongoose.model('QuestionGenerator', questionSchema);
 
-module.exports = QuestionTest
+module.exports = QuestionGenerator
