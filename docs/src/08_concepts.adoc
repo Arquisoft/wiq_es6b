@@ -6,7 +6,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 === Descripción de conceptos
 ==== Dominio
-image::08-DominioV2.jpeg["Dominio"]
+image::08-DominioV3.png["Dominio"]
 
 
 ==== Experiencia de usuario (UX)
