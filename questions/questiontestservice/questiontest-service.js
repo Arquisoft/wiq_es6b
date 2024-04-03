@@ -30,6 +30,36 @@ app.post('/addQuestionGenerator', async (req, res) => {
   }
 });
 
+// Ruta para agregar una nueva pregunta o actualizar si ya existe
+app.post('/addOrUpdateQuestionTest', async (req, res) => {
+  try {
+    // Buscar si ya existe una pregunta con el mismo questionBody
+    const existingQuestion = await QuestionTest.findOne({ questionBody: req.body.questionBody });
+
+    if (existingQuestion) {
+      // Si la pregunta ya existe, realizar una actualización
+      existingQuestion.correcta = req.body.correcta;
+      existingQuestion.incorrectas = req.body.incorrectas;
+      existingQuestion.numquest = req.body.numquest;
+
+      await existingQuestion.save();
+      res.json(existingQuestion); // Devolver la pregunta actualizada
+    } else {
+      // Si la pregunta no existe, crear una nueva pregunta
+      const newQuestion = new QuestionTest({
+        questionBody: req.body.questionBody,
+        correcta: req.body.correcta,
+        incorrectas: req.body.incorrectas,
+        numquest: req.body.numquest
+      });
+      await newQuestion.save();
+      res.json(newQuestion); // Devolver la nueva pregunta creada
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Ruta para obtener una pregunta por su número de pregunta (numquest)
 app.get('/getQuestionGenerator/:numquest', async (req, res) => {
   try {
