@@ -84,11 +84,24 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
             // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
             setTimeout(() => {
                 setSelectedOption(null);
+                addGeneratedQuestionBody();
                 setNumberClics(numberClics + 1);
                 setSelectedAnswer('');
             }, delayBeforeNextQuestion);
         }
     };
+
+    const addGeneratedQuestionBody = async () => {
+        try {
+          await axios.post(`${apiEndpoint}/addGeneratedQuestion`, {
+            generatedQuestionBody: question.questionBody,
+            correctAnswer: question.correcta
+          });
+    
+        } catch (error) {
+          setError(error.response.data.error);
+        }
+      };
 
     if(isNaN(totalQuestions)){
         totalQuestions=10;
