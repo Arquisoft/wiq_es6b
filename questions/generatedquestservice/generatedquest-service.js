@@ -27,37 +27,29 @@ const doesQuestionExist = async (questionBody) => {
     return true; // Tratar cualquier error como si la pregunta existiera
   }
 };
-
-// Ruta para agregar una nueva pregunta o actualizar si ya existe
-app.post('/addOrUpdateQuestionTest', async (req, res) => {
+// Route to add a new generated question
+app.post('/addGeneratedQuestion', async (req, res) => {
   try {
-    // Buscar si ya existe una pregunta con el mismo questionBody
-    const existingQuestion = await QuestionTest.findOne({ questionBody: req.body.questionBody });
+    const { generatedQuestionBody, correctAnswer } = req.body;
 
-    if (existingQuestion) {
-      // Si la pregunta ya existe, realizar una actualización
-      existingQuestion.correcta = req.body.correcta;
-      existingQuestion.incorrectas = req.body.incorrectas;
-      existingQuestion.numquest = req.body.numquest;
-
-      await existingQuestion.save();
-      res.json(existingQuestion); // Devolver la pregunta actualizada
-    } else {
-      // Si la pregunta no existe, crear una nueva pregunta
-      const newQuestion = new QuestionTest({
-        questionBody: req.body.questionBody,
-        correcta: req.body.correcta,
-        incorrectas: req.body.incorrectas,
-        numquest: req.body.numquest
+    const questionExists = await doesQuestionExist(generatedQuestionBody);
+    if (!questionExists) {
+      const newQuestion = new GeneratedQuestion({
+        generatedQuestionBody,
+        correctAnswer,
       });
+
       await newQuestion.save();
-      res.json(newQuestion); // Devolver la nueva pregunta creada
+
+      res.json(newQuestion);
+    } else {
+      res.status(204).end(); // No Content
     }
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error', details: error.message });
   }
 });
-
 
 //obtencion de todas las preguntas generadas y su respuesta correcta 
 app.get('/getAllGeneratedQuestions', async (req, res) => {
