@@ -22,7 +22,7 @@ const obtenerPreguntaspartida = async (numquest) => {
       numquest
     });
 
-    // Verificar si el número de preguntas en la base de datos es mayor que 20
+    // Verificar si el número de preguntas en la base de datos es mayor que 500
     const countResponse = await axios.get(`${apiEndpoint}/countQuestionTest`);
     const count = countResponse.data.count;
     if (count > 500) {
