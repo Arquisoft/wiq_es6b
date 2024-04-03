@@ -3,21 +3,22 @@ ifndef::imagesdir[:imagesdir: ../images]
 [[section-system-scope-and-context]]
 == Alcance y contexto del sistema
 
-Nuestro proyecto, denominado "WIQ", consiste en una simulación inspirada en el famoso juego de RTVE  "Saber y Ganar" (más información en: https://www.rtve.es/play/videos/saber-y-ganar/), en el cual los concursantes tienen la oportunidad de hacerse con una cantidad de dinero en función del número de respuestas acertadas a preguntas de diversas temáticas, con un límite establecido de tiempo para cada una de ellas.
+Nuestro proyecto, denominado "WIQ", consiste en una simulación inspirada en el famoso juego de RTVE "Saber y Ganar" (más información en: https://www.rtve.es/play/videos/saber-y-ganar/), en el cual los concursantes tienen la oportunidad de hacerse con una cantidad de dinero en función del número de respuestas acertadas a preguntas de diversas temáticas, con un límite establecido de tiempo para cada una de ellas.
 
-La aplicación permitirá a los usuarios no solo acumular dinero al participar en la funcionalidad básica de juego de preguntas y respuestas, si no que cuenta también con otras funcionalidades como poder consultar su historial de juegos y el listado completo de usuarios registrados. 
+La aplicación permitirá a los usuarios no solo acumular dinero al participar en la funcionalidad básica de juego de preguntas y respuestas, funcionalidad la cual es personalizable, sino que cuenta también con las opciones de visualizar un ranking, poder consultar su historial de jugadas así como el listado completo de usuarios registrados entre otras más.
 
 
 
 === Contexto de negocio
 
-Al acceder a la página principal de la aplicación, los usuarios podrán ver una interfaz que les permitirá iniciar sesión para acceder a su cuenta. En caso de ser su primera vez y no tener cuenta, tendrá la opción de registrarse. Una vez autenticados, los usuarios se encontrarán con la opción tanto empezar un nuevo juego como de ver su historial 
-de jugadas anteriores. 
+Al acceder a la página principal de la aplicación, los usuarios podrán ver una interfaz que les permitirá iniciar sesión para acceder a su cuenta. En caso de ser su primera vez y no tener cuenta, tendrá la opción de registrarse. Una vez autenticados, los usuarios se encontrarán con la opción tanto empezar un nuevo juego como de realizar otras operaciones que se pueden visualizar en la barra de navegación como el historial de jugadas, el ranking y la opción de modificar los ajustes de la partida. 
 
 Dentro del historial, este le mostrará el número de partidas totales realizadas y por cada una de ellas la fecha en la que se jugó, el número de respuestas acertadas, el dinero conseguido y el tiempo total 
 que le llevó completarlo.
 
-Aparte de eso también tendra el administrador la opción de visualizar el listado completo de usuarios registrados hasta la fecha. 
+En el ranking podrá ver destacados los tres usuarios con mejor porcentaje de aciertos, así como las estadísticas del ranking de todos los usuarios. 
+
+Aparte de todo lo anterior, el administrador contará con la opción de visualizar el listado completo de usuarios registrados hasta la fecha así como el poder ver todo el historial de preguntas que se han generado. 
 
 
 
