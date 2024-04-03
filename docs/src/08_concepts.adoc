@@ -18,7 +18,7 @@ image::08-DominioV3.png["Dominio"]
 | Solidez | Los tiempos de espera de carga de la aplicación se buscarán que sean los mínimos posibles para que la experiencia sea fluida.
 |===
 
-* *Inmediata retroalimnetacion:* El usuario verá de forma inmediata si ha acertado o no la pregunta contestada. Así como el historial de jugadas estará actualizado en todo momento.
+* *Inmediata retroalimnetacion:* El usuario verá de forma inmediata si ha acertado o no la pregunta contestada. Así como el historial de jugadas, ranking, y preguntas generadas estará actualizado en todo momento.
 
 
 ==== Seguridad y protección
