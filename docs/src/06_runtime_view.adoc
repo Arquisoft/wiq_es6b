@@ -37,8 +37,26 @@ App -> DB: Verifica cerdenciales
 App <-- DB: Válida las credenciales
 alt credenciales válidas
     User <-- App:  Confirma inicio de sesión
+    alt usuario que nunca habia iniciado sesion
+        App -> DB: Crea ranking para el usuario
+    App -> DB: Pide datos de los records de todos los usuarios
+    App <-- DB: Devuelve datos de los records de todos los usuarios
+    App -> DB: Actualiza los rankings de todos los usuarios
 else credenciales inválidas
     User <-- App:  Deniega inicio de sesión
+----
+
+=== Generacion de preguntas
+
+[plantuml,"Sequence diagram",png]
+----
+participant WApi
+database DB
+
+loop cada 2 segundos
+    WApi -> DB: Genera una pregunta y la guarda
+    alt mas de 500 preguntas generadas
+        WApi -> DB: Borra la pregunta que más tiempo lleva guardada
 ----
 
 === Respuesta a una pregunta
@@ -48,21 +66,38 @@ else credenciales inválidas
 actor User
 participant App
 participant WApi
+database DB
 
 User -> App: Pide una pregunta
-App -> WApi: Pide una pregunta
-App <-- WApi: Devuelve una pregunta generada
+App -> DB: Pide una pregunta
+App <-- DB: Devuelve una pregunta generada
 User <-- App: Muestra pregunta con opciones
-User -> App: Selecciona opción de respuesta
-App -> WApi: Verifica respuesta seleccionada
-App <-- WApi: Confirma la respuesta
-alt respuesta correcta
-    User <-- App: Muestra mensaje de respuesta correcta y continua el juego
-else respuesta incorrecta
-    User <-- App: Muestra mensaje de respuesta incorrecta y finaliza el juego
+alt tiempo no finalizado
+    User -> App: Selecciona opción de respuesta
+    App -> DB: Verifica respuesta seleccionada
+    App <-- DB: Confirma la respuesta
+    App -> DB: Guarda o actualiza la pregunta con su respuesta correcta
+    alt respuesta correcta
+        alt ultima pregunta
+            User <-- App: Muestra mensaje de respuesta correcta y finaliza el juego
+            App -> DB: Guarda los datos de la partida
+            User <-- App: Muestra los datos de la partida
+        else no ultima pregunta
+            User <-- App: Muestra mensaje de respuesta correcta y continua el juego
+    else respuesta incorrecta
+        alt ultima pregunta
+            User <-- App: Muestra mensaje de respuesta correcta y finaliza el juego
+            App -> DB: Guarda los datos de la partida
+            User <-- App: Muestra los datos de la partida
+        else no ultima pregunta
+            User <-- App: Muestra mensaje de respuesta correcta y continua el juego
+else tiempo finalizado
+    User <-- App: Finaliza el juego
+    App -> DB: Guarda los datos de la partida
+    User <-- App: Muestra los datos de la partida
 ----
 
-=== Fin de partida
+=== Consulta del historial de usuarios
 
 [plantuml,"Sequence diagram",png]
 ----
@@ -70,13 +105,13 @@ actor User
 participant App
 database DB
 
-User -> App: Finaliza la partida
-App -> DB: Guarda los datos de la partida
-App <-- DB: Confirma el guardado
-User <-- App: Muestra los datos de la partida
+User -> App: Selecciona opción de ver el historial de usuarios
+App -> DB: Consulta el historial de usuarios
+App <-- DB: Devuelve el historial de usuarios
+User <-- App: Muestra el historial de usuarios
 ----
 
-=== Consulta del historial
+=== Consulta del historial de preguntas generadas
 
 [plantuml,"Sequence diagram",png]
 ----
@@ -84,8 +119,49 @@ actor User
 participant App
 database DB
 
-User -> App: Selecciona opción de ver el historial
-App -> DB: Consulta historial
-App <-- DB: Devuelve el historial
-User <-- App: Muestra historial
+User -> App: Selecciona opción de ver el historial de preguntas generadas
+App -> DB: Consulta el historial de preguntas generadas
+App <-- DB: Devuelve el historial de preguntas generadas
+User <-- App: Muestra el historial de preguntas generadas
+----
+
+=== Consulta del historial de jugadas
+
+[plantuml,"Sequence diagram",png]
+----
+actor User
+participant App
+database DB
+
+User -> App: Selecciona opción de ver el historial de jugadas
+App -> DB: Consulta el historial de jugadas
+App <-- DB: Devuelve el historial de jugadas
+User <-- App: Muestra el historial de jugadas
+----
+
+=== Consulta del ranking
+
+[plantuml,"Sequence diagram",png]
+----
+actor User
+participant App
+database DB
+
+User -> App: Selecciona opción de ver el ranking
+App -> DB: Consulta el ranking
+App <-- DB: Devuelve el ranking
+User <-- App: Muestra el ranking
+----
+
+=== Cambio de ajustes de partida
+
+[plantuml,"Sequence diagram",png]
+----
+actor User
+participant App
+database DB
+
+User -> App: Selecciona opción de ajustes de partida
+App -> User: Muestra ajustes de partida actuales
+User -> App: Cambia ajustes de partida actuales
 ----

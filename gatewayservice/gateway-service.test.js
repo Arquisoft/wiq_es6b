@@ -26,18 +26,21 @@ describe('Gateway Service', () => {
     } else if (url.endsWith('/updateRanking')) {
       // Mock response for updateRanking endpoint
       return Promise.resolve({ data: { updatedRanking: true } });
-    } else if (url.endsWith('/addQuestionTest')) {
-      // Mock response for addQuestionTest endpoint
-      return Promise.resolve({ data: { questionTestId: 'mockedQuestionTestId' } });
+    } else if (url.endsWith('/addQuestionGenerator')) {
+      // Mock response for addQuestionGenerator endpoint
+      return Promise.resolve({ data: { questionGeneratorId: 'mockedQuestionGeneratorId' } });
     } 
   });
 
 
   // Test /login endpoint
   it('should forward login request to auth service', async () => {
+    const mockUsername = 'testuser';
+    const mockPassword = 'testpassword';
+
     const response = await request(app)
       .post('/login')
-      .send({ username: 'testuser', password: 'testpassword' });
+      .send({ username: mockUsername, password: mockPassword });
 
     expect(response.statusCode).toBe(200);
     expect(response.body.token).toBe('mockedToken');
@@ -45,9 +48,12 @@ describe('Gateway Service', () => {
 
   // Test /adduser endpoint
   it('should forward add user request to user service', async () => {
+    const mockUsername = 'newuser';
+    const mockPassword = 'newpassword';
+
     const response = await request(app)
       .post('/adduser')
-      .send({ username: 'newuser', password: 'newpassword' });
+      .send({ username: mockUsername, password: mockPassword });
 
     expect(response.statusCode).toBe(200);
     expect(response.body.userId).toBe('mockedUserId');
@@ -98,14 +104,14 @@ it('should update ranking for a user in ranking service', async () => {
   expect(response.statusCode).toBe(200);
   expect(response.body.updatedRanking).toBe(true);
 });
-  // Test /addQuestionTest endpoint
+  // Test /addQuestionGenerator endpoint
   /*it('should add a question test in question test service', async () => {
     const response = await request(app)
-      .post('/addQuestionTest')
+      .post('/addQuestionGenerator')
       .send({ question: 'What is the capital of France?', answer: 'Paris' });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.questionTestId).toBe('mockedQuestionTestId');
+    expect(response.body.questionGeneratorId).toBe('mockedQuestionGeneratorId');
   });*/
 
 });

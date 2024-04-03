@@ -6,10 +6,13 @@ const User = require('./auth-model');
 let mongoServer;
 let app;
 
-//test user
+// Test user
+const mockUsername = 'testuser';
+const mockPassword = 'testpassword';
+
 const user = {
-  username: 'testuser',
-  password: 'testpassword',
+  username: mockUsername,
+  password: mockPassword,
 };
 
 async function addUser(user){

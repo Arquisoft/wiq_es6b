@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Questiontestservice API
-  description: QuestionTest OpenAPI specification.
+  title: Questiongeneratorservice API
+  description: QuestionGenerator OpenAPI specification.
   version: 1.0.0
 servers:
   - url: http://localhost:8007
@@ -9,10 +9,10 @@ servers:
   - url: http://51.142.17.139:8007
     description: Production server
 paths:
-  /addQuestionTest:
+  /addQuestionGenerator:
     post:
       summary: Add a new question test.
-      operationId: addQuestionTest
+      operationId: addQuestionGenerator
       requestBody:
         description: The question test data to add.
         required: true
@@ -68,10 +68,10 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
-  /getQuestionTest/{numquest}:
+  /getQuestionGenerator/{numquest}:
     get:
       summary: Retrieve a question test by its number.
-      operationId: getQuestionTest
+      operationId: getQuestionGenerator
       parameters:
         - name: numquest
           in: path
@@ -123,10 +123,10 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
-  /getAllQuestionTest:
+  /getAllQuestionGenerator:
     get:
       summary: Retrieve all question tests.
-      operationId: getAllQuestionTest
+      operationId: getAllQuestionGenerator
       responses:
         '200':
           description: Question tests retrieved successfully.
@@ -162,10 +162,10 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
-  /deleteAllQuestionTest:
+  /deleteAllQuestionGenerator:
     delete:
       summary: Delete all question tests.
-      operationId: deleteAllQuestionTest
+      operationId: deleteAllQuestionGenerator
       responses:
         '200':
           description: Question tests deleted successfully.
@@ -189,10 +189,10 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
-  /getRandomQuestionTest:
+  /getRandomQuestionGenerator:
     get:
       summary: Retrieve a random question test.
-      operationId: getRandomQuestionTest
+      operationId: getRandomQuestionGenerator
       responses:
         '200':
           description: Random question test retrieved successfully.
