@@ -23,7 +23,9 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (!finished) {
+            if (timer>=timeLimit){
+                setFinished(true);
+            }else if (!finished) {
                 setTimer(timer + 1);
             } else {
                 clearInterval(interval);
@@ -88,6 +90,13 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         }
     };
 
+    if(isNaN(totalQuestions)){
+        totalQuestions=10;
+    }
+    if(isNaN(timeLimit)){
+        timeLimit=180;
+    }
+
     return (
         <Container maxWidth="lg">
             {numberClics >= totalQuestions || timer >= timeLimit ? (
@@ -125,10 +134,10 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
                     </Typography>
                     <Typography component="h2" sx={{
                         textAlign: 'center',
-                        color: ((timeLimit - timer) <= 60 && (timer % 60) % 2 === 0) ?
+                        color: ((timeLimit - timer) <= 60 && (timer) % 2 === 0) ?
                             'red' : 'inherit',
                         fontStyle: 'italic',
-                        fontWeight: (timer > 150 && (timer % 60) % 2 === 0) ?
+                        fontWeight: (timer > 150 && (timer) % 2 === 0) ?
                             'bold' : 'inherit'
                     }}>
                         ¡Tiempo restante {handleTimeRemaining()}!

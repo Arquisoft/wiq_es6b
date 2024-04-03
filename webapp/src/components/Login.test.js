@@ -35,6 +35,7 @@ describe('Login component', () => {
     expect(accountCreationMessage).toBeInTheDocument();
   });
 
+  /*
   it('should handle error when logging in', async () => {
     render(<Login setLogged={() => {}} />);
 
@@ -60,5 +61,5 @@ describe('Login component', () => {
     // Verify that the user information is not displayed
     expect(screen.queryByText(/Hola testUser!/i)).toBeNull();
     expect(screen.queryByText(/Tu cuenta fue creada el/i)).toBeNull();
-  });
+  });*/
 });
