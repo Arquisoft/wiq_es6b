@@ -12,6 +12,12 @@ const question = {
     incorrectas: ['George Orwell','Franz Kafka','José Saramago'],
     numquest: 1
 };
+const questionMod = {
+    questionBody: "¿Quién escribió la novela 'El Extranjero'?",
+    correcta: 'Albert Camus',
+    incorrectas: ['George Orwell','Aldous Huxley','José Saramago'],
+    numquest: 1
+};
 const question2 = {
     questionBody: "¿En qué año se publicó 'Romancero Gitano' de Federico García Lorca?",
     correcta: '1928',
@@ -55,7 +61,7 @@ describe('Question Generator Service', () => {
     });
 
     it('Should perform two addOrUpdate operation /addOrUpdateQuestionGenerator', async () => {
-        const response = await request(app).post('/addOrUpdateQuestionGenerator').send(question);
+        const response = await request(app).post('/addOrUpdateQuestionGenerator').send(questionMod);
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody', "¿Quién escribió la novela 'El Extranjero'?");
         expect(response.body).toHaveProperty('correcta', 'Albert Camus');
