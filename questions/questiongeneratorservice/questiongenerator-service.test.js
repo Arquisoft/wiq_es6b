@@ -90,14 +90,14 @@ describe('Question Generator Service', () => {
     });
 
     it('Should count 2 generated questions in the database /countQuestionGenerator', async () => {
-        cons response = await request(app).get('/countQuestionGenerator');
+        const response = await request(app).get('/countQuestionGenerator');
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('count', 2);
     });
 
     it('Should delete the first question added /deleteFirstQuestionGenerator', async () => {
-       cons response = await request(app).delete('/deleteFirstQuestionGenerator');
+       const response = await request(app).delete('/deleteFirstQuestionGenerator');
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
@@ -107,14 +107,14 @@ describe('Question Generator Service', () => {
     });
 
     it('Should count 1 generated questions in the database /countQuestionGenerator', async () => {
-        cons response = await request(app).get('/countQuestionGenerator');
+        const response = await request(app).get('/countQuestionGenerator');
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('count', 1);
     });
 
     it('Should delete the last question reamining in the database /deleteFirstQuestionGenerator', async () => {
-        cons response = await request(app).delete('/deleteFirstQuestionGenerator');
+        const response = await request(app).delete('/deleteFirstQuestionGenerator');
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
@@ -124,7 +124,7 @@ describe('Question Generator Service', () => {
     });
 
     it('Should count 0 generated questions in the database /countQuestionGenerator', async () => {
-        cons response = await request(app).get('/countQuestionGenerator');
+        const response = await request(app).get('/countQuestionGenerator');
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('count', 0);
@@ -132,7 +132,7 @@ describe('Question Generator Service', () => {
 
     it('Should fail while trying to delete because there aren`t more generated questions /deleteFirstQuestionGenerator'
         , async () => {
-        cons response = await request(app).delete('/deleteFirstQuestionGenerator');
+        const response = await request(app).delete('/deleteFirstQuestionGenerator');
 
         expect(response.status).toBe(404);
         expect(response.status).toHaveProperty('error','No question found in the database');
