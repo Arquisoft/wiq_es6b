@@ -151,6 +151,6 @@ describe('Question Generator Service', () => {
         const response = await request(app).delete('/deleteFirstQuestionGenerator');
 
         expect(response.status).toBe(404);
-        expect(response.status).toHaveProperty('error');
+        expect(response.body).toHaveProperty('error','No question found in the database');
     });
 });
