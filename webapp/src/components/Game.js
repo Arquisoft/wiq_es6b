@@ -37,7 +37,7 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
 
     const obtenerPreguntaAleatoria = async () => {
         try {
-            const response = await axios.get(`${apiEndpoint}/getRandomQuestionTest`);
+            const response = await axios.get(`${apiEndpoint}/getRandomQuestionGenerator`);
             setQuestion(response.data);
             const respuestas = [...response.data.incorrectas, response.data.correcta];
             setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
