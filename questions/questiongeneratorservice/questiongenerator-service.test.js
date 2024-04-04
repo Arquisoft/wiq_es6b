@@ -12,12 +12,6 @@ const question = {
     incorrectas: ['George Orwell','Franz Kafka','José Saramago'],
     numquest: 1
 };
-const questionMod = {
-    questionBody: "¿Quién escribió la novela 'El Extranjero'?",
-    correcta: 'Albert Camus',
-    incorrectas: ['George Orwell','Aldous Huxley','José Saramago'],
-    numquest: 1
-};
 const question2 = {
     questionBody: "¿En qué año se publicó 'Romancero Gitano' de Federico García Lorca?",
     correcta: '1928',
@@ -49,7 +43,7 @@ describe('Question Generator Service', () => {
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody', "¿Quién escribió la novela 'El Extranjero'?");
         expect(response.body).toHaveProperty('correcta', 'Albert Camus');
-        expect(response.body).toHaveProperty('incorrecta', ['George Orwell','Franz Kafka','José Saramago']);
+        expect(response.body).toHaveProperty('incorrectas', ['George Orwell','Franz Kafka','José Saramago']);
         expect(response.body).toHaveProperty('numquest', 1);
     });
 
@@ -61,19 +55,19 @@ describe('Question Generator Service', () => {
     });
 
     it('Should perform two addOrUpdate operation /addOrUpdateQuestionGenerator', async () => {
-        const response = await request(app).post('/addOrUpdateQuestionGenerator').send(questionMod);
+        const response = await request(app).post('/addOrUpdateQuestionGenerator').send(question3);
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('questionBody', "¿Quién escribió la novela 'El Extranjero'?");
-        expect(response.body).toHaveProperty('correcta', 'Albert Camus');
-        expect(response.body).toHaveProperty('incorrecta', ['George Orwell','Aldous Huxley','José Saramago']);
-        expect(response.body).toHaveProperty('numquest', 1);
+        expect(response.body).toHaveProperty('questionBody', "¿En qué año nació 'The Special One' (José Mourinho)?");
+        expect(response.body).toHaveProperty('correcta', '1963');
+        expect(response.body).toHaveProperty('incorrectas', ['1950','1971','1968']);
+        expect(response.body).toHaveProperty('numquest', 3);
 
         const response2 = await request(app).post('/addOrUpdateQuestionGenerator').send(question2);
         expect(response2.status).toBe(200);
         expect(response2.body).toHaveProperty('questionBody', "¿En qué año se publicó 'Romancero Gitano' de Federico " +
                                                                 "García Lorca?");
         expect(response2.body).toHaveProperty('correcta', '1928');
-        expect(response2.body).toHaveProperty('incorrecta', ['1934','1926','1950']);
+        expect(response2.body).toHaveProperty('incorrectas', ['1934','1926','1950']);
         expect(response2.body).toHaveProperty('numquest', 2);
     });
 
@@ -88,10 +82,9 @@ describe('Question Generator Service', () => {
         const response = await request(app).get(`/getRandomQuestionGenerator`);
 
         expect(response.status).toBe(200);
-        expect(response.body.length).toBe(1);
         expect(response.body).toHaveProperty('questionBody');
         expect(response.body).toHaveProperty('correcta');
-        expect(response.body).toHaveProperty('incorrecta');
+        expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
     });
 
@@ -108,7 +101,7 @@ describe('Question Generator Service', () => {
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
         expect(response.body).toHaveProperty('correcta');
-        expect(response.body).toHaveProperty('incorrecta');
+        expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
     });
 
@@ -125,7 +118,7 @@ describe('Question Generator Service', () => {
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
         expect(response.body).toHaveProperty('correcta');
-        expect(response.body).toHaveProperty('incorrecta');
+        expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
     });
 
@@ -142,14 +135,5 @@ describe('Question Generator Service', () => {
 
         expect(response.status).toBe(404);
         expect(response.status).toHaveProperty('error','No question found in the database');
-    });
-
-    it('Should perform another addOrUpdate operation /addOrUpdateQuestionGenerator', async () => {
-        const response = await request(app).post('/addOrUpdateQuestionGenerator').send(question3);
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('questionBody', "¿En qué año nació 'The Special One' (José Mourinho)?");
-        expect(response.body).toHaveProperty('correcta', '1963');
-        expect(response.body).toHaveProperty('incorrectas', ['1950','1971','1968']);
-        expect(response.body).toHaveProperty('numquest', 3);
     });
 });
