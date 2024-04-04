@@ -149,7 +149,7 @@ describe('Question Generator Service', () => {
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody', "¿En qué año nació 'The Special One' (José Mourinho)?");
         expect(response.body).toHaveProperty('correcta', '1963');
-        expect(response.body).toHaveProperty('incorrecta', ['1950','1971','1968']);
+        expect(response.body).toHaveProperty('incorrectas', ['1950','1971','1968']);
         expect(response.body).toHaveProperty('numquest', 3);
     });
 });
