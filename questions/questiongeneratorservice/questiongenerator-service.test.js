@@ -9,19 +9,19 @@ let app;
 const question = {
     questionBody: "¿Quién escribió la novela 'El Extranjero'?",
     correcta: 'Albert Camus',
-    incorrectas: {'George Orwell','Franz Kafka','José Saramago'},
+    incorrectas: ['George Orwell','Franz Kafka','José Saramago'],
     numquest: 1
 };
 const question2 = {
     questionBody: "¿En qué año se publicó 'Romancero Gitano' de Federico García Lorca?",
     correcta: '1928',
-    incorrectas: {'1934','1926','1950'},
+    incorrectas: ['1934','1926','1950'],
     numquest: 2
 };
 const question3 = {
     questionBody: "¿En qué año nació 'The Special One' (José Mourinho)?",
     correcta: '1963',
-    incorrectas: {'1950','1971','1968'},
+    incorrectas: ['1950','1971','1968'],
     numquest: 3
 };
 
