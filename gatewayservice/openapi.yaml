@@ -818,10 +818,10 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
-  /addOrUpdateQuestionTest:
+  /addOrUpdateQuestionGenerator:
     post:
       summary: Add or update a question test.
-      operationId: addOrUpdateQuestionTest
+      operationId: addOrUpdateQuestionGenerator
       requestBody:
         description: The question test data to add or update.
         required: true
@@ -888,10 +888,10 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
-  /getQuestionTest/{id}:
+  /getQuestionGenerator/{id}:
     get:
       summary: Retrieve a question test by its number.
-      operationId: getQuestionTest
+      operationId: getQuestionGenerator
       parameters:
         - name: id
           in: path
@@ -943,10 +943,10 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
-  /getRandomQuestionTest:
+  /getRandomQuestionGenerator:
     get:
       summary: Retrieve a random question test.
-      operationId: getRandomQuestionTest
+      operationId: getRandomQuestionGenerator
       responses:
         '200':
           description: Random question test retrieved successfully.
@@ -980,10 +980,10 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
-  /getAllQuestionTest:
+  /getAllQuestionGenerator:
     get:
       summary: Retrieve all question tests.
-      operationId: getAllQuestionTest
+      operationId: getAllQuestionGenerator
       responses:
         '200':
           description: Question tests retrieved successfully.
@@ -1019,10 +1019,10 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
-  /deleteAllQuestionTest:
+  /deleteAllQuestionGenerator:
     delete:
       summary: Delete all question tests.
-      operationId: deleteAllQuestionTest
+      operationId: deleteAllQuestionGenerator
       responses:
         '200':
           description: Question tests deleted successfully.

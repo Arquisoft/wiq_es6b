@@ -96,11 +96,11 @@ services:
       MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/rankingdb?retryWrites=true&w=majority&appName=wiq06b
 
 
-  questiontestservice:
-    container_name: questiontestservice-${teamname:-wiq_es06b}
-    image: ghcr.io/arquisoft/wiq_es6b/questiontestservice:latest
+  questiongeneratorservice:
+    container_name: questiongeneratorservice-${teamname:-wiq_es06b}
+    image: ghcr.io/arquisoft/wiq_es6b/questiongeneratorservice:latest
     profiles: ["dev", "prod"]
-    build: ./questions/questiontestservice
+    build: ./questions/questiongeneratorservice
     depends_on:
       - mongodb
     ports:
@@ -108,7 +108,7 @@ services:
     networks:
       - mynetwork
     environment:
-      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiontestdb?retryWrites=true&w=majority&appName=wiq06b
+      MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiongeneratordb?retryWrites=true&w=majority&appName=wiq06b
 
 
   gatewayservice:
@@ -124,7 +124,7 @@ services:
       - recordservice
       - generatedquestservice
       - rankingservice
-      - questiontestservice
+      - questiongeneratorservice
     ports:
       - "8000:8000"
     networks:
@@ -136,7 +136,7 @@ services:
       REC_SERVICE_URL: http://recordservice:8006
       GEN_SERVICE_URL: http://generatedquestservice:8003
       RANK_SERVICE_URL: http://rankingservice:8004
-      QTEST_SERVICE_URL: http://questiontestservice:8007
+      QTEST_SERVICE_URL: http://questiongeneratorservice:8007
 
   webapp:
     container_name: webapp-${teamname:-wiq_es06b}

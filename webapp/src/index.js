@@ -15,19 +15,19 @@ const obtenerPreguntaspartida = async (numquest) => {
     const { questionBody, correctAnswer, incorrectAnswers } = response.data;
     
     // Enviar la pregunta al servicio de preguntas de prueba
-    await axios.post(`${apiEndpoint}/addOrUpdateQuestionTest`, {
+    await axios.post(`${apiEndpoint}/addOrUpdateQuestionGenerator`, {
       questionBody,
       correcta: correctAnswer,
       incorrectas: incorrectAnswers,
       numquest
     });
 
-    // Verificar si el número de preguntas en la base de datos es mayor que 20
-    const countResponse = await axios.get(`${apiEndpoint}/countQuestionTest`);
+    // Verificar si el número de preguntas en la base de datos es mayor que 500
+    const countResponse = await axios.get(`${apiEndpoint}/countQuestionGenerator`);
     const count = countResponse.data.count;
     if (count > 500) {
-      // Llamar a la función deleteFirstQuestionTest para eliminar la primera pregunta
-      await axios.delete(`${apiEndpoint}/deleteFirstQuestionTest`);
+      // Llamar a la función deleteFirstQuestionGenerator para eliminar la primera pregunta
+      await axios.delete(`${apiEndpoint}/deleteFirstQuestionGenerator`);
       console.log('Se ha eliminado la primera pregunta de prueba');
     }
   } catch (error) {

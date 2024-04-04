@@ -37,7 +37,7 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
 
     const obtenerPreguntaAleatoria = async () => {
         try {
-            const response = await axios.get(`${apiEndpoint}/getRandomQuestionTest`);
+            const response = await axios.get(`${apiEndpoint}/getRandomQuestionGenerator`);
             setQuestion(response.data);
             const respuestas = [...response.data.incorrectas, response.data.correcta];
             setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
@@ -84,11 +84,24 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
             // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
             setTimeout(() => {
                 setSelectedOption(null);
+                addGeneratedQuestionBody();
                 setNumberClics(numberClics + 1);
                 setSelectedAnswer('');
             }, delayBeforeNextQuestion);
         }
     };
+
+    const addGeneratedQuestionBody = async () => {
+        try {
+          await axios.post(`${apiEndpoint}/addGeneratedQuestion`, {
+            generatedQuestionBody: question.questionBody,
+            correctAnswer: question.correcta
+          });
+    
+        } catch (error) {
+          setError(error.response.data.error);
+        }
+      };
 
     if(isNaN(totalQuestions)){
         totalQuestions=10;
