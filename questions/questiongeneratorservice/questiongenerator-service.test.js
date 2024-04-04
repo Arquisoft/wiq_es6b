@@ -75,7 +75,7 @@ describe('Question Generator Service', () => {
         const response = await request(app).get(`/getAllQuestionGenerator`);
 
         expect(response.status).toBe(200);
-        expect(response.body.length).toBe(2);
+        expect(response.body.length).toBe(3);
     });
 
     it('Should get one random question /getRandomQuestionGenerator', async () => {
@@ -92,11 +92,28 @@ describe('Question Generator Service', () => {
         const response = await request(app).get('/countQuestionGenerator');
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('count', 2);
+        expect(response.body).toHaveProperty('count', 3);
     });
 
     it('Should delete the first question added /deleteFirstQuestionGenerator', async () => {
        const response = await request(app).delete('/deleteFirstQuestionGenerator');
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('questionBody');
+        expect(response.body).toHaveProperty('correcta');
+        expect(response.body).toHaveProperty('incorrectas');
+        expect(response.body).toHaveProperty('numquest');
+    });
+
+    it('Should count 2 generated questions in the database /countQuestionGenerator', async () => {
+        const response = await request(app).get('/countQuestionGenerator');
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('count', 2);
+    });
+
+    it('Should delete the first reamining question from the database /deleteFirstQuestionGenerator', async () => {
+        const response = await request(app).delete('/deleteFirstQuestionGenerator');
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
@@ -112,7 +129,7 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('count', 1);
     });
 
-    it('Should delete the last question reamining in the database /deleteFirstQuestionGenerator', async () => {
+    it('Should delete the last reamining question from the database /deleteFirstQuestionGenerator', async () => {
         const response = await request(app).delete('/deleteFirstQuestionGenerator');
 
         expect(response.status).toBe(200);
@@ -122,7 +139,7 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('numquest');
     });
 
-    it('Should count 0 generated questions in the database /countQuestionGenerator', async () => {
+    it('Should count 1 generated questions in the database /countQuestionGenerator', async () => {
         const response = await request(app).get('/countQuestionGenerator');
 
         expect(response.status).toBe(200);
