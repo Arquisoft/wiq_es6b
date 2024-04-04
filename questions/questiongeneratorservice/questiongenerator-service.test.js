@@ -43,7 +43,7 @@ describe('Question Generator Service', () => {
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody', "¿Quién escribió la novela 'El Extranjero'?");
         expect(response.body).toHaveProperty('correcta', 'Albert Camus');
-        expect(response.body).toHaveProperty('incorrecta', {'George Orwell','Franz Kafka','José Saramago'});
+        expect(response.body).toHaveProperty('incorrecta', ['George Orwell','Franz Kafka','José Saramago']);
         expect(response.body).toHaveProperty('numquest', 1);
     });
 
@@ -59,7 +59,7 @@ describe('Question Generator Service', () => {
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody', "¿Quién escribió la novela 'El Extranjero'?");
         expect(response.body).toHaveProperty('correcta', 'Albert Camus');
-        expect(response.body).toHaveProperty('incorrecta', {'George Orwell','Aldous Huxley','José Saramago'});
+        expect(response.body).toHaveProperty('incorrecta', ['George Orwell','Aldous Huxley','José Saramago']);
         expect(response.body).toHaveProperty('numquest', 1);
 
         const response = await request(app).post('/addOrUpdateQuestionGenerator').send(question2);
@@ -67,7 +67,7 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('questionBody', "¿En qué año se publicó 'Romancero Gitano' de Federico " +
                                                                 "García Lorca?");
         expect(response.body).toHaveProperty('correcta', '1928');
-        expect(response.body).toHaveProperty('incorrecta', {'1934','1926','1950'});
+        expect(response.body).toHaveProperty('incorrecta', ['1934','1926','1950']);
         expect(response.body).toHaveProperty('numquest', 2);
     });
 
@@ -143,7 +143,7 @@ describe('Question Generator Service', () => {
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody', "¿En qué año nació 'The Special One' (José Mourinho)?");
         expect(response.body).toHaveProperty('correcta', '1963');
-        expect(response.body).toHaveProperty('incorrecta', {'1950','1971','1968'});
+        expect(response.body).toHaveProperty('incorrecta', ['1950','1971','1968']);
         expect(response.body).toHaveProperty('numquest', 3);
     });
 });
