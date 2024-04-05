@@ -235,21 +235,7 @@ app.post('/updateAllRanking', async (req, res) => {
 // Ruta para agregar una pregunta de prueba
 app.post('/addOrUpdateQuestionGenerator', async (req, res) => {
   try {
-    const questionGeneratorResponse = await axios.post(`${questiongeneratorservice}/addQuestionGenerator`, req.body);
-    res.json(questionGeneratorResponse.data);
-  } catch (error) {
-    if (error.response) {
-      res.status(error.response.status).json({ error: error.response.data.error });
-    } else {
-      res.status(500).json({ error: 'Error interno del servidor' });
-    }
-  }
-});
-
-// Ruta para obtener una pregunta de prueba por su ID
-app.get('/getQuestionGenerator/:id', async (req, res) => {
-  try {
-    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getQuestionGenerator/${req.params.id}`);
+    const questionGeneratorResponse = await axios.post(`${questiongeneratorservice}/addOrUpdateQuestionGenerator`, req.body);
     res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
@@ -303,21 +289,7 @@ app.get('/countQuestionGenerator', async (req, res) => {
   }
 });
 
-// Ruta para eliminar todas las preguntas de prueba
-app.delete('/deleteAllQuestionGenerator', async (req, res) => {
-  try {
-    const questionGeneratorResponse = await axios.delete(`${questiongeneratorservice}/deleteAllQuestionGenerator`);
-    res.json(questionGeneratorResponse.data);
-  } catch (error) {
-    if (error.response) {
-      res.status(error.response.status).json({ error: error.response.data.error });
-    } else {
-      res.status(500).json({ error: 'Error interno del servidor' });
-    }
-  }
-});
-
-// Ruta para eliminar todas las preguntas de prueba
+// Ruta para eliminar la primera pregunta de prueba
 app.delete('/deleteFirstQuestionGenerator', async (req, res) => {
   try {
     const questionGeneratorResponse = await axios.delete(`${questiongeneratorservice}/deleteFirstQuestionGenerator`);

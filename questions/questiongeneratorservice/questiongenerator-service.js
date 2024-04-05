@@ -14,27 +14,11 @@ const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06
 mongoose.connect(mongoUri);
 
 
-// Ruta para agregar una nueva pregunta
-app.post('/addQuestionGenerator', async (req, res) => {
-  try {
-    const newQuestion = new QuestionGenerator({
-      questionBody: req.body.questionBody,
-      correcta: req.body.correcta,
-      incorrectas: req.body.incorrectas,
-      numquest: req.body.numquest // Agregar el campo numquest desde la solicitud
-    });
-    await newQuestion.save();
-    res.json(newQuestion);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
 // Ruta para agregar una nueva pregunta o actualizar si ya existe
-app.post('/addOrUpdateQuestionTest', async (req, res) => {
+app.post('/addOrUpdateQuestionGenerator', async (req, res) => {
   try {
     // Buscar si ya existe una pregunta con el mismo questionBody
-    const existingQuestion = await QuestionTest.findOne({ questionBody: req.body.questionBody });
+    const existingQuestion = await QuestionGenerator.findOne({ questionBody: req.body.questionBody });
 
     if (existingQuestion) {
       // Si la pregunta ya existe, realizar una actualización
@@ -46,28 +30,19 @@ app.post('/addOrUpdateQuestionTest', async (req, res) => {
       res.json(existingQuestion); // Devolver la pregunta actualizada
     } else {
       // Si la pregunta no existe, crear una nueva pregunta
-      const newQuestion = new QuestionTest({
-        questionBody: req.body.questionBody,
-        correcta: req.body.correcta,
-        incorrectas: req.body.incorrectas,
-        numquest: req.body.numquest
-      });
-      await newQuestion.save();
-      res.json(newQuestion); // Devolver la nueva pregunta creada
+      try {
+        const newQuestion = new QuestionGenerator({
+          questionBody: req.body.questionBody,
+          correcta: req.body.correcta,
+          incorrectas: req.body.incorrectas,
+          numquest: req.body.numquest // Agregar el campo numquest desde la solicitud
+        });
+        await newQuestion.save();
+        res.json(newQuestion); // Devolver la nueva pregunta creada
+      } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
     }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-// Ruta para obtener una pregunta por su número de pregunta (numquest)
-app.get('/getQuestionGenerator/:numquest', async (req, res) => {
-  try {
-    const question = await QuestionGenerator.findOne({ numquest: req.params.numquest });
-    if (!question) {
-      return res.status(404).json({ error: 'Question not found' });
-    }
-    res.json(question);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
@@ -78,16 +53,6 @@ app.get('/getAllQuestionGenerator', async (req, res) => {
   try {
     const questions = await QuestionGenerator.find();
     res.json(questions);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-// Ruta para eliminar todas las preguntas
-app.delete('/deleteAllQuestionGenerator', async (req, res) => {
-  try {
-    await QuestionGenerator.deleteMany();
-    res.json({ message: 'All questions deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
