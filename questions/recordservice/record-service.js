@@ -40,7 +40,7 @@ app.post('/addRecord', async (req, res) => {
   res.json(newRecord);
   
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: error.message }); 
   }
 });
 
@@ -55,7 +55,38 @@ app.get('/getRecords/:userId', async (req, res) => {
     res.json(userRecords);
 
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: error.message }); 
+  }
+});
+
+// Nuevo endpoint paraactualizar el ranking de los usurias si surgiera algo 
+app.get('/actRanking', async (req, res) => {
+  try {
+    const allRecords = await Record.find();
+
+    const rankingData = {};
+
+    allRecords.forEach(record => {
+      const userId = record.userId;
+      if (!(userId in rankingData)) {
+        rankingData[userId] = {
+          username: userId,
+          preguntasCorrectas: 0,
+          preguntasFalladas: 0,
+          numPartidas: 0
+        };
+      }
+
+      rankingData[userId].preguntasCorrectas += record.correctQuestions;
+      rankingData[userId].preguntasFalladas += record.failedQuestions;
+      rankingData[userId].numPartidas += 1;
+    });
+
+    const rankingArray = Object.values(rankingData);
+
+    res.json(rankingArray);
+  } catch (error) {
+    res.status(400).json({ error: error.message }); 
   }
 });
 

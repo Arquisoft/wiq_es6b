@@ -1,60 +1,323 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const fetch = require('node-fetch');
 const Question = require('./create-model');
 
 const app = express();
 const port = 8005;
 
-// Middleware to parse JSON in request body
+// Middleware para analizar JSON en el cuerpo de la solicitud
 app.use(bodyParser.json());
 
 // Connect to MongoDB
 const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b';
 mongoose.connect(mongoUri);
 
+// Tipos de preguntas y consultas a Wikidata
+const questionTypes = {
+  pais_capital: {
+    query: `
+      SELECT ?country ?countryLabel ?capital ?capitalLabel
+      WHERE {
+        ?country wdt:P31 wd:Q6256.
+        ?country wdt:P36 ?capital.
+        SERVICE wikibase:label {
+          bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es".
+        }
+      }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'countryLabel',
+    answerLabel: 'capitalLabel'
+  },
+  pais_poblacion: {
+    query: `
+      SELECT DISTINCT ?countryLabel ?population
+      {
+        ?country wdt:P31 wd:Q6256 ;
+                wdt:P1082 ?population .
+        SERVICE wikibase:label { 
+          bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es" 
+        }
+      }
+      GROUP BY ?population ?countryLabel
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'countryLabel',
+    answerLabel: 'population'
+  },
+  ciudad_pais: {
+    query: `
+      SELECT ?city ?cityLabel ?country ?countryLabel
+      WHERE {
+        ?city wdt:P31 wd:Q515.
+        ?city wdt:P17 ?country.
+        SERVICE wikibase:label {
+          bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es".
+        }
+      }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'cityLabel',
+    answerLabel: 'countryLabel'
+  },
+  pais_moneda: {
+    query: `
+      SELECT ?country ?countryLabel ?currency ?currencyLabel
+      WHERE {
+        ?currency wdt:P31 wd:Q8142.
+        ?currency wdt:P17 ?country.
+        SERVICE wikibase:label {
+          bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es".
+        }
+      }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'countryLabel',
+    answerLabel: 'currencyLabel'
+  },
+  libro_autor: {
+    query: `
+    SELECT DISTINCT ?libro ?libroLabel ?autor ?autorLabel
+    WHERE {
+      ?libro wdt:P31 wd:Q571;  # Q571 es el identificador para libro
+             wdt:P50 ?autor.   # P50 es la propiedad para autor
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'libroLabel',
+    answerLabel: 'autorLabel'
+  },
+  libro_genero: {
+    query: `
+    SELECT DISTINCT ?libro ?libroLabel ?genero ?generoLabel
+WHERE {
+  ?libro wdt:P31 wd:Q571;   # Q571 es el identificador para libro
+         wdt:P136 ?genero.  # P136 es la propiedad para género
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+}
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'libroLabel',
+    answerLabel: 'generoLabel'
+  },
+  libro_anio: {
+    query: `
+    SELECT DISTINCT ?libro ?libroLabel ?anio_publicacion
+    WHERE {
+      ?libro wdt:P31 wd:Q571;                        # Q571 es el identificador para libro
+             wdt:P577 ?fecha_publicacion.           # P577 es la propiedad para fecha de publicación
+      BIND(YEAR(?fecha_publicacion) AS ?anio_publicacion)
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'libroLabel',
+    answerLabel: 'anio_publicacion'
+  },
+  montana_altura: {
+    query: `
+    SELECT DISTINCT ?montana ?montanaLabel ?altura
+    WHERE {
+      ?montana wdt:P31 wd:Q8502;  # Q8502 es el identificador para montaña
+               wdt:P2044 ?altura. # P2044 es la propiedad para altura
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'montanaLabel',
+    answerLabel: 'altura'
+  },
+  cancion_cantante: {
+    query: `
+    SELECT DISTINCT ?cancion ?cancionLabel ?cantante ?cantanteLabel
+    WHERE {
+      ?cancion wdt:P31 wd:Q7366;  # Q7366 es el identificador para canción
+               wdt:P175 ?cantante. # P175 es la propiedad para cantante
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'cancionLabel',
+    answerLabel: 'cantanteLabel'
+  },
+  cancion_album: {
+    query: `
+    SELECT DISTINCT ?cancion ?cancionLabel ?album ?albumLabel
+    WHERE {
+      ?cancion wdt:P31 wd:Q7366;  # Q7366 es el identificador para canción
+               wdt:P361 ?album.    # P361 es la propiedad para álbum
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'cancionLabel',
+    answerLabel: 'albumLabel'
+  },
+  cancion_anio: {
+    query: `
+    SELECT DISTINCT ?cancion ?cancionLabel ?anio_publicacion
+    WHERE {
+      ?cancion wdt:P31 wd:Q7366;                        # Q7366 es el identificador para canción
+               wdt:P577 ?fecha_publicacion.               # P577 es la propiedad para fecha de publicación
+      BIND(YEAR(?fecha_publicacion) AS ?anio_publicacion)
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'cancionLabel',
+    answerLabel: 'anio_publicacion'
+  },
+  estadio_ciudad: {
+    query: `
+    SELECT DISTINCT ?estadio ?estadioLabel ?ciudad ?ciudadLabel
+    WHERE {
+      ?estadio wdt:P31 wd:Q483110;  # Q483110 es el identificador para estadio
+               wdt:P131 ?ciudad.    # P131 es la propiedad para ciudad
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      ORDER BY RAND()
+      LIMIT 50
+    `,
+    questionLabel: 'estadioLabel',
+    answerLabel: 'ciudadLabel'
+  },
+  estadio_capacidad: {
+    query: `
+    SELECT DISTINCT ?estadio ?estadioLabel ?capacidad
+    WHERE {
+      ?estadio wdt:P31 wd:Q483110;  # Q483110 es el identificador para estadio
+               wdt:P1083 ?capacidad. # P1083 es la propiedad para capacidad
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      ORDER BY RAND()
+      LIMIT 50
+    `,
+    questionLabel: 'estadioLabel',
+    answerLabel: 'capacidad'
+  },
+  equipo_estadio: {
+    query: `
+    SELECT DISTINCT ?equipo ?equipoLabel ?estadio ?estadioLabel
+    WHERE {
+      ?equipo wdt:P31 wd:Q476028;  # Q476028 es el identificador para equipo de fútbol
+              wdt:P115 ?estadio.   # P115 es la propiedad para estadio
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      ORDER BY RAND()
+      LIMIT 50
+    `,
+    questionLabel: 'equipoLabel',
+    answerLabel: 'estadioLabel'
+  },
+  pais_idioma: {
+    query: `
+    SELECT DISTINCT ?countryLabel ?languageLabel
+    WHERE {
+      ?country wdt:P31 wd:Q6256;
+               wdt:P37 ?language.
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'countryLabel',
+    answerLabel: 'languageLabel'
+  },
+  
+};
 
-  // Route for user login
+// Ruta para agregar una nueva pregunta
 app.post('/addQuestion', async (req, res) => {
   try {
-    const newQuestion1 = new Question({
+    const newQuestion = new Question({
       questionBody: req.body.questionBody,
-      typeQuestion: req.body.typeQuestion,
-      typeAnswer: req.body.typeAnswer,
-  });
-  newQuestion1.save();
-  res.json(newQuestion1);
-  
+      typeQuestion: req.body.typeQuestion
+    });
+    await newQuestion.save();
+    res.json(newQuestion);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: error.message }); 
   }
 });
 
-
-//obtiene una pregunta de forma aleatoria
-app.post('/getQuestionBody', async (req, res) => {
+// Nuevo endpoint para obtener una pregunta completa
+app.get('/getFullQuestion', async (req, res) => {
   try {
-    
-    //modelo mongo
-    const Question = mongoose.model('Question');
-    //saco una pregunta de forma aleatoria
     const rQuestion = await Question.aggregate([{ $sample: { size: 1 } }]);
-    
-    res.json(rQuestion[0]);
+    const questionType = rQuestion[0].typeQuestion;
+    const { query, questionLabel, answerLabel } = questionTypes[questionType];
+
+    const apiUrl = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
+    const headers = { "Accept": "application/json" };
+    const respuestaWikidata = await fetch(apiUrl, { headers });
+
+    if (respuestaWikidata.ok) {
+      const data = await respuestaWikidata.json();
+      const numEles = data.results.bindings.length;
+
+      let resultCorrecta;
+      let informacionWikidata;
+      let respuestaCorrecta;
+
+      do {
+        const indexCorrecta = Math.floor(Math.random() * numEles);
+        resultCorrecta = data.results.bindings[indexCorrecta];
+        informacionWikidata = resultCorrecta[questionLabel].value + '?';
+        respuestaCorrecta = resultCorrecta[answerLabel].value;
+      } while (informacionWikidata.startsWith('Q') || respuestaCorrecta.startsWith('Q')); // Solo se aceptan respuestas que no comienzan con 'Q'
+
+      const respuestasFalsas = [];
+      while (respuestasFalsas.length < 3) {
+        const indexFalsa = Math.floor(Math.random() * numEles);
+        const resultFalsa = data.results.bindings[indexFalsa];
+        const respuestaFalsa = resultFalsa[answerLabel].value;
+
+        // Comprueba si la respuesta falsa coincide con la respuesta correcta o con alguna de las respuestas falsas ya generadas
+        if (respuestaFalsa !== respuestaCorrecta && !respuestasFalsas.includes(respuestaFalsa) && !respuestaFalsa.startsWith('Q')) { // Solo se aceptan respuestas que no comienzan con 'Q'
+          respuestasFalsas.push(respuestaFalsa);
+        }
+      }
+
+      const body = rQuestion[0].questionBody + informacionWikidata;
+
+      const fullQuestion = {
+        questionBody: body,
+        correctAnswer: respuestaCorrecta,
+        incorrectAnswers: respuestasFalsas
+      };
+
+      res.json(fullQuestion);
+    } else {
+      res.status(400).json({ error: "Error al realizar la consulta en Wikidata. Estado de respuesta:" + respuestaWikidata.status });
+    }
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ error: "Error al realizar la consulta en Wikidata." });
   }
 });
 
-// Start the server
+// Iniciar el servidor
 const server = app.listen(port, () => {
-  console.log(`Auth Service listening at http://localhost:${port}`);
+  console.log(`Servicio de autenticación escuchando en http://localhost:${port}`);
 });
 
+// Manejar el cierre del servidor
 server.on('close', () => {
-    // Close the Mongoose connection
-    mongoose.connection.close();
-  });
+  // Cerrar la conexión de Mongoose
+  mongoose.connection.close();
+});
 
-module.exports = server
-  
+module.exports = server;

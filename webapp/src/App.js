@@ -22,7 +22,7 @@ function App() {
   return (
     <Container component="main" maxWidth="lg" style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 
-  <Paper elevation={3} style={{ padding: '2rem', textAlign: 'center', height: '500px', width: '800px', overflow: 'auto' }}>
+  <Paper elevation={3} style={{ padding: '2rem', textAlign: 'center', height: '550px', width: '1200px', overflow: 'auto' }}>
 
       {showLogin ? <Login setLogged={handleIsLogged}/> : <AddUser />}
         {!isLogged ? (<Typography component="div" align="center" sx={{ marginTop: 4 }}>
@@ -32,11 +32,11 @@ function App() {
 
 
                 <Link name="gotoregister" component="button" variant="body2" onClick={handleToggleView}>
-                    Don't have an account? Register here.
+                    ¿No tienes cuenta? Registrate aqui.
                 </Link>
             ) : (
                 <Link component="button" variant="body2" onClick={handleToggleView}>
-                    Already have an account? Login here.
+                    ¿Ya tienes cuenta? Inicia sesión aqui.
                 </Link>
             )}
         </Typography>

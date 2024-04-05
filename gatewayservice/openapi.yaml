@@ -1,0 +1,1048 @@
+openapi: 3.0.0
+info:
+  title: Gatewayservice API
+  description: Gateway OpenAPI specification.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: http://51.142.17.139:8000
+    description: Production server
+paths:
+  /adduser:
+    post:
+      summary: Add a new user to the database.
+      operationId: addUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: User ID.
+                  example: student
+                password:
+                  type: string
+                  description: User password.
+                  example: pass
+      responses:
+        '200':
+          description: User added successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    description: User ID
+                  password:
+                    type: string
+                    description: Hashed password
+                    example: $2b$10$ZKdNYLWFQxzt5Rei/YTc/OsZNi12YiWz30JeUFHNdAt7MyfmkTuvC
+                  _id:
+                    type: string
+                    description: Identification
+                    example: 65f756db3fa22d227a4b7c7d
+                  createdAt:
+                    type: string
+                    description: Creation date.
+                    example: '2024-03-17T20:47:23.935Z'
+                  ___v:
+                    type: integer
+                    example: '0'                                        
+        '400':
+          description: Failed to add user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: getaddrinfo EAI_AGAIN mongodb
+  /health:
+    get:
+      summary: Check the health status of the service.
+      operationId: checkHealth
+      responses:
+        '200':
+          description: Service is healthy.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Health status.
+                    example: OK
+  /login:
+    post:
+      summary: Log in to the system.
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: User ID.
+                  example: student
+                password:
+                  type: string
+                  description: User password.
+                  example: pass
+      responses:
+        '200':
+          description: Login successful. Returns user token, username, and creation date.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: User token.
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWY3NTZkYjNmYTIyZDIyN2E0YjdjN2QiLCJpYXQiOjE3MTA3MDg3NDUsImV4cCI6MTcxMDcxMjM0NX0.VMG_5DOyQ4GYlJQRcu1I6ICG1IGzuo2Xuei093ONHxw
+                  username:
+                    type: string
+                    description: Username.
+                    example: student
+                  createdAt:
+                    type: string
+                    description: Creation date.
+                    example: '2024-03-17T20:47:23.935Z'
+        '401':
+          description: Invalid credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Shows the error info..
+                    example: Invalid credentials
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /addRecord:
+    post:
+      summary: Add a new record to the database.
+      operationId: addRecord
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: User ID.
+                  example: student
+                date:
+                  type: string
+                  description: Date of the record.
+                  example: "2024-03-17T20:47:23.935Z"
+                time:
+                  type: integer
+                  description: Time of the record.
+                  example: 120
+                money:
+                  type: string
+                  description: Money earned.
+                  example: 200
+                correctQuestions:
+                  type: string
+                  description: Number of correct questions.
+                  example: 10
+                failedQuestions:
+                  type: string
+                  description: Number of failed questions.
+                  example: 5
+      responses:
+        '200':
+          description: Record added successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: string
+                    description: User ID.
+                    example: student
+                  date:
+                    type: string
+                    description: Date of the record.
+                    example: "2024-03-17T20:47:23.935Z"
+                  time:
+                    type: string
+                    description: Time of the record.
+                    example: 120
+                  money:
+                    type: string
+                    description: Money earned.
+                    example: 200
+                  correctQuestions:
+                    type: string
+                    description: Number of correct questions.
+                    example: 10
+                  failedQuestions:
+                    type: string
+                    description: Number of failed questions.
+                    example: 5
+                  _id:
+                    type: string
+                    description: Identification.
+                    example: 65f756db3fa22d227a4b7c7d
+                  createdAt:
+                    type: string
+                    description: Creation date.
+                    example: '2024-03-17T20:47:23.935Z'
+                  ___v:
+                    type: integer
+                    example: '0'
+        '400':
+          description: Failed to add record.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: getaddrinfo EAI_AGAIN mongodb
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /addQuestion:
+    post:
+      summary: Add a new question to the database.
+      operationId: addQuestion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                questionBody:
+                  type: string
+                  description: Question.
+                  example: What is the capital of 
+                typeQuestion:
+                  type: string
+                  description: Type of question.
+                  example: Geography
+      responses:
+        '200':
+          description: Question added successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionBody:
+                    type: string
+                    description: Question.
+                    example: What is the capital of 
+                  typeQuestion:
+                    type: string
+                    description: Type of question.
+                    example: Geography
+                  _id:
+                    type: string
+                    description: Identification.
+                    example: 65f756db3fa22d227a4b7c7d
+                  createdAt:
+                    type: string
+                    description: Creation date.
+                    example: '2024-03-17T20:47:23.935Z'
+                  ___v:
+                    type: integer
+                    example: '0'
+        '400':
+          description: Failed to add question.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: getaddrinfo EAI_AGAIN mongodb
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /getAllUsers:
+    get:
+      summary: Get all users from the database.
+      operationId: getAllUsers
+      responses:
+        '200':
+          description: Users retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    username:
+                      type: string
+                      description: User ID.
+                    password:
+                      type: string
+                      description: Hashed password.
+                    _id:
+                      type: string
+                      description: Identification.
+                    createdAt:
+                      type: string
+                      description: Creation date.
+                    ___v:
+                      type: integer
+        '400':
+          description: Failed to retrieve users.
+          content:
+            applicationjson:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: getaddrinfo EAI_AGAIN mongodb
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /getAllGeneratedQuestions:
+    get:
+      summary: Get all generated questions from the database.
+      operationId: getAllGeneratedQuestions
+      responses:
+        '200':
+          description: Questions retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    generatedQuestionBody:
+                      type: string
+                      description: Question.
+                    correctAnswer:
+                      type: string
+                      description: Correct answer.
+                    _id:
+                      type: string
+                      description: Identification.
+                    createdAt:
+                      type: string
+                      description: Creation date.
+                    ___v:
+                      type: integer
+        '400':
+          description: Failed to retrieve questions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: getaddrinfo EAI_AGAIN mongodb
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /getRecords/:userId:
+    get:
+      summary: Get all records from the database.
+      operationId: getRecords
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User ID.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Records retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    userId:
+                      type: string
+                      description: User ID.
+                    date:
+                      type: string
+                      description: Date of the record.
+                    time:
+                      type: integer
+                      description: Time of the record.
+                    money:
+                      type: string
+                      description: Money earned.
+                    correctQuestions:
+                      type: string
+                      description: Number of correct questions.
+                    failedQuestions:
+                      type: string
+                      description: Number of failed questions.
+                    _id:
+                      type: string
+                      description: Identification.
+                    createdAt:
+                      type: string
+                      description: Creation date.
+                    ___v:
+                      type: integer
+        '400':
+          description: Failed to retrieve records.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: getaddrinfo EAI_AGAIN mongodb
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /getFullQuestion:
+    get:
+      summary: Get a full question from the database.
+      operationId: getFullQuestion
+      responses:
+        '200':
+          description: Question retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionBody:
+                    type: string
+                    description: Question.
+                  correctAnswer:
+                    type: string
+                    description: Correct answer.
+                  incorrectAnswers:
+                    type: array
+                    items:
+                      type: string
+                    description: Incorrect answers.
+                  _id:
+                    type: string
+                    description: Identification.
+                  createdAt:
+                    type: string
+                    description: Creation date.
+                  ___v:
+                    type: integer
+        '400':
+          description: Failed to retrieve question.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: getaddrinfo EAI_AGAIN mongodb
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /actRanking:
+    get:
+      summary: Update the ranking of the users.
+      operationId: actRanking
+      responses:
+        '200':
+          description: Ranking updated successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    username:
+                      type: string
+                      description: User ID.
+                    preguntasCorrectas:
+                      type: integer
+                      description: Number of correct questions.
+                    preguntasFalladas:
+                      type: integer
+                      description: Number of failed questions.
+                    numPartidas:
+                      type: integer
+                      description: Number of games played.
+        '400':
+          description: Failed to retrieve ranking.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error message
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /createUserRank:
+    post:
+      summary: Create or update a user's ranking.
+      operationId: createUserRank
+      requestBody:
+        description: The username for which to create or update the ranking.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: User ID.
+      responses:
+        '200':
+          description: User ranking created or updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    description: User ID.
+                  porcentajeAciertos:
+                    type: integer
+                    description: Percentage of correct answers.
+                  preguntasCorrectas:
+                    type: integer
+                    description: Number of correct questions.
+                  preguntasFalladas:
+                    type: integer
+                    description: Number of failed questions.
+                  numPartidas:
+                    type: integer
+                    description: Number of games played.
+        '400':
+          description: Failed to create or update user ranking.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error message
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /obtainRank:
+    get:
+      summary: Retrieve the ranking of all users.
+      operationId: obtainRank
+      responses:
+        '200':
+          description: Ranking retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    username:
+                      type: string
+                      description: User ID.
+                    porcentajeAciertos:
+                      type: integer
+                      description: Percentage of correct answers.
+                    preguntasCorrectas:
+                      type: integer
+                      description: Number of correct questions.
+                    preguntasFalladas:
+                      type: integer
+                      description: Number of failed questions.
+                    numPartidas:
+                      type: integer
+                      description: Number of games played.
+        '400':
+          description: Failed to retrieve ranking.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error al obtener la lista de rankings.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /updateRanking:
+    post:
+      summary: Update a user's ranking.
+      operationId: updateRanking
+      requestBody:
+        description: The username and the number of correct and failed questions.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: User ID.
+                preguntasCorrectas:
+                  type: integer
+                  description: Number of correct questions.
+                preguntasFalladas:
+                  type: integer
+                  description: Number of failed questions.
+      responses:
+        '200':
+          description: User ranking updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    description: User ID.
+                  porcentajeAciertos:
+                    type: number
+                    format: float
+                    description: Percentage of correct answers.
+                  preguntasCorrectas:
+                    type: integer
+                    description: Number of correct questions.
+                  preguntasFalladas:
+                    type: integer
+                    description: Number of failed questions.
+                  numPartidas:
+                    type: integer
+                    description: Number of games played.
+        '400':
+          description: Failed to update user ranking.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error message
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /updateAllRanking:
+    post:
+      summary: Update the ranking of all users.
+      operationId: updateAllRanking
+      requestBody:
+        description: An array of user data to update the rankings.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    description: User ID.
+                  preguntasCorrectas:
+                    type: integer
+                    description: Number of correct questions.
+                  preguntasFalladas:
+                    type: integer
+                    description: Number of failed questions.
+                  numPartidas:
+                    type: integer
+                    description: Number of games played.
+      responses:
+        '200':
+          description: User rankings updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message.
+                    example: Rankings actualizados correctamente.
+        '400':
+          description: Failed to update user rankings.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error message
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /addOrUpdateQuestionGenerator:
+    post:
+      summary: Add or update a question test.
+      operationId: addOrUpdateQuestionGenerator
+      requestBody:
+        description: The question test data to add or update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                questionBody:
+                  type: string
+                  description: The body of the question.
+                correcta:
+                  type: string
+                  description: The correct answer.
+                incorrectas:
+                  type: array
+                  items:
+                    type: string
+                  description: The incorrect answers.
+                numquest:
+                  type: integer
+                  description: The number of the question.
+      responses:
+        '200':
+          description: Question test added or updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionBody:
+                    type: string
+                    description: The body of the question.
+                  correcta:
+                    type: string
+                    description: The correct answer.
+                  incorrectas:
+                    type: array
+                    items:
+                      type: string
+                    description: The incorrect answers.
+                  numquest:
+                    type: integer
+                    description: The number of the question.
+        '400':
+          description: Failed to add or update question test.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error message
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /getQuestionGenerator/{id}:
+    get:
+      summary: Retrieve a question test by its number.
+      operationId: getQuestionGenerator
+      parameters:
+        - name: id
+          in: path
+          description: The number of the question test.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Question test retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionBody:
+                    type: string
+                    description: The body of the question.
+                  correcta:
+                    type: string
+                    description: The correct answer.
+                  incorrectas:
+                    type: array
+                    items:
+                      type: string
+                    description: The incorrect answers.
+                  numquest:
+                    type: integer
+                    description: The number of the question.
+        '404':
+          description: Question test not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Question not found
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /getRandomQuestionGenerator:
+    get:
+      summary: Retrieve a random question test.
+      operationId: getRandomQuestionGenerator
+      responses:
+        '200':
+          description: Random question test retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionBody:
+                    type: string
+                    description: The body of the question.
+                  correcta:
+                    type: string
+                    description: The correct answer.
+                  incorrectas:
+                    type: array
+                    items:
+                      type: string
+                    description: The incorrect answers.
+                  numquest:
+                    type: integer
+                    description: The number of the question.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /getAllQuestionGenerator:
+    get:
+      summary: Retrieve all question tests.
+      operationId: getAllQuestionGenerator
+      responses:
+        '200':
+          description: Question tests retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    questionBody:
+                      type: string
+                      description: The body of the question.
+                    correcta:
+                      type: string
+                      description: The correct answer.
+                    incorrectas:
+                      type: array
+                      items:
+                        type: string
+                      description: The incorrect answers.
+                    numquest:
+                      type: integer
+                      description: The number of the question.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /deleteAllQuestionGenerator:
+    delete:
+      summary: Delete all question tests.
+      operationId: deleteAllQuestionGenerator
+      responses:
+        '200':
+          description: Question tests deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message.
+                    example: All questions deleted successfully.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error

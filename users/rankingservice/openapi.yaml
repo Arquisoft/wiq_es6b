@@ -1,0 +1,134 @@
+openapi: 3.0.0
+info:
+  title: Ranking Service API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8004
+    description: Development server
+  - url: http://51.142.17.139:8004
+    description: Production server
+paths:
+  /resetRank:
+    post:
+      summary: Reset a user's rank.
+      operationId: resetRank
+      requestBody:
+        description: The username to reset rank for.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The username of the user.
+      responses:
+        '200':
+          description: User rank reset successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    description: The username of the user.
+                  porcentajeAciertos:
+                    type: integer
+                    description: The percentage of correct answers.
+                  preguntasCorrectas:
+                    type: integer
+                    description: The number of correct questions.
+                  preguntasFalladas:
+                    type: integer
+                    description: The number of failed questions.
+                  numPartidas:
+                    type: integer
+                    description: The number of games played.
+        '400':
+          description: Failed to reset user rank.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error message
+  /obtainRank:
+    get:
+      summary: Retrieve all user ranks.
+      operationId: obtainRank
+      responses:
+        '200':
+          description: User ranks retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: The user rank object.
+        '400':
+          description: Failed to retrieve user ranks.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error al obtener la lista de rankings.
+  /updateAllRanking:
+    post:
+      summary: Update all user ranks.
+      operationId: updateAllRanking
+      requestBody:
+        description: The ranking data to update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  username:
+                    type: string
+                    description: The username of the user.
+                  porcentajeAciertos:
+                    type: integer
+                    description: The percentage of correct answers.
+                  preguntasCorrectas:
+                    type: integer
+                    description: The number of correct questions.
+                  preguntasFalladas:
+                    type: integer
+                    description: The number of failed questions.
+                  numPartidas:
+                    type: integer
+                    description: The number of games played.
+      responses:
+        '200':
+          description: User ranks updated successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: The updated user rank object.
+        '400':
+          description: Failed to update user ranks.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Error message

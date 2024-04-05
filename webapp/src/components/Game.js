@@ -1,232 +1,196 @@
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Container, Typography, Button, Snackbar, CircularProgress } from '@mui/material';
+import { Container, Typography, Button, Snackbar, Grid, List, ListItem, ListItemText } from '@mui/material';
 
-const Game = ({username}) => {
-  const [questionBody, setQuestionBody] = useState('');
-  const [informacionWikidata, setInformacionWikidata] = useState('');
-  const [respuestaCorrecta, setRespuestaCorrecta] = useState('');
-  const [respuestasFalsas, setRespuestasFalsas] = useState([]);
-  const [numberClics, setNumberClics] = useState(1);
-  const [timer, setTimer] = useState(0);
-  const [correctQuestions, setCorrectQuestions] = useState(0);
-  const [error, setError] = useState('');
-  const [finish, setFinish] = useState(false);
-  const [buttons, setButtons] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Nuevo estado para controlar la pantalla de carga
+const Game = ({ username, totalQuestions, timeLimit }) => {
+    const [question, setQuestion] = useState({});
+    const [respuestasAleatorias, setRespuestasAleatorias] = useState([]);
+    const [error, setError] = useState('');
+    const [correctQuestions, setCorrectQuestions] = useState(0);
+    const [timer, setTimer] = useState(0);
+    const [numberClics, setNumberClics] = useState(0);
+    const [finished, setFinished] = useState(false);
+    const [selectedAnswer, setSelectedAnswer] = useState('');
+    const [selectedOption, setSelectedOption] = useState(null); // Opción seleccionada actualmente
+    const pricePerQuestion = 25;
+    const delayBeforeNextQuestion = 3000; // 3 segundos de retardo antes de pasar a la siguiente pregunta
 
-  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimer(prevTime => prevTime + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    useEffect(() => {
+        obtenerPreguntaAleatoria();
+    }, [numberClics]);
 
-  const questionTypes = useMemo(() => ({
-    "pais": {
-      query: `
-        SELECT ?country ?countryLabel ?capital ?capitalLabel
-        WHERE {
-          ?country wdt:P31 wd:Q6256.
-          ?country wdt:P36 ?capital.
-          SERVICE wikibase:label {
-            bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es".
-          }
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (timer>=timeLimit){
+                setFinished(true);
+            }else if (!finished) {
+                setTimer(timer + 1);
+            } else {
+                clearInterval(interval);
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [timer, finished]);
+
+    const obtenerPreguntaAleatoria = async () => {
+        try {
+            const response = await axios.get(`${apiEndpoint}/getRandomQuestionGenerator`);
+            setQuestion(response.data);
+            const respuestas = [...response.data.incorrectas, response.data.correcta];
+            setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
+        } catch (error) {
+            console.error("Error al obtener la pregunta aleatoria", error);
+            setError('Error al obtener la pregunta aleatoria');
         }
-        ORDER BY RAND()
-        LIMIT 150
-      `,
-      questionLabel: 'countryLabel',
-      answerLabel: 'capitalLabel'
-    },
-    // Añadir el resto de tipos de preguntas
-  }), []);
-
-  const obtenerDatos = useCallback(async (questionType) => {
-    try {
-      const { query, questionLabel, answerLabel } = questionTypes[questionType];
-
-      const apiUrl = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}`;
-      const headers = { "Accept": "application/json" };
-
-      const respuestaWikidata = await fetch(apiUrl, { headers });
-
-      if (respuestaWikidata.ok) {
-        const data = await respuestaWikidata.json();
-        const numEles = data.results.bindings.length;
-
-        // Obtener la respuesta correcta
-        const indexCorrecta = Math.floor(Math.random() * numEles);
-        const resultCorrecta = data.results.bindings[indexCorrecta];
-        setInformacionWikidata(resultCorrecta[questionLabel].value + '?');
-        setRespuestaCorrecta(resultCorrecta[answerLabel].value);
-
-        // Obtener respuestas falsas
-        const respuestas = [];
-        for (let i = 0; i < 3; i++) {
-          const indexFalsa = Math.floor(Math.random() * numEles);
-          const resultFalsa = data.results.bindings[indexFalsa];
-          respuestas.push(resultFalsa[answerLabel].value);
-        }
-        setRespuestasFalsas(respuestas);
-      } else {
-        console.error("Error al realizar la consulta en Wikidata. Estado de respuesta:", respuestaWikidata.status);
-      }
-    } catch (error) {
-      console.error("Error al realizar la consulta en Wikidata", error);
-    }
-  }, [questionTypes, setInformacionWikidata, setRespuestaCorrecta, setRespuestasFalsas]);
-
-  const obtenerPreguntaAleatoria = useCallback(async () => {
-    try {
-      const response = await axios.post(`${apiEndpoint}/getQuestionBody`);
-      setQuestionBody(response.data.questionBody);
-      await obtenerDatos(response.data.typeQuestion);
-    } catch (error) {
-      console.error("Error al obtener la pregunta aleatoria", error);
-    }
-  }, [apiEndpoint, obtenerDatos]);
-
-  const addGeneratedQuestionBody = useCallback(async () => {
-    try {
-
-      let pregunta=`${questionBody || ''} ${informacionWikidata || ''}`;
-      await axios.post(`${apiEndpoint}/addGeneratedQuestion`, { 
-        generatedQuestionBody: pregunta,
-        correctAnswer: respuestaCorrecta
-      });
-      
-    } catch (error) {
-      setError(error.response.data.error);
-    }
-  }, [apiEndpoint, questionBody, informacionWikidata, respuestaCorrecta]);
-
-  const handleButtonClickGeneric = useCallback(async () => {
-    try{
-      setNumberClics(numberClics + 1);
-      await obtenerPreguntaAleatoria();
-      
-      addGeneratedQuestionBody();
-    }catch(error)
-    {
-    console.error("Error",error)
-    }
-  }, [numberClics, obtenerPreguntaAleatoria, addGeneratedQuestionBody]);
-
-  const handleButtonClickCorrect = useCallback(() => {
-    setCorrectQuestions(correctQuestions+1);
-    handleButtonClickGeneric();
-  }, [correctQuestions, handleButtonClickGeneric]);
-
-  const generarBotonesRespuestas = useCallback(async () => {
-    try{
-      const correctPos = Math.floor(Math.random() * 4) + 1;
-      const buttonsData = [];
-      let contWrongAnsw = 0;
-      for(let i=1; i<=4; i++){
-        if(i===correctPos){
-          buttonsData.push({ answer: respuestaCorrecta, handler: handleButtonClickCorrect });
-        }else{
-          buttonsData.push({ answer: respuestasFalsas[contWrongAnsw], handler: handleButtonClickGeneric });
-          contWrongAnsw++;
-        }
-      }
-      setButtons(buttonsData);
-    }catch(error){
-      console.error("Error generando botones", error);
-    }
-
-  }, [respuestaCorrecta, respuestasFalsas, handleButtonClickCorrect, handleButtonClickGeneric]);
-
-  useEffect(() => {
-    generarBotonesRespuestas();
-  }, [respuestaCorrecta, respuestasFalsas, generarBotonesRespuestas]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await obtenerPreguntaAleatoria();
-      setIsLoading(false); // Cuando se carga la pregunta, se cambia el estado para dejar de mostrar la pantalla de carga
-    };
-    fetchData();
-  }, [obtenerPreguntaAleatoria]);
-
-  const handleTimeRemaining = () => {
-    let minsR = Math.floor((3 * 60 - timer) / 60);
-    let minsRStr = (minsR < 10) ? '0' + minsR.toString() : minsR.toString();
-    let secsR = (3 * 60 - timer) % 60;
-    let secsRStr = (secsR < 10) ? '0' + secsR.toString() : secsR.toString();
-    return `${minsRStr}:${secsRStr}`;
-  };
-
-  useEffect(() => {
-    const addRecord = async () => {
-      try {
-        //const response = 
-        await axios.post(`${apiEndpoint}/addRecord`, {
-          userId: username,
-          date: new Date(),
-          time: timer,
-          money: (25*correctQuestions),
-          correctQuestions: correctQuestions,
-          failedQuestions: (10-correctQuestions)
-        });
-      } catch (error) {
-        setError(error.response.data.error);
-      }
     };
 
-    if((numberClics>10 || timer>180) && !finish){
-      addRecord();
-      setFinish(true);
+    const handleTimeRemaining = () => {
+        let minsR = Math.floor((timeLimit - timer) / 60);
+        let minsRStr = (minsR < 10) ? '0' + minsR.toString() : minsR.toString();
+        let secsR = (timeLimit - timer) % 60;
+        let secsRStr = (secsR < 10) ? '0' + secsR.toString() : secsR.toString();
+        return `${minsRStr}:${secsRStr}`;
+    };
+
+    const handleTimeUsed = () => {
+        let minsR = Math.floor(timer / 60);
+        let minsRStr = (minsR < 10) ? '0' + minsR.toString() : minsR.toString();
+        let secsR = timer % 60;
+        let secsRStr = (secsR < 10) ? '0' + secsR.toString() : secsR.toString();
+        return `${minsRStr}:${secsRStr}`;
     }
-  }, [apiEndpoint, correctQuestions, finish, username, numberClics, timer]);
 
-  return (
-    <Container maxWidth="lg">
-    <div>
-      {isLoading ? ( // Mostrar la pantalla de carga si isLoading es verdadero
-        <div style={{ textAlign: 'center', marginTop: '50px' }}>
-          <CircularProgress />
-          <Typography variant="h6" gutterBottom>
-            Cargando...
-          </Typography>
-        </div>
-      ) : (
-        <>
-          {numberClics > 10 || timer > 180 ? (
-            <p>Fin de la partida</p>
-          ) : (
-            <>
-              <Typography component="h1" variant='h5' sx={{ textAlign: 'center' }}>
-                Pregunta Número {numberClics} :
-              </Typography>
-              <Typography component="h2" sx={{ textAlign: 'center', color: (timer > 120 && (timer % 60) % 2 === 0) ? 'red' : 'inherit', fontStyle: 'italic', fontWeight: (timer > 150 && (timer % 60) % 2 === 0) ? 'bold' : 'inherit' }}>
-                ¡Tiempo restante {handleTimeRemaining()}!
-              </Typography>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
-                  {questionBody} {informacionWikidata}
-                </Typography>
+    const handleButtonClick = async (respuestaSeleccionada, index) => {
+        if (!finished) {
+            if (selectedOption !== null) return; // Si ya se seleccionó una opción, no hacer nada
 
-                { buttons.map((button) => (
-                    <Button variant="contained" color="primary" onClick={button.handler} >
-                      {button.answer}
-                    </Button>
-                ))}
+            setSelectedOption(index); // Guardar la opción seleccionada actualmente
 
-              </div>
-            </>
-          )}
-        </>
-      )}
-    {error && (
-        <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
-    )}
-    </div>
-    </Container>
-  );
-}
+            if (respuestaSeleccionada === question.correcta) {
+                setCorrectQuestions(correctQuestions + 1);
+                setSelectedAnswer('correct');
+            } else {
+                setSelectedAnswer('incorrect');
+            }
+
+            // Si ya llegamos a la última pregunta, acabamos la partida para que se muestre el resultado
+            if(numberClics===totalQuestions-1){
+                setFinished(true);
+            }
+
+            // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
+            setTimeout(() => {
+                setSelectedOption(null);
+                addGeneratedQuestionBody();
+                setNumberClics(numberClics + 1);
+                setSelectedAnswer('');
+            }, delayBeforeNextQuestion);
+        }
+    };
+
+    const addGeneratedQuestionBody = async () => {
+        try {
+          await axios.post(`${apiEndpoint}/addGeneratedQuestion`, {
+            generatedQuestionBody: question.questionBody,
+            correctAnswer: question.correcta
+          });
+    
+        } catch (error) {
+          setError(error.response.data.error);
+        }
+      };
+
+    if(isNaN(totalQuestions)){
+        totalQuestions=10;
+    }
+    if(isNaN(timeLimit)){
+        timeLimit=180;
+    }
+
+    return (
+        <Container maxWidth="lg">
+            {numberClics >= totalQuestions || timer >= timeLimit ? (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+                        ¡Gracias por jugar!
+                    </Typography>
+                    <List>
+                        <ListItem>
+                            <ListItemText
+                                primary={`Tiempo transcurrido: ${handleTimeUsed()}`}
+                            />
+                        </ListItem>
+                        <ListItem>
+                            <ListItemText
+                                primary={`Respuestas correctas: ${correctQuestions}`}
+                            />
+                        </ListItem>
+                        <ListItem>
+                            <ListItemText
+                                primary={`Respuestas incorrectas: ${totalQuestions - correctQuestions}`}
+                            />
+                        </ListItem>
+                        <ListItem>
+                            <ListItemText
+                                primary={`Dinero recaudado: ${pricePerQuestion * correctQuestions}`}
+                            />
+                        </ListItem>
+                    </List>
+                </div>
+            ) : (
+                <>
+                    <Typography component="h1" variant='h5' sx={{ textAlign: 'center' }}>
+                        Pregunta Número {numberClics + 1} :
+                    </Typography>
+                    <Typography component="h2" sx={{
+                        textAlign: 'center',
+                        color: ((timeLimit - timer) <= 60 && (timer) % 2 === 0) ?
+                            'red' : 'inherit',
+                        fontStyle: 'italic',
+                        fontWeight: (timer > 150 && (timer) % 2 === 0) ?
+                            'bold' : 'inherit'
+                    }}>
+                        ¡Tiempo restante {handleTimeRemaining()}!
+                    </Typography>
+                    <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>
+                        {question.questionBody}
+                    </Typography>
+                    <Grid container spacing={2} justifyContent="center">
+                        {respuestasAleatorias.map((respuesta, index) => (
+                            <Grid item xs={6} key={index}>
+                                <Button
+                                    variant="contained"
+                                    color={
+                                        selectedOption !== null
+                                            ? respuesta === question.correcta
+                                                ? 'success'
+                                                : index === selectedOption
+                                                    ? 'error'
+                                                    : 'primary'
+                                            : 'primary'
+                                    }
+                                    onClick={() => handleButtonClick(respuesta, index)}
+                                    sx={{
+                                        margin: '8px',
+                                        textTransform: 'none',
+                                        width: '100%',
+                                    }}
+                                >
+                                    {respuesta}
+                                </Button>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </>
+            )}
+            {error && (
+                <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError('')} message={`Error: ${error}`} />
+            )}
+        </Container>
+    );
+};
 
 export default Game;

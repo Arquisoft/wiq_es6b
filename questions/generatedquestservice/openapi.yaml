@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  title: Generatedquestservice API
+  description: GeneratedQuest OpenAPI specification.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8003
+    description: Development server
+  - url: http://51.142.17.139:8003
+    description: Production server
+paths:
+  /addOrUpdateQuestionGenerator:
+    post:
+      summary: Add or update a question test.
+      operationId: addOrUpdateQuestionGenerator
+      requestBody:
+        description: The question test data to add or update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                questionBody:
+                  type: string
+                  description: The body of the question.
+                correcta:
+                  type: string
+                  description: The correct answer.
+                incorrectas:
+                  type: array
+                  items:
+                    type: string
+                  description: The incorrect answers.
+                numquest:
+                  type: integer
+                  description: The number of the question.
+      responses:
+        '200':
+          description: Question test added or updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionBody:
+                    type: string
+                    description: The body of the question.
+                  correcta:
+                    type: string
+                    description: The correct answer.
+                  incorrectas:
+                    type: array
+                    items:
+                      type: string
+                    description: The incorrect answers.
+                  numquest:
+                    type: integer
+                    description: The number of the question.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error
+  /getAllGeneratedQuestions:
+    get:
+      summary: Retrieve all generated questions.
+      operationId: getAllGeneratedQuestions
+      responses:
+        '200':
+          description: Generated questions retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: The generated question object.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error information.
+                    example: Internal Server Error

@@ -7,24 +7,23 @@ let app;
 //test question
 const questionTest = {
     questionBody: '¿Cuál es la capital de ',
-    typeQuestion: 'pais',
-    typeAnswer: 'capital'
+    typeQuestion: 'pais_capital'
 };
 const questionTest2 = {
-    questionBody: '¿En qué año se descubrió ',
-    typeQuestion: 'pais',
-    typeAnswer: 'año'
+    questionBody: '¿Cual es la poblacion de ',
+    typeQuestion: 'pais_poblacion'
 };
 const questionTest3 = {
-    questionBody: '¿Quién pintó  ',
-    typeQuestion: 'cuadro',
-    typeAnswer: 'autor'
+    questionBody: '¿En que país está ',
+    typeQuestion: 'ciudad_pais'
 };
 
 beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
     process.env.MONGODB_URI = mongoUri;
+    console.log("MongoDB URI: ", mongoUri);
+    
     app = require('./create-service');
 });
 
@@ -34,34 +33,47 @@ afterAll(async () => {
 });
 
 describe('Create Service', () => {
+    it('Should respond with an error when /addQuestion fails', async () => {
+        const failTest = {
+            question: '¿Cuál es la capital de ',
+            type: 'pais'
+        };
+    
+        const response = await request(app).post('/addQuestion').send(failTest);
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('error');
+    });
+    
+    it('Should respond with an error when /getFullQuestion fails', async () => {
+        const response = await request(app).get('/getFullQuestion');
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty('error');
+    }, 10000);
+
     it('Should perform an addRecord operation /addQuestion', async () => {
         const response = await request(app).post('/addQuestion').send(questionTest);
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody', '¿Cuál es la capital de ');
-        expect(response.body).toHaveProperty('typeQuestion', 'pais');
-        expect(response.body).toHaveProperty('typeAnswer', 'capital');
+        expect(response.body).toHaveProperty('typeQuestion', 'pais_capital');
     });
 
     it('Should perform two addRecord operation /addQuestion', async () => {
         const response2 = await request(app).post('/addQuestion').send(questionTest2);
         expect(response2.status).toBe(200);
-        expect(response2.body).toHaveProperty('questionBody', '¿En qué año se descubrió ');
-        expect(response2.body).toHaveProperty('typeQuestion', 'pais');
-        expect(response2.body).toHaveProperty('typeAnswer', 'año');
+        expect(response2.body).toHaveProperty('questionBody', '¿Cual es la poblacion de ');
+        expect(response2.body).toHaveProperty('typeQuestion', 'pais_poblacion');
         const response3 = await request(app).post('/addQuestion').send(questionTest3);
         expect(response3.status).toBe(200);
-        expect(response3.body).toHaveProperty('questionBody', '¿Quién pintó  ');
-        expect(response3.body).toHaveProperty('typeQuestion', 'cuadro');
-        expect(response3.body).toHaveProperty('typeAnswer', 'autor');
+        expect(response3.body).toHaveProperty('questionBody', '¿En que país está ');
+        expect(response3.body).toHaveProperty('typeQuestion', 'ciudad_pais');
     });
 
-    it('Should perform a getRecord operation /getQuestionBody', async () => {
-        const response = await request(app).post('/getQuestionBody');
+    it('Should perform a getFullQuestion operation /getFullQuestion', async () => {
+        const response = await request(app).get('/getFullQuestion');
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
-        expect(response.body).toHaveProperty('typeQuestion');
-        expect(response.body).toHaveProperty('typeAnswer');
-    });
-
+        expect(response.body).toHaveProperty('correctAnswer');
+        expect(response.body).toHaveProperty('incorrectAnswers');
+    }, 20000);
     
 });
