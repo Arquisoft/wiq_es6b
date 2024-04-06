@@ -190,7 +190,6 @@ WHERE {
         BIND(YEAR(?fechaNacimiento) AS ?anioNacimiento)
         SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
       }
-      ORDER BY RAND()
       LIMIT 30
     `,
     questionLabel: 'cantanteLabel',
@@ -269,12 +268,13 @@ WHERE {
 
   equipo_anio:{
     query: `
-    SELECT ?sportLabel ?inception
+    SELECT ?sportLabel (YEAR(?inception) as ?anioCreacion)
     WHERE {
       ?sport wdt:P31 wd:Q349;        # Clase: deporte
             wdt:P571 ?inception.    # Propiedad: fecha de creación
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
     }
+
       ORDER BY RAND()
       LIMIT 30
     `,
@@ -284,7 +284,7 @@ WHERE {
 
   deportista_anio:{
     query: `
-    SELECT ?deportista ?deportistaLabel ?inicioDeporte
+    SELECT ?deportista ?deportistaLabel (YEAR(?inicioDeporte) as ?anioInicioDeporte)
     WHERE {
       ?deportista wdt:P106 wd:Q2066131;    # Clase: deportista
                   wdt:P2031 ?inicioDeporte. # Propiedad: año de inicio en el deporte
@@ -328,35 +328,6 @@ WHERE {
   },
   
 };
-
-
-//---------------------------
-//Nuevas queries: equipo_deporte, deporte_anio (de creacion),deportista_anio (de inicio en el deporte)
-                  //cantante_anio (de nacimiento), rio_pais, lago_pais
-
-//TEMATICAS: 
-
-//DEPORTES
-  //futbol 
-      //equipo_estadio, estadio_capacidad, estadio_ciudad
-  //otros deportes (en equipo)
-      //equipo_deporte, deporte_anio (de creacion),deportista_anio (de inicio en el deporte) 
-
-//Anios Relevantes 
-      //deporte_anio (de creacion),deportista_anio (de inicio en el deporte), cancion_anio, libro_anio, cantante_anio
-
-//Musica
-      //cancion_cantante, cancion_album, cancion_anio, cantante_anio
-
-//Libros
-    //libro_autor, libro_genero, libro_anio
-
-//Paises y geografia
-    //pais_capital, pais_poblacion, ciudad_pais, montana_altura, pais_moneda, rio_pais, lago_pais
-
-///-----------------------
-
-
 
 // Ruta para agregar una nueva pregunta
 app.post('/addQuestion', async (req, res) => {
@@ -415,7 +386,8 @@ app.get('/getFullQuestion', async (req, res) => {
       const fullQuestion = {
         questionBody: body,
         correctAnswer: respuestaCorrecta,
-        incorrectAnswers: respuestasFalsas
+        incorrectAnswers: respuestasFalsas, 
+        typeQuestion: questionType
       };
 
       res.json(fullQuestion);
