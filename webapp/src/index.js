@@ -12,14 +12,15 @@ const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000
 const obtenerPreguntaspartida = async (numquest) => {
   try {
     const response = await axios.get(`${apiEndpoint}/getFullQuestion`);
-    const { questionBody, correctAnswer, incorrectAnswers } = response.data;
+    const { questionBody, correctAnswer, incorrectAnswers, typeQuestion } = response.data;
     
     // Enviar la pregunta al servicio de preguntas de prueba
     await axios.post(`${apiEndpoint}/addOrUpdateQuestionGenerator`, {
       questionBody,
       correcta: correctAnswer,
       incorrectas: incorrectAnswers,
-      numquest
+      numquest,
+      typeQuestion,
     });
 
     // Verificar si el número de preguntas en la base de datos es mayor que 500
