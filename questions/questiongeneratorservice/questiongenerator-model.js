@@ -18,6 +18,10 @@ const questionSchema = new mongoose.Schema({
         type: Number, 
         required: true,
       },
+      typeQuestion: {
+        type: String, 
+        required: true,
+      },
 });
 
 const QuestionGenerator = mongoose.model('QuestionGenerator', questionSchema);
