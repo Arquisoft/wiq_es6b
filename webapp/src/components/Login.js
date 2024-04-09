@@ -23,7 +23,13 @@ const Login = ({ setLogged }) => {
   const [loading, setLoading] = useState(false);
   const [showComponent, setShowComponent] = useState('login');
   const [totalTime, setTotalTime] = useState(180);
-  const [settings, setSettings] = useState({});
+  // ajustes guardados en memoria para recuperarlos en próximas partidas
+  const [settings, setSettings] = useState({
+    numberQuestions: localStorage.getItem('numberQuestions'),
+    totalMins: localStorage.getItem('totalMins'),
+    totalSecs: localStorage.getItem('totalSecs'),
+    themes: localStorage.getItem('themes')
+  });
   const [themes, setThemes] = useState({});
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
