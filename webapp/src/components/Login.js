@@ -24,6 +24,7 @@ const Login = ({ setLogged }) => {
   const [showComponent, setShowComponent] = useState('login');
   const [totalTime, setTotalTime] = useState(180);
   const [settings, setSettings] = useState({});
+  const [themes, setThemes] = useState({});
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
   const loginUser = async () => {
@@ -114,7 +115,7 @@ const Login = ({ setLogged }) => {
             {loginSuccess && (
               <>
                 {showComponent === 'game' &&
-                  <Game username={username} totalQuestions={settings.numberQuestions} timeLimit={totalTime} />
+                  <Game username={username} totalQuestions={settings.numberQuestions} timeLimit={totalTime} themes={settings.themes}/>
                 }
                 {showComponent === 'userList' && <UsersList />}
                 {showComponent === 'questionList' && <GeneratedQuestionsList />}

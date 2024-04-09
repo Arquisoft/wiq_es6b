@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Typography, Button, Snackbar, Grid, List, ListItem, ListItemText } from '@mui/material';
 
-const Game = ({ username, totalQuestions, timeLimit }) => {
+const Game = ({ username, totalQuestions, timeLimit, themes }) => {
     const [question, setQuestion] = useState({});
     const [respuestasAleatorias, setRespuestasAleatorias] = useState([]);
     const [error, setError] = useState('');
     const [correctQuestions, setCorrectQuestions] = useState(0);
     const [timer, setTimer] = useState(0);
+    const [themesSelected, setThemesSelected] = useState(themes);
     const [numberClics, setNumberClics] = useState(0);
     const [finished, setFinished] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState('');
@@ -21,6 +22,8 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
     useEffect(() => {
         obtenerPreguntaAleatoria();
     }, [numberClics]);
+
+    console.log(themesSelected);
 
     useEffect(() => {
         const interval = setInterval(() => {

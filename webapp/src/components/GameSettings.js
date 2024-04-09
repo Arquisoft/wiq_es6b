@@ -1,6 +1,6 @@
 // src/components/Settings.js
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Slider, TextField } from '@mui/material';
+import { Box, Typography, Slider, TextField, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 
 const GameSettings = ({ setSettings }) => {
     const [numberQuestions, setNumberQuestions] = useState(() => {
@@ -24,6 +24,16 @@ const GameSettings = ({ setSettings }) => {
         const storedValue = localStorage.getItem('totalSecs');
         return storedValue ? parseInt(storedValue) : 0;
     });
+    const [themes, setThemes] = useState(() => {
+        const storedValue = localStorage.getItem('themes');
+        return storedValue ? JSON.parse(storedValue) : {
+            sports: true,
+            importantDates: true,
+            music: true,
+            literature: true,
+            countries: true
+        };
+    });
 
     const handleQuestionsSlider = (event, newValue) => {
         setNumberQuestions(newValue);
@@ -42,13 +52,21 @@ const GameSettings = ({ setSettings }) => {
             setTotalSecs(parseInt(event.target.value));
         }
     };
+    const handleThemes = (event) => {
+        const {name, checked} = event.target;
+        setThemes(prevThemes => ({
+            ...prevThemes,
+            [name]: checked
+        }));
+    }
 
     useEffect(() => {
         localStorage.setItem('numberQuestions', numberQuestions);
         localStorage.setItem('totalMins', totalMins);
         localStorage.setItem('totalSecs', totalSecs);
-        setSettings({ numberQuestions, totalMins, totalSecs });
-    }, [numberQuestions, totalMins, totalSecs, setSettings]);
+        localStorage.setItem('themes', JSON.stringify(themes));
+        setSettings({ numberQuestions, totalMins, totalSecs, themes });
+    }, [numberQuestions, totalMins, totalSecs, themes, setSettings]);
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -97,6 +115,16 @@ const GameSettings = ({ setSettings }) => {
                     sx={{ marginBottom: '1rem', marginTop: '1rem' }}
                 />
             </Box>
+            <Box sx={{ width: 300 }}>
+                <FormGroup>
+                    <FormControlLabel control={<Checkbox name='sports' checked={themes.sports} onChange={handleThemes} />} label="Deportes" />
+                    <FormControlLabel control={<Checkbox name='importantDates' checked={themes.importantDates} onChange={handleThemes} />} label="Fechas históricas" />
+                    <FormControlLabel control={<Checkbox name='music' checked={themes.music} onChange={handleThemes} />} label="Música" />
+                    <FormControlLabel control={<Checkbox name='literature' checked={themes.literature} onChange={handleThemes} />} label="Literatura" />
+                    <FormControlLabel control={<Checkbox name='countries' checked={themes.countries} onChange={handleThemes} />} label="Geografía" />
+                </FormGroup>
+            </Box>
+
         </div>
     );
 };
