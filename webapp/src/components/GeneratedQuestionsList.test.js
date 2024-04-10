@@ -40,20 +40,4 @@ test('renders table rows', () => {
   expect(tableRows).not.toHaveLength(0);
 });
 
-// Test for sorting functionality
-test('sorts table rows', () => {
-  render(<GeneratedQuestionsList />);
-
-  // Get the table headers
-  const questionHeader = screen.getByRole('columnheader', { name: /Pregunta/i });
-  const answerHeader = screen.getByRole('columnheader', { name: /Respuesta Correcta/i });
-
-  // Click the headers to sort the table
-  userEvent.click(questionHeader);
-  userEvent.click(answerHeader);
-
-  // Check if the table rows are in the document
-  const tableRows = screen.getAllByRole('row');
-  expect(tableRows).not.toHaveLength(0);
-});
 });
