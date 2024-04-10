@@ -1,29 +1,43 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
 import GeneratedQuestionsList from './GeneratedQuestionsList';
 
-const mockAxios = new MockAdapter(axios);
-
 describe('GeneratedQuestionsList component', () => {
-  beforeEach(() => {
-    mockAxios.reset();
-  });
-
-  it('should display "Lista de preguntas" header', async () => {
+  // Test for rendering the component and checking the main heading
+  test('renders GeneratedQuestionsList component and main heading', () => {
     render(<GeneratedQuestionsList />);
 
-    const header = screen.getByText(/Lista de preguntas/i);
-    expect(header).toBeInTheDocument();
+    // Check if the main heading is in the document
+    const heading = screen.getByRole('heading', { name: /Lista de preguntas/i });
+    expect(heading).toBeInTheDocument();
   });
 
-  it('should display the table', async () => {
+  // Test for rendering the table
+  it('should display the table', () => {
     render(<GeneratedQuestionsList />);
 
     const table = screen.getByRole('table');
     expect(table).toBeInTheDocument();
   });
 
+  // Test for rendering the table headers
+  test('renders table headers', () => {
+    render(<GeneratedQuestionsList />);
+
+    // Check if the table headers are in the document
+    const questionHeader = screen.getByRole('columnheader', { name: /Pregunta/i });
+    const answerHeader = screen.getByRole('columnheader', { name: /Respuesta Correcta/i });
+    expect(questionHeader).toBeInTheDocument();
+    expect(answerHeader).toBeInTheDocument();
+  });
+
+  // Test for rendering the table rows
+test('renders table rows', () => {
+  render(<GeneratedQuestionsList />);
+
+  // Check if the table rows are in the document
+  const tableRows = screen.getAllByRole('row');
+  expect(tableRows).not.toHaveLength(0);
+});
 
 });
