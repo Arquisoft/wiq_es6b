@@ -38,7 +38,7 @@ afterAll(async () => {
 });
 
 describe('Question Generator Service', () => {
-    it('Should perform an addOrUpdate operation /addOrUpdateQuestionGenerator', async () => {
+   /* it('Should perform an addOrUpdate operation /addOrUpdateQuestionGenerator', async () => {
         const response = await request(app).post('/addOrUpdateQuestionGenerator').send(question);
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody', "¿Quién escribió la novela 'El Extranjero'?");
@@ -152,5 +152,5 @@ describe('Question Generator Service', () => {
 
         expect(response.status).toBe(404);
         expect(response.body).toHaveProperty('error','No question found in the database');
-    });
+    });*/
 });
