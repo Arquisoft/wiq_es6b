@@ -1,7 +1,7 @@
 // Import necessary dependencies
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Login from './Login';
-import React from 'react';
 
 // Define the test suite
 describe('Login Component', () => {
@@ -11,11 +11,10 @@ describe('Login Component', () => {
     render(<Login setLogged={() => {}} />);
 
     // Check if the login button is in the document
-    const loginButton = screen.getByText(/Iniciar sesión/i);
+    const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
     expect(loginButton).toBeInTheDocument();
   });
 });
-
 
 /*import React from 'react';
 import { render, fireEvent, screen, waitFor, act } from '@testing-library/react';
