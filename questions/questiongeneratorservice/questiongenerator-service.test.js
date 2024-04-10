@@ -1,6 +1,7 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const Record = require('./questiongenerator-model');
+const { type } = require('os');
 
 let mongoServer;
 let app;
@@ -10,19 +11,22 @@ const question = {
     questionBody: "¿Quién escribió la novela 'El Extranjero'?",
     correcta: 'Albert Camus',
     incorrectas: ['George Orwell','Franz Kafka','José Saramago'],
-    numquest: 1
+    numquest: 1,
+    typeQuestion: 'literatura'
 };
 const question2 = {
     questionBody: "¿En qué año se publicó 'Romancero Gitano' de Federico García Lorca?",
     correcta: '1928',
     incorrectas: ['1934','1926','1950'],
-    numquest: 2
+    numquest: 2,
+    typeQuestion: 'literatura'
 };
 const question3 = {
     questionBody: "¿En qué año nació 'The Special One' (José Mourinho)?",
     correcta: '1963',
     incorrectas: ['1950','1971','1968'],
-    numquest: 3
+    numquest: 3,
+    typeQuestion: 'deportes'
 };
 
 beforeAll(async () => {
@@ -38,7 +42,7 @@ afterAll(async () => {
 });
 
 describe('Question Generator Service', () => {
-   /* it('Should perform an addOrUpdate operation /addOrUpdateQuestionGenerator', async () => {
+    it('Should perform an addOrUpdate operation /addOrUpdateQuestionGenerator', async () => {
         const response = await request(app).post('/addOrUpdateQuestionGenerator').send(question);
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody', "¿Quién escribió la novela 'El Extranjero'?");
@@ -152,5 +156,5 @@ describe('Question Generator Service', () => {
 
         expect(response.status).toBe(404);
         expect(response.body).toHaveProperty('error','No question found in the database');
-    });*/
+    });
 });
