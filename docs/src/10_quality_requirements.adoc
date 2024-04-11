@@ -17,13 +17,13 @@ Los requisitos de calidad son la piedra angular del desarrollo de nuestro proyec
 |Accesibilidad|Aseguraremos una experiencia satisfactoria para todo tipo de usuario por lo que nuestra aplicación pondrá especial atención a la accesibilidad de la misma, previniendo las posibles dificultades que le podrían surgir a los distintos grupos de usuarios según sus capacidades físicas y/o cognitivas. |SC4|*
 |===
 
-=== Quality Tree
+=== Árbol de requisitos de calidad
 
 En este apartado podemos ver de manera más visual cuáles son los requisitos de calidad representados en forma de árbol con el conocido "quality tree" (tal y como se define en ATAM - Arquitecture Tradeoff Analysis Method) que cuenta con los requisitos en forma de hojas en su diagrama.
 
 image::10_qr_tree.jpg["Quality Tree"]
 
-=== Quality Scenarios
+=== Escenarios de calidad
 
 A la hora de describir los requisitos de calidad de la aplicación de generación de preguntas y respuestas que vamos a llevar a cabo es plausible que algunos de los mismos hayan sido explicados de manera excesivamente genérica. Es por esto que en este apartado vamos a mostrar algunos ejemplos más concretos para representar de una manera más comprensible lo que buscamos lograr con nuestra producto.
 
