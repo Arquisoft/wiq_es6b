@@ -15,6 +15,7 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: 20
+    - run: npm --prefix webapp/src/components/RecordList ci
     - run: npm --prefix users/authservice ci
     - run: npm --prefix users/userservice ci
     - run: npm --prefix questions/createservice ci
