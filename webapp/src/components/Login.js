@@ -61,14 +61,14 @@ const Login = ({ setLogged }) => {
     setShowComponent(component);
   };
 
-  const calculateTotalTime = () => {
-    const totalTimeCalculated = (parseInt(settings.totalMins) * 60) + parseInt(settings.totalSecs);
-    setTotalTime(totalTimeCalculated);
-  };
-
   useEffect(() => {
+    const calculateTotalTime = () => {
+      const totalTimeCalculated = (parseInt(settings.totalMins) * 60) + parseInt(settings.totalSecs);
+      setTotalTime(totalTimeCalculated);
+    };
+
     calculateTotalTime();
-  }, [settings, calculateTotalTime]);
+  }, [settings]);
 
   return (
     <>
