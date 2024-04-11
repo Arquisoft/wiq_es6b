@@ -93,6 +93,20 @@ app.post('/updateAllRanking', async (req, res) => {
   try {
     const rankingData = req.body;
 
+    //ELIMINO RANKIN DE USERS BORRADOS
+    const allUsers = await UserRank.find();
+    for (const existingUser of allUsers) {
+      let borrar=true;
+      for (const userData of rankingData) {
+        if (existingUser.username==userData.username){
+            borrar=false;
+        }
+      }
+      if (borrar){
+        await UserRank.deleteOne({ username: existingUser.username });
+      }
+
+    }
     // Iterar sobre los datos recibidos y actualizar los rankings correspondientes
     for (const userData of rankingData) {
       const username = userData.username;
@@ -104,7 +118,7 @@ app.post('/updateAllRanking', async (req, res) => {
       const existingUser = await UserRank.findOne({ username });
 
       if (!existingUser) {
-        // Si el usuario no existe, crear un nuevo ranking para él
+        // Si el usuario no tiene ranking, crear un nuevo ranking para él
         const newUserRank = new UserRank({
           username,
           porcentajeAciertos: 0,

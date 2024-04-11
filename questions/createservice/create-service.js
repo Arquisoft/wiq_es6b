@@ -181,6 +181,20 @@ WHERE {
     questionLabel: 'cancionLabel',
     answerLabel: 'anio_publicacion'
   },
+  cantante_anio: {
+    query: `
+    SELECT ?cantante ?cantanteLabel ?anioNacimiento
+      WHERE {
+        ?cantante wdt:P106 wd:Q177220;         # Clase: cantante
+                  wdt:P569 ?fechaNacimiento.  # Propiedad: fecha de nacimiento
+        BIND(YEAR(?fechaNacimiento) AS ?anioNacimiento)
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+      }
+      LIMIT 30
+    `,
+    questionLabel: 'cantanteLabel',
+    answerLabel: 'anioNacimiento'
+  },
   estadio_ciudad: {
     query: `
     SELECT DISTINCT ?estadio ?estadioLabel ?ciudad ?ciudadLabel
@@ -236,6 +250,81 @@ WHERE {
     `,
     questionLabel: 'countryLabel',
     answerLabel: 'languageLabel'
+  },
+  equipo_deporte:{
+    query: `
+    SELECT ?equipo ?equipoLabel ?deporte ?deporteLabel
+      WHERE {
+        ?equipo wdt:P31 wd:Q4830453;    # Clase: equipo deportivo
+                wdt:P641 ?deporte.      # Propiedad: deporte
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+      }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'equipoLabel',
+    answerLabel: 'deporteLabel'
+  },
+
+  equipo_anio:{
+    query: `
+    SELECT ?sportLabel (YEAR(?inception) as ?anioCreacion)
+    WHERE {
+      ?sport wdt:P31 wd:Q349;        # Clase: deporte
+            wdt:P571 ?inception.    # Propiedad: fecha de creación
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'sportLabel',
+    answerLabel: 'inception'
+  },
+
+  deportista_anio:{
+    query: `
+    SELECT ?deportista ?deportistaLabel (YEAR(?inicioDeporte) as ?anioInicioDeporte)
+    WHERE {
+      ?deportista wdt:P106 wd:Q2066131;    # Clase: deportista
+                  wdt:P2031 ?inicioDeporte. # Propiedad: año de inicio en el deporte
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      ORDER BY RAND()
+      LIMIT 30
+    `,
+    questionLabel: 'deportistaLabel',
+    answerLabel: 'inicioDeporte'
+  },
+
+  rio_pais:{
+    query: `
+    SELECT ?rioLabel ?paisLabel
+    WHERE {
+      ?rio wdt:P31 wd:Q4022;          # Clase: río
+           wdt:P17 ?pais.            # Propiedad: país
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+      LIMIT 30
+    `,
+    questionLabel: 'rioLabel',
+    answerLabel: 'paisLabel'
+  },
+
+  lago_pais: {
+    query: `
+    SELECT ?lagoLabel ?paisLabel
+    WHERE {
+      ?lago wdt:P31 wd:Q23397;   # Clase: lago
+            wdt:P17 ?pais.      # Propiedad: país
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
+    }
+    
+     LIMIT 30
+    `,
+    questionLabel: 'lagoLabel',
+    answerLabel: 'paisLabel'
+
   },
   
 };
@@ -297,7 +386,8 @@ app.get('/getFullQuestion', async (req, res) => {
       const fullQuestion = {
         questionBody: body,
         correctAnswer: respuestaCorrecta,
-        incorrectAnswers: respuestasFalsas
+        incorrectAnswers: respuestasFalsas, 
+        typeQuestion: questionType
       };
 
       res.json(fullQuestion);

@@ -12,6 +12,7 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
     const [finished, setFinished] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState('');
     const [selectedOption, setSelectedOption] = useState(null); // Opción seleccionada actualmente
+    const [almacenado, setAlmacenado] = useState(false);
     const pricePerQuestion = 25;
     const delayBeforeNextQuestion = 3000; // 3 segundos de retardo antes de pasar a la siguiente pregunta
 
@@ -91,6 +92,41 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         }
     };
 
+    useEffect(() => {
+        if ((timer >= timeLimit || numberClics === totalQuestions - 1)&& !almacenado) {
+            addRecord();
+            updateRanking();
+            setAlmacenado(true);
+        }
+    }, [timer, numberClics, totalQuestions, timeLimit]);
+
+    const addRecord = async () => {
+        try {
+          await axios.post(`${apiEndpoint}/addRecord`, {
+            userId: username,
+            date: new Date(),
+            time: timer,
+            money: (25 * correctQuestions),
+            correctQuestions: correctQuestions,
+            failedQuestions: (10 - correctQuestions)
+          });
+        } catch (error) {
+          setError(error.response.data.error);
+        }
+      };
+
+    const updateRanking = async () => {
+        try {
+          await axios.post(`${apiEndpoint}/updateRanking`, {
+            username: username,
+            preguntasCorrectas: correctQuestions,
+            preguntasFalladas: totalQuestions - correctQuestions
+          });
+        } catch (error) {
+          setError(error.response.data.error);
+        }
+      };
+      
     const addGeneratedQuestionBody = async () => {
         try {
           await axios.post(`${apiEndpoint}/addGeneratedQuestion`, {
