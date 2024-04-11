@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
-import RecordList from '../RecordList';
+import RecordList from './RecordList';
 import axios from 'axios';
 
 // Simulamos la respuesta del servidor
