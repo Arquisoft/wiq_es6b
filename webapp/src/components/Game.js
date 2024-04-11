@@ -99,7 +99,7 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
 
             await obtenerPreguntaAleatoria();
             setSelectedOption(null);
-            //addGeneratedQuestionBody();
+            await addGeneratedQuestionBody();
             setNumberClics(numberClics + 1);
             setSelectedAnswer('');
             // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
