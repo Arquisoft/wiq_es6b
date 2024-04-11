@@ -2,13 +2,16 @@ const puppeteer = require('puppeteer');
 const { defineFeature, loadFeature }=require('jest-cucumber');
 const setDefaultOptions = require('expect-puppeteer').setDefaultOptions
 const feature = loadFeature('./features/login-form.feature');
+const { Builder, By, Key, until } = require('selenium-webdriver');
 
+let driver;
 let page;
 let browser;
 
 defineFeature(feature, test => {
   
   beforeAll(async () => {
+    driver = await new Builder().forBrowser('firefox').build();
     browser = process.env.GITHUB_ACTIONS
       ? await puppeteer.launch({ headless: "new" })
       : await puppeteer.launch({ headless: false, slowMo: 100 });
@@ -47,6 +50,7 @@ defineFeature(feature, test => {
   })
 
   afterAll(async ()=>{
+    await driver.quit();
     browser.close()
   })
 
