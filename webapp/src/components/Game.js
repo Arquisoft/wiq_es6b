@@ -144,10 +144,13 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         };
         
         if ((timer >= timeLimit || numberClics === totalQuestions - 1)&& !almacenado) {
-            //addRecord();
-            //updateRanking();
-            setAlmacenado(true);
+                (async () => {
+                    await addRecord();
+                    await updateRanking();
+                })();
+                setAlmacenado(true);
         }
+
     }, [timer, numberClics, totalQuestions, timeLimit, almacenado, apiEndpoint, correctQuestions, username]);
 
     if(isNaN(totalQuestions)){
