@@ -3,7 +3,6 @@ import { render, waitFor } from '@testing-library/react';
 import RecordList from './RecordList';
 import axios from 'axios';
 
-// Simulamos la respuesta del servidor
 jest.mock('axios');
 
 describe('RecordList', () => {
@@ -14,14 +13,14 @@ describe('RecordList', () => {
         {
           date: new Date().toISOString(),
           time: 60,
-          money: 100,
+          money: 1000000,
           correctQuestions: 8,
           failedQuestions: 2,
         },
         {
           date: new Date().toISOString(),
           time: 45,
-          money: 80,
+          money: 800000,
           correctQuestions: 7,
           failedQuestions: 3,
         },
@@ -32,7 +31,6 @@ describe('RecordList', () => {
   it('renders record list correctly', async () => {
     const { getByText } = render(<RecordList username="testuser" />);
     
-    // Esperamos a que se carguen los datos
     await waitFor(() => {
       expect(getByText('Tu historial de jugadas')).toBeInTheDocument();
       expect(getByText('Fecha')).toBeInTheDocument();
@@ -42,8 +40,7 @@ describe('RecordList', () => {
       expect(getByText('Respuestas falladas')).toBeInTheDocument();
     });
 
-    // Verificamos que los registros se rendericen correctamente
-    expect(getByText('100')).toBeInTheDocument();
-    expect(getByText('80')).toBeInTheDocument();
+    expect(getByText('1000000')).toBeInTheDocument();
+    expect(getByText('800000')).toBeInTheDocument(); 
   });
 });
