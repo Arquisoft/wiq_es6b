@@ -14,7 +14,7 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
     const [selectedOption, setSelectedOption] = useState(null); // Opción seleccionada actualmente
     const [almacenado, setAlmacenado] = useState(false);
     const pricePerQuestion = 25;
-    const delayBeforeNextQuestion = 3000; // 3 segundos de retardo antes de pasar a la siguiente pregunta
+    const delayBeforeNextQuestion = 2000; // 3 segundos de retardo antes de pasar a la siguiente pregunta
 
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -32,23 +32,22 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         return () => clearInterval(interval);
     }, [timeLimit, timer, finished]);
 
-    useEffect(() => {
-        const obtenerPreguntaAleatoria = async () => {
+    const obtenerPreguntaAleatoria = async () => {
             try {
                 const response = await axios.get(`${apiEndpoint}/getRandomQuestionGenerator`);
                 setQuestion(response.data);
                 const respuestas = [...response.data.incorrectas, response.data.correcta];
                 setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
+
             } catch (error) {
                 console.error("Error al obtener la pregunta aleatoria", error);
                 setError('Error al obtener la pregunta aleatoria');
             }
         };
-        if (numberClics<=10){
-            obtenerPreguntaAleatoria();
-        }
-        
-    }, [apiEndpoint, setQuestion, setRespuestasAleatorias, setError, numberClics]);
+
+    useEffect(() => {
+        obtenerPreguntaAleatoria();
+    }, []);
 
     const handleTimeRemaining = () => {
         let minsR = Math.floor((timeLimit - timer) / 60);
@@ -78,17 +77,6 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         }
     };
 
-    const obtenerPreguntaAleatoria = async () => {
-        try {
-            const response = await axios.get(`${apiEndpoint}/getRandomQuestionGenerator`);
-            setQuestion(response.data);
-            const respuestas = [...response.data.incorrectas, response.data.correcta];
-            setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
-        } catch (error) {
-            console.error("Error al obtener la pregunta aleatoria", error);
-            setError('Error al obtener la pregunta aleatoria');
-        }
-    };
 
     const handleButtonClick = async (respuestaSeleccionada, index) => {
         if (!finished) {
@@ -109,14 +97,26 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
                 setFinished(true);
             }
 
+            await obtenerPreguntaAleatoria();
+            setSelectedOption(null);
+            //addGeneratedQuestionBody();
+            setNumberClics(numberClics + 1);
+            setSelectedAnswer('');
             // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
-            setTimeout(() => {
-                setSelectedOption(null);
-                addGeneratedQuestionBody();
-                setNumberClics(numberClics + 1);
-                setSelectedAnswer('');
+            /*setTimeout(async() => {
+                try{
+                    await obtenerPreguntaAleatoria();
+                    setSelectedOption(null);
+                    addGeneratedQuestionBody();
+                    setNumberClics(numberClics + 1);
+                    setSelectedAnswer('');
+                }catch(error){
+                    console.error("Error al obtener la pregunta aleatoria", error);
+                }
+                
+                
             }, delayBeforeNextQuestion);
-            //obtenerPreguntaAleatoria();
+            */
         }
     };
 
@@ -149,8 +149,8 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         };
         
         if ((timer >= timeLimit || numberClics === totalQuestions - 1)&& !almacenado) {
-            addRecord();
-            updateRanking();
+            //addRecord();
+            //updateRanking();
             setAlmacenado(true);
         }
     }, [timer, numberClics, totalQuestions, timeLimit, almacenado, apiEndpoint, correctQuestions, username]);
