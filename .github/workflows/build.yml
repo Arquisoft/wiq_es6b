@@ -34,7 +34,6 @@ jobs:
     - run: npm --prefix questions/recordservice test -- --coverage
     - run: npm --prefix users/rankingservice test -- --coverage
     - run: npm --prefix gatewayservice test -- --coverage
-    - run: npm --prefix webapp/src/components/RecordList test -- --coverage
     - run: npm --prefix webapp test -- --coverage
 
     - name: Analyze with SonarCloud
