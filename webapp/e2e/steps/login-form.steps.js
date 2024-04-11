@@ -41,7 +41,7 @@ defineFeature(feature, test => {
         await driver.findElement(By.css(".MuiButtonBase-root")).click()
     });
 
-    then('A confirmation message should be shown in the screen', async () => {
+    then('The user should be redirected to the home page', async () => {
         await expect(getByText('Hola jesus!')).toBeInTheDocument();
     });
   })
