@@ -1,7 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-quality-scenarios]]
-== Requisitos de Calidad
+== Requisitos de calidad
 
 Los requisitos de calidad son la piedra angular del desarrollo de nuestro proyecto/aplicación. En ellos debemos basar nuestra implementación y es nuestra obligación a la hora de desarrollar un producto de calidad el haber garantizado el cumplimiento de la inmensa mayoría (por no decir, de todos). 
 
