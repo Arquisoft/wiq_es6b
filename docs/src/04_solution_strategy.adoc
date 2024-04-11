@@ -17,7 +17,7 @@ Para desarrollar la aplicación, seleccionamos las siguientes tecnologías:
 
 === Descomposición de alto nivel
 
-== Herramientas de diagramado
+==== Herramientas de diagramado
 Usaremos VisualParadigm y Draw.io para la creacion de diagramas para la documentacion.
 
 === Enfoques para lograr objetivos de máxima calidad
