@@ -50,6 +50,7 @@ jobs:
     - run: npm --prefix users/userservice install
     - run: npm --prefix questions/createservice install
     - run: npm --prefix questions/generatedquestservice install
+    - run: npm --prefix questions/questiongeneratorservice install
     - run: npm --prefix questions/recordservice install
     - run: npm --prefix users/rankingservice install
     - run: npm --prefix gatewayservice install
@@ -178,6 +179,23 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: ghcr.io
         workdir: questions/generatedquestservice
+  docker-push-questiongeneratorservice:
+    name: Push question generator service Docker Image to GitHub Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs: [e2e-tests]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@v5
+      with:
+        name: arquisoft/wiq_es6b/questiongeneratorservice
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: ghcr.io
+        workdir: questions/questiongeneratorservice
   docker-push-gatewayservice:
     name: Push gateway service Docker Image to GitHub Packages
     runs-on: ubuntu-latest
