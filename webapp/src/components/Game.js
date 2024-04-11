@@ -44,9 +44,11 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
                 setError('Error al obtener la pregunta aleatoria');
             }
         };
-    
-        obtenerPreguntaAleatoria();
-    }, [apiEndpoint, setQuestion, setRespuestasAleatorias, setError]);
+        if (numberClics<=10){
+            obtenerPreguntaAleatoria();
+        }
+        
+    }, [apiEndpoint, setQuestion, setRespuestasAleatorias, setError, numberClics]);
 
     const handleTimeRemaining = () => {
         let minsR = Math.floor((timeLimit - timer) / 60);
@@ -109,12 +111,12 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
 
             // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
             setTimeout(() => {
-                obtenerPreguntaAleatoria();
                 setSelectedOption(null);
                 addGeneratedQuestionBody();
                 setNumberClics(numberClics + 1);
                 setSelectedAnswer('');
             }, delayBeforeNextQuestion);
+            //obtenerPreguntaAleatoria();
         }
     };
 
