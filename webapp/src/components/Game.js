@@ -97,17 +97,12 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
                 setFinished(true);
             }
 
-            await obtenerPreguntaAleatoria();
-            setSelectedOption(null);
-            await addGeneratedQuestionBody();
-            setNumberClics(numberClics + 1);
-            setSelectedAnswer('');
             // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
-            /*setTimeout(async() => {
+            setTimeout(async() => {
                 try{
                     await obtenerPreguntaAleatoria();
                     setSelectedOption(null);
-                    addGeneratedQuestionBody();
+                    await addGeneratedQuestionBody();
                     setNumberClics(numberClics + 1);
                     setSelectedAnswer('');
                 }catch(error){
@@ -116,7 +111,7 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
                 
                 
             }, delayBeforeNextQuestion);
-            */
+            
         }
     };
 
