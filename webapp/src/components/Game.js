@@ -19,11 +19,25 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
 
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
+    if(isNaN(totalQuestions)){
+        totalQuestions=10;
+    }
+    if(isNaN(timeLimit)){
+        timeLimit=180;
+    }
+    if(themesSelected===undefined){
+        setThemesSelected({
+            Sports: true,
+            ImportantDates: true,
+            Music: true,
+            Literature: true,
+            Countries: true
+        });
+    }
+
     useEffect(() => {
         obtenerPreguntaAleatoria();
     }, [numberClics]);
-
-    console.log(themesSelected);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -49,6 +63,23 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
             console.error("Error al obtener la pregunta aleatoria", error);
             setError('Error al obtener la pregunta aleatoria');
         }
+
+        console.log("Antes: "+themesSelected);
+        // Generar array solo con los temas seleccionados
+        const temasSeleccionados = Object.entries(themesSelected)
+                                            .filter(([tema, seleccionado]) => seleccionado===true)
+                                            .map(([tema]) => tema);
+        console.log("Temas seleccionados : ", temasSeleccionados);
+
+        const temasSeleccionadoss = Object.entries(themesSelected)
+            .filter(([tema, seleccionado]) => seleccionado==true)
+            .map(([tema]) => tema);
+        console.log("Temas seleccionados 2: ", temasSeleccionadoss);
+
+        const temasSeleccionadosss = Object.entries(themesSelected)
+            .filter(([tema, seleccionado]) => seleccionado)
+            .map(([tema]) => tema);
+        console.log("Temas seleccionados 3: ", temasSeleccionadosss);
     };
 
     const handleTimeRemaining = () => {
@@ -141,13 +172,6 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
           setError(error.response.data.error);
         }
       };
-
-    if(isNaN(totalQuestions)){
-        totalQuestions=10;
-    }
-    if(isNaN(timeLimit)){
-        timeLimit=180;
-    }
 
     return (
         <Container maxWidth="lg">

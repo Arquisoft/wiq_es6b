@@ -27,11 +27,11 @@ const GameSettings = ({ setSettings }) => {
     const [themes, setThemes] = useState(() => {
         const storedValue = localStorage.getItem('themes');
         return storedValue ? JSON.parse(storedValue) : {
-            sports: true,
-            importantDates: true,
-            music: true,
-            literature: true,
-            countries: true
+            Sports: true,
+            ImportantDates: true,
+            Music: true,
+            Literature: true,
+            Countries: true
         };
     });
 
@@ -64,58 +64,63 @@ const GameSettings = ({ setSettings }) => {
         localStorage.setItem('numberQuestions', numberQuestions);
         localStorage.setItem('totalMins', totalMins);
         localStorage.setItem('totalSecs', totalSecs);
-        localStorage.setItem('themes', JSON.stringify(themes));
+        localStorage.setItem('themes', themes);
         setSettings({ numberQuestions, totalMins, totalSecs, themes });
     }, [numberQuestions, totalMins, totalSecs, themes, setSettings]);
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', flexDirection:'column' }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Box sx={{ width: 300 }}>
+                    <Typography variant="h6" gutterBottom>
+                        Seleccione el número de preguntas:
+                    </Typography>
+                    <Slider
+                        aria-label="Custom marks"
+                        defaultValue={10}
+                        value={numberQuestions}
+                        onChange={handleQuestionsSlider}
+                        step={5}
+                        valueLabelDisplay="auto"
+                        marks={markQuestions}
+                        min={markQuestions[0].value}
+                        max={markQuestions[markQuestions.length - 1].value}
+                    />
+                </Box>
+                <Box sx={{ width: 300 }}>
+                    <Typography variant="h6" gutterBottom>
+                        Seleccione el tiempo máximo de partida:
+                    </Typography>
+                    <TextField
+                        label="Minutos:"
+                        value={totalMins}
+                        onChange={handleTimeTfMins}
+                        type="number"
+                        inputProps={{
+                            min: 1,
+                            max: 10,
+                            step: 1,
+                        }}
+                        sx={{ marginBottom: '1rem', marginRight: '0.5rem', marginTop: '1rem' }}
+                    />
+                    <TextField
+                        label="Segundos:"
+                        value={totalSecs}
+                        onChange={handleTimeTfSecs}
+                        type="number"
+                        inputProps={{
+                            min: 0,
+                            max: 60,
+                            step: 10,
+                        }}
+                        sx={{ marginBottom: '1rem', marginTop: '1rem' }}
+                    />
+                </Box>
+            </div>
             <Box sx={{ width: 300 }}>
                 <Typography variant="h6" gutterBottom>
-                    Seleccione el número de preguntas:
+                    Seleccione las temáticas de las preguntas:
                 </Typography>
-                <Slider
-                    aria-label="Custom marks"
-                    defaultValue={10}
-                    value={numberQuestions}
-                    onChange={handleQuestionsSlider}
-                    step={5}
-                    valueLabelDisplay="auto"
-                    marks={markQuestions}
-                    min={markQuestions[0].value}
-                    max={markQuestions[markQuestions.length - 1].value}
-                />
-            </Box>
-            <Box sx={{ width: 300 }}>
-                <Typography variant="h6" gutterBottom>
-                    Seleccione el tiempo máximo de partida:
-                </Typography>
-                <TextField
-                    label="Minutos:"
-                    value={totalMins}
-                    onChange={handleTimeTfMins}
-                    type="number"
-                    inputProps={{
-                        min: 1,
-                        max: 10,
-                        step: 1,
-                    }}
-                    sx={{ marginBottom: '1rem', marginRight: '0.5rem', marginTop: '1rem' }}
-                />
-                <TextField
-                    label="Segundos:"
-                    value={totalSecs}
-                    onChange={handleTimeTfSecs}
-                    type="number"
-                    inputProps={{
-                        min: 0,
-                        max: 60,
-                        step: 10,
-                    }}
-                    sx={{ marginBottom: '1rem', marginTop: '1rem' }}
-                />
-            </Box>
-            <Box sx={{ width: 300 }}>
                 <FormGroup>
                     <FormControlLabel control={<Checkbox name='sports' checked={themes.sports} onChange={handleThemes} />} label="Deportes" />
                     <FormControlLabel control={<Checkbox name='importantDates' checked={themes.importantDates} onChange={handleThemes} />} label="Fechas históricas" />

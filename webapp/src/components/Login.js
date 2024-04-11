@@ -159,6 +159,7 @@ const Login = ({ setLogged }) => {
                   margin="normal"
                   fullWidth
                   label="Password"
+                  label="Password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
