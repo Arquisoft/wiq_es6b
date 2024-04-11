@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Typography, Button, Snackbar, Grid, List, ListItem, ListItemText } from '@mui/material';
 
@@ -46,7 +46,7 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         };
     
         obtenerPreguntaAleatoria();
-    }, [axios, apiEndpoint, setQuestion, setRespuestasAleatorias, setError]);
+    }, [apiEndpoint, setQuestion, setRespuestasAleatorias, setError]);
 
     const handleTimeRemaining = () => {
         let minsR = Math.floor((timeLimit - timer) / 60);
@@ -138,7 +138,7 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
             updateRanking();
             setAlmacenado(true);
         }
-    }, [timer, numberClics, totalQuestions, timeLimit, almacenado]);
+    }, [timer, numberClics, totalQuestions, timeLimit, almacenado, apiEndpoint, correctQuestions, username]);
 
     if(isNaN(totalQuestions)){
         totalQuestions=10;
