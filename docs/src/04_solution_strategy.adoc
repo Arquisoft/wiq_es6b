@@ -12,11 +12,12 @@ Para desarrollar la aplicación, seleccionamos las siguientes tecnologías:
 * Node.js: Es una entorno de ejecucion muy conocido para el desarrollo del back-end de aplicaciones web
 * Wikidata: Base de conocimientos que usaremos para realizar las preguntasd de nuestra aplicación.
 * MongoDB: Es un sistema de base de datos NoSQL, orientado a documentos y de código abierto.
-* GitHub: Es una plataforma para alojar proyectos utilizando el sistema de control de versiones Git
+* GitHub: Es una plataforma para alojar proyectos utilizando el sistema de control de versiones Gitç
+* Microsoft Azure: Es una plataforma de servicios en la nube que usaremos para el despliegue de la aplicación.
 
 === Descomposición de alto nivel
 
-=== Herramientas de diagramado
+== Herramientas de diagramado
 Usaremos VisualParadigm y Draw.io para la creacion de diagramas para la documentacion.
 
 === Enfoques para lograr objetivos de máxima calidad
