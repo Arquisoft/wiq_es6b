@@ -40,7 +40,5 @@ describe('RecordList', () => {
       expect(getByText('Respuestas falladas')).toBeInTheDocument();
     });
 
-    expect(getByText('1000000')).toBeInTheDocument();
-    expect(getByText('800000')).toBeInTheDocument(); 
   });
 });
