@@ -76,6 +76,18 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         }
     };
 
+    const obtenerPreguntaAleatoria = async () => {
+        try {
+            const response = await axios.get(`${apiEndpoint}/getRandomQuestionGenerator`);
+            setQuestion(response.data);
+            const respuestas = [...response.data.incorrectas, response.data.correcta];
+            setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
+        } catch (error) {
+            console.error("Error al obtener la pregunta aleatoria", error);
+            setError('Error al obtener la pregunta aleatoria');
+        }
+    };
+
     const handleButtonClick = async (respuestaSeleccionada, index) => {
         if (!finished) {
             if (selectedOption !== null) return; // Si ya se seleccionó una opción, no hacer nada
@@ -97,6 +109,7 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
 
             // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
             setTimeout(() => {
+                obtenerPreguntaAleatoria();
                 setSelectedOption(null);
                 addGeneratedQuestionBody();
                 setNumberClics(numberClics + 1);
