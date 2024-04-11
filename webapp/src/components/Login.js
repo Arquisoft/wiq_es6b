@@ -68,7 +68,7 @@ const Login = ({ setLogged }) => {
 
   useEffect(() => {
     calculateTotalTime();
-  }, [settings]);
+  }, [settings, calculateTotalTime]);
 
   return (
     <>

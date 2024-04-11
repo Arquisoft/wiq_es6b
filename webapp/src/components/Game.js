@@ -20,7 +20,9 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
 
     useEffect(() => {
         obtenerPreguntaAleatoria();
-    }, [numberClics]);
+
+
+    }, [obtenerPreguntaAleatoria]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -34,7 +36,7 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [timer, finished]);
+    }, [timeLimit, timer, finished]);
 
     const obtenerPreguntaAleatoria = async () => {
         try {
@@ -64,6 +66,18 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         return `${minsRStr}:${secsRStr}`;
     }
 
+    const addGeneratedQuestionBody = async () => {
+        try {
+          await axios.post(`${apiEndpoint}/addGeneratedQuestion`, {
+            generatedQuestionBody: question.questionBody,
+            correctAnswer: question.correcta
+          });
+    
+        } catch (error) {
+          setError(error.response.data.error);
+        }
+    };
+
     const handleButtonClick = async (respuestaSeleccionada, index) => {
         if (!finished) {
             if (selectedOption !== null) return; // Si ya se seleccionó una opción, no hacer nada
@@ -76,6 +90,7 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
             } else {
                 setSelectedAnswer('incorrect');
             }
+            console.log(`The selected answer is: ${selectedAnswer}`);
 
             // Si ya llegamos a la última pregunta, acabamos la partida para que se muestre el resultado
             if(numberClics===totalQuestions-1){
@@ -91,14 +106,6 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
             }, delayBeforeNextQuestion);
         }
     };
-
-    useEffect(() => {
-        if ((timer >= timeLimit || numberClics === totalQuestions - 1)&& !almacenado) {
-            addRecord();
-            updateRanking();
-            setAlmacenado(true);
-        }
-    }, [timer, numberClics, totalQuestions, timeLimit]);
 
     const addRecord = async () => {
         try {
@@ -125,19 +132,15 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         } catch (error) {
           setError(error.response.data.error);
         }
-      };
-      
-    const addGeneratedQuestionBody = async () => {
-        try {
-          await axios.post(`${apiEndpoint}/addGeneratedQuestion`, {
-            generatedQuestionBody: question.questionBody,
-            correctAnswer: question.correcta
-          });
-    
-        } catch (error) {
-          setError(error.response.data.error);
+    };
+
+    useEffect(() => {
+        if ((timer >= timeLimit || numberClics === totalQuestions - 1)&& !almacenado) {
+            addRecord();
+            updateRanking();
+            setAlmacenado(true);
         }
-      };
+    }, [addRecord, updateRanking, timer, numberClics, totalQuestions, timeLimit, almacenado]);
 
     if(isNaN(totalQuestions)){
         totalQuestions=10;
