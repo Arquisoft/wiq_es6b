@@ -1,71 +1,49 @@
-const assert = require('assert');
-const RecordList = require('../RecordList');
+import React from 'react';
+import { render, waitFor } from '@testing-library/react';
+import RecordList from '../RecordList';
+import axios from 'axios';
 
-// Describe la suite de pruebas para la clase RecordList
+// Simulamos la respuesta del servidor
+jest.mock('axios');
+
 describe('RecordList', () => {
-    // Define una prueba para el método addRecord
-    it('should add a record to the list', () => {
-        // Crea una instancia de la clase RecordList
-        const recordList = new RecordList();
+  beforeEach(() => {
+    axios.get.mockResolvedValue({
+      status: 200,
+      data: [
+        {
+          date: new Date().toISOString(),
+          time: 60,
+          money: 100,
+          correctQuestions: 8,
+          failedQuestions: 2,
+        },
+        {
+          date: new Date().toISOString(),
+          time: 45,
+          money: 80,
+          correctQuestions: 7,
+          failedQuestions: 3,
+        },
+      ],
+    });
+  });
 
-        // Agrega un registro a la lista
-        recordList.addRecord('Record 1');
-
-        // Verifica que el registro se haya agregado correctamente
-        assert.strictEqual(recordList.records.length, 1);
-        assert.strictEqual(recordList.records[0], 'Record 1');
+  it('renders record list correctly', async () => {
+    const { getByText } = render(<RecordList username="testuser" />);
+    
+    // Esperamos a que se carguen los datos
+    await waitFor(() => {
+      expect(getByText('Tu historial de jugadas')).toBeInTheDocument();
+      expect(getByText('Fecha')).toBeInTheDocument();
+      expect(getByText('Tiempo (segundos)')).toBeInTheDocument();
+      expect(getByText('Dinero conseguido')).toBeInTheDocument();
+      expect(getByText('Respuestas correctas')).toBeInTheDocument();
+      expect(getByText('Respuestas falladas')).toBeInTheDocument();
     });
 
-    // Define una prueba para el método removeRecord
-    it('should remove a record from the list', () => {
-        // Crea una instancia de la clase RecordList
-        const recordList = new RecordList();
-
-        // Agrega algunos registros a la lista
-        recordList.addRecord('Record 1');
-        recordList.addRecord('Record 2');
-        recordList.addRecord('Record 3');
-
-        // Elimina un registro de la lista
-        recordList.removeRecord('Record 2');
-
-        // Verifica que el registro se haya eliminado correctamente
-        assert.strictEqual(recordList.records.length, 2);
-        assert.strictEqual(recordList.records[0], 'Record 1');
-        assert.strictEqual(recordList.records[1], 'Record 3');
-    });
-
-    // Define una prueba para el método getRecordCount
-    it('should return the correct record count', () => {
-        // Crea una instancia de la clase RecordList
-        const recordList = new RecordList();
-
-        // Agrega algunos registros a la lista
-        recordList.addRecord('Record 1');
-        recordList.addRecord('Record 2');
-        recordList.addRecord('Record 3');
-
-        // Obtiene el número de registros en la lista
-        const recordCount = recordList.getRecordCount();
-
-        // Verifica que el número de registros sea correcto
-        assert.strictEqual(recordCount, 3);
-    });
-
-    // Define una prueba para el método clearRecords
-    it('should clear all records from the list', () => {
-        // Crea una instancia de la clase RecordList
-        const recordList = new RecordList();
-
-        // Agrega algunos registros a la lista
-        recordList.addRecord('Record 1');
-        recordList.addRecord('Record 2');
-        recordList.addRecord('Record 3');
-
-        // Limpia todos los registros de la lista
-        recordList.clearRecords();
-
-        // Verifica que la lista esté vacía
-        assert.strictEqual(recordList.records.length, 0);
-    });
+    // Verificamos que los registros se rendericen correctamente
+    expect(getByText('100')).toBeInTheDocument();
+    expect(getByText('80')).toBeInTheDocument();
+  });
 });
