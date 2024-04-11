@@ -108,10 +108,10 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
             }
 
             // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
-            setTimeout(() => {
-                obtenerPreguntaAleatoria();
+            setTimeout(async() => {
+                await obtenerPreguntaAleatoria();
                 setSelectedOption(null);
-                addGeneratedQuestionBody();
+                await addGeneratedQuestionBody();
                 setNumberClics(numberClics + 1);
                 setSelectedAnswer('');
             }, delayBeforeNextQuestion);
@@ -127,7 +127,7 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
                   time: timer,
                   money: (25 * correctQuestions),
                   correctQuestions: correctQuestions,
-                  failedQuestions: (10 - correctQuestions)
+                  failedQuestions: (totalQuestions - correctQuestions)
                 });
               } catch (error) {
                 setError(error.response.data.error);
@@ -147,8 +147,10 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         };
         
         if ((timer >= timeLimit || numberClics === totalQuestions - 1)&& !almacenado) {
-            addRecord();
-            updateRanking();
+            (async () => {
+                await addRecord();
+                await updateRanking();
+            })();
             setAlmacenado(true);
         }
     }, [timer, numberClics, totalQuestions, timeLimit, almacenado, apiEndpoint, correctQuestions, username]);
