@@ -31,7 +31,7 @@ const RankingList = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [apiEndpoint]);
 
   const sortedUsers = [...listUsers].sort((a, b) => {
     if (sortColumn === 'username') {

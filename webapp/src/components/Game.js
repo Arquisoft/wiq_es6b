@@ -12,18 +12,17 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
     const [finished, setFinished] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState('');
     const [selectedOption, setSelectedOption] = useState(null); // Opción seleccionada actualmente
+    const [almacenado, setAlmacenado] = useState(false);
     const pricePerQuestion = 25;
     const delayBeforeNextQuestion = 3000; // 3 segundos de retardo antes de pasar a la siguiente pregunta
 
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
     useEffect(() => {
-        obtenerPreguntaAleatoria();
-    }, [numberClics]);
-
-    useEffect(() => {
         const interval = setInterval(() => {
-            if (!finished) {
+            if (timer>=timeLimit){
+                setFinished(true);
+            }else if (!finished) {
                 setTimer(timer + 1);
             } else {
                 clearInterval(interval);
@@ -31,19 +30,23 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [timer, finished]);
+    }, [timeLimit, timer, finished]);
 
-    const obtenerPreguntaAleatoria = async () => {
-        try {
-            const response = await axios.get(`${apiEndpoint}/getRandomQuestionTest`);
-            setQuestion(response.data);
-            const respuestas = [...response.data.incorrectas, response.data.correcta];
-            setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
-        } catch (error) {
-            console.error("Error al obtener la pregunta aleatoria", error);
-            setError('Error al obtener la pregunta aleatoria');
-        }
-    };
+    useEffect(() => {
+        const obtenerPreguntaAleatoria = async () => {
+            try {
+                const response = await axios.get(`${apiEndpoint}/getRandomQuestionGenerator`);
+                setQuestion(response.data);
+                const respuestas = [...response.data.incorrectas, response.data.correcta];
+                setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
+            } catch (error) {
+                console.error("Error al obtener la pregunta aleatoria", error);
+                setError('Error al obtener la pregunta aleatoria');
+            }
+        };
+    
+        obtenerPreguntaAleatoria();
+    }, [apiEndpoint, setQuestion, setRespuestasAleatorias, setError]);
 
     const handleTimeRemaining = () => {
         let minsR = Math.floor((timeLimit - timer) / 60);
@@ -61,6 +64,30 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         return `${minsRStr}:${secsRStr}`;
     }
 
+    const addGeneratedQuestionBody = async () => {
+        try {
+          await axios.post(`${apiEndpoint}/addGeneratedQuestion`, {
+            generatedQuestionBody: question.questionBody,
+            correctAnswer: question.correcta
+          });
+    
+        } catch (error) {
+          setError(error.response.data.error);
+        }
+    };
+
+    const obtenerPreguntaAleatoria = async () => {
+        try {
+            const response = await axios.get(`${apiEndpoint}/getRandomQuestionGenerator`);
+            setQuestion(response.data);
+            const respuestas = [...response.data.incorrectas, response.data.correcta];
+            setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
+        } catch (error) {
+            console.error("Error al obtener la pregunta aleatoria", error);
+            setError('Error al obtener la pregunta aleatoria');
+        }
+    };
+
     const handleButtonClick = async (respuestaSeleccionada, index) => {
         if (!finished) {
             if (selectedOption !== null) return; // Si ya se seleccionó una opción, no hacer nada
@@ -73,6 +100,7 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
             } else {
                 setSelectedAnswer('incorrect');
             }
+            console.log(`The selected answer is: ${selectedAnswer}`);
 
             // Si ya llegamos a la última pregunta, acabamos la partida para que se muestre el resultado
             if(numberClics===totalQuestions-1){
@@ -81,12 +109,56 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
 
             // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
             setTimeout(() => {
+                obtenerPreguntaAleatoria();
                 setSelectedOption(null);
+                addGeneratedQuestionBody();
                 setNumberClics(numberClics + 1);
                 setSelectedAnswer('');
             }, delayBeforeNextQuestion);
         }
     };
+
+    useEffect(() => {
+        const addRecord = async () => {
+            try {
+                await axios.post(`${apiEndpoint}/addRecord`, {
+                  userId: username,
+                  date: new Date(),
+                  time: timer,
+                  money: (25 * correctQuestions),
+                  correctQuestions: correctQuestions,
+                  failedQuestions: (10 - correctQuestions)
+                });
+              } catch (error) {
+                setError(error.response.data.error);
+              }
+        };
+
+        const updateRanking = async () => {
+            try {
+              await axios.post(`${apiEndpoint}/updateRanking`, {
+                username: username,
+                preguntasCorrectas: correctQuestions,
+                preguntasFalladas: totalQuestions - correctQuestions
+              });
+            } catch (error) {
+              setError(error.response.data.error);
+            }
+        };
+        
+        if ((timer >= timeLimit || numberClics === totalQuestions - 1)&& !almacenado) {
+            addRecord();
+            updateRanking();
+            setAlmacenado(true);
+        }
+    }, [timer, numberClics, totalQuestions, timeLimit, almacenado, apiEndpoint, correctQuestions, username]);
+
+    if(isNaN(totalQuestions)){
+        totalQuestions=10;
+    }
+    if(isNaN(timeLimit)){
+        timeLimit=180;
+    }
 
     return (
         <Container maxWidth="lg">
@@ -125,10 +197,10 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
                     </Typography>
                     <Typography component="h2" sx={{
                         textAlign: 'center',
-                        color: ((timeLimit - timer) <= 60 && (timer % 60) % 2 === 0) ?
+                        color: ((timeLimit - timer) <= 60 && (timer) % 2 === 0) ?
                             'red' : 'inherit',
                         fontStyle: 'italic',
-                        fontWeight: (timer > 150 && (timer % 60) % 2 === 0) ?
+                        fontWeight: (timer > 150 && (timer) % 2 === 0) ?
                             'bold' : 'inherit'
                     }}>
                         ¡Tiempo restante {handleTimeRemaining()}!

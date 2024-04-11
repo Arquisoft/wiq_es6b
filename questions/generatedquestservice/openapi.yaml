@@ -9,10 +9,10 @@ servers:
   - url: http://51.142.17.139:8003
     description: Production server
 paths:
-  /addOrUpdateQuestionTest:
+  /addOrUpdateQuestionGenerator:
     post:
       summary: Add or update a question test.
-      operationId: addOrUpdateQuestionTest
+      operationId: addOrUpdateQuestionGenerator
       requestBody:
         description: The question test data to add or update.
         required: true

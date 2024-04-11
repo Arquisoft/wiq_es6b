@@ -7,22 +7,25 @@ ifndef::imagesdir[:imagesdir: ../images]
 |===
 | Término | Definición
 
-| Distractores
-| Las diferentes respuestas falsas que se mostrarán al usuario.
-
 | BodyQuestions
 | Los diferentes cuerpos que vamos a utilizar de las preguntas base.
 
 | TypeQuestions
 | Las distintas categorias que hay de preguntas.
 
-| Jugada
+| Record
 | Elemento del historial de jugadas.
+
+| QuestionGenerator
+| Generador de preguntas a traves de la API de Wikidata.
 
 | Arc42
 | Conjunto de distintas pautas a seguir para la documentacion de un proceso de software.
 
 | Microservicios
 | Enfoque de arquitectura que usamos para desarrollar software de manera que se construyan aplicaciones de forma que estas se dividan en elementos pequeños e independientes entre si.
+
+| Wikidata
+| Página a partir de la que se obtienen los datos para las preguntas y sus respuestas.
 
 |===

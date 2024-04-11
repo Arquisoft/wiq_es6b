@@ -6,7 +6,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 === Descripción de conceptos
 ==== Dominio
-image::08-DominioV2.jpeg["Dominio"]
+image::08-DominioV4.png["Dominio"]
 
 
 ==== Experiencia de usuario (UX)
@@ -18,7 +18,7 @@ image::08-DominioV2.jpeg["Dominio"]
 | Solidez | Los tiempos de espera de carga de la aplicación se buscarán que sean los mínimos posibles para que la experiencia sea fluida.
 |===
 
-* *Inmediata retroalimnetacion:* El usuario verá de forma inmediata si ha acertado o no la pregunta contestada. Así como el historial de jugadas estará actualizado en todo momento.
+* *Inmediata retroalimnetacion:* El usuario verá de forma inmediata si ha acertado o no la pregunta contestada. Así como el historial de jugadas, ranking, y preguntas generadas estará actualizado en todo momento.
 
 
 ==== Seguridad y protección
@@ -37,7 +37,7 @@ image::08-DominioV2.jpeg["Dominio"]
 ==== Desarrollo
 
 * *Implementación:* Para la creación de esta aplicación se usará el lenguaje de programación JavaScript, para el front-end se utilizará React, Node.js y la construccion de microservicios para el back-end y MongoDB para la gestion de la base de datos NoSQL.
-* *Pruebas:* Se llevarán a cabo pruebas unitarias, de integración, de aceptación, de capacidad/rendimiento y de regresión, todas ellas siguiendo los principios FIRST(Fast, Independent, Repeatable, Self-Checking y Timely) para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
+* *Pruebas:* Se llevarán a cabo pruebas e2e y unitarias, de integración, de aceptación, de capacidad/rendimiento y de regresión, todas ellas siguiendo los principios FIRST(Fast, Independent, Repeatable, Self-Checking y Timely) para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
 
 
 ==== Estilo arquitecónico
@@ -46,10 +46,11 @@ image::08-DominioV2.jpeg["Dominio"]
 
 image::08-capas.png["Capas"]
 |===
-|Presentación |Se va a utilizar para operar y generar la interfaz gráfica que se le mostrará al usuario.
-|Negocio |Aquí será donde se llevará a cabo toda la lógica correspondiente que hace posible el correcto funcionamiento de la aplicación, se utilizará para poder generar las direfectes preguntas del juego de forma automática, así como sus posibles respuestas ente otras funcionalidades como la creación del historial de cada jugador.
-|Persistencia |Para almacenar/obtener los diferentes datos que se necesiten tanto para el jugador como para el sistema de juego de preguntas y respuestas.
+| Presentación | Se va a utilizar para operar y generar la interfaz gráfica que se le mostrará al usuario.
+| Negocio | Aquí será donde se llevará a cabo toda la lógica correspondiente que hace posible el correcto funcionamiento de la aplicación. Se utilizará para poder generar las diferentes preguntas del juego de forma automática, así como sus posibles respuestas, entre otras funcionalidades como la creación del historial de cada jugador.
+| Persistencia | Para almacenar y obtener los diferentes datos que se necesiten, tanto para el jugador como para el sistema de juego de preguntas y respuestas.
 |===
+
 
 === Mapa de conceptos
 image::08-MindMapConceptosTransversales.png["Mind Map conceptos transversales"]

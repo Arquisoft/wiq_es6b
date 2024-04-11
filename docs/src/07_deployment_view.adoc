@@ -14,12 +14,10 @@ La aplicación garantizará un correcto funcionamiento y respuesta independiente
 
 Mapeo de bloques de construcción a la infraestructura::
 |===
-|Elemento| Descripción
-|WebApp| Se trata del frontend de la aplicación que será desplegado en el navegador.
-|GateWay| Funciona de interemediario conectando la WebApp con los diferentes microservicios, conectando así todos los componentes.
-|Services| Son los microservicios encargados de implementar las diferentes funcionalidades de la aplicación.
-|MongoDB| Es la base de datos elegida para el almacenaje de la información crucial de la aplicación.
-|Client| Navegador con el que interactúa el usuario para hacer uso de la aplicación.
+| Elemento | Descripción
+| Webapp | Se trata del frontend de la aplicación que será desplegado en el navegador.
+| Gateway | Funciona de interemediario conectando la WebApp con los diferentes microservicios, conectando así todos los componentes.
+| Services | Son los microservicios encargados de implementar las diferentes funcionalidades de la aplicación.
+| MongoDB | Es la base de datos elegida para el almacenaje de la información crucial de la aplicación, se encuentra en la nube.
+| Client | Navegador con el que interactúa el usuario para hacer uso de la aplicación.
 |===
-
-(En desarrollo)

@@ -12,7 +12,7 @@ const questionServiceUrl = process.env.QUES_SERVICE_URL || 'http://localhost:800
 const recordServiceUrl = process.env.REC_SERVICE_URL || 'http://localhost:8006';
 const genQuestServiceUrl = process.env.GEN_SERVICE_URL || 'http://localhost:8003';
 const rankingServiceUrl = process.env.RANK_SERVICE_URL || 'http://localhost:8004';
-const questiontestservice = process.env.QTEST_SERVICE_URL || 'http://questiontestservice:8007';
+const questiongeneratorservice = process.env.QTEST_SERVICE_URL || 'http://questiongeneratorservice:8007';
 
 
 app.use(cors());
@@ -95,20 +95,20 @@ app.get('/getAllUsers', async (req, res) => {
 
 
 
-//app.post('/addGeneratedQuestion', async (req, res) => {
-//  try {
-//    // Reenviar la solicitud GET al servicio de usuarios
-//   
-//    const genQuestResponse = await axios.post(genQuestServiceUrl+'/addGeneratedQuestion', req.body);
-//    res.json(genQuestResponse.data);
-//  } catch (error) {
-//    if (error.response) {
-//      res.status(error.response.status).json({ error: error.response.data.error });
-//    } else {
-//      res.status(500).json({ error: 'Error interno del servidor' });
-//    }
-//  }
-//})
+app.post('/addGeneratedQuestion', async (req, res) => {
+  try {
+    // Reenviar la solicitud GET al servicio de usuarios
+   
+   const genQuestResponse = await axios.post(genQuestServiceUrl+'/addGeneratedQuestion', req.body);
+    res.json(genQuestResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+})
 
 app.get('/getAllGeneratedQuestions', async (req, res) => {
   try {
@@ -233,10 +233,10 @@ app.post('/updateAllRanking', async (req, res) => {
 
 ///////////////para los question del juego
 // Ruta para agregar una pregunta de prueba
-app.post('/addOrUpdateQuestionTest', async (req, res) => {
+app.post('/addOrUpdateQuestionGenerator', async (req, res) => {
   try {
-    const questionTestResponse = await axios.post(`${questiontestservice}/addQuestionTest`, req.body);
-    res.json(questionTestResponse.data);
+    const questionGeneratorResponse = await axios.post(`${questiongeneratorservice}/addOrUpdateQuestionGenerator`, req.body);
+    res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
       res.status(error.response.status).json({ error: error.response.data.error });
@@ -247,10 +247,10 @@ app.post('/addOrUpdateQuestionTest', async (req, res) => {
 });
 
 // Ruta para obtener una pregunta de prueba por su ID
-app.get('/getQuestionTest/:id', async (req, res) => {
+app.get('/getRandomQuestionGenerator', async (req, res) => {
   try {
-    const questionTestResponse = await axios.get(`${questiontestservice}/getQuestionTest/${req.params.id}`);
-    res.json(questionTestResponse.data);
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionGenerator`);
+    res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
       res.status(error.response.status).json({ error: error.response.data.error });
@@ -260,11 +260,63 @@ app.get('/getQuestionTest/:id', async (req, res) => {
   }
 });
 
-// Ruta para obtener una pregunta de prueba por su ID
-app.get('/getRandomQuestionTest', async (req, res) => {
+//TEMATICAS
+app.get('/getRandomQuestionDeporte', async (req, res) => {
   try {
-    const questionTestResponse = await axios.get(`${questiontestservice}/getRandomQuestionTest`);
-    res.json(questionTestResponse.data);
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionDeporte`);
+    res.json(questionGeneratorResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+});
+
+app.get('/getRandomQuestionAnio', async (req, res) => {
+  try {
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionAnio`);
+    res.json(questionGeneratorResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+});
+
+app.get('/getRandomQuestionMusica', async (req, res) => {
+  try {
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionMusica`);
+    res.json(questionGeneratorResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+});
+
+app.get('/getRandomQuestionLibro', async (req, res) => {
+  try {
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionLibro`);
+    res.json(questionGeneratorResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+});
+
+app.get('/getRandomQuestionPaisYGeo', async (req, res) => {
+  try {
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionPaisYGeo`);
+    res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
       res.status(error.response.status).json({ error: error.response.data.error });
@@ -276,10 +328,10 @@ app.get('/getRandomQuestionTest', async (req, res) => {
 
 
 // Ruta para obtener todas las preguntas de prueba
-app.get('/getAllQuestionTest', async (req, res) => {
+app.get('/getAllQuestionGenerator', async (req, res) => {
   try {
-    const questionTestResponse = await axios.get(`${questiontestservice}/getAllQuestionTest`);
-    res.json(questionTestResponse.data);
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getAllQuestionGenerator`);
+    res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
       res.status(error.response.status).json({ error: error.response.data.error });
@@ -289,11 +341,25 @@ app.get('/getAllQuestionTest', async (req, res) => {
   }
 });
 
-// Ruta para eliminar todas las preguntas de prueba
-app.delete('/deleteAllQuestionTest', async (req, res) => {
+// Ruta para obtener todas las preguntas de prueba
+app.get('/countQuestionGenerator', async (req, res) => {
   try {
-    const questionTestResponse = await axios.delete(`${questiontestservice}/deleteAllQuestionTest`);
-    res.json(questionTestResponse.data);
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/countQuestionGenerator`);
+    res.json(questionGeneratorResponse.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json({ error: error.response.data.error });
+    } else {
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  }
+});
+
+// Ruta para eliminar la primera pregunta de prueba
+app.delete('/deleteFirstQuestionGenerator', async (req, res) => {
+  try {
+    const questionGeneratorResponse = await axios.delete(`${questiongeneratorservice}/deleteFirstQuestionGenerator`);
+    res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
       res.status(error.response.status).json({ error: error.response.data.error });

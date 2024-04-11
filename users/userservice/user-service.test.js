@@ -18,9 +18,12 @@ afterAll(async () => {
 
 describe('User Service', () => {
   it('should add a new user on POST /adduser', async () => {
+    const mockUsername = 'testuser';
+    const mockPassword = 'testpassword';
+
     const newUser = {
-      username: 'testuser',
-      password: 'testpassword',
+      username: mockUsername,
+      password: mockPassword,
     };
 
     const response = await request(app).post('/adduser').send(newUser);

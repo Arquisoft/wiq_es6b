@@ -22,8 +22,8 @@ const Login = ({ setLogged }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showComponent, setShowComponent] = useState('login');
-  const [settings, setSettings] = useState({});
   const [totalTime, setTotalTime] = useState(180);
+  const [settings, setSettings] = useState({});
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
   const loginUser = async () => {
@@ -61,12 +61,12 @@ const Login = ({ setLogged }) => {
     setShowComponent(component);
   };
 
-  const calculateTotalTime = () => {
-    const totalTimeCalculated = (parseInt(settings.totalMins) * 60) + parseInt(settings.totalSecs);
-    setTotalTime(totalTimeCalculated);
-  };
-
   useEffect(() => {
+    const calculateTotalTime = () => {
+      const totalTimeCalculated = (parseInt(settings.totalMins) * 60) + parseInt(settings.totalSecs);
+      setTotalTime(totalTimeCalculated);
+    };
+
     calculateTotalTime();
   }, [settings]);
 
@@ -75,7 +75,7 @@ const Login = ({ setLogged }) => {
       {loginSuccess && (
         <AppBar position="static">
           <Toolbar>
-            <Button color="inherit" onClick={() => handleComponentChange('game')}>
+            <Button color="inherit" onClick={() => handleComponentChange('login')}>
               Jugar
             </Button>
             {username === 'admin' && (
@@ -113,9 +113,9 @@ const Login = ({ setLogged }) => {
           <>
             {loginSuccess && (
               <>
-                {showComponent === 'game' && (
+                {showComponent === 'game' &&
                   <Game username={username} totalQuestions={settings.numberQuestions} timeLimit={totalTime} />
-                )}
+                }
                 {showComponent === 'userList' && <UsersList />}
                 {showComponent === 'questionList' && <GeneratedQuestionsList />}
                 {showComponent === 'recordList' && <RecordList username={username} />}

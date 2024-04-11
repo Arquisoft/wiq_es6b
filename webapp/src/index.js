@@ -12,15 +12,25 @@ const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000
 const obtenerPreguntaspartida = async (numquest) => {
   try {
     const response = await axios.get(`${apiEndpoint}/getFullQuestion`);
-    const { questionBody, correctAnswer, incorrectAnswers } = response.data;
+    const { questionBody, correctAnswer, incorrectAnswers, typeQuestion } = response.data;
     
     // Enviar la pregunta al servicio de preguntas de prueba
-    await axios.post(`${apiEndpoint}/addOrUpdateQuestionTest`, {
+    await axios.post(`${apiEndpoint}/addOrUpdateQuestionGenerator`, {
       questionBody,
       correcta: correctAnswer,
       incorrectas: incorrectAnswers,
-      numquest
+      numquest,
+      typeQuestion,
     });
+
+    // Verificar si el número de preguntas en la base de datos es mayor que 500
+    const countResponse = await axios.get(`${apiEndpoint}/countQuestionGenerator`);
+    const count = countResponse.data.count;
+    if (count > 500) {
+      // Llamar a la función deleteFirstQuestionGenerator para eliminar la primera pregunta
+      await axios.delete(`${apiEndpoint}/deleteFirstQuestionGenerator`);
+      console.log('Se ha eliminado la primera pregunta de prueba');
+    }
   } catch (error) {
     console.error("Error al obtener la pregunta aleatoria", error);
   }
@@ -47,7 +57,7 @@ const RootComponent = () => {
       </Typography>
       <App />
       <Typography component="h1" variant="h5" align="center" sx={{ marginTop: 4 }}>
-        &copy; wiq_6B
+        &copy; wiq_6b
       </Typography>
     </React.StrictMode>
   );
