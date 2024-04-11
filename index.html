@@ -468,20 +468,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_decisiones_de_organizacion">4.5. Decisiones de organizacion</a></li>
 </ul>
 </li>
-<li><a href="#section-building-block-view">5. Building Block View</a>
+<li><a href="#section-building-block-view">5. Vista de bloques de construcción</a>
 <ul class="sectlevel2">
-<li><a href="#_whitebox_overall_system">5.1. Whitebox Overall System</a></li>
-<li><a href="#_level_2">5.2. Level 2</a></li>
-<li><a href="#_level_3">5.3. Level 3</a></li>
+<li><a href="#_vista_general_del_sistema">5.1. Vista general del sistema</a></li>
+<li><a href="#_nivel_2">5.2. Nivel 2</a></li>
+<li><a href="#_nivel_3">5.3. Nivel 3</a></li>
 </ul>
 </li>
 <li><a href="#section-runtime-view">6. Vista en Tiempo de Ejecución</a>
 <ul class="sectlevel2">
 <li><a href="#_registro_en_la_aplicación">6.1. Registro en la aplicación</a></li>
 <li><a href="#_inicio_de_sesión_en_la_aplicación">6.2. Inicio de sesión en la aplicación</a></li>
-<li><a href="#_respuesta_a_una_pregunta">6.3. Respuesta a una pregunta</a></li>
-<li><a href="#_fin_de_partida">6.4. Fin de partida</a></li>
-<li><a href="#_consulta_del_historial">6.5. Consulta del historial</a></li>
+<li><a href="#_generacion_de_preguntas">6.3. Generacion de preguntas</a></li>
+<li><a href="#_respuesta_a_una_pregunta">6.4. Respuesta a una pregunta</a></li>
+<li><a href="#_consulta_del_historial_de_usuarios">6.5. Consulta del historial de usuarios</a></li>
+<li><a href="#_consulta_del_historial_de_preguntas_generadas">6.6. Consulta del historial de preguntas generadas</a></li>
+<li><a href="#_consulta_del_historial_de_jugadas">6.7. Consulta del historial de jugadas</a></li>
+<li><a href="#_consulta_del_ranking">6.8. Consulta del ranking</a></li>
+<li><a href="#_cambio_de_ajustes_de_partida">6.9. Cambio de ajustes de partida</a></li>
 </ul>
 </li>
 <li><a href="#section-deployment-view">7. Deployment View</a>
@@ -563,7 +567,7 @@ For documentation of your own system you use better the <em>plain</em> version.<
 <p>WIQ se trata de una aplicación web desarrollada por HappySw para RTVE que permite a los usuarios jugar online a un juego de preguntas y respuestas.</p>
 </div>
 <div class="paragraph">
-<p>Los usuarios tienen la posibilidad de responder a estas preguntas seleccionando una de las opciones proporcionadas y ganar premios por cada acierto. También podrán ver su histórico de participaciones e intentar mejorarlas.</p>
+<p>Los usuarios tienen la posibilidad de responder a estas preguntas seleccionando una de las cuatro opciones proporcionadas y ganar dinero por cada acierto. Podrán ver su histórico de participaciones para intentar mejorarlas y ver un ranking de los mejores jugadores.</p>
 </div>
 <div class="paragraph">
 <p>Tanto preguntas cómo las respuestas son generadas de manera automática a partir de los datos de Wikidata para evitar su posible desactualización.</p>
@@ -585,13 +589,19 @@ For documentation of your own system you use better the <em>plain</em> version.<
 <p>Las preguntas y sus posibles respuestas deben ser generadas automáticamente a partir de los datos de Wikidata.</p>
 </li>
 <li>
-<p>Debe haber un tiempo máximo para contestar a cada pregunta.</p>
+<p>Debe haber un tiempo máximo para contestar a todas las preguntas.</p>
 </li>
 <li>
-<p>Cada pregunta debe tener una única respuesta correcta y varias incorrectas.</p>
+<p>Cada pregunta debe tener una única respuesta correcta y tres incorrectas que see generan automáticamente.</p>
 </li>
 <li>
-<p>Se debe poder acceder a la información de los usuarios y de las preguntas a través de un API.</p>
+<p>Se debe poder acceder a la información de los usuarios y de las preguntas generadas a través de un API.</p>
+</li>
+<li>
+<p>Debe permitir cambiar los parámetros del juego.</p>
+</li>
+<li>
+<p>Debe haber un ranking de usuarios ordenado según sus estadísticas.</p>
 </li>
 </ul>
 </div>
@@ -626,13 +636,13 @@ For documentation of your own system you use better the <em>plain</em> version.<
 <td class="tableblock halign-left valign-top"><p class="tableblock">Alta</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Seguridad</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">La información de los usuarios estará protegida previniendo al máximo los accesos no autorizados y las posibles violaciones de datos.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rendimiento</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Los usuarios tendrán tiempos de respuesta cortos por parte del sistema contando con un máximo de 2 segundos para garantizar una mejor experiencia durante el juego.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Media/Alta</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Rendimiento</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Los usuarios tendrán tiempos de respuesta cortos por parte del sistema contando con un máximo de 2 segundos para garantizar una mejor experiencia durante el juego.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mantenibilidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">La aplicación debe programarse de manera que no genere muchos problemas hacer un cambio.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Media</p></td>
 </tr>
 <tr>
@@ -765,32 +775,30 @@ que trabajar sobre una base de datos local.</p>
 <h2 id="section-system-scope-and-context">3. Alcance y contexto del sistema</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Nuestro proyecto, denominado "WIQ", consiste en una simulación inspirada en el famoso juego de RTVE  "Saber y Ganar" (más información en: <a href="https://www.rtve.es/play/videos/saber-y-ganar/" class="bare">https://www.rtve.es/play/videos/saber-y-ganar/</a>), en el cual los concursantes tienen la oportunidad de hacerse con una cantidad de dinero en función del número de respuestas acertadas a preguntas de diversas temáticas, con un límite establecido de tiempo para cada una de ellas.</p>
+<p>Nuestro proyecto, denominado "WIQ", consiste en una simulación inspirada en el famoso juego de RTVE "Saber y Ganar" (más información en: <a href="https://www.rtve.es/play/videos/saber-y-ganar/" class="bare">https://www.rtve.es/play/videos/saber-y-ganar/</a>), en el cual los concursantes tienen la oportunidad de hacerse con una cantidad de dinero en función del número de respuestas acertadas a preguntas de diversas temáticas, con un límite establecido de tiempo para cada una de ellas.</p>
 </div>
 <div class="paragraph">
-<p>La aplicación permitirá a los usuarios no solo acumular dinero al participar en la funcionalidad básica de juego de preguntas y respuestas, si no que cuenta también con otras funcionalidades como poder consultar su historial de juegos y el listado completo de usuarios registrados.</p>
+<p>La aplicación permitirá a los usuarios no solo acumular dinero al participar en la funcionalidad básica de juego de preguntas y respuestas, funcionalidad la cual es personalizable, sino que cuenta también con las opciones de visualizar un ranking, poder consultar su historial de jugadas así como el listado completo de usuarios registrados entre otras más.</p>
 </div>
 <div class="sect2">
 <h3 id="_contexto_de_negocio">3.1. Contexto de negocio</h3>
 <div class="paragraph">
-<p>Al acceder a la página principal de la aplicación, los usuarios podrán ver una interfaz que les permitirá iniciar sesión para acceder a su cuenta. En caso de ser su primera vez y no tener cuenta, tendrá la opción de registrarse. Una vez autenticados, los usuarios se encontrarán con la opción tanto empezar un nuevo juego como de ver su historial
-de jugadas anteriores.</p>
+<p>Al acceder a la página principal de la aplicación, los usuarios podrán ver una interfaz que les permitirá iniciar sesión para acceder a su cuenta. En caso de ser su primera vez y no tener cuenta, tendrán la opción de registrarse. Una vez autenticados, los usuarios se encontrarán con la opción tanto de empezar un nuevo juego como de realizar otras operaciones que se pueden visualizar en la barra de navegación, como el historial de jugadas, el ranking y la opción de modificar los ajustes de la partida.</p>
 </div>
 <div class="paragraph">
-<p>Dentro del historial, este le mostrará el número de partidas totales realizadas y por cada una de ellas la fecha en la que se jugó, el número de respuestas acertadas, el dinero conseguido y el tiempo total
-que le llevó completarlo.</p>
+<p>Dentro del historial, este les mostrará el número de partidas totales realizadas y, por cada una de ellas, la fecha en la que se jugó, el número de respuestas acertadas, el dinero conseguido y el tiempo total que les llevó completarlo.</p>
 </div>
 <div class="paragraph">
-<p>Aparte de eso también tendrán la opción de visualizar el listado completo de usuarios registrados hasta la fecha.</p>
+<p>En el ranking, podrán ver destacados los tres usuarios con mejor porcentaje de aciertos, así como las estadísticas del ranking de todos los usuarios.</p>
+</div>
+<div class="paragraph">
+<p>Aparte de todo lo anterior, el administrador contará con la opción de visualizar el listado completo de usuarios registrados hasta la fecha, así como la posibilidad de ver todo el historial de preguntas que se han generado.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_contexto_técnico">3.2. Contexto técnico</h3>
 <div class="paragraph">
-<p>Para el desarrollo de este proyecto usaremos la API de Wikidata tanto para generar automaticamente las preguntas como para obtener
-las respuestas correctas a las mismas.
-Respecto al lenguaje de programación se usará JavaScript, utilizando React para el desarrollo del front-end. Además
-haremos uso de Node.js y la implementación de microservicios para el back-end. Respecto a la base de datos usaremos una NonQL como MongoDB.</p>
+<p>Para el desarrollo de este proyecto, utilizaremos la API de Wikidata tanto para generar automáticamente las preguntas como para obtener las respuestas correctas a las mismas. En cuanto al lenguaje de programación, se utilizará JavaScript, utilizando React para el desarrollo del front-end. Además, haremos uso de Node.js y la implementación de microservicios para el back-end. Respecto a la base de datos, usaremos una NoSQL como MongoDB.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -946,10 +954,10 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-building-block-view">5. Building Block View</h2>
+<h2 id="section-building-block-view">5. Vista de bloques de construcción</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_whitebox_overall_system">5.1. Whitebox Overall System</h3>
+<h3 id="_vista_general_del_sistema">5.1. Vista general del sistema</h3>
 <div class="paragraph">
 <p>A continuación se muestra el diagrama que muestra una vista completa y genérica de lo que será la estructura de la aplicación en su entorno. Se divide en tres principales componentes que mediante interacciones detalladas en los siguientes apartados lograrán una ejecución correcta del sistema. It contains</p>
 </div>
@@ -988,16 +996,16 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 </table>
 </div>
 <div class="sect2">
-<h3 id="_level_2">5.2. Level 2</h3>
+<h3 id="_nivel_2">5.2. Nivel 2</h3>
 <div class="sect3">
-<h4 id="_white_box_wiq">5.2.1. White Box <em>WIQ</em></h4>
+<h4 id="_caja_blanca_wiq">5.2.1. Caja blanca <em>"WIQ"</em></h4>
 <div class="paragraph">
 <p>En este apartado pasaré a describir en forma de "white box", bloque que en el diagrama de vista general hacía referencia a la aplicación al completo de manera genérica. En esta vista divisoria de la estructura de la aplicación ya comenzamos a distinguir componentes más concretos.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>"WebApp" es el componente con el que interactúa el usuario cuando entra en la aplicación y que trabaja con los demás componentes de este diagrama. "Users Management" se trata del microservicio encargado, como su nombre indica, del manejo de los usuarios, tanto los nuevos como los ya registrados en nuestro sistema. "Question Manager" se trata del conjunto de servicios encargado de la generación de preguntas.</p>
+<p>"WebApp" es el componente con el que interactúa el usuario cuando entra en la aplicación y que trabaja con los demás componentes de este diagrama. "Users Manager" se trata del bloque de la aplicación encargado, como su nombre indica, del manejo de los usuarios, tanto los nuevos como los ya registrados en nuestro sistema. "Question Manager" se trata del conjunto de microservicios encargado de la generación y almacenaje de preguntas. Además observamos ya el "Gateway Service" que hace de puerta de enlace para los diferentes microservicios gestionando el flujo de peticiones dentro de nuestro juego. Los microservicios a los que redirige sus peticiones el "Gateway Service", se detallarán más adelante.</p>
 </li>
 </ul>
 </div>
@@ -1017,7 +1025,11 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 <td class="tableblock halign-left valign-top"><p class="tableblock">Responsabilidad</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Users Management</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gateway Service</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Su cometido es el de gestionar las peticiones dentro del juego para redirigirlas a los microservicios correspondientes, centralizando así las peticiones dentro del producto.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Users Manager</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Se encarga de gestionar la autenticación de los usuarios que traten de loggearse con sus credenciales en la aplicación así como de llevar un registro de los usuarios que ya tengan sus credenciales guardadas en el sistema.</p></td>
 </tr>
 <tr>
@@ -1029,22 +1041,19 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_level_3">5.3. Level 3</h3>
+<h3 id="_nivel_3">5.3. Nivel 3</h3>
 <div class="imageblock">
 <div class="content">
 <img src="./images/05_bbv_level03.jpg" alt="Level3">
 </div>
 </div>
-<div class="paragraph">
-<p>Nota: la versión descrita en la imagen superior está abierta a modificaciones durante el desarrollo del proyecto.</p>
-</div>
 <div class="sect3">
-<h4 id="_white_box_users_management">5.3.1. White Box <em>Users Management</em></h4>
+<h4 id="_caja_blanca_users_manager">5.3.1. Caja blanca <em>"Users Manager"</em></h4>
 <div class="paragraph">
-<p>Este esquema concreta la estructura interna del bloque "Users Management" que se encarga, descrito de manera rápida y locuaz, de gestionar las credenciales, fechas de registro y peticiones de login de los usuarios ya registrados y también de aquellos que traten de registrarse por primera vez en nuestra aplicación.</p>
+<p>Este esquema concreta la estructura interna del bloque "Users Managemer" que se encarga, descrito de manera rápida y locuaz, de gestionar las credenciales, fechas de registro y peticiones de login de los usuarios ya registrados y también de aquellos que traten de registrarse por primera vez en nuestra aplicación. También está entre sus labores la de mantener un registro actualizado del ranking (porcentaje de aciertos, numero de partidas jugadas&#8230;&#8203;) de cada uno de los usuarios registrado (lo hará en una base de datos dedicada específicamente a ello).</p>
 </div>
 <div class="paragraph">
-<p>El diagrama se divide en cuatro principales componentes que interactuan de manera secuencial mediante dos principales "caminos" de ejecución teniendo siempre en común el uso de la base de datos para garantizar la persistencia de nuestro sistema.</p>
+<p>El diagrama se divide en cuatro principales componentes (<em>User Service</em>, <em>Authentication Service</em>, <em>Ranking Service</em>) que interactuan con sus respectivas bases de datos.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1057,10 +1066,6 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 <td class="tableblock halign-left valign-top"><p class="tableblock">Responsabilidad</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Gateway Service</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Servicio encargado de recibir la petición del usuario que entra en nuestra aplicación y redirigir la ejecución de la misma hacia el microservicio "user" o "authentication" según convenga.</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">User Service</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Microservicio encargado de llevar el registro de los usuarios que se vayan creando durante el tiempo que la aplicación permanece desplegada así como de sus credenciales, fecha de registro&#8230;&#8203;</p></td>
 </tr>
@@ -1069,16 +1074,30 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 <td class="tableblock halign-left valign-top"><p class="tableblock">Microservicio encargado de la autenticación de usuarios que traten de loggearse en la aplicación basándose en las credenciales registradas en la base de datos.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ranking Service</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Microservicio cuya labor consiste en registrar en la base de datos "rankingdb" los datos globales del conjunto de partidas jugadas por cada usuario registrado en "userdb".</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User Database</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Se encarga de almacenar información de la aplicación para garantizar la persistencia de la misma (p.e: usuarios, contraseñas, registro histórico de puntuaciones&#8230;&#8203;).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ranking Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Almacena información sobre el histórico de cada usuario. Entre la información almacenada está: Porcentaje de aciertos, preguntas acertadas, preguntas falladas, número total de partidas y el nombre del usuario.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_white_box_question_manager">5.3.2. White Box <em>Question Manager</em></h4>
+<h4 id="_caja_blanca_question_manager">5.3.2. Caja blanca <em>"Question Manager"</em></h4>
 <div class="paragraph">
-<p>Este segundo esquema trata de describir con mayor hondura el funcionamiento interno del bloque "Question Manager". Esta funcionalidad se divide en dos microservicios y ambos interactúan directamente con la API de WikiData para extraer de este servicio externo la información trascendental y necesaria para producir nuevos interrogantes (preguntas) y nuevas respuestas a los mismos.</p>
+<p>Este segundo esquema trata de describir con mayor hondura el funcionamiento interno del bloque "Question Manager". Esta funcionalidad se divide en cuatro microservicios y tan solo uno de ellos interactúa directamente con la API de WikiData para extraer de este servicio externo la información trascendental y necesaria para producir nuevos interrogantes (preguntas) y respuestas a los mismos.</p>
+</div>
+<div class="paragraph">
+<p>Cabe destacar que los microservicios <em>"GeneratedQuestion Service"</em> y <em>"Create Service"</em> comparten una misma base de datos "questiondb" pero utilizan dos colecciones diferentes ("generatedquestions" y "questions" respectivamente). El microservicio "GeneratedQuestions" se encarga de almacenar preguntas completas y, solamente, las respuestas correctas de cada una de las preguntas (lo hace para poder mostrar en cierta funcionalidad del juego las preguntas que ya han sido generadas a modo de "enciclopedia"). Por otro lado el microservicio "Create Service" almacena en su base de datos las plantillas de las preguntas (p.e: "¿Cuál es la capital de ") y el "typeQuestion" (cadena de texto) que resulta relevante dentro de la lógica del microservicio para extraer la "query" (consulta de WikiData) idónea para conseguir completar la pregunta y obtener sus respuestas correctas e incorrectas.</p>
+</div>
+<div class="paragraph">
+<p>Los otros dos microservicios son "QuestionGenerator" y "Record". Cada uno de ellos utiliza una base de datos separada para almacenar: el primero de ellos las preguntas con todas sus respuestas (correcta e incorrectas); el segundo de ellos las puntuaciones de cada una de las partidas que se juegen por cada uno de los usuarios.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1095,11 +1114,22 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 <td class="tableblock halign-left valign-top"><p class="tableblock">Se encarga de, gracias a la interacción con la API de WikiData, generar las preguntas que vayan a presentarse al usuario durante el transcurso de la partida en curso.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Answer Service</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Servicio encargado de, trabajando de igual manera que el servicio anterior, generar las respuestas (tanto la correcta como las incorrectas) a las preguntas planteadas por el anterior microservicio.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GeneratedQuestion Service</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Se encarga de almacenar las preguntas generadas y sus respuestas correctas para mostrarlas en una especie de recopilatorio de preguntas generadas que se podrán consultar en la aplicación.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">QuestionGenerator Service</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Almacena las preguntas completas (interrogante, respuestas incorrectas y respuesta correcta) para poder mostrarlas durante la partida.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Record Service</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Registra las estadísticas <em>de cada una de las partidas</em> (de manera independiente para cada partida) de cada uno de los jugadores.</p></td>
 </tr>
 </tbody>
 </table>
+<div class="paragraph">
+<p><em>Cabe destacar que hemos situado <strong>Record Service</strong> en el paquete relativo a las preguntas. Esto lo hemos hecho así porque creemos que mantiene mayor relación con las mismas y con el "juego" en sí, más que con el paquete relativo a la información de los usuarios. Sin embargo, la decisión contraria también tiene su lógica.</em></p>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -1120,31 +1150,63 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 <h3 id="_inicio_de_sesión_en_la_aplicación">6.2. Inicio de sesión en la aplicación</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="484" height="376">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="660" height="523">
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_respuesta_a_una_pregunta">6.3. Respuesta a una pregunta</h3>
+<h3 id="_generacion_de_preguntas">6.3. Generacion de preguntas</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="644" height="498">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="393" height="278">
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_fin_de_partida">6.4. Fin de partida</h3>
+<h3 id="_respuesta_a_una_pregunta">6.4. Respuesta a una pregunta</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="457" height="305">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="834" height="925">
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_consulta_del_historial">6.5. Consulta del historial</h3>
+<h3 id="_consulta_del_historial_de_usuarios">6.5. Consulta del historial de usuarios</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="424" height="305">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="567" height="305">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_consulta_del_historial_de_preguntas_generadas">6.6. Consulta del historial de preguntas generadas</h3>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="711" height="305">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_consulta_del_historial_de_jugadas">6.7. Consulta del historial de jugadas</h3>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="559" height="305">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_consulta_del_ranking">6.8. Consulta del ranking</h3>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="419" height="305">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cambio_de_ajustes_de_partida">6.9. Cambio de ajustes de partida</h3>
+<div class="imageblock">
+<div class="content">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="359" height="274">
 </div>
 </div>
 <div style="page-break-after: always;"></div>
@@ -1181,11 +1243,11 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 <td class="tableblock halign-left valign-top"><p class="tableblock">Descripción</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">WebApp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Webapp</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Se trata del frontend de la aplicación que será desplegado en el navegador.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">GateWay</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gateway</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Funciona de interemediario conectando la WebApp con los diferentes microservicios, conectando así todos los componentes.</p></td>
 </tr>
 <tr>
@@ -1194,7 +1256,7 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">MongoDB</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Es la base de datos elegida para el almacenaje de la información crucial de la aplicación.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Es la base de datos elegida para el almacenaje de la información crucial de la aplicación, se encuentra en la nube.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Client</p></td>
@@ -1202,9 +1264,6 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>(En desarrollo)</p>
-</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -1218,7 +1277,7 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 <h4 id="_dominio">8.1.1. Dominio</h4>
 <div class="imageblock">
 <div class="content">
-<img src="./images/08-Dominio.jpeg" alt="Dominio">
+<img src="./images/08-DominioV4.png" alt="Dominio">
 </div>
 </div>
 </div>
@@ -1254,7 +1313,7 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Inmediata retroalimnetacion:</strong> El usuario verá de forma inmediata si ha acertado o no la pregunta contestada. Así como el historial de jugadas estará actualizado en todo momento.</p>
+<p><strong>Inmediata retroalimnetacion:</strong> El usuario verá de forma inmediata si ha acertado o no la pregunta contestada. Así como el historial de jugadas, ranking, y preguntas generadas estará actualizado en todo momento.</p>
 </li>
 </ul>
 </div>
@@ -1296,7 +1355,7 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 <p><strong>Implementación:</strong> Para la creación de esta aplicación se usará el lenguaje de programación JavaScript, para el front-end se utilizará React, Node.js y la construccion de microservicios para el back-end y MongoDB para la gestion de la base de datos NoSQL.</p>
 </li>
 <li>
-<p><strong>Pruebas:</strong> Se llevarán a cabo pruebas unitarias, de integración, de aceptación, de capacidad/rendimiento y de regresión, todas ellas siguiendo los principios FIRST(Fast, Independent, Repeatable, Self-Checking y Timely) para garantizar la ejecución correcta de todas las funcionalidades de la aplicación.</p>
+<p><strong>Pruebas:</strong> Se llevarán a cabo pruebas e2e y unitarias, de integración, de aceptación, de capacidad/rendimiento y de regresión, todas ellas siguiendo los principios FIRST(Fast, Independent, Repeatable, Self-Checking y Timely) para garantizar la ejecución correcta de todas las funcionalidades de la aplicación.</p>
 </li>
 </ul>
 </div>
@@ -1327,11 +1386,11 @@ haremos uso de Node.js y la implementación de microservicios para el back-end. 
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Negocio</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Aquí será donde se llevará a cabo toda la lógica correspondiente que hace posible el correcto funcionamiento de la aplicación, se utilizará para poder generar las direfectes preguntas del juego de forma automática, así como sus posibles respuestas ente otras funcionalidades como la creación del historial de cada jugador.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aquí será donde se llevará a cabo toda la lógica correspondiente que hace posible el correcto funcionamiento de la aplicación. Se utilizará para poder generar las diferentes preguntas del juego de forma automática, así como sus posibles respuestas, entre otras funcionalidades como la creación del historial de cada jugador.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Persistencia</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Para almacenar/obtener los diferentes datos que se necesiten tanto para el jugador como para el sistema de juego de preguntas y respuestas.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Para almacenar y obtener los diferentes datos que se necesiten, tanto para el jugador como para el sistema de juego de preguntas y respuestas.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1649,10 +1708,6 @@ buena idea usarlo.</p></td>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Distractores</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Las diferentes respuestas falsas que se mostrarán al usuario.</em></p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>BodyQuestions</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>Los diferentes cuerpos que vamos a utilizar de las preguntas base.</em></p></td>
 </tr>
@@ -1661,12 +1716,12 @@ buena idea usarlo.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>Las distintas categorias que hay de preguntas.</em></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>TypeAnswers</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Las distintas categorias que hay de respuestas.</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Record</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Elemento del historial de jugadas.</em></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Jugada</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Elemento del historial de jugadas.</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>QuestionGenerator</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Generador de preguntas a traves de la API de Wikidata.</em></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>Arc42</em></p></td>
@@ -1675,6 +1730,10 @@ buena idea usarlo.</p></td>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>Microservicios</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>Enfoque de arquitectura que usamos para desarrollar software de manera que se construyan aplicaciones de forma que estas se dividan en elementos pequeños e independientes entre si.</em></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Wikidata</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Página a partir de la que se obtienen los datos para las preguntas y sus respuestas.</em></p></td>
 </tr>
 </tbody>
 </table>
