@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Container, Typography, Button, Snackbar, Grid, List, ListItem, ListItemText } from '@mui/material';
 
@@ -19,12 +19,6 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
     useEffect(() => {
-        obtenerPreguntaAleatoria();
-
-
-    }, [obtenerPreguntaAleatoria]);
-
-    useEffect(() => {
         const interval = setInterval(() => {
             if (timer>=timeLimit){
                 setFinished(true);
@@ -38,17 +32,21 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         return () => clearInterval(interval);
     }, [timeLimit, timer, finished]);
 
-    const obtenerPreguntaAleatoria = async () => {
-        try {
-            const response = await axios.get(`${apiEndpoint}/getRandomQuestionGenerator`);
-            setQuestion(response.data);
-            const respuestas = [...response.data.incorrectas, response.data.correcta];
-            setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
-        } catch (error) {
-            console.error("Error al obtener la pregunta aleatoria", error);
-            setError('Error al obtener la pregunta aleatoria');
-        }
-    };
+    useEffect(() => {
+        const obtenerPreguntaAleatoria = async () => {
+            try {
+                const response = await axios.get(`${apiEndpoint}/getRandomQuestionGenerator`);
+                setQuestion(response.data);
+                const respuestas = [...response.data.incorrectas, response.data.correcta];
+                setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
+            } catch (error) {
+                console.error("Error al obtener la pregunta aleatoria", error);
+                setError('Error al obtener la pregunta aleatoria');
+            }
+        };
+    
+        obtenerPreguntaAleatoria();
+    }, [axios, apiEndpoint, setQuestion, setRespuestasAleatorias, setError]);
 
     const handleTimeRemaining = () => {
         let minsR = Math.floor((timeLimit - timer) / 60);
@@ -107,40 +105,40 @@ const Game = ({ username, totalQuestions, timeLimit }) => {
         }
     };
 
-    const addRecord = async () => {
-        try {
-          await axios.post(`${apiEndpoint}/addRecord`, {
-            userId: username,
-            date: new Date(),
-            time: timer,
-            money: (25 * correctQuestions),
-            correctQuestions: correctQuestions,
-            failedQuestions: (10 - correctQuestions)
-          });
-        } catch (error) {
-          setError(error.response.data.error);
-        }
-      };
-
-    const updateRanking = async () => {
-        try {
-          await axios.post(`${apiEndpoint}/updateRanking`, {
-            username: username,
-            preguntasCorrectas: correctQuestions,
-            preguntasFalladas: totalQuestions - correctQuestions
-          });
-        } catch (error) {
-          setError(error.response.data.error);
-        }
-    };
-
     useEffect(() => {
+        const addRecord = async () => {
+            try {
+                await axios.post(`${apiEndpoint}/addRecord`, {
+                  userId: username,
+                  date: new Date(),
+                  time: timer,
+                  money: (25 * correctQuestions),
+                  correctQuestions: correctQuestions,
+                  failedQuestions: (10 - correctQuestions)
+                });
+              } catch (error) {
+                setError(error.response.data.error);
+              }
+        };
+
+        const updateRanking = async () => {
+            try {
+              await axios.post(`${apiEndpoint}/updateRanking`, {
+                username: username,
+                preguntasCorrectas: correctQuestions,
+                preguntasFalladas: totalQuestions - correctQuestions
+              });
+            } catch (error) {
+              setError(error.response.data.error);
+            }
+        };
+        
         if ((timer >= timeLimit || numberClics === totalQuestions - 1)&& !almacenado) {
             addRecord();
             updateRanking();
             setAlmacenado(true);
         }
-    }, [addRecord, updateRanking, timer, numberClics, totalQuestions, timeLimit, almacenado]);
+    }, [timer, numberClics, totalQuestions, timeLimit, almacenado]);
 
     if(isNaN(totalQuestions)){
         totalQuestions=10;
