@@ -52,7 +52,8 @@ app.post('/updateRanking', async (req, res) => {
       const existingUserRank = await UserRank.findOne({ username });
   
       if (existingUserRank) {
-        // Si ya existe un ranking para el usuario, actualizar los valores a cero
+        // Si ya existe un ranking para el usuario, actualizar los valores a cero 
+          //para actualizarlos despues con los valores de las jugadas
         existingUserRank.porcentajeAciertos = 0;
         existingUserRank.preguntasCorrectas = 0;
         existingUserRank.preguntasFalladas = 0;
@@ -93,20 +94,6 @@ app.post('/updateAllRanking', async (req, res) => {
   try {
     const rankingData = req.body;
 
-    //ELIMINO RANKIN DE USERS BORRADOS
-    const allUsers = await UserRank.find();
-    for (const existingUser of allUsers) {
-      let borrar=true;
-      for (const userData of rankingData) {
-        if (existingUser.username==userData.username){
-            borrar=false;
-        }
-      }
-      if (borrar){
-        await UserRank.deleteOne({ username: existingUser.username });
-      }
-
-    }
     // Iterar sobre los datos recibidos y actualizar los rankings correspondientes
     for (const userData of rankingData) {
       const username = userData.username;
