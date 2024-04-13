@@ -43,7 +43,7 @@ const RootComponent = () => {
     const intervalId = setInterval(() => {
       obtenerPreguntaspartida(numquest); // Pass current numquest value
       setNumquest(prevNumquest => prevNumquest + 1); // Increment numquest
-    }, 2000); // Execute every 2 seconds
+    }, 60000); // Execute every 60 seconds
 
     return () => {
       clearInterval(intervalId); // Cleanup function to stop interval when component unmounts
