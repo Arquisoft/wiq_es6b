@@ -25,21 +25,27 @@ afterEach(async () => {
 describe('User Service', () => {
   // Prueba para el endpoint POST /createUserRank
   describe('POST /createUserRank', () => {
-    it('should create a new user rank', async () => {
-      const newUser = { username: 'testuser' };
-
-      // Realizar una solicitud POST para crear un nuevo ranking de usuario
+    it('should create new user ranks', async () => {
+      const newUser = { username: 'testuser1' };
+      const newUser2 = { username: 'testuser2' };
+      const newUser3 = { username: 'testuser3' };
+      const newUser4 = { username: 'testuser4' };
+      const users = [newUser, newUser2, newUser3, newUser4];
+  
+      // Realizar una solicitud POST para crear nuevos rankings de usuarios
       const response = await request(app)
-        .post('/createUserRank')
-        .send(newUser);
-
+        .post('/createUserRank') // Cambio en el endpoint
+        .send({ usernames: users.map(user => user.username) });
+  
       // Verificar el código de estado de la respuesta
       expect(response.status).toBe(200);
-
-      // Verificar si se creó correctamente el nuevo ranking de usuario en la base de datos
-      const createdUserRank = await UserRank.findOne({ username: newUser.username });
-      expect(createdUserRank).toBeTruthy();
-      expect(createdUserRank.username).toBe(newUser.username);
+  
+      // Verificar si se crearon correctamente los nuevos rankings de usuario en la base de datos
+      for (const user of users) {
+        const createdUserRank = await UserRank.findOne({ username: user.username });
+        expect(createdUserRank).toBeTruthy();
+        expect(createdUserRank.username).toBe(user.username);
+      }
     });
   });
 

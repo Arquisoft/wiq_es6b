@@ -12,6 +12,7 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: 20
+   
     - run: npm --prefix users/authservice ci
     - run: npm --prefix users/userservice ci
     - run: npm --prefix questions/createservice ci
@@ -20,7 +21,8 @@ jobs:
     - run: npm --prefix questions/recordservice ci
     - run: npm --prefix users/rankingservice ci
     - run: npm --prefix gatewayservice ci
-    - run: npm --prefix webapp ci
+    - run: npm --prefix webapp ci 
+
     - run: npm --prefix users/authservice test -- --coverage
     - run: npm --prefix users/userservice test -- --coverage
     - run: npm --prefix questions/createservice test -- --coverage
@@ -30,6 +32,7 @@ jobs:
     - run: npm --prefix users/rankingservice test -- --coverage
     - run: npm --prefix gatewayservice test -- --coverage
     - run: npm --prefix webapp test -- --coverage
+
     - name: Analyze with SonarCloud
       uses: sonarsource/sonarcloud-github-action@master
       env:
@@ -47,6 +50,7 @@ jobs:
     - run: npm --prefix users/userservice install
     - run: npm --prefix questions/createservice install
     - run: npm --prefix questions/generatedquestservice install
+    - run: npm --prefix questions/questiongeneratorservice install
     - run: npm --prefix questions/recordservice install
     - run: npm --prefix users/rankingservice install
     - run: npm --prefix gatewayservice install
@@ -175,6 +179,23 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: ghcr.io
         workdir: questions/generatedquestservice
+  docker-push-questiongeneratorservice:
+    name: Push question generator service Docker Image to GitHub Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs: [e2e-tests]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@v5
+      with:
+        name: arquisoft/wiq_es6b/questiongeneratorservice
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: ghcr.io
+        workdir: questions/questiongeneratorservice
   docker-push-gatewayservice:
     name: Push gateway service Docker Image to GitHub Packages
     runs-on: ubuntu-latest

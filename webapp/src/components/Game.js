@@ -36,10 +36,6 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
     }
 
     useEffect(() => {
-        obtenerPreguntaAleatoria();
-    }, [numberClics]);
-
-    useEffect(() => {
         const interval = setInterval(() => {
             if (timer>=timeLimit){
                 setFinished(true);
@@ -51,36 +47,23 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [timer, finished]);
+    }, [timeLimit, timer, finished]);
 
-    const obtenerPreguntaAleatoria = async () => {
-        try {
-            const response = await axios.get(`${apiEndpoint}/getRandomQuestionGenerator`);
-            setQuestion(response.data);
-            const respuestas = [...response.data.incorrectas, response.data.correcta];
-            setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
-        } catch (error) {
-            console.error("Error al obtener la pregunta aleatoria", error);
-            setError('Error al obtener la pregunta aleatoria');
-        }
-
-        console.log("Antes: "+themesSelected);
-        // Generar array solo con los temas seleccionados
-        const temasSeleccionados = Object.entries(themesSelected)
-                                            .filter(([tema, seleccionado]) => seleccionado===true)
-                                            .map(([tema]) => tema);
-        console.log("Temas seleccionados : ", temasSeleccionados);
-
-        const temasSeleccionadoss = Object.entries(themesSelected)
-            .filter(([tema, seleccionado]) => seleccionado==true)
-            .map(([tema]) => tema);
-        console.log("Temas seleccionados 2: ", temasSeleccionadoss);
-
-        const temasSeleccionadosss = Object.entries(themesSelected)
-            .filter(([tema, seleccionado]) => seleccionado)
-            .map(([tema]) => tema);
-        console.log("Temas seleccionados 3: ", temasSeleccionadosss);
-    };
+    useEffect(() => {
+        const obtenerPreguntaAleatoria = async () => {
+            try {
+                const response = await axios.get(`${apiEndpoint}/getRandomQuestionGenerator`);
+                setQuestion(response.data);
+                const respuestas = [...response.data.incorrectas, response.data.correcta];
+                setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
+            } catch (error) {
+                console.error("Error al obtener la pregunta aleatoria", error);
+                setError('Error al obtener la pregunta aleatoria');
+            }
+        };
+    
+        obtenerPreguntaAleatoria();
+    }, [apiEndpoint, setQuestion, setRespuestasAleatorias, setError]);
 
     const handleTimeRemaining = () => {
         let minsR = Math.floor((timeLimit - timer) / 60);
@@ -98,6 +81,30 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
         return `${minsRStr}:${secsRStr}`;
     }
 
+    const addGeneratedQuestionBody = async () => {
+        try {
+          await axios.post(`${apiEndpoint}/addGeneratedQuestion`, {
+            generatedQuestionBody: question.questionBody,
+            correctAnswer: question.correcta
+          });
+    
+        } catch (error) {
+          setError(error.response.data.error);
+        }
+    };
+
+    const obtenerPreguntaAleatoria = async () => {
+        try {
+            const response = await axios.get(`${apiEndpoint}/getRandomQuestionGenerator`);
+            setQuestion(response.data);
+            const respuestas = [...response.data.incorrectas, response.data.correcta];
+            setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
+        } catch (error) {
+            console.error("Error al obtener la pregunta aleatoria", error);
+            setError('Error al obtener la pregunta aleatoria');
+        }
+    };
+
     const handleButtonClick = async (respuestaSeleccionada, index) => {
         if (!finished) {
             if (selectedOption !== null) return; // Si ya se seleccionó una opción, no hacer nada
@@ -110,6 +117,7 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
             } else {
                 setSelectedAnswer('incorrect');
             }
+            console.log(`The selected answer is: ${selectedAnswer}`);
 
             // Si ya llegamos a la última pregunta, acabamos la partida para que se muestre el resultado
             if(numberClics===totalQuestions-1){
@@ -117,9 +125,10 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
             }
 
             // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
-            setTimeout(() => {
+            setTimeout(async() => {
+                await obtenerPreguntaAleatoria();
                 setSelectedOption(null);
-                addGeneratedQuestionBody();
+                await addGeneratedQuestionBody();
                 setNumberClics(numberClics + 1);
                 setSelectedAnswer('');
             }, delayBeforeNextQuestion);
@@ -127,51 +136,48 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
     };
 
     useEffect(() => {
+        const addRecord = async () => {
+            try {
+                await axios.post(`${apiEndpoint}/addRecord`, {
+                  userId: username,
+                  date: new Date(),
+                  time: timer,
+                  money: (25 * correctQuestions),
+                  correctQuestions: correctQuestions,
+                  failedQuestions: (totalQuestions - correctQuestions)
+                });
+              } catch (error) {
+                setError(error.response.data.error);
+              }
+        };
+
+        const updateRanking = async () => {
+            try {
+              await axios.post(`${apiEndpoint}/updateRanking`, {
+                username: username,
+                preguntasCorrectas: correctQuestions,
+                preguntasFalladas: totalQuestions - correctQuestions
+              });
+            } catch (error) {
+              setError(error.response.data.error);
+            }
+        };
+        
         if ((timer >= timeLimit || numberClics === totalQuestions - 1)&& !almacenado) {
-            addRecord();
-            updateRanking();
+            (async () => {
+                await addRecord();
+                await updateRanking();
+            })();
             setAlmacenado(true);
         }
-    }, [timer, numberClics, totalQuestions, timeLimit]);
+    }, [timer, numberClics, totalQuestions, timeLimit, almacenado, apiEndpoint, correctQuestions, username]);
 
-    const addRecord = async () => {
-        try {
-          await axios.post(`${apiEndpoint}/addRecord`, {
-            userId: username,
-            date: new Date(),
-            time: timer,
-            money: (25 * correctQuestions),
-            correctQuestions: correctQuestions,
-            failedQuestions: (10 - correctQuestions)
-          });
-        } catch (error) {
-          setError(error.response.data.error);
-        }
-      };
-
-    const updateRanking = async () => {
-        try {
-          await axios.post(`${apiEndpoint}/updateRanking`, {
-            username: username,
-            preguntasCorrectas: correctQuestions,
-            preguntasFalladas: totalQuestions - correctQuestions
-          });
-        } catch (error) {
-          setError(error.response.data.error);
-        }
-      };
-      
-    const addGeneratedQuestionBody = async () => {
-        try {
-          await axios.post(`${apiEndpoint}/addGeneratedQuestion`, {
-            generatedQuestionBody: question.questionBody,
-            correctAnswer: question.correcta
-          });
-    
-        } catch (error) {
-          setError(error.response.data.error);
-        }
-      };
+    if(isNaN(totalQuestions)){
+        totalQuestions=10;
+    }
+    if(isNaN(timeLimit)){
+        timeLimit=180;
+    }
 
     return (
         <Container maxWidth="lg">
