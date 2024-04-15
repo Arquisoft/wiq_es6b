@@ -9,52 +9,26 @@ servers:
   - url: http://51.142.17.139:8007
     description: Production server
 paths:
-  /getQuestionGenerator/{numquest}:
-    get:
-      summary: Retrieve a question test by its number.
-      operationId: getQuestionGenerator
-      parameters:
-        - name: numquest
-          in: path
-          description: The number of the question test.
-          required: true
-          schema:
-            type: integer
+  /addOrUpdateQuestionGenerator:
+    post:
+      summary: Add or update a question generator.
+      operationId: addOrUpdateQuestionGenerator
+      requestBody:
+        description: The question generator data to add or update.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionGenerator'
       responses:
         '200':
-          description: Question test retrieved successfully.
+          description: Question generator added or updated successfully.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  questionBody:
-                    type: string
-                    description: The body of the question.
-                  correcta:
-                    type: string
-                    description: The correct answer.
-                  incorrectas:
-                    type: array
-                    items:
-                      type: string
-                    description: The incorrect answers.
-                  numquest:
-                    type: integer
-                    description: The number of the question.
-        '404':
-          description: Question test not found.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: Error information.
-                    example: Question not found
+                $ref: '#/components/schemas/QuestionGenerator'
         '500':
-          description: Internal server error.
+          description: Internal Server Error.
           content:
             application/json:
               schema:
@@ -62,38 +36,23 @@ paths:
                 properties:
                   error:
                     type: string
-                    description: Error information.
-                    example: Internal Server Error
+                    description: Error message.
+
   /getAllQuestionGenerator:
     get:
-      summary: Retrieve all question tests.
+      summary: Retrieve all question generators.
       operationId: getAllQuestionGenerator
       responses:
         '200':
-          description: Question tests retrieved successfully.
+          description: All question generators retrieved successfully.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    questionBody:
-                      type: string
-                      description: The body of the question.
-                    correcta:
-                      type: string
-                      description: The correct answer.
-                    incorrectas:
-                      type: array
-                      items:
-                        type: string
-                      description: The incorrect answers.
-                    numquest:
-                      type: integer
-                      description: The number of the question.
+                  $ref: '#/components/schemas/QuestionGenerator'
         '500':
-          description: Internal server error.
+          description: Internal Server Error.
           content:
             application/json:
               schema:
@@ -101,63 +60,21 @@ paths:
                 properties:
                   error:
                     type: string
-                    description: Error information.
-                    example: Internal Server Error
-  /deleteAllQuestionGenerator:
-    delete:
-      summary: Delete all question tests.
-      operationId: deleteAllQuestionGenerator
-      responses:
-        '200':
-          description: Question tests deleted successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: Success message.
-                    example: All questions deleted successfully.
-        '500':
-          description: Internal server error.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: Error information.
-                    example: Internal Server Error
+                    description: Error message.
+
   /getRandomQuestionGenerator:
     get:
-      summary: Retrieve a random question test.
+      summary: Retrieve a random question generator.
       operationId: getRandomQuestionGenerator
       responses:
         '200':
-          description: Random question test retrieved successfully.
+          description: Random question generator retrieved successfully.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  questionBody:
-                    type: string
-                    description: The body of the question.
-                  correcta:
-                    type: string
-                    description: The correct answer.
-                  incorrectas:
-                    type: array
-                    items:
-                      type: string
-                    description: The incorrect answers.
-                  numquest:
-                    type: integer
-                    description: The number of the question.
+                $ref: '#/components/schemas/QuestionGenerator'
         '500':
-          description: Internal server error.
+          description: Internal Server Error.
           content:
             application/json:
               schema:
@@ -165,8 +82,174 @@ paths:
                 properties:
                   error:
                     type: string
-                    description: Error information.
-                    example: Internal Server Error
+                    description: Error message.
+
+  /deleteFirstQuestionGenerator:
+    delete:
+      summary: Delete the first question generator.
+      operationId: deleteFirstQuestionGenerator
+      responses:
+        '200':
+          description: First question generator deleted successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionGenerator'
+        '404':
+          description: No question generator found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+
+  /countQuestionGenerator:
+    get:
+      summary: Count the number of question generators.
+      operationId: countQuestionGenerator
+      responses:
+        '200':
+          description: Number of question generators counted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: The number of question generators.
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+  /getRandomQuestionDeporte:
+    get:
+      summary: Retrieve a random sports question.
+      operationId: getRandomQuestionDeporte
+      responses:
+        '200':
+          description: Random sports question retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+
+  /getRandomQuestionAnio:
+    get:
+      summary: Retrieve a random year question.
+      operationId: getRandomQuestionAnio
+      responses:
+        '200':
+          description: Random year question retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+
+  /getRandomQuestionMusica:
+    get:
+      summary: Retrieve a random music question.
+      operationId: getRandomQuestionMusica
+      responses:
+        '200':
+          description: Random music question retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+
+  /getRandomQuestionLibro:
+    get:
+      summary: Retrieve a random book question.
+      operationId: getRandomQuestionLibro
+      responses:
+        '200':
+          description: Random book question retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+
+  /getRandomQuestionPaisYGeo:
+    get:
+      summary: Retrieve a random country and geography question.
+      operationId: getRandomQuestionPaisYGeo
+      responses:
+        '200':
+          description: Random country and geography question retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
 components:
   schemas:
     Question:

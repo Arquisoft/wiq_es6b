@@ -9,56 +9,42 @@ servers:
   - url: http://51.142.17.139:8003
     description: Production server
 paths:
-  /addOrUpdateQuestionGenerator:
+  /addGeneratedQuestion:
     post:
-      summary: Add or update a question test.
-      operationId: addOrUpdateQuestionGenerator
+      summary: Add a generated question.
+      operationId: addGeneratedQuestion
       requestBody:
-        description: The question test data to add or update.
+        description: The generated question data to add.
         required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                questionBody:
+                generatedQuestionBody:
                   type: string
-                  description: The body of the question.
-                correcta:
+                  description: The body of the generated question.
+                correctAnswer:
                   type: string
-                  description: The correct answer.
-                incorrectas:
-                  type: array
-                  items:
-                    type: string
-                  description: The incorrect answers.
-                numquest:
-                  type: integer
-                  description: The number of the question.
+                  description: The correct answer of the generated question.
       responses:
         '200':
-          description: Question test added or updated successfully.
+          description: Generated question added successfully.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  questionBody:
+                  generatedQuestionBody:
                     type: string
-                    description: The body of the question.
-                  correcta:
+                    description: The body of the generated question.
+                  correctAnswer:
                     type: string
-                    description: The correct answer.
-                  incorrectas:
-                    type: array
-                    items:
-                      type: string
-                    description: The incorrect answers.
-                  numquest:
-                    type: integer
-                    description: The number of the question.
+                    description: The correct answer of the generated question.
+        '204':
+          description: No Content. The question already exists.
         '500':
-          description: Internal server error.
+          description: Internal Server Error.
           content:
             application/json:
               schema:
@@ -66,8 +52,10 @@ paths:
                 properties:
                   error:
                     type: string
-                    description: Error information.
-                    example: Internal Server Error
+                    description: Error message.
+                  details:
+                    type: string
+                    description: Internal server error.
   /getAllGeneratedQuestions:
     get:
       summary: Retrieve all generated questions.
