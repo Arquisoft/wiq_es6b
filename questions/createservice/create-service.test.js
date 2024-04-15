@@ -22,14 +22,12 @@ beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
     process.env.MONGODB_URI = mongoUri;
-    console.log("MongoDB URI: ", mongoUri);
-    
     app = require('./create-service');
 });
 
 afterAll(async () => {
-  app.close();
-  await mongoServer.stop();
+    await new Promise(resolve => app.close(resolve)); // Cierra el servidor
+    await mongoServer.stop();
 });
 
 describe('Create Service', () => {
