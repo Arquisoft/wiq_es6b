@@ -167,3 +167,22 @@ paths:
                     type: string
                     description: Error information.
                     example: Internal Server Error
+components:
+  schemas:
+    Question:
+      type: object
+      properties:
+        questionBody:
+          type: string
+          description: The body of the question.
+        correcta:
+          type: string
+          description: The correct answer.
+        incorrectas:
+          type: array
+          items:
+            type: string
+          description: The incorrect answers.
+        numquest:
+          type: integer
+          description: The number of the question.

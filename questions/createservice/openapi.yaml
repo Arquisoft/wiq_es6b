@@ -97,3 +97,14 @@ paths:
                     type: string
                     description: Error information.
                     example: Error al realizar la consulta en Wikidata
+components:
+  schemas:
+    Question:
+      type: object
+      properties:
+        questionBody:
+          type: string
+          description: The body of the question.
+        typeQuestion:
+          type: string
+          description: The type of the question.
