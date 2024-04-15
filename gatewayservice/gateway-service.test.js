@@ -115,15 +115,6 @@ describe('Gateway Service', () => {
   expect(response.body.questionId).toBe('mockedQuestionId');
 });
 
-// Test /getAllUsers endpoint
-it('should get all users from user service', async () => {
-  const response = await request(app)
-    .get('/getAllUsers');
-
-  expect(response.statusCode).toBe(200);
-  expect(response.body.users).toEqual(['user1', 'user2']);
-});
-
 // Test /createUserRank endpoint
 it('should create a user rank in ranking service', async () => {
   const mockUsername = 'testuser';
@@ -138,11 +129,11 @@ it('should create a user rank in ranking service', async () => {
 
 // Test /updateRanking endpoint
 it('should update ranking for a user in ranking service', async () => {
-  const mockRanking = { userId: 'testuser', ranking: 'testranking' };
+  const mockRanking = { username: 'testuser' };
 
   const response = await request(app)
     .post('/updateRanking')
-    .send({ userId: 'user123', newRank: mockRanking });
+    .send(mockRanking);
 
   expect(response.statusCode).toBe(200);
   expect(response.body.updatedRanking).toBe(true);
@@ -151,8 +142,8 @@ it('should update ranking for a user in ranking service', async () => {
 // Test /addGeneratedQuestion endpoint
 it('should add a generated question successfully', async () => {
   const mockGeneratedQuestion = {
-    questionBody: '¿Cual es la capital de Francia?',
-    typeQuestion: 'pais_capital'
+    generatedQuestionBody: '¿Cual es la capital de Francia?',
+    correctAnswer: 'Paris'
   };
 
   const response = await request(app)
@@ -161,6 +152,96 @@ it('should add a generated question successfully', async () => {
 
   expect(response.statusCode).toBe(200);
   expect(response.body.generatedQuestionId).toBe('mockedGeneratedQuestionId');
+});
+
+// Test /getAllGeneratedQuestions endpoint
+it('should get all generated questions from generated question service', async () => {
+  const response = await request(app)
+    .get('/getAllGeneratedQuestions');
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.questions).toEqual(['question1', 'question2']);
+});
+
+// Test /getRecords/:userId endpoint
+it('should get all records for a user from record service', async () => {
+  const response = await request(app)
+    .get('/getRecords/testuserid');
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.records).toEqual(['record1', 'record2']);
+});
+
+// Test /getAllUsers endpoint
+it('should get all users from user service', async () => {
+  const response = await request(app)
+    .get('/getAllUsers');
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.users).toEqual(['user1', 'user2']);
+});
+
+// Test /getFullQuestion endpoint
+it('should get a full question from question service', async () => {
+  const response = await request(app)
+    .get('/getFullQuestion');
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.question).toBe('mockedQuestion');
+});
+
+// Test /actRanking endpoint
+it('should get a ranking from ranking service', async () => {
+  const response = await request(app)
+    .get('/actRanking');
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.ranking).toBe('mockedRanking');
+});
+
+// Test /obtainRank endpoint
+it('should get a rank from rank service', async () => {
+  const response = await request(app)
+    .get('/obtainRank');
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.rank).toBe('mockedRank');
+});
+
+// Test /getRandomQuestionGenerator endpoint
+it('should get a random question from question generator service', async () => {
+  const response = await request(app)
+    .get('/getRandomQuestionGenerator');
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.question).toBe('mockedQuestion');
+});
+
+// Test /getAllQuestionGenerator endpoint
+it('should get all questions from question generator service', async () => {
+  const response = await request(app)
+    .get('/getAllQuestionGenerator');
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.questions).toEqual(['question1', 'question2']);
+});
+
+// Test /countQuestionGenerator endpoint
+it('should count all questions from question generator service', async () => {
+  const response = await request(app)
+    .get('/countQuestionGenerator');
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.count).toBe(2);
+});
+
+// Test /deleteFirstQuestionGenerator endpoint
+it('should delete the first question from question generator service', async () => {
+  const response = await request(app)
+    .delete('/deleteFirstQuestionGenerator');
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.success).toBe(true);
 });
 
 });
