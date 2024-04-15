@@ -165,11 +165,23 @@ it('should get all generated questions from generated question service', async (
 
 // Test /getRecords/:userId endpoint
 it('should get all records for a user from record service', async () => {
-  const response = await request(app)
-    .get('/getRecords/testuserid');
+  const mockUserId = 'testuserid';
+  const mockRecords = [
+    { recordId: 'record1', userId: mockUserId, score: 100 },
+    { recordId: 'record2', userId: mockUserId, score: 200 },
+  ];
+
+  // Mock the axios.get implementation for this test
+  axios.get.mockImplementationOnce((url) => {
+    if (url.endsWith(`/getRecords/${mockUserId}`)) {
+      return Promise.resolve({ data: mockRecords });
+    }
+  });
+
+  const response = await request(app).get(`/getRecords/${mockUserId}`);
 
   expect(response.statusCode).toBe(200);
-  expect(response.body.records).toEqual(['record1', 'record2']);
+  expect(response.body).toEqual(mockRecords);
 });
 
 // Test /getAllUsers endpoint
