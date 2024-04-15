@@ -15,29 +15,47 @@ describe('Gateway Service', () => {
     } else if (url.endsWith('/adduser')) {
       return Promise.resolve({ data: { userId: 'mockedUserId' } });
     } else if (url.endsWith('/addRecord')) {
-      // Mock response for addQuestion endpoint
       return Promise.resolve({ data: { recordId: 'mockedRecordId' } });
     } else if (url.endsWith('/addQuestion')) {
-      // Mock response for addQuestion endpoint
       return Promise.resolve({ data: { questionId: 'mockedQuestionId' } });
-    } else if (url.endsWith('/getAllUsers')) {
-      // Mock response for getAllUsers endpoint
-      return Promise.resolve({ data: { users: ['user1', 'user2'] } });
-    }else if (url.endsWith('/createUserRank')) {
-      // Mock response for createUserRank endpoint
+    } else if (url.endsWith('/createUserRank')) {
       return Promise.resolve({ data: { rankId: 'mockedRankId' } });
     } else if (url.endsWith('/updateRanking')) {
-      // Mock response for updateRanking endpoint
       return Promise.resolve({ data: { updatedRanking: true } });
     } else if (url.endsWith('/addQuestionGenerator')) {
-      // Mock response for addQuestionGenerator endpoint
       return Promise.resolve({ data: { questionGeneratorId: 'mockedQuestionGeneratorId' } });
     } else if (url.endsWith('/addGeneratedQuestion')) {
-      // Mock response for addGeneratedQuestion endpoint
       return Promise.resolve({ data: { generatedQuestionId: 'mockedGeneratedQuestionId' } });
     }
   });
 
+  axios.get.mockImplementation((url) => {
+    if (url.endsWith('/getAllGeneratedQuestions')) {
+      return Promise.resolve({ data: { questions: ['question1', 'question2'] } });
+    } else if (url.endsWith('/getAllUsers')) {
+      return Promise.resolve({ data: { users: ['user1', 'user2'] } });
+    } else if (url.endsWith('/getRecords/:userId')) {
+      return Promise.resolve({ data: { records: ['record1', 'record2'] } });
+    } else if (url.endsWith('/getFullQuestion')) {
+      return Promise.resolve({ data: { question: 'mockedQuestion' } });
+    } else if (url.endsWith('/actRanking')) {
+      return Promise.resolve({ data: { ranking: 'mockedRanking' } });
+    } else if (url.endsWith('/obtainRank')) {
+      return Promise.resolve({ data: { rank: 'mockedRank' } });
+    } else if (url.endsWith('/getRandomQuestionGenerator')) {
+      return Promise.resolve({ data: { question: 'mockedQuestion' } });
+    } else if (url.endsWith('/getAllQuestionGenerator')) {
+      return Promise.resolve({ data: { questions: ['question1', 'question2'] } });
+    } else if (url.endsWith('/countQuestionGenerator')) {
+      return Promise.resolve({ data: { count: 2 } });
+    }
+  });
+
+  axios.delete.mockImplementation((url) => {
+    if (url.endsWith('/deleteFirstQuestionGenerator')) {
+      return Promise.resolve({ data: { success: true } });
+    }
+  });
 
   // Test /login endpoint
   it('should forward login request to auth service', async () => {
@@ -87,8 +105,8 @@ describe('Gateway Service', () => {
  // Test /addQuestion endpoint
  it('should add a question successfully', async () => {
   const mockQuestion = {
-    questionBody: 'What is the capital of France?',
-    typeQuestion: 'pais'
+    questionBody: '¿Cual es la capital de Francia?',
+    typeQuestion: 'pais_capital'
   };
 
   const response = await request(app)
@@ -110,9 +128,11 @@ it('should get all users from user service', async () => {
 
 // Test /createUserRank endpoint
 it('should create a user rank in ranking service', async () => {
+  const mockUsername = 'testuser';
+
   const response = await request(app)
     .post('/createUserRank')
-    .send({ username: 'user123', rank: 'gold' });
+    .send({ username: mockUsername });
 
   expect(response.statusCode).toBe(200);
   expect(response.body.rankId).toBe('mockedRankId');
@@ -120,9 +140,11 @@ it('should create a user rank in ranking service', async () => {
 
 // Test /updateRanking endpoint
 it('should update ranking for a user in ranking service', async () => {
+  const mockRanking = { userId: 'testuser', ranking: 'testranking' };
+
   const response = await request(app)
     .post('/updateRanking')
-    .send({ userId: 'user123', newRank: 'platinum' });
+    .send({ userId: 'user123', newRank: mockRanking });
 
   expect(response.statusCode).toBe(200);
   expect(response.body.updatedRanking).toBe(true);
@@ -131,8 +153,8 @@ it('should update ranking for a user in ranking service', async () => {
 // Test /addQuestionGenerator endpoint
 it('should add a question generator successfully', async () => {
   const mockQuestionGenerator = {
-    questionBody: 'What is the capital of France?',
-    typeQuestion: 'pais'
+    questionBody: '¿Cual es la capital de Francia?',
+    typeQuestion: 'pais_capital'
   };
 
   const response = await request(app)
@@ -146,8 +168,8 @@ it('should add a question generator successfully', async () => {
 // Test /addGeneratedQuestion endpoint
 it('should add a generated question successfully', async () => {
   const mockGeneratedQuestion = {
-    questionBody: 'What is the capital of France?',
-    typeQuestion: 'pais'
+    questionBody: '¿Cual es la capital de Francia?',
+    typeQuestion: 'pais_capital'
   };
 
   const response = await request(app)
