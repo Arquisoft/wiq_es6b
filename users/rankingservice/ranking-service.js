@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/rankingdb?retryWrites=true&w=majority&appName=wiq06b';
 mongoose.connect(mongoUri);
 
-
+//actualiza el ranking de un usuario tras terminar la jugada
 app.post('/updateRanking', async (req, res) => {
   try {
     // Buscar al usuariopor su nombre de usuario
@@ -43,23 +43,28 @@ app.post('/updateRanking', async (req, res) => {
   
   });
 
+//crea un elemento ranking si no existe y si existe lo deja a 0 para actualizar a posterior sus datos
+//tambien actualiza si se elimino un usuario de eliminar el elemento ranking correspondiente
+app.post('/createUserRank', async (req, res) => {
+  try {
+    const { usernames } = req.body;
 
-  app.post('/createUserRank', async (req, res) => {
-    try {
-      const { username } = req.body;
-  
+    await deleteRankingElements(usernames);
+
+    // Iterar sobre cada nombre de usuario recibido
+    for (const username of usernames) {
       // Buscar si ya existe un ranking para el usuario
       const existingUserRank = await UserRank.findOne({ username });
-  
+
       if (existingUserRank) {
-        // Si ya existe un ranking para el usuario, actualizar los valores a cero
+        // Si ya existe un ranking para el usuario, actualizar los valores a cero 
+        // para actualizarlos después con los valores de las jugadas
         existingUserRank.porcentajeAciertos = 0;
         existingUserRank.preguntasCorrectas = 0;
         existingUserRank.preguntasFalladas = 0;
         existingUserRank.numPartidas = 0;
-  
+
         await existingUserRank.save();
-        res.json(existingUserRank);
       } else {
         // Si no existe un ranking para el usuario, crear uno nuevo
         const newUserRank = new UserRank({
@@ -69,14 +74,39 @@ app.post('/updateRanking', async (req, res) => {
           preguntasFalladas: 0,
           numPartidas: 0
         });
-  
+
         await newUserRank.save();
-        res.json(newUserRank);
       }
-    } catch (error) {
-      res.status(400).json({ error: error.message });
     }
-  });
+
+    res.json({ message: 'Rankings de usuarios creados o actualizados correctamente.' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+
+//actualiza si se elimino un usuario de eliminar el elemento ranking correspondiente
+async function deleteRankingElements(usernames) {
+  try {
+    // Obtener todos los elementos de ranking
+    const allUserRanks = await UserRank.find({});
+
+    // Crear un conjunto de nombres de usuario en la lista recibida
+    const usernamesSet = new Set(usernames);
+
+    // Iterar sobre cada elemento de ranking
+    for (const userRank of allUserRanks) {
+      // Verificar si el nombre de usuario del elemento de ranking no está en la lista recibida
+      if (!usernamesSet.has(userRank.username)) {
+        // Si el nombre de usuario no está en la lista, eliminar el elemento de ranking
+        await UserRank.deleteOne({ username: userRank.username });
+      }
+    }
+  } catch (error) {
+    throw new Error('Error al actualizar los rankings de usuarios: ' + error.message);
+  }
+}
 
 app.get('/obtainRank', async (req, res) => {
   try {
@@ -88,25 +118,11 @@ app.get('/obtainRank', async (req, res) => {
   }
 });
 
-
+//actualiza al inicio los rankings si hubo algun cambio en la base de datos
 app.post('/updateAllRanking', async (req, res) => {
   try {
     const rankingData = req.body;
 
-    //ELIMINO RANKIN DE USERS BORRADOS
-    const allUsers = await UserRank.find();
-    for (const existingUser of allUsers) {
-      let borrar=true;
-      for (const userData of rankingData) {
-        if (existingUser.username==userData.username){
-            borrar=false;
-        }
-      }
-      if (borrar){
-        await UserRank.deleteOne({ username: existingUser.username });
-      }
-
-    }
     // Iterar sobre los datos recibidos y actualizar los rankings correspondientes
     for (const userData of rankingData) {
       const username = userData.username;
