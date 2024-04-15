@@ -85,7 +85,7 @@ paths:
                   error:
                     type: string
                     description: Error information.
-                    example: Error al realizar la consulta en Wikidata. Estado de respuesta: 400
+                    example: "Error al realizar la consulta en Wikidata. Estado de respuesta: 400"
         '500':
           description: Internal server error.
           content:

@@ -26,8 +26,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-    await new Promise(resolve => app.close(resolve)); // Cierra el servidor
-    await mongoServer.stop();
+  app.close();
+  await mongoServer.stop();
 });
 
 describe('Create Service', () => {
