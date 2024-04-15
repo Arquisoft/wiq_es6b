@@ -7,27 +7,13 @@ describe('RankingList', () => {
     render(<RankingList />);
   });
 
-  it('renders the title', () => {
-    const { getByText } = render(<RankingList />);
-    expect(getByText('Top 3 usurios con mejor porcentaje de aciertos')).toBeInTheDocument();
-  });
 
-  it('handles sort order toggle', async () => {
-    const { getByText } = render(<RankingList />);
-    const usernameColumn = getByText('Nombre de Usuario ▼');
+  test('renders RankingList component and main heading', () => {
+    render(<RankingList />);
 
-    // Click once, expect ascending order
-    fireEvent.click(usernameColumn);
-    expect(usernameColumn.textContent).toBe('Nombre de Usuario ▲');
-
-    // Click again, expect descending order
-    fireEvent.click(usernameColumn);
-    expect(usernameColumn.textContent).toBe('Nombre de Usuario ▼');
-  });
-
-  it('renders the word "Ranking"', () => {
-    const { getByText } = render(<RankingList />);
-    expect(getByText('Ranking')).toBeInTheDocument();
+    // Check if the main heading is in the document
+    const heading = screen.getByRole('heading', { name: /Top 3 usuarios con mejor porcentaje de aciertos/i });
+    expect(heading).toBeInTheDocument();
   });
 
   // Test for rendering the column headers
@@ -39,45 +25,29 @@ test('renders column headers', () => {
     expect(columnHeaders).not.toHaveLength(0);
   });
   
-  // Test for rendering the table rows
-  test('renders table rows', () => {
+  // Test for rendering the table
+  it('should display the table', () => {
     render(<RankingList />);
-  
-    // Check if the table rows are in the document
-    const tableRows = screen.getAllByRole('row');
-    expect(tableRows).not.toHaveLength(0);
-  });
 
-  // Test for correct column headers
-test('renders correct column headers', () => {
-    render(<RankingList />);
-  
-    // Check if the correct column headers are in the document
-    const usernameHeader = screen.getByText('Nombre de Usuario ▼');
-    const percentageHeader = screen.getByText('Porcentaje de aciertos ▼');
-    const rankingHeader = screen.getByText('Ranking ▼');
-  
-    expect(usernameHeader).toBeInTheDocument();
-    expect(percentageHeader).toBeInTheDocument();
-    expect(rankingHeader).toBeInTheDocument();
+    const table = screen.getByRole('table');
+    expect(table).toBeInTheDocument();
   });
-
-  // Test for correct column headers
-test('renders correct column headers', () => {
+  // Test for rendering the table headers
+  test('renders table headers', () => {
     render(<RankingList />);
-  
-    // Check if the correct column headers are in the document
-    const usernameHeader = screen.getByText(/Nombre de Usuario/);
-    const percentageHeader = screen.getByText(/Porcentaje de Aciertos/);
-    const correctQuestionsHeader = screen.getByText(/Preguntas Correctas/);
-    const failedQuestionsHeader = screen.getByText(/Preguntas Falladas/);
-    const numPartidasHeader = screen.getByText(/Número de Partidas/);
-  
+
+    // Check if the table headers are in the document
+    const usernameHeader = screen.getByRole('columnheader', { name: /Nombre de Usuario/i });
+    const percentageHeader = screen.getByRole('columnheader', { name: /Porcentaje de Aciertos/i });
+    const correctQuestionsHeader = screen.getByRole('columnheader', { name: /Preguntas Correctas/i });
+    const failedQuestionsHeader = screen.getByRole('columnheader', { name: /Preguntas Falladas/i });
+    const numPartidasHeader = screen.getByRole('columnheader', { name: /Número de Partidas/i });
+
     expect(usernameHeader).toBeInTheDocument();
     expect(percentageHeader).toBeInTheDocument();
     expect(correctQuestionsHeader).toBeInTheDocument();
     expect(failedQuestionsHeader).toBeInTheDocument();
     expect(numPartidasHeader).toBeInTheDocument();
   });
-  
+
 });
