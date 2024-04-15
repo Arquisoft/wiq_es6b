@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import RankingList from './RankingList';
 
 describe('RankingList', () => {
