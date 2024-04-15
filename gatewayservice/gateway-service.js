@@ -175,7 +175,7 @@ app.post('/createUserRank', async (req, res) => {
       const { username } = req.body;
 
       // Reenviar la solicitud POST al servicio de ranking para crear un ranking para el usuario
-      const rankingResponse = await axios.post(`${rankingServiceUrl}/createUserRank`, req.body);
+      const rankingResponse = await axios.post(`${rankingServiceUrl}/createUserRank`, username);
       res.json(rankingResponse.data);
   } catch (error) {
       if (error.response) {
@@ -368,6 +368,23 @@ app.delete('/deleteFirstQuestionGenerator', async (req, res) => {
     }
   }
 });
+
+
+// Read the OpenAPI YAML file synchronously
+const openapiPath='./openapi.yaml'
+if (fs.existsSync(openapiPath)) {
+  const file = fs.readFileSync(openapiPath, 'utf8');
+
+  // Parse the YAML content into a JavaScript object representing the Swagger document
+  const swaggerDocument = YAML.parse(file);
+
+  // Serve the Swagger UI documentation at the '/api-doc' endpoint
+  // This middleware serves the Swagger UI files and sets up the Swagger UI page
+  // It takes the parsed Swagger document as input
+  app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+} else {
+  console.log("Not configuring OpenAPI. Configuration file not present.")
+}
 
 
 // Start the gateway service
