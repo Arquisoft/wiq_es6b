@@ -22,33 +22,33 @@ mongoose.connect(mongoUri);
 const questionTypes = {
   pais_capital: {
     query: `
-      SELECT ?country ?countryLabel ?capital ?capitalLabel
-      WHERE {
-        ?country wdt:P31 wd:Q6256.
-        ?country wdt:P36 ?capital.
-        SERVICE wikibase:label {
-          bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es".
-        }
+    SELECT ?country ?countryLabel ?capital ?capitalLabel
+    WHERE {
+      ?country wdt:P31 wd:Q6256.
+      ?country wdt:P36 ?capital.
+      SERVICE wikibase:label {
+        bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es".
       }
-      ORDER BY RAND()
-      LIMIT 30
+    }
+    ORDER BY RAND()
+    LIMIT 60
     `,
     questionLabel: 'countryLabel',
     answerLabel: 'capitalLabel'
   },
   pais_poblacion: {
     query: `
-      SELECT DISTINCT ?countryLabel ?population
-      {
-        ?country wdt:P31 wd:Q6256 ;
-                wdt:P1082 ?population .
-        SERVICE wikibase:label { 
-          bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es" 
-        }
+    SELECT DISTINCT ?countryLabel ?population
+    {
+      ?country wdt:P31 wd:Q6256 ;
+              wdt:P1082 ?population .
+      SERVICE wikibase:label { 
+        bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es" 
       }
-      GROUP BY ?population ?countryLabel
-      ORDER BY RAND()
-      LIMIT 30
+    }
+    GROUP BY ?population ?countryLabel
+    ORDER BY RAND()
+    LIMIT 60
     `,
     questionLabel: 'countryLabel',
     answerLabel: 'population'
@@ -80,7 +80,7 @@ const questionTypes = {
         }
       }
       ORDER BY RAND()
-      LIMIT 30
+      LIMIT 60
     `,
     questionLabel: 'countryLabel',
     answerLabel: 'currencyLabel'
@@ -94,7 +94,7 @@ const questionTypes = {
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
     }
       ORDER BY RAND()
-      LIMIT 30
+      LIMIT 35
     `,
     questionLabel: 'libroLabel',
     answerLabel: 'autorLabel'
@@ -108,7 +108,7 @@ WHERE {
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
 }
       ORDER BY RAND()
-      LIMIT 30
+      LIMIT 40
     `,
     questionLabel: 'libroLabel',
     answerLabel: 'generoLabel'
@@ -136,7 +136,6 @@ WHERE {
                wdt:P2044 ?altura. # P2044 es la propiedad para altura
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
     }
-      ORDER BY RAND()
       LIMIT 30
     `,
     questionLabel: 'montanaLabel',
@@ -151,7 +150,7 @@ WHERE {
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
     }
       ORDER BY RAND()
-      LIMIT 30
+      LIMIT 50
     `,
     questionLabel: 'cancionLabel',
     answerLabel: 'cantanteLabel'
@@ -180,7 +179,7 @@ WHERE {
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
     }
       ORDER BY RAND()
-      LIMIT 30
+      LIMIT 35
     `,
     questionLabel: 'cancionLabel',
     answerLabel: 'anio_publicacion'
@@ -194,7 +193,7 @@ WHERE {
         BIND(YEAR(?fechaNacimiento) AS ?anioNacimiento)
         SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
       }
-      LIMIT 30
+      LIMIT 50
     `,
     questionLabel: 'cantanteLabel',
     answerLabel: 'anioNacimiento'
@@ -222,7 +221,7 @@ WHERE {
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
     }
       ORDER BY RAND()
-      LIMIT 50
+      LIMIT 60
     `,
     questionLabel: 'estadioLabel',
     answerLabel: 'capacidad'
@@ -250,7 +249,7 @@ WHERE {
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
     }
       ORDER BY RAND()
-      LIMIT 30
+      LIMIT 60
     `,
     questionLabel: 'countryLabel',
     answerLabel: 'languageLabel'
@@ -264,7 +263,7 @@ WHERE {
         SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
       }
       ORDER BY RAND()
-      LIMIT 30
+      LIMIT 50
     `,
     questionLabel: 'equipoLabel',
     answerLabel: 'deporteLabel'
@@ -280,7 +279,7 @@ WHERE {
     }
 
       ORDER BY RAND()
-      LIMIT 30
+      LIMIT 60
     `,
     questionLabel: 'sportLabel',
     answerLabel: 'inception'
@@ -295,7 +294,7 @@ WHERE {
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
     }
       ORDER BY RAND()
-      LIMIT 30
+      LIMIT 60
     `,
     questionLabel: 'deportistaLabel',
     answerLabel: 'inicioDeporte'
@@ -309,7 +308,7 @@ WHERE {
            wdt:P17 ?pais.            # Propiedad: país
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
     }
-      LIMIT 30
+      LIMIT 50
     `,
     questionLabel: 'rioLabel',
     answerLabel: 'paisLabel'
@@ -324,7 +323,7 @@ WHERE {
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],es". }
     }
     
-     LIMIT 30
+     LIMIT 70
     `,
     questionLabel: 'lagoLabel',
     answerLabel: 'paisLabel'
@@ -371,7 +370,7 @@ app.get('/getFullQuestion', async (req, res) => {
         resultCorrecta = data.results.bindings[indexCorrecta];
         informacionWikidata = resultCorrecta[questionLabel].value + '?';
         respuestaCorrecta = resultCorrecta[answerLabel].value;
-      } while (informacionWikidata.startsWith('Q') || respuestaCorrecta.startsWith('Q')); // Solo se aceptan respuestas que no comienzan con 'Q'
+      } while (informacionWikidata.startsWith('Q') || respuestaCorrecta.startsWith('Q') || respuestaCorrecta.startsWith('http')); // Solo se aceptan respuestas que no comienzan con 'Q'
 
       const respuestasFalsas = [];
       while (respuestasFalsas.length < 3) {
