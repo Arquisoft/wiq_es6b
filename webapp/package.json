@@ -42,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.2",
     "axios-mock-adapter": "^1.22.0",
     "expect-puppeteer": "^9.0.2",
     "mongodb-memory-server": "^9.1.4",
