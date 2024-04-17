@@ -24,9 +24,7 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
     }
     if(isNaN(timeLimit)){
         timeLimit=180;
-    }
-    console.log("En login el valor de los temas es: ", JSON.stringify(themes));
-    
+    }    
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -47,9 +45,8 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
             try {
                 const temas = Object.entries(themesSelected).filter(([tema, seleccionado]) => seleccionado)
                                                             .map(([tema]) => tema);
-                const randomIndex = Math.floor(Math.random() * (temas.length-1));
+                const randomIndex = Math.floor(Math.random() * temas.length);
                 const temaAleatorio = temas[randomIndex];
-                console.log("Tema seleccionado -> " + temaAleatorio);
                 
                 const response = await axios.get(`${apiEndpoint}/getRandomQuestion${temaAleatorio}`);
                 setQuestion(response.data);
@@ -96,9 +93,8 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
         try {
             const temas = Object.entries(themesSelected).filter(([tema, seleccionado]) => seleccionado)
                                                             .map(([tema]) => tema);
-            const randomIndex = Math.floor(Math.random() * (temas.length-1));
+            const randomIndex = Math.floor(Math.random() * (temas.length));
             const temaAleatorio = temas[randomIndex];
-            console.log("Tema seleccionado -> " + temaAleatorio);
             
             const response = await axios.get(`${apiEndpoint}/getRandomQuestion${temaAleatorio}`);
             setQuestion(response.data);
@@ -122,7 +118,6 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
             } else {
                 setSelectedAnswer('incorrect');
             }
-            console.log(`The selected answer is: ${selectedAnswer}`);
 
             // Si ya llegamos a la última pregunta, acabamos la partida para que se muestre el resultado
             if(numberClics===totalQuestions-1){
