@@ -65,4 +65,4 @@ paths:
                   error:
                     type: string
                     description: Error information.
-                    example: Internal Server Error
+                    example: Internal Server Error.
