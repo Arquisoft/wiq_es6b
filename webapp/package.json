@@ -12,7 +12,7 @@
     "axios": "^1.6.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "^3.0.1",
+    "react-scripts": "^5.0.1",
     "web-vitals": "^3.5.1"
   },
   "scripts": {
@@ -44,8 +44,6 @@
   "devDependencies": {
     "axios-mock-adapter": "^1.22.0",
     "expect-puppeteer": "^9.0.2",
-    "jest-cucumber": "^3.0.1",
-    "jest-environment-node": "^29.7.0",
     "mongodb-memory-server": "^9.1.4",
     "puppeteer": "^21.7.0",
     "serve": "^14.2.1",
