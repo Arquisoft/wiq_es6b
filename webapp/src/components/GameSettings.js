@@ -122,11 +122,11 @@ const GameSettings = ({ setSettings }) => {
                     Seleccione las temáticas de las preguntas:
                 </Typography>
                 <FormGroup>
-                    <FormControlLabel control={<Checkbox name='sports' checked={themes.sports} onChange={handleThemes} />} label="Deportes" />
-                    <FormControlLabel control={<Checkbox name='importantDates' checked={themes.importantDates} onChange={handleThemes} />} label="Fechas históricas" />
-                    <FormControlLabel control={<Checkbox name='music' checked={themes.music} onChange={handleThemes} />} label="Música" />
-                    <FormControlLabel control={<Checkbox name='literature' checked={themes.literature} onChange={handleThemes} />} label="Literatura" />
-                    <FormControlLabel control={<Checkbox name='countries' checked={themes.countries} onChange={handleThemes} />} label="Geografía" />
+                    <FormControlLabel control={<Checkbox name='Sports' checked={themes.Sports} onChange={handleThemes} />} label="Deportes" />
+                    <FormControlLabel control={<Checkbox name='ImportantDates' checked={themes.ImportantDates} onChange={handleThemes} />} label="Fechas históricas" />
+                    <FormControlLabel control={<Checkbox name='Music' checked={themes.Music} onChange={handleThemes} />} label="Música" />
+                    <FormControlLabel control={<Checkbox name='Literature' checked={themes.Literature} onChange={handleThemes} />} label="Literatura" />
+                    <FormControlLabel control={<Checkbox name='Countries' checked={themes.Countries} onChange={handleThemes} />} label="Geografía" />
                 </FormGroup>
             </Box>
 

@@ -55,7 +55,6 @@ app.post('/adduser', async (req, res) => {
 app.post('/addRecord', async(req, res) => {
   try{
     const recordResponse = await axios.post(recordServiceUrl+'/addRecord', req.body);
-    const recordResponse = await axios.post(recordServiceUrl+'/addRecord', req.body);
     res.json(recordResponse.data);
   }catch (error){
     if (error.response) {

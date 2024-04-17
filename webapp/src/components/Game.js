@@ -25,15 +25,8 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
     if(isNaN(timeLimit)){
         timeLimit=180;
     }
-    if(themesSelected===undefined){
-        setThemesSelected({
-            Sports: true,
-            ImportantDates: true,
-            Music: true,
-            Literature: true,
-            Countries: true
-        });
-    }
+    console.log("En login el valor de los temas es: ", JSON.stringify(themes));
+    
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -56,6 +49,11 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
                 setQuestion(response.data);
                 const respuestas = [...response.data.incorrectas, response.data.correcta];
                 setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
+
+                console.log("Temas previos -> " + themesSelected);
+                const temas = Object.entries(themesSelected).filter(([tema, seleccionado]) => seleccionado)
+                                                            .map(([tema]) => tema);
+                console.log("Temas seleccionados -> " + temas);
             } catch (error) {
                 console.error("Error al obtener la pregunta aleatoria", error);
                 setError('Error al obtener la pregunta aleatoria');

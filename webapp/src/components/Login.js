@@ -12,6 +12,7 @@ import RecordList from './RecordList';
 import RankingList from './RankingList';
 import CircularProgress from '@mui/material/CircularProgress';
 import GameSettings from './GameSettings';
+import { type } from 'os';
 
 const Login = ({ setLogged }) => {
   const [username, setUsername] = useState('');
@@ -30,7 +31,6 @@ const Login = ({ setLogged }) => {
     totalSecs: localStorage.getItem('totalSecs'),
     themes: localStorage.getItem('themes')
   });
-  const [themes, setThemes] = useState({});
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
   const loginUser = async () => {
@@ -79,6 +79,17 @@ const Login = ({ setLogged }) => {
 
     calculateTotalTime();
   }, [settings]);
+
+  if(settings.themes===undefined){
+    console.log("Temas vacíos en Login");
+  }
+
+  if (typeof settings.themes === 'object' && settings.themes !== null) {
+    console.log("En login el valor de los temas es: ", JSON.stringify(settings.themes));
+  } else {
+    console.log("Memoria: ", localStorage.getItem("themes"), type (localStorage.getItem("themes")));
+    console.log("settings.themes no es un objeto: ", settings.themes, typeof settings.themes);
+  }
 
   return (
     <>
@@ -161,7 +172,6 @@ const Login = ({ setLogged }) => {
                 <TextField
                   margin="normal"
                   fullWidth
-                  label="Password"
                   label="Password"
                   type="password"
                   value={password}
