@@ -5,15 +5,15 @@
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.15.3",
     "@mui/lab": "^5.0.0-alpha.170",
+    "@mui/material": "^5.15.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.2",
     "axios": "^1.6.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^3.0.1",
     "web-vitals": "^3.5.1"
   },
   "scripts": {
@@ -22,8 +22,6 @@
     "prod": "serve -s build",
     "test:e2e": "start-server-and-test 'node e2e/test-environment-setup.js' http://localhost:8000/health prod 3000 \"cd e2e && jest\" ",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!axios)/'",
-    
-    
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
