@@ -50,10 +50,9 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
                 const respuestas = [...response.data.incorrectas, response.data.correcta];
                 setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
 
-                console.log("Temas previos -> " + themesSelected);
                 const temas = Object.entries(themesSelected).filter(([tema, seleccionado]) => seleccionado)
                                                             .map(([tema]) => tema);
-                console.log("Temas seleccionados -> " + temas);
+
             } catch (error) {
                 console.error("Error al obtener la pregunta aleatoria", error);
                 setError('Error al obtener la pregunta aleatoria');

@@ -64,7 +64,7 @@ const GameSettings = ({ setSettings }) => {
         localStorage.setItem('numberQuestions', numberQuestions);
         localStorage.setItem('totalMins', totalMins);
         localStorage.setItem('totalSecs', totalSecs);
-        localStorage.setItem('themes', themes);
+        localStorage.setItem('themes', JSON.stringify(themes));
         setSettings({ numberQuestions, totalMins, totalSecs, themes });
     }, [numberQuestions, totalMins, totalSecs, themes, setSettings]);
 

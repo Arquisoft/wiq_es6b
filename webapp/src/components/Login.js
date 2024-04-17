@@ -12,7 +12,6 @@ import RecordList from './RecordList';
 import RankingList from './RankingList';
 import CircularProgress from '@mui/material/CircularProgress';
 import GameSettings from './GameSettings';
-import { type } from 'os';
 
 const Login = ({ setLogged }) => {
   const [username, setUsername] = useState('');
@@ -29,7 +28,7 @@ const Login = ({ setLogged }) => {
     numberQuestions: localStorage.getItem('numberQuestions'),
     totalMins: localStorage.getItem('totalMins'),
     totalSecs: localStorage.getItem('totalSecs'),
-    themes: localStorage.getItem('themes')
+    themes: JSON.parse(localStorage.getItem('themes'))
   });
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -79,17 +78,6 @@ const Login = ({ setLogged }) => {
 
     calculateTotalTime();
   }, [settings]);
-
-  if(settings.themes===undefined){
-    console.log("Temas vacíos en Login");
-  }
-
-  if (typeof settings.themes === 'object' && settings.themes !== null) {
-    console.log("En login el valor de los temas es: ", JSON.stringify(settings.themes));
-  } else {
-    console.log("Memoria: ", localStorage.getItem("themes"), type (localStorage.getItem("themes")));
-    console.log("settings.themes no es un objeto: ", settings.themes, typeof settings.themes);
-  }
 
   return (
     <>
