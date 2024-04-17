@@ -8,55 +8,6 @@ servers:
   - url: http://51.142.17.139:8004
     description: Production server
 paths:
-  /resetRank:
-    post:
-      summary: Reset a user's rank.
-      operationId: resetRank
-      requestBody:
-        description: The username to reset rank for.
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                  description: The username of the user.
-      responses:
-        '200':
-          description: User rank reset successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  username:
-                    type: string
-                    description: The username of the user.
-                  porcentajeAciertos:
-                    type: integer
-                    description: The percentage of correct answers.
-                  preguntasCorrectas:
-                    type: integer
-                    description: The number of correct questions.
-                  preguntasFalladas:
-                    type: integer
-                    description: The number of failed questions.
-                  numPartidas:
-                    type: integer
-                    description: The number of games played.
-        '400':
-          description: Failed to reset user rank.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: Error information.
-                    example: Error message
   /obtainRank:
     get:
       summary: Retrieve all user ranks.
@@ -132,3 +83,101 @@ paths:
                     type: string
                     description: Error information.
                     example: Error message
+  /updateRanking:
+    post:
+      summary: Update a user's ranking.
+      operationId: updateRanking
+      requestBody:
+        description: The username and the number of correct and failed questions.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The username of the user.
+                preguntasCorrectas:
+                  type: integer
+                  description: The number of correct questions.
+                preguntasFalladas:
+                  type: integer
+                  description: The number of failed questions.
+      responses:
+        '200':
+          description: User ranking updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRank'
+        '400':
+          description: Failed to update user ranking.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+
+  /createUserRank:
+    post:
+      summary: Create or reset a user's ranking.
+      operationId: createUserRank
+      requestBody:
+        description: The list of usernames to create or reset rankings for.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usernames:
+                  type: array
+                  items:
+                    type: string
+                  description: The list of usernames.
+      responses:
+        '200':
+          description: User rankings created or reset successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message.
+        '400':
+          description: Failed to create or reset user rankings.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+components:
+  schemas:
+    UserRank:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The username of the user.
+        porcentajeAciertos:
+          type: number
+          format: float
+          description: The percentage of correct answers.
+        preguntasCorrectas:
+          type: integer
+          description: The number of correct questions.
+        preguntasFalladas:
+          type: integer
+          description: The number of failed questions.
+        numPartidas:
+          type: integer
+          description: The number of games played.
