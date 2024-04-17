@@ -42,8 +42,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@babel/plugin-transform-private-property-in-object": "^7.23.4",
     "axios-mock-adapter": "^1.22.0",
     "expect-puppeteer": "^9.0.2",
     "jest-cucumber": "^3.0.1",
