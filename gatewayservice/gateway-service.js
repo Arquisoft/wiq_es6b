@@ -176,10 +176,8 @@ app.get('/actRanking', async (req, res) => {
 ////////////////////////ranking
 app.post('/createUserRank', async (req, res) => {
   try {
-      const { username } = req.body;
-
       // Reenviar la solicitud POST al servicio de ranking para crear un ranking para el usuario
-      const rankingResponse = await axios.post(`${rankingServiceUrl}/createUserRank`, username);
+      const rankingResponse = await axios.post(`${rankingServiceUrl}/createUserRank`, req.body);
       res.json(rankingResponse.data);
   } catch (error) {
       if (error.response) {
