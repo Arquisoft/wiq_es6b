@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Createservice API
   description: Create OpenAPI specification.
-  version: 0.2.0
+  version: 1.0.0
 servers:
   - url: http://localhost:8005
     description: Development server
@@ -85,7 +85,7 @@ paths:
                   error:
                     type: string
                     description: Error information.
-                    example: Error al realizar la consulta en Wikidata. Estado de respuesta: 400
+                    example: "Error al realizar la consulta en Wikidata. Estado de respuesta: 400"
         '500':
           description: Internal server error.
           content:
@@ -97,3 +97,14 @@ paths:
                     type: string
                     description: Error information.
                     example: Error al realizar la consulta en Wikidata
+components:
+  schemas:
+    Question:
+      type: object
+      properties:
+        questionBody:
+          type: string
+          description: The body of the question.
+        typeQuestion:
+          type: string
+          description: The type of the question.
