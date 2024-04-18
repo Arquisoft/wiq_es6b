@@ -25,6 +25,9 @@ COPY --chown=appuser:appuser record-service.js ./
 COPY --chown=appuser:appuser record-service.test.js ./
 COPY --chown=appuser:appuser openapi.yaml ./
 
+# Remove write permissions for all users from the executable
+RUN chmod a-w user-service.js
+
 # Expose the port the app runs on
 EXPOSE 8006
 

@@ -24,5 +24,8 @@ COPY --chown=appuser:appuser gateway-service.js ./
 COPY --chown=appuser:appuser gateway-service.test.js ./
 COPY --chown=appuser:appuser openapi.yaml ./
 
+# Remove write permissions for all users from the executable
+RUN chmod a-w user-service.js
+
 # Define the command to run your app
 CMD ["node", "gateway-service.js"]
