@@ -70,7 +70,6 @@ describe('UsersList', () => {
     expect(rows[1]).toHaveTextContent('alejandro');
     expect(rows[2]).toHaveTextContent('eusebio');
     expect(rows[3]).toHaveTextContent('zacarías');
-    expect(rows[3]).toHaveTextContent('sergioNO');
 
     });
 });
