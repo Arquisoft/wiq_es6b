@@ -30,8 +30,10 @@ describe('UsersList', () => {
   });
 
   it('renders headers list correctly', async () => {
-    render(<UsersList />);
-    
+    await act(async () => {
+      render(<UsersList />);
+    });
+
     // Check if the table headers are in the document
     const usernameHeader = screen.getByRole('columnheader', { name: /Nombre de Usuario/i });
     const createdAtHeader = screen.getByRole('columnheader', { name: /Fecha de Registro/i });
@@ -41,16 +43,18 @@ describe('UsersList', () => {
   });
 
   it('renders all the users rows', async () => {
-    render(<UsersList />);
-    
+    await act(async () => {
+      render(<UsersList />);
+    });    
     // Check if the table rows are in the document
     const tableRows = screen.getAllByRole('row');
     expect(tableRows).not.toHaveLength(0);
   });
 
   it('should order users by username correctly', async () => {
-    render(<UsersList />);
-    
+    await act(async () => {
+      render(<UsersList />);
+    });    
     // We click the username header to order the users by username
     const usernameHeader = screen.getByRole('columnheader', { name: /Nombre de Usuario/i });
     usernameHeader.click();
@@ -65,5 +69,7 @@ describe('UsersList', () => {
     expect(rows[1]).toHaveTextContent('alejandro');
     expect(rows[2]).toHaveTextContent('eusebio');
     expect(rows[3]).toHaveTextContent('zacarías');
+    expect(rows[3]).toHaveTextContent('sergioNO');
+
     });
 });
