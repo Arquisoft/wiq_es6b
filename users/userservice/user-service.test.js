@@ -38,13 +38,13 @@ describe('User Service', () => {
         
         // Agrego primero usuarios
         await request(app).post('/adduser').send({
-          username: 'testuser',
-          password: 'testpassword',
+          username: process.env.TEST_USER,
+          password: process.env.TEST_PASSWORD,
         });
-    
+
         await request(app).post('/adduser').send({
-          username: 'testuser2',
-          password: 'testpassword2',
+          username: process.env.TEST_USER2,
+          password: process.env.TEST_PASSWORD2,
   
         });
       // llamo al get
