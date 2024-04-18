@@ -13,17 +13,17 @@ describe('UsersList', () => {
         {
           createdAt: new Date('2024-03-04T00:00:00Z'),
           username: "alejandro",
-          password: "cccccccc",
+          password: process.env.USELESS_PSSWD_TEST,
         },
         {
           createdAt: new Date('2024-03-03T00:00:00Z'),
           username: "zacarías",
-          password: "aaaaaaaa",
+          password: process.env.USELESS_PSSWD_TEST,
         },
         {
           createdAt: new Date('2024-03-05T00:00:00Z'),
           username: "eusebio",
-          password: "bbbbbbbb",
+          password: process.env.USELESS_PSSWD_TEST,
         },
       ],
     });
