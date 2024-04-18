@@ -11,17 +11,17 @@ describe('UsersList', () => {
       status: 200,
       data: [
         {
-          createdAt: new Date().toISOString(),
+          createdAt: new Date('2012-07-27T00:00:00Z'),
           username: "alejandro",
           password: "cccccccc",
         },
         {
-          createdAt: new Date().toISOString(),
+          createdAt: new Date('2002-11-15T00:00:00Z'),
           username: "zacarías",
           password: "aaaaaaaa",
         },
         {
-          createdAt: new Date().toISOString(),
+          createdAt: new Date('2024-02-02T00:00:00Z'),
           username: "eusebio",
           password: "bbbbbbbb",
         },
@@ -71,5 +71,51 @@ describe('UsersList', () => {
     expect(rows[2]).toHaveTextContent('eusebio');
     expect(rows[3]).toHaveTextContent('zacarías');
 
+    await act(async() => {
+      usernameHeader.click();
     });
+
+    // We wait for the users to be loaded and the table to be updated
+    rows = await screen.findAllByRole('row');
+
+    // We check if the first row is the one with the username 'alejandro'
+    expect(rows[3]).toHaveTextContent('alejandro');
+    expect(rows[2]).toHaveTextContent('eusebio');
+    expect(rows[1]).toHaveTextContent('zacarías');
+
+    });
+
+    it('should order users by createdAt date correctly', async () => {
+      await act(async () => {
+        render(<UsersList />);
+      }); 
+  
+      // We click the username header to order the users by username
+      const createdAtHeader = screen.getByRole('columnheader', { name: /Fecha de Registro/i });
+      
+      await act(async() => {
+        createdAtHeader.click();
+      });
+  
+      // We wait for the users to be loaded and the table to be updated
+      const rows = await screen.findAllByRole('row');
+  
+      // We check if the first row is the one with the username 'alejandro'
+      expect(rows[2]).toHaveTextContent('alejandro');
+      expect(rows[1]).toHaveTextContent('eusebio');
+      expect(rows[3]).toHaveTextContent('zacarías');
+  
+      await act(async() => {
+        createdAtHeader.click();
+      });
+  
+      // We wait for the users to be loaded and the table to be updated
+      rows = await screen.findAllByRole('row');
+  
+      // We check if the first row is the one with the username 'alejandro'
+      expect(rows[2]).toHaveTextContent('alejandro');
+      expect(rows[3]).toHaveTextContent('eusebio');
+      expect(rows[1]).toHaveTextContent('zacarías');
+  
+      });
 });
