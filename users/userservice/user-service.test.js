@@ -17,7 +17,7 @@ afterAll(async () => {
 });
 
 describe('User Service', () => {
-  it('should add a new user on POST /adduser', async () => {sss
+  it('should add a new user on POST /adduser', async () => {
     const newUser = {
       username: process.env.TEST_USER,
       password: process.env.TEST_PASSWORD,
