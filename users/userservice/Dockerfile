@@ -20,6 +20,7 @@ COPY --chown=appuser:appuser package*.json ./
 RUN npm install
 
 # Copy the app source code to the working directory
+COPY --chown=appuser:appuser .env ./
 COPY --chown=appuser:appuser user-model.js ./
 COPY --chown=appuser:appuser user-service.js ./
 COPY --chown=appuser:appuser user-service.test.js ./
