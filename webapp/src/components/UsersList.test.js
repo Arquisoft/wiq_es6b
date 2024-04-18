@@ -54,10 +54,13 @@ describe('UsersList', () => {
   it('should order users by username correctly', async () => {
     await act(async () => {
       render(<UsersList />);
-        
+    }); 
+
     // We click the username header to order the users by username
     const usernameHeader = screen.getByRole('columnheader', { name: /Nombre de Usuario/i });
-    usernameHeader.click();
+    
+    await act(async() => {
+      usernameHeader.click();
     });
 
     // We wait for the users to be loaded and the table to be updated
