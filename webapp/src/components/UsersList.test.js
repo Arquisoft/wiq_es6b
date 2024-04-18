@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, waitFor, screen, act } from '@testing-library/react';
 import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import UsersList from './UsersList';
 
 jest.mock('axios');
@@ -123,7 +124,7 @@ describe('UsersList', () => {
   
       });
 
-      it('an error is showed when petition fails', async () => {
+      it('an error is shown when petition fails', async () => {
         await act(async () => {
           render(<UsersList />);
         });
