@@ -125,11 +125,11 @@ describe('UsersList', () => {
       });
 
       it('an error is shown when petition fails', async () => {
+        mockAxios.onGet('http://localhost:8000/getAllUsers').reply(500, { error: 'Internal Server Error' });
+
         await act(async () => {
           render(<UsersList />);
         });
-    
-        mockAxios.onGet('http://localhost:8000/getAllUsers').reply(500, { error: 'Internal Server Error' });
 
         // Wait for the error Snackbar to be open
         await waitFor(() => {
