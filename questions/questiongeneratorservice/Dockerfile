@@ -4,30 +4,17 @@ FROM node:20
 # Set the working directory in the container
 WORKDIR /usr/src/questiongeneratorservice
 
-# Create a new user "appuser"
-RUN adduser --disabled-password --gecos '' appuser
-
-# Change ownership of the working directory to "appuser"
-RUN chown -R appuser:appuser /usr/src/questiongeneratorservice
-
-# Change to the new user
-USER appuser
-
 # Copy package.json and package-lock.json to the working directory
-COPY --chown=appuser:appuser package*.json ./
+COPY --chown=root:root --chmod=75 package*.json ./
 
 # Install app dependencies
 RUN npm install
 
 # Copy the app source code to the working directory
-COPY --chown=appuser:appuser questiongenerator-model.js ./
-RUN chmod a-w questiongenerator-model.js
-COPY --chown=appuser:appuser questiongenerator-service.js ./
-RUN chmod a-w questiongenerator-service.js
-COPY --chown=appuser:appuser questiongenerator-service.test.js ./
-RUN chmod a-w questiongenerator-service.test.js
-COPY --chown=appuser:appuser openapi.yaml ./
-RUN chmod a-w openapi.yaml
+COPY --chown=root:root --chmod=75 user-model.js ./
+COPY --chown=root:root --chmod=75 user-service.js ./
+COPY --chown=root:root --chmod=75  user-service.test.js ./
+COPY --chown=root:root --chmod=75  openapi.yaml ./
 
 # Expose the port the app runs on
 EXPOSE 8007

@@ -4,28 +4,16 @@ FROM node:20
 # Set the working directory in the container
 WORKDIR /usr/src/gatewayservice
 
-# Create a new user "appuser"
-RUN adduser --disabled-password --gecos '' appuser
-
-# Change ownership of the working directory to "appuser"
-RUN chown -R appuser:appuser /usr/src/gatewayservice
-
-# Change to the new user
-USER appuser
-
 # Copy package.json and package-lock.json to the working directory
-COPY --chown=appuser:appuser package*.json ./
+COPY --chown=root:root --chmod=75 package*.json ./
 
 # Install app dependencies
 RUN npm install
 
 # Copy the app source code to the working directory
-COPY --chown=appuser:appuser gateway-service.js ./
-RUN chmod a-w gateway-service.js
-COPY --chown=appuser:appuser gateway-service.test.js ./
-RUN chmod a-w gateway-service.test.js
-COPY --chown=appuser:appuser openapi.yaml ./
-RUN chmod a-w openapi.yaml
+COPY --chown=root:root --chmod=75 gateway-service.js ./
+COPY --chown=root:root --chmod=75 gateway-service.test.js ./
+COPY --chown=root:root --chmod=75 openapi.yaml ./
 
 # Define the command to run your app
 CMD ["node", "gateway-service.js"]
