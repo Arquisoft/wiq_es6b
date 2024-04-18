@@ -21,12 +21,13 @@ RUN npm install
 
 # Copy the app source code to the working directory
 COPY --chown=appuser:appuser generatedquest-model.js ./
+RUN chmod a-w generatedquest-model.js
 COPY --chown=appuser:appuser generatedquest-service.js ./
+RUN chmod a-w generatedquest-service.js
 COPY --chown=appuser:appuser generatedquest-service.test.js ./
+RUN chmod a-w generatedquest-service.test.js
 COPY --chown=appuser:appuser openapi.yaml ./
-
-# Remove write permissions for all users from the executable
-RUN chmod a-w user-service.js
+RUN chmod a-w openapi.yaml
 
 # Expose the port the app runs on
 EXPOSE 8007

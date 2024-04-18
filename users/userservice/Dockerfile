@@ -21,13 +21,15 @@ RUN npm install
 
 # Copy the app source code to the working directory
 COPY --chown=appuser:appuser .env ./
+RUN chmod a-w .env
 COPY --chown=appuser:appuser user-model.js ./
+RUN chmod a-w user-model.js
 COPY --chown=appuser:appuser user-service.js ./
-COPY --chown=appuser:appuser user-service.test.js ./
-COPY --chown=appuser:appuser openapi.yaml ./
-
-# Remove write permissions for all users from the executable
 RUN chmod a-w user-service.js
+COPY --chown=appuser:appuser user-service.test.js ./
+RUN chmod a-w user-service.test.js
+COPY --chown=appuser:appuser openapi.yaml ./
+RUN chmod a-w openapi.yaml
 
 # Expose the port the app runs on
 EXPOSE 8001
