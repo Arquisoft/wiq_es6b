@@ -64,7 +64,7 @@ describe('UsersList', () => {
     });
 
     // We wait for the users to be loaded and the table to be updated
-    const rows = await screen.findAllByRole('row');
+    let rows = await screen.findAllByRole('row');
 
     // We check if the first row is the one with the username 'alejandro'
     expect(rows[1]).toHaveTextContent('alejandro');
@@ -98,7 +98,7 @@ describe('UsersList', () => {
       });
   
       // We wait for the users to be loaded and the table to be updated
-      const rows = await screen.findAllByRole('row');
+      let rows = await screen.findAllByRole('row');
   
       // We check if the first row is the one with the username 'alejandro'
       expect(rows[2]).toHaveTextContent('alejandro');
