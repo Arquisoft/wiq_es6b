@@ -30,6 +30,6 @@
     "jest": "^29.7.0",
     "mongodb-memory-server": "^9.1.5",
     "supertest": "^6.3.4",
-    "dotenv": "^15.0.0"
+    "dotenv": "16.3.1"
   }
 }
