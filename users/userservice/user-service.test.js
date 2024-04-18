@@ -1,5 +1,6 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+require('dotenv').config();
 
 let mongoServer;
 let app;
