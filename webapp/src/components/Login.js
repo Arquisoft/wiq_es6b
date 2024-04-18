@@ -23,7 +23,13 @@ const Login = ({ setLogged }) => {
   const [loading, setLoading] = useState(false);
   const [showComponent, setShowComponent] = useState('login');
   const [totalTime, setTotalTime] = useState(180);
-  const [settings, setSettings] = useState({});
+  // ajustes guardados en memoria para recuperarlos en próximas partidas
+  const [settings, setSettings] = useState({
+    numberQuestions: localStorage.getItem('numberQuestions'),
+    totalMins: localStorage.getItem('totalMins'),
+    totalSecs: localStorage.getItem('totalSecs'),
+    themes: JSON.parse(localStorage.getItem('themes'))
+  });
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
   const loginUser = async () => {
@@ -117,7 +123,7 @@ const Login = ({ setLogged }) => {
             {loginSuccess && (
               <>
                 {showComponent === 'game' &&
-                  <Game username={username} totalQuestions={settings.numberQuestions} timeLimit={totalTime} />
+                  <Game username={username} totalQuestions={settings.numberQuestions} timeLimit={totalTime} themes={settings.themes}/>
                 }
                 {showComponent === 'userList' && <UsersList />}
                 {showComponent === 'questionList' && <GeneratedQuestionsList />}

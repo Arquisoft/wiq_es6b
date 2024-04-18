@@ -263,7 +263,7 @@ app.get('/getRandomQuestionGenerator', async (req, res) => {
 });
 
 //TEMATICAS
-app.get('/getRandomQuestionDeporte', async (req, res) => {
+app.get('/getRandomQuestionSports', async (req, res) => {
   try {
     const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionDeporte`);
     res.json(questionGeneratorResponse.data);
@@ -276,7 +276,7 @@ app.get('/getRandomQuestionDeporte', async (req, res) => {
   }
 });
 
-app.get('/getRandomQuestionAnio', async (req, res) => {
+app.get('/getRandomQuestionImportantDates', async (req, res) => {
   try {
     const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionAnio`);
     res.json(questionGeneratorResponse.data);
@@ -289,7 +289,7 @@ app.get('/getRandomQuestionAnio', async (req, res) => {
   }
 });
 
-app.get('/getRandomQuestionMusica', async (req, res) => {
+app.get('/getRandomQuestionMusic', async (req, res) => {
   try {
     const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionMusica`);
     res.json(questionGeneratorResponse.data);
@@ -302,7 +302,7 @@ app.get('/getRandomQuestionMusica', async (req, res) => {
   }
 });
 
-app.get('/getRandomQuestionLibro', async (req, res) => {
+app.get('/getRandomQuestionLiterature', async (req, res) => {
   try {
     const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionLibro`);
     res.json(questionGeneratorResponse.data);
@@ -315,7 +315,7 @@ app.get('/getRandomQuestionLibro', async (req, res) => {
   }
 });
 
-app.get('/getRandomQuestionPaisYGeo', async (req, res) => {
+app.get('/getRandomQuestionCountries', async (req, res) => {
   try {
     const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionPaisYGeo`);
     res.json(questionGeneratorResponse.data);
