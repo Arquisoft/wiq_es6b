@@ -5,8 +5,12 @@ import UsersList from './UsersList';
 
 jest.mock('axios');
 
+const mockAxios = new MockAdapter(axios);
+
+
 describe('UsersList', () => {
   beforeEach(() => {
+    mockAxios.reset();
     axios.get.mockResolvedValue({
       status: 200,
       data: [
@@ -117,5 +121,18 @@ describe('UsersList', () => {
       expect(rows[1]).toHaveTextContent('eusebio');
       expect(rows[3]).toHaveTextContent('zacarías');
   
+      });
+
+      it('an error is showed when petition fails', async () => {
+        await act(async () => {
+          render(<UsersList />);
+        });
+    
+        mockAxios.onGet('http://localhost:8000/getAllUsers').reply(500, { error: 'Internal Server Error' });
+
+        // Wait for the error Snackbar to be open
+        await waitFor(() => {
+          expect(screen.getByText(/Error: Internal Server Error/i)).toBeInTheDocument();
+        });
       });
 });
