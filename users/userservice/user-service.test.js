@@ -19,12 +19,9 @@ afterAll(async () => {
 
 describe('User Service', () => {
   it('should add a new user on POST /adduser', async () => {
-    const mockUsername = 'testuser';
-    const mockPassword = 'testpassword';
-
     const newUser = {
-      username: mockUsername,
-      password: mockPassword,
+      username: process.env.TEST_USER,
+      password: process.env.TEST_PASSWORD,
     };
 
     const response = await request(app).post('/adduser').send(newUser);
