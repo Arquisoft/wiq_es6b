@@ -11,17 +11,17 @@ describe('UsersList', () => {
       status: 200,
       data: [
         {
-          createdAt: new Date('2012-07-27T00:00:00Z'),
+          createdAt: new Date('2024-03-04T00:00:00Z'),
           username: "alejandro",
           password: "cccccccc",
         },
         {
-          createdAt: new Date('2002-11-15T00:00:00Z'),
+          createdAt: new Date('2024-03-03T00:00:00Z'),
           username: "zacarías",
           password: "aaaaaaaa",
         },
         {
-          createdAt: new Date('2024-02-02T00:00:00Z'),
+          createdAt: new Date('2024-03-05T00:00:00Z'),
           username: "eusebio",
           password: "bbbbbbbb",
         },
@@ -102,8 +102,8 @@ describe('UsersList', () => {
   
       // We check if the first row is the one with the username 'alejandro'
       expect(rows[2]).toHaveTextContent('alejandro');
-      expect(rows[1]).toHaveTextContent('eusebio');
-      expect(rows[3]).toHaveTextContent('zacarías');
+      expect(rows[3]).toHaveTextContent('eusebio');
+      expect(rows[1]).toHaveTextContent('zacarías');
   
       await act(async() => {
         createdAtHeader.click();
@@ -114,8 +114,8 @@ describe('UsersList', () => {
   
       // We check if the first row is the one with the username 'alejandro'
       expect(rows[2]).toHaveTextContent('alejandro');
-      expect(rows[3]).toHaveTextContent('eusebio');
-      expect(rows[1]).toHaveTextContent('zacarías');
+      expect(rows[1]).toHaveTextContent('eusebio');
+      expect(rows[3]).toHaveTextContent('zacarías');
   
       });
 });
