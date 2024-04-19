@@ -5,13 +5,16 @@ FROM node:20
 WORKDIR /usr/src/createservice
 
 # Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+COPY --chown=root:root --chmod=75 package*.json ./
 
 # Install app dependencies
 RUN npm install
 
 # Copy the app source code to the working directory
-COPY . .
+COPY --chown=root:root --chmod=75 create-model.js ./
+COPY --chown=root:root --chmod=75 create-service.js ./
+COPY --chown=root:root --chmod=75 create-service.test.js ./
+COPY --chown=root:root --chmod=75 openapi.yaml ./
 
 # Expose the port the app runs on
 EXPOSE 8005

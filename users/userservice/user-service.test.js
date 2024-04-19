@@ -1,5 +1,6 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+require('dotenv').config();
 
 let mongoServer;
 let app;
@@ -18,12 +19,9 @@ afterAll(async () => {
 
 describe('User Service', () => {
   it('should add a new user on POST /adduser', async () => {
-    const mockUsername = 'testuser';
-    const mockPassword = 'testpassword';
-
     const newUser = {
-      username: mockUsername,
-      password: mockPassword,
+      username: process.env.TEST_USER,
+      password: process.env.TEST_PASSWORD,
     };
 
     const response = await request(app).post('/adduser').send(newUser);
@@ -38,13 +36,13 @@ describe('User Service', () => {
         
         // Agrego primero usuarios
         await request(app).post('/adduser').send({
-          username: 'testuser',
-          password: 'testpassword',
+          username: process.env.TEST_USER,
+          password: process.env.TEST_PASSWORD,
         });
-    
+
         await request(app).post('/adduser').send({
-          username: 'testuser2',
-          password: 'testpassword2',
+          username: process.env.TEST_USER2,
+          password: process.env.TEST_PASSWORD2,
   
         });
       // llamo al get
