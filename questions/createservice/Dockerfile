@@ -11,10 +11,10 @@ COPY --chown=root:root --chmod=75 package*.json ./
 RUN npm install
 
 # Copy the app source code to the working directory
-COPY --chown=root:root --chmod=75 user-model.js ./
-COPY --chown=root:root --chmod=75 user-service.js ./
-COPY --chown=root:root --chmod=75  user-service.test.js ./
-COPY --chown=root:root --chmod=75  openapi.yaml ./
+COPY --chown=root:root --chmod=75 create-model.js ./
+COPY --chown=root:root --chmod=75 create-service.js ./
+COPY --chown=root:root --chmod=75 create-service.test.js ./
+COPY --chown=root:root --chmod=75 openapi.yaml ./
 
 # Expose the port the app runs on
 EXPOSE 8005

@@ -14,8 +14,8 @@ RUN npm install
 COPY --chown=root:root --chmod=75 .env ./
 COPY --chown=root:root --chmod=75 user-model.js ./
 COPY --chown=root:root --chmod=75 user-service.js ./
-COPY --chown=root:root --chmod=75  user-service.test.js ./
-COPY --chown=root:root --chmod=75  openapi.yaml ./
+COPY --chown=root:root --chmod=75 user-service.test.js ./
+COPY --chown=root:root --chmod=75 openapi.yaml ./
 
 # Expose the port the app runs on
 EXPOSE 8001
