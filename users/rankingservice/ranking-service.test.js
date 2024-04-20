@@ -234,20 +234,22 @@ it('should return 400 if user does not exist', async () => {
 
 it('should update the ranking of each user in the provided list', async () => {
   // Arrange
-  const rankingData = [
-    {
-      username: 'testUser1',
-      preguntasCorrectas: 5,
-      preguntasFalladas: 5,
-      numPartidas: 1
-    },
-    {
-      username: 'testUser2',
-      preguntasCorrectas: 10,
-      preguntasFalladas: 0,
-      numPartidas: 1
-    }
-  ];
+  const rankingData = {
+    users: [
+      {
+        username: 'testUser1',
+        preguntasCorrectas: 5,
+        preguntasFalladas: 5,
+        numPartidas: 1
+      },
+      {
+        username: 'testUser2',
+        preguntasCorrectas: 10,
+        preguntasFalladas: 0,
+        numPartidas: 1
+      }
+    ]
+  };
 
   // Act
   await request(app)
@@ -256,7 +258,7 @@ it('should update the ranking of each user in the provided list', async () => {
     .expect(200);
 
   // Assert
-  for (const userData of rankingData) {
+  for (const userData of rankingData.users) {
     const updatedUserRank = await UserRank.findOne({ username: userData.username });
     expect(updatedUserRank.preguntasCorrectas).toBe(userData.preguntasCorrectas);
     expect(updatedUserRank.preguntasFalladas).toBe(userData.preguntasFalladas);
@@ -264,7 +266,7 @@ it('should update the ranking of each user in the provided list', async () => {
 
     const totalPreguntas = updatedUserRank.preguntasCorrectas + updatedUserRank.preguntasFalladas;
     const porcentajeAciertos = (updatedUserRank.preguntasCorrectas / totalPreguntas) * 100;
-    expect(updatedUserRank.porcentajeAciertos).toBe(porcentajeAciertos.toFixed(2));
+    expect(updatedUserRank.porcentajeAciertos).toBeCloseTo(porcentajeAciertos, 2);
   }
 });
 });
