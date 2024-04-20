@@ -13,6 +13,9 @@ let app;
 const mockUsername = 'testuser';
 const mockPassword = 'testpassword';
 
+const mockUsername2 = 'invalidUser';
+const mockPassword2 = 'invalidPassword';
+
 const user = {
   username: mockUsername,
   password: mockPassword,
@@ -82,8 +85,8 @@ test('POST /login with invalid credentials', async () => {
   const response = await request(server)
     .post('/login')
     .send({
-      username: 'invalidUser',
-      password: 'invalidPassword'
+      username: mockUsername2,
+      password: mockPassword2
     });
 
   expect(response.statusCode).toBe(401);
