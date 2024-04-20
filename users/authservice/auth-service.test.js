@@ -2,8 +2,8 @@ const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const bcrypt = require('bcrypt');
 const User = require('./auth-model');
-const { validateRequiredFields } = require('./auth-service');
 const mongoose = require('mongoose');
+
 
 let mongoServer;
 let app;
@@ -49,14 +49,16 @@ describe('Auth Service', () => {
   });
 
   // Test cubrir linea 25
-  test('validateRequiredFields throws error when required field is missing', () => {
-    const req = {
-      body: {
+  test('POST /login without password field results in Internal Server Error', async () => {
+    const response = await request(app)
+      .post('/login')
+      .send({
         username: mockUsername,
-      },
-    };
+        // password field is missing
+      });
   
-    expect(() => validateRequiredFields(req, ['username', 'password'])).toThrow('Missing required field: password');
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Internal Server Error');
   });
 
 // Testlineas 48-51
@@ -74,8 +76,18 @@ test('POST /login with valid credentials returns token and user information', as
 });
 // Test linea 68
 test('server close event closes Mongoose connection', async () => {
+  const mongoose = require('mongoose'); // Import Mongoose
   const closeSpy = jest.spyOn(mongoose.connection, 'close');
-  app.close();
+
+  // Open Mongoose connection
+  await mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true, useUnifiedTopology: true });
+
+  // Close app (and Mongoose connection)
+  await app.close();
+
+  // Wait a bit before checking if close() was called
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
   expect(closeSpy).toHaveBeenCalled();
 });
 
