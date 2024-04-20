@@ -160,33 +160,50 @@ describe('Question Generator Service', () => {
 
     describe('Question Generator Service', () => {
         it('should get a random sports question', async () => {
-          const res = await request(app).get('/getRandomQuestionDeporte');
-          expect(res.statusCode).toEqual(200);
-          expect(res.body).toHaveProperty('question');
+          const response = await request(app).get('/getRandomQuestionDeporte');
+          expect(response.status).toBe(200);
+          expect(response.body).toHaveProperty('questionBody');
+          expect(response.body).toHaveProperty('correcta');
+          expect(response.body).toHaveProperty('incorrectas');
+          expect(response.body).toHaveProperty('numquest');
         });
       
         it('should get a random year question', async () => {
-          const res = await request(app).get('/getRandomQuestionAnio');
-          expect(res.statusCode).toEqual(200);
-          expect(res.body).toHaveProperty('question');
+          const response = await request(app).get('/getRandomQuestionAnio');
+          expect(response.status).toBe(200);
+          expect(response.body).toHaveProperty('questionBody');
+          expect(response.body).toHaveProperty('correcta');
+          expect(response.body).toHaveProperty('incorrectas');
+          expect(response.body).toHaveProperty('numquest');
         });
       
         it('should get a random music question', async () => {
-          const res = await request(app).get('/getRandomQuestionMusica');
-          expect(res.statusCode).toEqual(200);
-          expect(res.body).toHaveProperty('question');
+          const response = await request(app).get('/getRandomQuestionMusica');
+          expect(response.status).toBe(200);
+          expect(response.body).toHaveProperty('questionBody');
+          expect(response.body).toHaveProperty('correcta');
+          expect(response.body).toHaveProperty('incorrectas');
+          expect(response.body).toHaveProperty('numquest');
         });
       
         it('should get a random book question', async () => {
-          const res = await request(app).get('/getRandomQuestionLibro');
-          expect(res.statusCode).toEqual(200);
-          expect(res.body).toHaveProperty('question');
+          const response = await request(app).get('/getRandomQuestionLibro');
+          expect(response.status).toBe(200);
+          expect(response.body).toHaveProperty('questionBody');
+          expect(response.body).toHaveProperty('correcta');
+          expect(response.body).toHaveProperty('incorrectas');
+          expect(response.body).toHaveProperty('numquest');
         });
       
         it('should get a random country and geography question', async () => {
-          const res = await request(app).get('/getRandomQuestionPaisYGeo');
-          expect(res.statusCode).toEqual(200);
-          expect(res.body).toHaveProperty('question');
+          const response = await request(app).get('/getRandomQuestionPaisYGeo');
+          expect(response.status).toBe(200);
+          expect(response.body).toHaveProperty('questionBody');
+          expect(response.body).toHaveProperty('correcta');
+          expect(response.body).toHaveProperty('incorrectas');
+          expect(response.body).toHaveProperty('numquest');
         });
     });
+
+
 });
