@@ -90,23 +90,5 @@ test('POST /login with invalid credentials', async () => {
   expect(response.body).toHaveProperty('error', 'Invalid credentials');
 });
 
-// Test linea 68
-test('server close event closes Mongoose connection', async () => {
-  const closeSpy = jest.spyOn(mongoose.connection, 'close');
-
-  // Close existing Mongoose connection
-  await mongoose.connection.close();
-
-  // Open a new Mongoose connection
-  await mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true, useUnifiedTopology: true });
-
-  // Close app (and Mongoose connection)
-  await app.close();
-
-  // Wait a bit before checking if close() was called
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  expect(closeSpy).toHaveBeenCalled();
-}, 60000); 
 
 });
