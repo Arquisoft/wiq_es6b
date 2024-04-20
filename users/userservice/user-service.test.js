@@ -1,8 +1,6 @@
 const request = require('supertest');
-const server = require('./user-service');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 require('dotenv').config();
-
 
 let mongoServer;
 let app;
@@ -57,7 +55,7 @@ describe('User Service', () => {
        expect(usernames).toContain('testuser2');
 
       });
-      
+
       test('should throw an error when a required field is missing', async () => {
         const response = await request(server)
           .post('/adduser')
@@ -66,12 +64,12 @@ describe('User Service', () => {
         expect(response.status).toBe(400);
         expect(response.body.error).toBe('Missing required field: password');
       });
-      
+
       test('should return 500 Internal Server Error when an error occurs on the server', async () => {
         // Assuming that the /getAllUsers endpoint throws an error when it can't connect to the database
         const response = await request(server).get('/getAllUsers');
       
         expect(response.status).toBe(500);
         expect(response.body.error).toBe('Internal Server Error');
-      });   
+      });
 });
