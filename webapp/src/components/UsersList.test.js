@@ -125,11 +125,20 @@ describe('UsersList', () => {
         });
     });
 
-    /*
+    
     describe('failing requests', () => {
-      it('an error is shown when petition fails', async () => {
-        mockAxios.onGet('http://localhost:8000/getAllUsers').reply(500, { error: 'Internal Server Error' });
+      beforeEach(() => {
+        axios.get.mockRejectedValue({
+          response: {
+            status: 500,
+            data: {
+              error: 'Internal Server Error'
+            },
+          },
+        });
+      });
 
+      it('an error is shown when petition fails', async () => {
         await act(async () => {
           render(<UsersList />);
         });
@@ -140,5 +149,5 @@ describe('UsersList', () => {
         });
       });
     });
-    */
+    
 });
