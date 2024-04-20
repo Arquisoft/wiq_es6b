@@ -103,7 +103,11 @@ test('should log a message when OpenAPI configuration file is not present', asyn
   // Require the server file to trigger the console.log statement
   const server = require('./auth-service');
 
-  expect(consoleSpy).toHaveBeenCalledWith("Not configuring OpenAPI. Configuration file not present.");
+  // Check if any of the console.log calls contain the expected message
+  const logCalls = consoleSpy.mock.calls;
+  const foundExpectedMessage = logCalls.some(call => call[0] === "Not configuring OpenAPI. Configuration file not present.");
+
+  expect(foundExpectedMessage).toBe(true);
 
   // Teardown: restore OpenAPI configuration file
   if (fs.existsSync('./openapi_temp.yaml')) {
