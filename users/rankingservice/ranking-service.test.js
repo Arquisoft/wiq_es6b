@@ -62,7 +62,7 @@ describe('User Service', () => {
       });
       await existingUserRank.save();
 
-      // Datos para la solicitud POST de actualización del ranking de usuario
+      // Datos para la supdateRanking updates a user rankinglicitud POST de actualización del ranking de usuario
       const updateData = {
         username: 'existinguser',
         preguntasCorrectas: 5,
@@ -160,24 +160,6 @@ describe('User Service', () => {
   
   });
 
-
-test('POST /updateRanking updates a user ranking', async () => {
-  const username = 'testUser';
-  const preguntasCorrectas = 5;
-  const preguntasFalladas = 3;
-
-  await new UserRank({ username, preguntasCorrectas: 0, preguntasFalladas: 0, numPartidas: 0 }).save();
-
-  const response = await request(app)
-    .post('/updateRanking')
-    .send({ username, preguntasCorrectas, preguntasFalladas });
-
-  expect(response.status).toBe(200);
-  expect(response.body.username).toBe(username);
-  expect(response.body.preguntasCorrectas).toBe(preguntasCorrectas);
-  expect(response.body.preguntasFalladas).toBe(preguntasFalladas);
-});
-
 test('POST /createUserRank creates or resets a user ranking', async () => {
   const username = 'testUser';
 
@@ -201,25 +183,87 @@ test('GET /obtainRank gets all user rankings', async () => {
   expect(Array.isArray(response.body)).toBe(true);
 });
 
-test('POST /updateAllRanking updates all user rankings', async () => {
+it('should reset an existing user rank', async () => {
+  // Arrange
   const username = 'testUser';
-  const preguntasCorrectas = 5;
-  const preguntasFalladas = 3;
-  const numPartidas = 1;
+  const initialUserRank = new UserRank({
+    username,
+    porcentajeAciertos: 50,
+    preguntasCorrectas: 10,
+    preguntasFalladas: 10,
+    numPartidas: 1
+  });
+  await initialUserRank.save();
 
-  await new UserRank({ username, preguntasCorrectas: 0, preguntasFalladas: 0, numPartidas: 0 }).save();
+  // Act
+  await request(app)
+    .post('/createUserRank')
+    .send({ usernames: [username] })
+    .expect(200);
 
-  const response = await request(app)
-    .post('/updateAllRanking')
-    .send([{ username, preguntasCorrectas, preguntasFalladas, numPartidas }]);
-
-  expect(response.status).toBe(200);
-  expect(response.body.message).toBe('Rankings actualizados correctamente.');
-
-  const userRank = await UserRank.findOne({ username });
-  expect(userRank.preguntasCorrectas).toBe(preguntasCorrectas);
-  expect(userRank.preguntasFalladas).toBe(preguntasFalladas);
-  expect(userRank.numPartidas).toBe(numPartidas);
+  // Assert
+  const updatedUserRank = await UserRank.findOne({ username });
+  expect(updatedUserRank.porcentajeAciertos).toBe(0);
+  expect(updatedUserRank.preguntasCorrectas).toBe(0);
+  expect(updatedUserRank.preguntasFalladas).toBe(0);
+  expect(updatedUserRank.numPartidas).toBe(0);
 });
-  
+
+it('should delete a user rank not included in the provided usernames', async () => {
+  // Arrange
+  const username = 'testUser';
+  const initialUserRank = new UserRank({
+    username,
+    porcentajeAciertos: 50,
+    preguntasCorrectas: 10,
+    preguntasFalladas: 10,
+    numPartidas: 1
+  });
+  await initialUserRank.save();
+
+  // Act
+  await request(app)
+    .post('/updateAllRanking')
+    .send({ usernames: ['anotherUser'] }) // username not included
+    .expect(200);
+
+  // Assert
+  const deletedUserRank = await UserRank.findOne({ username });
+  expect(deletedUserRank).toBeNull();
+});
+it('should update the ranking of each user in the provided list', async () => {
+  // Arrange
+  const rankingData = [
+    {
+      username: 'testUser1',
+      preguntasCorrectas: 5,
+      preguntasFalladas: 5,
+      numPartidas: 1
+    },
+    {
+      username: 'testUser2',
+      preguntasCorrectas: 10,
+      preguntasFalladas: 0,
+      numPartidas: 1
+    }
+  ];
+
+  // Act
+  await request(app)
+    .post('/updateRanking')
+    .send(rankingData)
+    .expect(200);
+
+  // Assert
+  for (const userData of rankingData) {
+    const updatedUserRank = await UserRank.findOne({ username: userData.username });
+    expect(updatedUserRank.preguntasCorrectas).toBe(userData.preguntasCorrectas);
+    expect(updatedUserRank.preguntasFalladas).toBe(userData.preguntasFalladas);
+    expect(updatedUserRank.numPartidas).toBe(userData.numPartidas);
+
+    const totalPreguntas = updatedUserRank.preguntasCorrectas + updatedUserRank.preguntasFalladas;
+    const porcentajeAciertos = (updatedUserRank.preguntasCorrectas / totalPreguntas) * 100;
+    expect(updatedUserRank.porcentajeAciertos).toBe(porcentajeAciertos.toFixed(2));
+  }
+});
 });
