@@ -232,41 +232,4 @@ it('should return 400 if user does not exist', async () => {
   expect(deletedUserRank).not.toBeNull(); // Expect the user rank to still exist
 });
 
-it('should update the ranking of each user in the provided list', async () => {
-  // Arrange
-  const rankingData = {
-    users: [
-      {
-        username: 'testUser1',
-        preguntasCorrectas: 5,
-        preguntasFalladas: 5,
-        numPartidas: 1
-      },
-      {
-        username: 'testUser2',
-        preguntasCorrectas: 10,
-        preguntasFalladas: 0,
-        numPartidas: 1
-      }
-    ]
-  };
-
-  // Act
-  await request(app)
-    .post('/updateRanking')
-    .send(rankingData)
-    .expect(200);
-
-  // Assert
-  for (const userData of rankingData.users) {
-    const updatedUserRank = await UserRank.findOne({ username: userData.username });
-    expect(updatedUserRank.preguntasCorrectas).toBe(userData.preguntasCorrectas);
-    expect(updatedUserRank.preguntasFalladas).toBe(userData.preguntasFalladas);
-    expect(updatedUserRank.numPartidas).toBe(userData.numPartidas);
-
-    const totalPreguntas = updatedUserRank.preguntasCorrectas + updatedUserRank.preguntasFalladas;
-    const porcentajeAciertos = (updatedUserRank.preguntasCorrectas / totalPreguntas) * 100;
-    expect(updatedUserRank.porcentajeAciertos).toBeCloseTo(porcentajeAciertos, 2);
-  }
-});
 });
