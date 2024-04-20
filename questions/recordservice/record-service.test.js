@@ -100,4 +100,31 @@ describe('Record Service', () => {
     expect(response.body.length).toBe(2);
   });
 
+  it('Should calculate and return a ranking of users /actRanking', async () => {
+    // Add the records to the database
+    await request(app).post('/addRecord').send(record);
+    await request(app).post('/addRecord').send(record2);
+    await request(app).post('/addRecord').send(record3);
+  
+    // Request the ranking
+    const response = await request(app).get('/actRanking');
+  
+    // Check the status code
+    expect(response.status).toBe(200);
+  
+    // Check the structure and content of the response
+    expect(response.body).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        userId: 'testuserid',
+        totalCorrectQuestions: 14,
+        totalFailedQuestions: 6
+      }),
+      expect.objectContaining({
+        userId: 'testuserid2',
+        totalCorrectQuestions: 5,
+        totalFailedQuestions: 5
+      })
+    ]));
+  });
+
 });
