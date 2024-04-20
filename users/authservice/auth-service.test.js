@@ -100,6 +100,9 @@ test('should log a message when OpenAPI configuration file is not present', asyn
     fs.renameSync('./openapi.yaml', './openapi_temp.yaml');
   }
 
+  // Delete the server module from Node.js cache
+  delete require.cache[require.resolve('./auth-service')];
+
   // Require the server file to trigger the console.log statement
   const server = require('./auth-service');
 
