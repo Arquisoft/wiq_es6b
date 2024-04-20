@@ -57,17 +57,17 @@ describe('User Service', () => {
       });
 
       test('should throw an error when a required field is missing', async () => {
-        const response = await request(server)
+        const response = await request(app)
           .post('/adduser')
           .send({ username: 'testuser' }); // password field is missing
       
         expect(response.status).toBe(400);
         expect(response.body.error).toBe('Missing required field: password');
       });
-
+      
       test('should return 500 Internal Server Error when an error occurs on the server', async () => {
         // Assuming that the /getAllUsers endpoint throws an error when it can't connect to the database
-        const response = await request(server).get('/getAllUsers');
+        const response = await request(app).get('/getAllUsers');
       
         expect(response.status).toBe(500);
         expect(response.body.error).toBe('Internal Server Error');
