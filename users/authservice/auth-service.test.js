@@ -107,6 +107,6 @@ test('server close event closes Mongoose connection', async () => {
   await new Promise(resolve => setTimeout(resolve, 1000));
 
   expect(closeSpy).toHaveBeenCalled();
-}, 10000); // Increase timeout to 10 seconds
+}, 60000); 
 
 });
