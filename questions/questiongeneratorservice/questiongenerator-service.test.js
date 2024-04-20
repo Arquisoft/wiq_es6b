@@ -1,6 +1,7 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const Record = require('./questiongenerator-model');
+const QuestionGenerator = require('../models/questionGenerator'); 
 const { type } = require('os');
 
 let mongoServer;
