@@ -45,4 +45,38 @@ describe('Auth Service', () => {
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('username', 'testuser');
   });
+
+  // Test cubrir linea 25
+test('validateRequiredFields throws error when required field is missing', () => {
+  const req = {
+    body: {
+      username: mockUsername,
+      // password field is missing
+    },
+  };
+
+  expect(() => app.validateRequiredFields(req, ['username', 'password'])).toThrow('Missing required field: password');
+});
+
+// Testlineas 48-51
+test('POST /login with valid credentials returns token and user information', async () => {
+  const response = await request(app)
+    .post('/login')
+    .send({
+      username: mockUsername,
+      password: mockPassword,
+    });
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body).toHaveProperty('token');
+  expect(response.body).toHaveProperty('username', mockUsername);
+  expect(response.body).toHaveProperty('createdAt');
+});
+// Test linea 68
+test('server close event closes Mongoose connection', async () => {
+  const closeSpy = jest.spyOn(mongoose.connection, 'close');
+  app.close();
+  expect(closeSpy).toHaveBeenCalled();
+});
+
 });
