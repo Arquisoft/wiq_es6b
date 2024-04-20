@@ -115,14 +115,16 @@ describe('Record Service', () => {
     // Check the structure and content of the response
     expect(response.body).toEqual(expect.arrayContaining([
       expect.objectContaining({
-        userId: 'testuserid',
-        totalCorrectQuestions: 14,
-        totalFailedQuestions: 6
+        username: 'testuserid',
+        preguntasCorrectas: 14,
+        preguntasFalladas: 6,
+        numPartidas: 2
       }),
       expect.objectContaining({
-        userId: 'testuserid2',
-        totalCorrectQuestions: 5,
-        totalFailedQuestions: 5
+        username: 'testuserid2',
+        preguntasCorrectas: 5,
+        preguntasFalladas: 5,
+        numPartidas: 1
       })
     ]));
   });
