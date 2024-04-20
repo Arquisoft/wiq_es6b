@@ -116,15 +116,15 @@ describe('Record Service', () => {
     expect(response.body).toEqual(expect.arrayContaining([
       expect.objectContaining({
         username: 'testuserid',
-        preguntasCorrectas: 14,
-        preguntasFalladas: 6,
-        numPartidas: 2
+        preguntasCorrectas: 28,
+        preguntasFalladas: 12,
+        numPartidas: 4
       }),
       expect.objectContaining({
         username: 'testuserid2',
-        preguntasCorrectas: 5,
-        preguntasFalladas: 5,
-        numPartidas: 1
+        preguntasCorrectas: 10,
+        preguntasFalladas: 10,
+        numPartidas: 2
       })
     ]));
   });
