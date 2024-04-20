@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt');
 const User = require('./auth-model');
 const mongoose = require('mongoose');
 const server = require('./auth-service');
-
+const fs = require('fs');
+const consoleSpy = jest.spyOn(console, 'log');
 
 let mongoServer;
 let app;
@@ -93,5 +94,21 @@ test('POST /login with invalid credentials', async () => {
   expect(response.body).toHaveProperty('error', 'Invalid credentials');
 });
 
+test('should log a message when OpenAPI configuration file is not present', async () => {
+  // Setup: rename OpenAPI configuration file
+  if (fs.existsSync('./openapi.yaml')) {
+    fs.renameSync('./openapi.yaml', './openapi_temp.yaml');
+  }
+
+  // Require the server file to trigger the console.log statement
+  const server = require('./auth-service');
+
+  expect(consoleSpy).toHaveBeenCalledWith("Not configuring OpenAPI. Configuration file not present.");
+
+  // Teardown: restore OpenAPI configuration file
+  if (fs.existsSync('./openapi_temp.yaml')) {
+    fs.renameSync('./openapi_temp.yaml', './openapi.yaml');
+  }
+});
 
 });
