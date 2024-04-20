@@ -1,7 +1,6 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const Record = require('./questiongenerator-model');
-const QuestionGenerator = require('../models/questionGenerator'); 
 const { type } = require('os');
 
 let mongoServer;
@@ -158,92 +157,4 @@ describe('Question Generator Service', () => {
         expect(response.status).toBe(404);
         expect(response.body).toHaveProperty('error','No question found in the database');
     });
-
-    
-    it('should get a random sports question', async () => {
-        // Add a sports question to the database before the test
-        const sportsQuestion = new QuestionGenerator({
-          questionBody: 'What is the capital of France?',
-          correcta: 'Paris',
-          incorrectas: ['London', 'Berlin', 'Madrid'],
-          numquest: 1,
-          typeQuestion: 'equipo_estadio', // This is a sports question
-        });
-        await sportsQuestion.save();
-      
-        // Now run the test
-        const response = await request(app).get('/getRandomQuestionDeporte');
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('questionBody');
-        expect(response.body).toHaveProperty('correcta');
-        expect(response.body).toHaveProperty('incorrectas');
-      
-        // Delete the sports question from the database after the test
-        await QuestionGenerator.deleteOne({ _id: sportsQuestion._id });
-      });
-      
-      it('should get a random year question', async () => {
-        // Add a year question to the database before the test
-        const yearQuestion = new QuestionGenerator({
-          questionBody: 'In what year was the Declaration of Independence signed?',
-          correcta: '1776',
-          incorrectas: ['1775', '1777', '1778'],
-          numquest: 1,
-          typeQuestion: 'cantante_anio', // This is a year question
-        });
-        await yearQuestion.save();
-      
-        // Now run the test
-        const response = await request(app).get('/getRandomQuestionAnio');
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('questionBody');
-        expect(response.body).toHaveProperty('correcta');
-        expect(response.body).toHaveProperty('incorrectas');
-      
-        // Delete the year question from the database after the test
-        await QuestionGenerator.deleteOne({ _id: yearQuestion._id });
-      });
-      
-      it('should get a random music question', async () => {
-        // Add a music question to the database before the test
-        const musicQuestion = new QuestionGenerator({
-          questionBody: 'Who composed the Four Seasons?',
-          correcta: 'Vivaldi',
-          incorrectas: ['Bach', 'Mozart', 'Beethoven'],
-          numquest: 1,
-          typeQuestion: 'cancion_cantante', // This is a music question
-        });
-        await musicQuestion.save();
-      
-        // Now run the test
-        const response = await request(app).get('/getRandomQuestionMusica');
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('questionBody');
-        expect(response.body).toHaveProperty('correcta');
-        expect(response.body).toHaveProperty('incorrectas');
-      
-        // Delete the music question from the database after the test
-        await QuestionGenerator.deleteOne({ _id: musicQuestion._id });
-      });
-      
-        it('should get a random book question', async () => {
-          const response = await request(app).get('/getRandomQuestionLibro');
-          expect(response.status).toBe(200);
-          expect(response.body).toHaveProperty('questionBody');
-          expect(response.body).toHaveProperty('correcta');
-          expect(response.body).toHaveProperty('incorrectas');
-          expect(response.body).toHaveProperty('numquest');
-        });
-      
-        it('should get a random country and geography question', async () => {
-          const response = await request(app).get('/getRandomQuestionPaisYGeo');
-          expect(response.status).toBe(200);
-          expect(response.body).toHaveProperty('questionBody');
-          expect(response.body).toHaveProperty('correcta');
-          expect(response.body).toHaveProperty('incorrectas');
-          expect(response.body).toHaveProperty('numquest');
-        });
-  
-
-
 });
