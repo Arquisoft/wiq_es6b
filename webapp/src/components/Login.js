@@ -100,7 +100,7 @@ const Login = ({ setLogged }) => {
         Countries: true
     };  
     setSettings({ numberQuestions: nQuestions, totalMins: totMins, totalSecs: totSecs, themes: ts });
-  }, [settings, username]);
+  }, [username]);
 
   return (
     <>
