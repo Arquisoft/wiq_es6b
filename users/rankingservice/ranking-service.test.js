@@ -209,7 +209,7 @@ it('should reset an existing user rank', async () => {
   expect(updatedUserRank.numPartidas).toBe(0);
 });
 
-it('should delete a user rank not included in the provided usernames', async () => {
+it('should return 400 if user does not exist', async () => {
   // Arrange
   const username = 'testUser';
   const initialUserRank = new UserRank({
@@ -225,12 +225,13 @@ it('should delete a user rank not included in the provided usernames', async () 
   await request(app)
     .post('/updateAllRanking')
     .send({ usernames: ['anotherUser'] }) // username not included
-    .expect(200);
+    .expect(400); // Expect 400 status code
 
   // Assert
   const deletedUserRank = await UserRank.findOne({ username });
-  expect(deletedUserRank).toBeNull();
+  expect(deletedUserRank).not.toBeNull(); // Expect the user rank to still exist
 });
+
 it('should update the ranking of each user in the provided list', async () => {
   // Arrange
   const rankingData = [
