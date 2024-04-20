@@ -23,7 +23,22 @@ const Login = ({ setLogged }) => {
   const [loading, setLoading] = useState(false);
   const [showComponent, setShowComponent] = useState('login');
   const [totalTime, setTotalTime] = useState(180);
-  const [settings, setSettings] = useState({});
+  // ajustes guardados en memoria para recuperarlos en próximas partidas
+  const [settings, setSettings] = useState(() => {
+      const numberQuestions = localStorage.getItem(`settings_${username}_numberQuestions`) || 10;
+      const totalMins = localStorage.getItem(`settings_${username}_totalMins`) || 3;
+      const totalSecs = localStorage.getItem(`settings_${username}_totalSecs`) || 0;
+      const themes = JSON.parse(localStorage.getItem(`settings_${username}_themes`)) || {
+          Sports: true,
+          ImportantDates: true,
+          Music: true,
+          Literature: true,
+          Countries: true
+      };
+
+      return { numberQuestions, totalMins, totalSecs, themes };
+  });
+
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
   const loginUser = async () => {
@@ -73,6 +88,20 @@ const Login = ({ setLogged }) => {
     calculateTotalTime();
   }, [settings]);
 
+  useEffect(() => {
+    const nQuestions = localStorage.getItem(`settings_${username}_numberQuestions`) || 10;
+    const totMins = localStorage.getItem(`settings_${username}_totalMins`) || 3;
+    const totSecs = localStorage.getItem(`settings_${username}_totalSecs`) || 0;
+    const ts = JSON.parse(localStorage.getItem(`settings_${username}_themes`)) || {
+        Sports: true,
+        ImportantDates: true,
+        Music: true,
+        Literature: true,
+        Countries: true
+    };  
+    setSettings({ numberQuestions: nQuestions, totalMins: totMins, totalSecs: totSecs, themes: ts });
+  }, [username]);
+
   return (
     <>
       {loginSuccess && (
@@ -117,13 +146,13 @@ const Login = ({ setLogged }) => {
             {loginSuccess && (
               <>
                 {showComponent === 'game' &&
-                  <Game username={username} totalQuestions={settings.numberQuestions} timeLimit={totalTime} />
+                  <Game username={username} totalQuestions={settings.numberQuestions} timeLimit={totalTime} themes={settings.themes}/>
                 }
                 {showComponent === 'userList' && <UsersList />}
                 {showComponent === 'questionList' && <GeneratedQuestionsList />}
                 {showComponent === 'recordList' && <RecordList username={username} />}
                 {showComponent === 'rankingList' && <RankingList />}
-                {showComponent === 'settings' && <GameSettings setSettings={setSettings} />}
+                {showComponent === 'settings' && <GameSettings setSettings={setSettings} currentUser={username} />}
                 {showComponent === 'login' && (
                   <div>
                     <Typography component="h1" variant="h5" sx={{ textAlign: 'center' }}>

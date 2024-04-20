@@ -62,7 +62,7 @@ describe('User Service', () => {
       });
       await existingUserRank.save();
 
-      // Datos para la solicitud POST de actualización del ranking de usuario
+      // Datos para la supdateRanking updates a user rankinglicitud POST de actualización del ranking de usuario
       const updateData = {
         username: 'existinguser',
         preguntasCorrectas: 5,
@@ -159,5 +159,77 @@ describe('User Service', () => {
     });
   
   });
-  
+
+test('POST /createUserRank creates or resets a user ranking', async () => {
+  const username = 'testUser';
+
+  const response = await request(app)
+    .post('/createUserRank')
+    .send({ usernames: [username] });
+
+  expect(response.status).toBe(200);
+  expect(response.body.message).toBe('Rankings de usuarios creados o actualizados correctamente.');
+
+  const userRank = await UserRank.findOne({ username });
+  expect(userRank.preguntasCorrectas).toBe(0);
+  expect(userRank.preguntasFalladas).toBe(0);
+  expect(userRank.numPartidas).toBe(0);
+});
+
+test('GET /obtainRank gets all user rankings', async () => {
+  const response = await request(app).get('/obtainRank');
+
+  expect(response.status).toBe(200);
+  expect(Array.isArray(response.body)).toBe(true);
+});
+
+it('should reset an existing user rank', async () => {
+  // Arrange
+  const username = 'testUser';
+  const initialUserRank = new UserRank({
+    username,
+    porcentajeAciertos: 50,
+    preguntasCorrectas: 10,
+    preguntasFalladas: 10,
+    numPartidas: 1
+  });
+  await initialUserRank.save();
+
+  // Act
+  await request(app)
+    .post('/createUserRank')
+    .send({ usernames: [username] })
+    .expect(200);
+
+  // Assert
+  const updatedUserRank = await UserRank.findOne({ username });
+  expect(updatedUserRank.porcentajeAciertos).toBe(0);
+  expect(updatedUserRank.preguntasCorrectas).toBe(0);
+  expect(updatedUserRank.preguntasFalladas).toBe(0);
+  expect(updatedUserRank.numPartidas).toBe(0);
+});
+
+it('should return 400 if user does not exist', async () => {
+  // Arrange
+  const username = 'testUser';
+  const initialUserRank = new UserRank({
+    username,
+    porcentajeAciertos: 50,
+    preguntasCorrectas: 10,
+    preguntasFalladas: 10,
+    numPartidas: 1
+  });
+  await initialUserRank.save();
+
+  // Act
+  await request(app)
+    .post('/updateAllRanking')
+    .send({ usernames: ['anotherUser'] }) // username not included
+    .expect(400); // Expect 400 status code
+
+  // Assert
+  const deletedUserRank = await UserRank.findOne({ username });
+  expect(deletedUserRank).not.toBeNull(); // Expect the user rank to still exist
+});
+
 });

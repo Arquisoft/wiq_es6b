@@ -5,13 +5,17 @@ FROM node:20
 WORKDIR /usr/src/userservice
 
 # Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+COPY --chown=root:root --chmod=75 package*.json ./
 
 # Install app dependencies
 RUN npm install
 
 # Copy the app source code to the working directory
-COPY . .
+COPY --chown=root:root --chmod=75 .env ./
+COPY --chown=root:root --chmod=75 user-model.js ./
+COPY --chown=root:root --chmod=75 user-service.js ./
+COPY --chown=root:root --chmod=75 user-service.test.js ./
+COPY --chown=root:root --chmod=75 openapi.yaml ./
 
 # Expose the port the app runs on
 EXPOSE 8001
