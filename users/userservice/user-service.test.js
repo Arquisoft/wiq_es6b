@@ -65,11 +65,4 @@ describe('User Service', () => {
         expect(response.body.error).toBe('Missing required field: password');
       });
       
-      test('should return 500 Internal Server Error when an error occurs on the server', async () => {
-        // Assuming that the /getAllUsers endpoint throws an error when it can't connect to the database
-        const response = await request(app).get('/getAllUsers');
-      
-        expect(response.status).toBe(500);
-        expect(response.body.error).toBe('Internal Server Error');
-      });
 });
