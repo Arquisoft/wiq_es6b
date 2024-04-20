@@ -159,5 +159,67 @@ describe('User Service', () => {
     });
   
   });
+
+
+test('POST /updateRanking updates a user ranking', async () => {
+  const username = 'testUser';
+  const preguntasCorrectas = 5;
+  const preguntasFalladas = 3;
+
+  await new UserRank({ username, preguntasCorrectas: 0, preguntasFalladas: 0, numPartidas: 0 }).save();
+
+  const response = await request(app)
+    .post('/updateRanking')
+    .send({ username, preguntasCorrectas, preguntasFalladas });
+
+  expect(response.status).toBe(200);
+  expect(response.body.username).toBe(username);
+  expect(response.body.preguntasCorrectas).toBe(preguntasCorrectas);
+  expect(response.body.preguntasFalladas).toBe(preguntasFalladas);
+});
+
+test('POST /createUserRank creates or resets a user ranking', async () => {
+  const username = 'testUser';
+
+  const response = await request(app)
+    .post('/createUserRank')
+    .send({ usernames: [username] });
+
+  expect(response.status).toBe(200);
+  expect(response.body.message).toBe('Rankings de usuarios creados o actualizados correctamente.');
+
+  const userRank = await UserRank.findOne({ username });
+  expect(userRank.preguntasCorrectas).toBe(0);
+  expect(userRank.preguntasFalladas).toBe(0);
+  expect(userRank.numPartidas).toBe(0);
+});
+
+test('GET /obtainRank gets all user rankings', async () => {
+  const response = await request(app).get('/obtainRank');
+
+  expect(response.status).toBe(200);
+  expect(Array.isArray(response.body)).toBe(true);
+});
+
+test('POST /updateAllRanking updates all user rankings', async () => {
+  const username = 'testUser';
+  const preguntasCorrectas = 5;
+  const preguntasFalladas = 3;
+  const numPartidas = 1;
+
+  await new UserRank({ username, preguntasCorrectas: 0, preguntasFalladas: 0, numPartidas: 0 }).save();
+
+  const response = await request(app)
+    .post('/updateAllRanking')
+    .send([{ username, preguntasCorrectas, preguntasFalladas, numPartidas }]);
+
+  expect(response.status).toBe(200);
+  expect(response.body.message).toBe('Rankings actualizados correctamente.');
+
+  const userRank = await UserRank.findOne({ username });
+  expect(userRank.preguntasCorrectas).toBe(preguntasCorrectas);
+  expect(userRank.preguntasFalladas).toBe(preguntasFalladas);
+  expect(userRank.numPartidas).toBe(numPartidas);
+});
   
 });
