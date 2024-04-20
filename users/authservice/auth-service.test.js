@@ -3,6 +3,7 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const bcrypt = require('bcrypt');
 const User = require('./auth-model');
 const mongoose = require('mongoose');
+const server = require('./auth-service');
 
 
 let mongoServer;
@@ -74,12 +75,29 @@ test('POST /login with valid credentials returns token and user information', as
   expect(response.body).toHaveProperty('token');
   expect(response.body).toHaveProperty('username', mockUsername);
 });
+
+//test linea 48
+
+test('POST /login with invalid credentials', async () => {
+  const response = await request(server)
+    .post('/login')
+    .send({
+      username: 'invalidUser',
+      password: 'invalidPassword'
+    });
+
+  expect(response.statusCode).toBe(401);
+  expect(response.body).toHaveProperty('error', 'Invalid credentials');
+});
+
 // Test linea 68
 test('server close event closes Mongoose connection', async () => {
-  const mongoose = require('mongoose'); // Import Mongoose
   const closeSpy = jest.spyOn(mongoose.connection, 'close');
 
-  // Open Mongoose connection
+  // Close existing Mongoose connection
+  await mongoose.connection.close();
+
+  // Open a new Mongoose connection
   await mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true, useUnifiedTopology: true });
 
   // Close app (and Mongoose connection)
