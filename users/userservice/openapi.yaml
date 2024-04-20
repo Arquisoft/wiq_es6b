@@ -51,3 +51,45 @@ paths:
                     type: string
                     description: Error information.
                     example: Error message
+  /getAllUsers:
+    get:
+      summary: Get all users
+      description: This endpoint returns all users.
+      responses:
+        '200':
+          description: A list of users was retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    username:
+                      type: string
+                      description: The username of the user.
+                    password:
+                      type: string
+                      description: The hashed password of the user.
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message.
+                    example: Internal Server Error
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The username of the user.
+        password:
+          type: string
+          description: The hashed password of the user.
