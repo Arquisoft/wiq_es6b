@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor, fireEvent } from '@testing-library/react';
+import { render, waitFor, fireEvent, queryByAltText } from '@testing-library/react';
 import GameSettings from './GameSettings';
 
 describe('GameSettings', () => {
@@ -96,14 +96,16 @@ describe('GameSettings', () => {
     const timeTextField = getAllByRole('spinbutton', { min: 1, max: 10 });
     fireEvent.change(timeTextField[0], { target: { value: 0 } });
     // comprobamos que no se ha producido el cambio por ser inválido el valor
+    // el valor es 1 porque en el anterior test el usuario estableció ese tiempo y se guardó en memoria
+    // como su configuración predeterminada
     const timeTextFieldUpdated = getAllByRole('spinbutton', { min: 1, max: 10 });
-    expect(timeTextFieldUpdated[0].value).toBe('3');
+    expect(timeTextFieldUpdated[0].value).toBe('1');
     expect(getByText('El valor de los minutos debe estar entre 1-20.')).toBeInTheDocument();
     // intentams establecer 25 minutos de duración de partida
     fireEvent.change(timeTextFieldUpdated[0], { target: { value: 25 } });
     // comprobamos que no se ha producido el cambio por ser inválido el valor
     timeTextFieldUpdated = getAllByRole('spinbutton', { min: 1, max: 10 });
-    expect(timeTextFieldUpdated[0].value).toBe('3');
+    expect(timeTextFieldUpdated[0].value).toBe('1');
     expect(getByText('El valor de los minutos debe estar entre 1-20.')).toBeInTheDocument();
 
     // intentamos establecer 65 segundos de duración de partida
@@ -122,7 +124,7 @@ describe('GameSettings', () => {
   });
 
   it('we cant leave all themes unchecked', async () => {
-    const { getByText, getByLabelText } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
+    const { getByText, getByLabelText, queryByText } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
   
     // nos movemos a la zona de temáticas
     const themesSettingTab = getByText('Temáticas');
@@ -151,7 +153,7 @@ describe('GameSettings', () => {
     // volvemos a seleccionar "literatura" para que haya dos temas seleccionados
     fireEvent.click(literaturetheme);
     // ya no aparece la advertencia al usuario porque ya ha desistido de deseleccionar todos los temas
-    expect(getByText('Cuidado, siempre debe haber al menos un tema seleccionado.')).toBeNull();
+    expect(queryByText('Cuidado, siempre debe haber al menos un tema seleccionado.')).toBeNull();
     // intentamos deseleccionar los dos temas que aparecen seleccionados
     fireEvent.click(geotheme);
     fireEvent.click(literaturetheme);
