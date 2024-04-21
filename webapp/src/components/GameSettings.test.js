@@ -69,7 +69,7 @@ describe('GameSettings', () => {
     const timeSettingTab = getByText('Duración de partida');
     fireEvent.click(timeSettingTab);
     // establecemos 2 minuto de duración de partida
-    const timeTextField = getAllByRole('spinbutton', { min: 1, max: 10 });
+    let timeTextField = getAllByRole('spinbutton', { min: 1, max: 10 });
     expect(timeTextField[0].value).toBe('3');
     // Simula 6 eventos de clic en el botón de decremento
     fireEvent.keyDown(timeTextField[0], { key: 'ArrowDown', code: 'ArrowDown' });
