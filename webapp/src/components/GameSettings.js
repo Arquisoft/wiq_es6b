@@ -44,11 +44,11 @@ const GameSettings = ({ setSettings, currentUser }) => {
     const handleQuestionsSlider = (event, newValue) => {
         setNumberQuestions(newValue);
     };
-    
+
     const handleTimeTfMins = (event) => {
         let newValue = parseInt(event.target.value, 10);
         if (isNaN(newValue)) {
-            newValue = 0; // Si el usuario ingresa p.e: una letra, establece el valor en 0
+            newValue = 3; // Si el usuario ingresa p.e: una letra, establece el valor en 3
         } else if(newValue > 20 || newValue < 1) {
             setIsWarningMinsVisible(true);
             return;

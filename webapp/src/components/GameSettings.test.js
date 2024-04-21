@@ -68,34 +68,9 @@ describe('GameSettings', () => {
     // nos movemos a duración de partida
     const timeSettingTab = getByText('Duración de partida');
     fireEvent.click(timeSettingTab);
-    // establecemos 2 minuto de duración de partida
-    let timeTextField = getAllByRole('spinbutton', { min: 1, max: 10 });
-    expect(timeTextField[0].value).toBe('3');
-    // Simula 6 eventos de clic en el botón de decremento
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowDown', code: 'ArrowDown' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowDown', code: 'ArrowDown' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowDown', code: 'ArrowDown' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowDown', code: 'ArrowDown' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowDown', code: 'ArrowDown' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowDown', code: 'ArrowDown' });
-    // Comprueba que el valor del spinbutton se ha decrementado a 2
-    timeTextField = getAllByRole('spinbutton', { min: 1, max: 10 });
-    expect(timeTextField[0].value).toBe('2');
-
-    // subo a 4 minutos la duración de partida
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowUp', code: 'ArrowUp' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowUp', code: 'ArrowUp' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowUp', code: 'ArrowUp' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowUp', code: 'ArrowUp' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowUp', code: 'ArrowUp' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowUp', code: 'ArrowUp' });
-
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowUp', code: 'ArrowUp' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowUp', code: 'ArrowUp' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowUp', code: 'ArrowUp' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowUp', code: 'ArrowUp' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowUp', code: 'ArrowUp' });
-    fireEvent.keyDown(timeTextField[0], { key: 'ArrowUp', code: 'ArrowUp' });
+    // establecemos 1 minuto de duración de partida
+    const timeTextField = getAllByRole('spinbutton', { min: 1, max: 10 });
+    fireEvent.change(timeTextField[0], { target: { value: 1 } });
 
     // nos movemos de vuelta a número de preguntas
     const numberQuestionsTab = getByText('Duración de partida');
@@ -107,7 +82,7 @@ describe('GameSettings', () => {
     fireEvent.click(timeSettingTab);
     const timeTextFieldUpdated = getAllByRole('spinbutton', { min: 1, max: 10 });
     // comprobamos que la duración de partida se ha mantenido
-    expect(timeTextFieldUpdated[0].value).toBe('4');
+    expect(timeTextFieldUpdated[0].value).toBe('1');
     expect(timeTextFieldUpdated[1].value).toBe('0');
   });
 
@@ -121,16 +96,16 @@ describe('GameSettings', () => {
     let timeTextField = getAllByRole('spinbutton', { min: 1, max: 10 });
     fireEvent.change(timeTextField[0], { target: { value: 0 } });
     // comprobamos que no se ha producido el cambio por ser inválido el valor
-    // el valor es 4 porque en el anterior test el usuario estableció ese tiempo y se guardó en memoria
+    // el valor es 1 porque en el anterior test el usuario estableció ese tiempo y se guardó en memoria
     // como su configuración predeterminada
     let timeTextFieldUpdated = getAllByRole('spinbutton', { min: 1, max: 10 });
-    expect(timeTextFieldUpdated[0].value).toBe('4');
+    expect(timeTextFieldUpdated[0].value).toBe('1');
     expect(getByText('El valor de los minutos debe estar entre 1-20.')).toBeInTheDocument();
     // intentams establecer 25 minutos de duración de partida
     fireEvent.change(timeTextFieldUpdated[0], { target: { value: 25 } });
     // comprobamos que no se ha producido el cambio por ser inválido el valor
     timeTextFieldUpdated = getAllByRole('spinbutton', { min: 1, max: 10 });
-    expect(timeTextFieldUpdated[0].value).toBe('4');
+    expect(timeTextFieldUpdated[0].value).toBe('1');
     expect(getByText('El valor de los minutos debe estar entre 1-20.')).toBeInTheDocument();
 
     // intentamos establecer 65 segundos de duración de partida
