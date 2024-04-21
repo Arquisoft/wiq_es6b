@@ -4,7 +4,7 @@ import GameSettings from './GameSettings';
 
 describe('GameSettings', () => {
   it('renders game settings correctly', async () => {
-    const { getByText, getByRole } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
+    const { getByText, getByRole, getAllByRole } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
     
     await waitFor(() => {
       expect(getByText('Número de preguntas')).toBeInTheDocument();
@@ -59,7 +59,7 @@ describe('GameSettings', () => {
   });
 
   it('we can modify the settings in each tab', async () => {
-    const { getByText, getByRole } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
+    const { getByText, getByRole, getAllByRole } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
   
     // establecemos en el slider 5 preguntas por partida
     const slider = getByRole('slider');
@@ -87,7 +87,7 @@ describe('GameSettings', () => {
   });
 
   it('we cant put an invalid value in timer settings', async () => {
-    const { getByText, getByRole } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
+    const { getByText, getAllByRole } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
   
     // nos movemos a duración de partida
     const timeSettingTab = getByText('Duración de partida');
@@ -122,7 +122,7 @@ describe('GameSettings', () => {
   });
 
   it('we cant leave all themes unchecked', async () => {
-    const { getByText, getByRole } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
+    const { getByText, getByLabelText } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
   
     // nos movemos a la zona de temáticas
     const themesSettingTab = getByText('Temáticas');
