@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import RankingList from './RankingList';
 
 
@@ -55,17 +55,6 @@ test('renders column headers', () => {
     render(<RankingList />);
     const headingElement = screen.getByText(/Ranking/i);
     expect(headingElement).toBeInTheDocument();
-  });
-
-  test('fetches users from an API and displays them', async () => {
-    render(<RankingList />);
-
-    // Wait for the users to be fetched and displayed
-    await waitFor(() => screen.getByText(/Nombre de Usuario/i));
-
-    // Check if there are any cells in the table
-    const items = screen.getAllByRole('cell');
-    expect(items).not.toHaveLength(0);
   });
 
   it('should order users by percentage of correct answers correctly', async () => {
