@@ -4,7 +4,7 @@ import GameSettings from './GameSettings';
 
 describe('GameSettings', () => {
   it('renders game settings correctly', async () => {
-    const { getByText, getByRole, getAllByRole } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
+    const { getByText, getByRole, getAllByRole, getByLabelText } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
     
     await waitFor(() => {
       expect(getByText('Número de preguntas')).toBeInTheDocument();
