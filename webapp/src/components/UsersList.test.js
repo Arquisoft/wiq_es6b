@@ -125,20 +125,35 @@ describe('UsersList', () => {
         });
     });
 
-    /*
+    
     describe('failing requests', () => {
-      it('an error is shown when petition fails', async () => {
-        mockAxios.onGet('http://localhost:8000/getAllUsers').reply(500, { error: 'Internal Server Error' });
+      beforeEach(() => {
+        axios.get.mockRejectedValue({
+          response: {
+            status: 500,
+            data: {
+              error: 'Internal Server Error'
+            },
+          },
+        });
+      });
 
+      it('users list is empty (only headers are shown) when petition fails', async () => {
         await act(async () => {
           render(<UsersList />);
         });
 
-        // Wait for the error Snackbar to be open
-        await waitFor(() => {
-          expect(screen.getByText(/Error: Internal Server Error/i)).toBeInTheDocument();
-        });
+        // Check if the table headers are in the document 
+        const usernameHeader = screen.getByRole('columnheader', { name: /Nombre de Usuario/i });
+        const createdAtHeader = screen.getByRole('columnheader', { name: /Fecha de Registro/i });
+
+        expect(usernameHeader).toBeInTheDocument();
+        expect(createdAtHeader).toBeInTheDocument();
+
+        // and no users rows are shown
+        const rows = await screen.findAllByRole('row');
+        expect(rows.length).toBe(1);
       });
     });
-    */
+    
 });
