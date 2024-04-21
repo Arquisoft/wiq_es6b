@@ -98,7 +98,7 @@ describe('GameSettings', () => {
     // comprobamos que no se ha producido el cambio por ser inválido el valor
     // el valor es 1 porque en el anterior test el usuario estableció ese tiempo y se guardó en memoria
     // como su configuración predeterminada
-    const timeTextFieldUpdated = getAllByRole('spinbutton', { min: 1, max: 10 });
+    let timeTextFieldUpdated = getAllByRole('spinbutton', { min: 1, max: 10 });
     expect(timeTextFieldUpdated[0].value).toBe('1');
     expect(getByText('El valor de los minutos debe estar entre 1-20.')).toBeInTheDocument();
     // intentams establecer 25 minutos de duración de partida
