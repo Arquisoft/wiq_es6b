@@ -157,4 +157,13 @@ describe('Question Generator Service', () => {
         expect(response.status).toBe(404);
         expect(response.body).toHaveProperty('error','No question found in the database');
     });
+    it('Should get one random question related to sports /getRandomQuestionDeporte', async () => {
+        const response = await request(app).get(`/getRandomQuestionDeporte`);
+    
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('questionBody');
+        expect(response.body).toHaveProperty('correcta');
+        expect(response.body).toHaveProperty('incorrectas');
+        expect(response.body).toHaveProperty('numquest');
+    });
 });
