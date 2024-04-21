@@ -5,6 +5,8 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 const GameSettings = ({ setSettings, currentUser }) => {
     const [isWarningVisible, setIsWarningVisible] = useState(false);
+    const [isWarningMinsVisible, setIsWarningMinsVisible] = useState(false);
+    const [isWarningSecsVisible, setIsWarningSecsVisible] = useState(false);
 
     const [numberQuestions, setNumberQuestions] = useState(() => {
         const storedValue = localStorage.getItem(`settings_${currentUser}_numberQuestions`);
@@ -42,13 +44,16 @@ const GameSettings = ({ setSettings, currentUser }) => {
     const handleQuestionsSlider = (event, newValue) => {
         setNumberQuestions(newValue);
     };
+
     const handleTimeTfMins = (event) => {
         let newValue = parseInt(event.target.value, 10);
         if (isNaN(newValue)) {
-            newValue = 0; // Si el usuario ingresa p.e: una letra, establece el valor en 0
-        } else if(newValue > 10 || newValue < 1) {
+            newValue = 3; // Si el usuario ingresa p.e: una letra, establece el valor en 3
+        } else if(newValue > 20 || newValue < 1) {
+            setIsWarningMinsVisible(true);
             return;
         }
+        setIsWarningMinsVisible(false);
         setTotalMins(parseInt(event.target.value));
     };
     const handleTimeTfSecs = (event) => {
@@ -56,8 +61,10 @@ const GameSettings = ({ setSettings, currentUser }) => {
         if (isNaN(newValue)) {
             newValue = 0; // Si el usuario ingresa p.e: una letra, establece el valor en 0
         } else if(newValue > 60 || newValue < 0) {
+            setIsWarningSecsVisible(true);
             return;
         }
+        setIsWarningSecsVisible(false);
         if (newValue === 60 ) {
             if(totalMins === 10) {
                 return;
@@ -158,6 +165,8 @@ const GameSettings = ({ setSettings, currentUser }) => {
                                     }}
                                     sx={{ marginBottom: '1rem', marginTop: '1rem' }}
                                 />
+                                {isWarningMinsVisible && <Typography color="error" style={{ fontStyle: 'italic' }}>El valor de los minutos debe estar entre 1-20.</Typography>}
+                                {isWarningSecsVisible && <Typography color="error" style={{ fontStyle: 'italic' }}>El valor de los segundos debe estar entre 0-60.</Typography>}
                             </Box>
                         </div>
                     </TabPanel>
