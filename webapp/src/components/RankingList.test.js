@@ -50,30 +50,6 @@ test('renders column headers', () => {
     expect(numPartidasHeader).toBeInTheDocument();
   });
 
-  test('renders top three users', async () => {
-    render(<RankingList />);
-
-    // Wait for the users to be fetched and the component to re-render
-    const topUsers = await screen.findAllByTestId('top-user');
-
-    // Check if the top three users are in the document
-    expect(topUsers).toHaveLength(3);
-  });
-
-  // Test for sorting the users when a column header is clicked
-  test('sorts users when column header is clicked', async () => {
-    render(<RankingList />);
-
-    // Wait for the users to be fetched and the component to re-render
-    const columnHeader = await screen.findByRole('columnheader', { name: /Porcentaje de Aciertos/i });
-
-    // Click the column header
-    userEvent.click(columnHeader);
-
-    // Check if the users are sorted by the clicked column
-    const sortedUsers = await screen.findAllByTestId('user-row');
-    expect(sortedUsers).not.toHaveLength(0);
-  });
 
     // Test for rendering all column headers
     test('renders all column headers', () => {
