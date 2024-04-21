@@ -79,6 +79,7 @@ describe('GameSettings', () => {
     fireEvent.keyDown(timeTextField[0], { key: 'ArrowDown', code: 'ArrowDown' });
     fireEvent.keyDown(timeTextField[0], { key: 'ArrowDown', code: 'ArrowDown' });
     // Comprueba que el valor del spinbutton se ha decrementado a 2
+    timeTextField = getAllByRole('spinbutton', { min: 1, max: 10 });
     expect(timeTextField[0].value).toBe('2');
 
     // subo a 4 minutos la duración de partida
