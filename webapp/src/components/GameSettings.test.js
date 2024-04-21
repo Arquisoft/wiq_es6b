@@ -93,7 +93,7 @@ describe('GameSettings', () => {
     const timeSettingTab = getByText('Duración de partida');
     fireEvent.click(timeSettingTab);
     // intentamos establecer 0 minutos de duración de partida
-    const timeTextField = getAllByRole('spinbutton', { min: 1, max: 10 });
+    let timeTextField = getAllByRole('spinbutton', { min: 1, max: 10 });
     fireEvent.change(timeTextField[0], { target: { value: 0 } });
     // comprobamos que no se ha producido el cambio por ser inválido el valor
     // el valor es 1 porque en el anterior test el usuario estableció ese tiempo y se guardó en memoria
