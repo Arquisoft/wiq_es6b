@@ -4,7 +4,7 @@ import GameSettings from './GameSettings';
 
 describe('GameSettings', () => {
   it('renders game settings correctly', async () => {
-    const { getByText } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
+    const { getByText, getByRole } = render(<GameSettings setSettings={() => {}} currentUser="usuarioPrueba" />);
     
     await waitFor(() => {
       expect(getByText('Número de preguntas')).toBeInTheDocument();
@@ -27,7 +27,7 @@ describe('GameSettings', () => {
       expect(getByText('Seleccione el tiempo máximo de partida:')).toBeInTheDocument();
       
       // comprobamos que la duración de partida predeterminada es 3 minutos
-      const timeTextFieldUpdated = getByRole('textbox');
+      const timeTextFieldUpdated = getByRole('spinbutton', { min: 1, max: 10 });
       expect(timeTextFieldUpdated[0].value).toBe('3');
       expect(timeTextFieldUpdated[1].value).toBe('0');
     });
@@ -69,7 +69,7 @@ describe('GameSettings', () => {
     const timeSettingTab = getByText('Duración de partida');
     fireEvent.click(timeSettingTab);
     // establecemos 1 minuto de duración de partida
-    const timeTextField = getByRole('textbox');
+    const timeTextField = getByRole('spinbutton', { min: 1, max: 10 });
     fireEvent.change(timeTextField[0], { target: { value: 1 } });
 
     // nos movemos de vuelta a número de preguntas
@@ -80,7 +80,7 @@ describe('GameSettings', () => {
 
     // nos movemos de vuelta a duración de partida
     fireEvent.click(timeSettingTab);
-    const timeTextFieldUpdated = getByRole('textbox');
+    const timeTextFieldUpdated = getByRole('spinbutton', { min: 1, max: 10 });
     // comprobamos que la duración de partida se ha mantenido
     expect(timeTextFieldUpdated[0].value).toBe('1');
     expect(timeTextFieldUpdated[1].value).toBe('0');
@@ -93,30 +93,30 @@ describe('GameSettings', () => {
     const timeSettingTab = getByText('Duración de partida');
     fireEvent.click(timeSettingTab);
     // intentamos establecer 0 minutos de duración de partida
-    const timeTextField = getByRole('textbox');
+    const timeTextField = getByRole('spinbutton', { min: 1, max: 10 });
     fireEvent.change(timeTextField[0], { target: { value: 0 } });
     // comprobamos que no se ha producido el cambio por ser inválido el valor
-    const timeTextFieldUpdated = getByRole('textbox');
+    const timeTextFieldUpdated = getByRole('spinbutton', { min: 1, max: 10 });
     expect(timeTextFieldUpdated[0].value).toBe('3');
     expect(getByText('El valor de los minutos debe estar entre 1-20.')).toBeInTheDocument();
     // intentams establecer 25 minutos de duración de partida
     fireEvent.change(timeTextFieldUpdated[0], { target: { value: 25 } });
     // comprobamos que no se ha producido el cambio por ser inválido el valor
-    timeTextFieldUpdated = getByRole('textbox');
+    timeTextFieldUpdated = getByRole('spinbutton', { min: 1, max: 10 });
     expect(timeTextFieldUpdated[0].value).toBe('3');
     expect(getByText('El valor de los minutos debe estar entre 1-20.')).toBeInTheDocument();
 
     // intentamos establecer 65 segundos de duración de partida
-    timeTextField = getByRole('textbox');
+    timeTextField = getByRole('spinbutton', { min: 0, max: 60 });
     fireEvent.change(timeTextField[1], { target: { value: 65 } });
     // comprobamos que no se ha producido el cambio por ser inválido el valor
-    timeTextFieldUpdated = getByRole('textbox');
+    timeTextFieldUpdated = getByRole('spinbutton', { min: 0, max: 60 });
     expect(timeTextFieldUpdated[1].value).toBe('0');
     expect(getByText('El valor de los segundos debe estar entre 0-60.')).toBeInTheDocument();
     // intentams establecer -1 de duración de partida
     fireEvent.change(timeTextFieldUpdated[1], { target: { value: -1 } });
     // comprobamos que no se ha producido el cambio por ser inválido el valor
-    timeTextFieldUpdated = getByRole('textbox');
+    timeTextFieldUpdated = getByRole('spinbutton', { min: 0, max: 60 });
     expect(timeTextFieldUpdated[1].value).toBe('0');
     expect(getByText('El valor de los segundos debe estar entre 0-60.')).toBeInTheDocument();
   });
