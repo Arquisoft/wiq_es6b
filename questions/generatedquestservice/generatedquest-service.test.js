@@ -77,4 +77,8 @@ describe('Generatedquest Service', () => {
         expect(response.body[2]).toHaveProperty('correctAnswer', 'Leonardo da Vinci');
     });
 
+    it('Not add duplicate question /addGeneratedQuestion', async () => {
+        const response = await request(app).post('/addGeneratedQuestion').send(generatedQuestionTest);
+        expect(response.status).toBe(204);
+    });
 });
