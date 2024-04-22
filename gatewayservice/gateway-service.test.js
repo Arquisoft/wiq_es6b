@@ -68,6 +68,14 @@ describe('Gateway Service', () => {
     expect(response.body.token).toBe('mockedToken');
   });
 
+  // Test /login endpoint error handling
+  it('should handle error in /login', async () => {
+    axios.post.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
+    const response = await request(app).post('/login').send({ username: 'testuser', password: 'testpassword' });
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+  });
+
   // Test /adduser endpoint
   it('should forward add user request to user service', async () => {
     const mockUsername = 'newuser';
@@ -79,6 +87,17 @@ describe('Gateway Service', () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.userId).toBe('mockedUserId');
+  });
+
+  // Test /addUser endpoint error handling
+  it('should handle error in /addUser', async () => {
+    axios.post.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
+    const mockUsername = 'newuser';
+    const mockPassword = 'newpassword';
+
+    const response = await request(app).post('/addUser').send({ username: mockUsername, password: mockPassword });
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
   });
 
   // Test /addRecord endpoint
@@ -100,161 +119,253 @@ describe('Gateway Service', () => {
     expect(response.body.recordId).toBe('mockedRecordId');
   });
 
- // Test /addQuestion endpoint
- it('should add a question successfully', async () => {
-  const mockQuestion = {
-    questionBody: '¿Cual es la capital de Francia?',
-    typeQuestion: 'pais_capital'
-  };
+  // Test /addQuestion endpoint
+  it('should add a question successfully', async () => {
+    const mockQuestion = {
+      questionBody: '¿Cual es la capital de Francia?',
+      typeQuestion: 'pais_capital'
+    };
 
-  const response = await request(app)
-    .post('/addQuestion')
-    .send(mockQuestion);
+    const response = await request(app)
+      .post('/addQuestion')
+      .send(mockQuestion);
 
-  expect(response.statusCode).toBe(200);
-  expect(response.body.questionId).toBe('mockedQuestionId');
-});
-
-// Test /createUserRank endpoint
-it('should create a user rank in ranking service', async () => {
-  const mockUsername = 'testuser';
-
-  const response = await request(app)
-    .post('/createUserRank')
-    .send({ username: mockUsername });
-
-  expect(response.statusCode).toBe(200);
-  expect(response.body.rankId).toBe('mockedRankId');
-});
-
-// Test /updateRanking endpoint
-it('should update ranking for a user in ranking service', async () => {
-  const mockRanking = { username: 'testuser' };
-
-  const response = await request(app)
-    .post('/updateRanking')
-    .send(mockRanking);
-
-  expect(response.statusCode).toBe(200);
-  expect(response.body.updatedRanking).toBe(true);
-});
-
-// Test /addGeneratedQuestion endpoint
-it('should add a generated question successfully', async () => {
-  const mockGeneratedQuestion = {
-    generatedQuestionBody: '¿Cual es la capital de Francia?',
-    correctAnswer: 'Paris'
-  };
-
-  const response = await request(app)
-    .post('/addGeneratedQuestion')
-    .send(mockGeneratedQuestion);
-
-  expect(response.statusCode).toBe(200);
-  expect(response.body.generatedQuestionId).toBe('mockedGeneratedQuestionId');
-});
-
-// Test /getAllGeneratedQuestions endpoint
-it('should get all generated questions from generated question service', async () => {
-  const response = await request(app)
-    .get('/getAllGeneratedQuestions');
-
-  expect(response.statusCode).toBe(200);
-  expect(response.body.questions).toEqual(['question1', 'question2']);
-});
-
-// Test /getRecords/:userId endpoint
-it('should get all records for a user from record service', async () => {
-  const mockUserId = 'testuserid';
-  const mockRecords = [
-    { recordId: 'record1', userId: mockUserId, score: 100 },
-    { recordId: 'record2', userId: mockUserId, score: 200 },
-  ];
-
-  // Mock the axios.get implementation for this test
-  axios.get.mockImplementationOnce((url) => {
-    if (url.endsWith(`/getRecords/${mockUserId}`)) {
-      return Promise.resolve({ data: mockRecords });
-    }
+    expect(response.statusCode).toBe(200);
+    expect(response.body.questionId).toBe('mockedQuestionId');
   });
 
-  const response = await request(app).get(`/getRecords/${mockUserId}`);
+  // Test /createUserRank endpoint
+  it('should create a user rank in ranking service', async () => {
+    const mockUsername = 'testuser';
 
-  expect(response.statusCode).toBe(200);
-  expect(response.body).toEqual(mockRecords);
-});
+    const response = await request(app)
+      .post('/createUserRank')
+      .send({ username: mockUsername });
 
-// Test /getAllUsers endpoint
-it('should get all users from user service', async () => {
-  const response = await request(app)
-    .get('/getAllUsers');
+    expect(response.statusCode).toBe(200);
+    expect(response.body.rankId).toBe('mockedRankId');
+  });
 
-  expect(response.statusCode).toBe(200);
-  expect(response.body.users).toEqual(['user1', 'user2']);
-});
+  // Test /updateRanking endpoint
+  it('should update ranking for a user in ranking service', async () => {
+    const mockRanking = { username: 'testuser' };
 
-// Test /getFullQuestion endpoint
-it('should get a full question from question service', async () => {
-  const response = await request(app)
-    .get('/getFullQuestion');
+    const response = await request(app)
+      .post('/updateRanking')
+      .send(mockRanking);
 
-  expect(response.statusCode).toBe(200);
-  expect(response.body.question).toBe('mockedQuestion');
-});
+    expect(response.statusCode).toBe(200);
+    expect(response.body.updatedRanking).toBe(true);
+  });
 
-// Test /actRanking endpoint
-it('should get a ranking from ranking service', async () => {
-  const response = await request(app)
-    .get('/actRanking');
+  // Test /addGeneratedQuestion endpoint
+  it('should add a generated question successfully', async () => {
+    const mockGeneratedQuestion = {
+      generatedQuestionBody: '¿Cual es la capital de Francia?',
+      correctAnswer: 'Paris'
+    };
 
-  expect(response.statusCode).toBe(200);
-  expect(response.body.ranking).toBe('mockedRanking');
-});
+    const response = await request(app)
+      .post('/addGeneratedQuestion')
+      .send(mockGeneratedQuestion);
 
-// Test /obtainRank endpoint
-it('should get a rank from rank service', async () => {
-  const response = await request(app)
-    .get('/obtainRank');
+    expect(response.statusCode).toBe(200);
+    expect(response.body.generatedQuestionId).toBe('mockedGeneratedQuestionId');
+  });
 
-  expect(response.statusCode).toBe(200);
-  expect(response.body.rank).toBe('mockedRank');
-});
+  // Test /addGeneratedQuestion endpoint error handling
+  it('should handle error in /addGeneratedQuestion', async () => {
+    axios.post.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
 
-// Test /getRandomQuestionGenerator endpoint
-it('should get a random question from question generator service', async () => {
-  const response = await request(app)
-    .get('/getRandomQuestionGenerator');
+    const mockGeneratedQuestion = {
+      question: '¿Cuál es la capital de Francia?',
+      answer: 'París',
+      distractor: ['Londres', 'Madrid', 'Berlín']
+    };
 
-  expect(response.statusCode).toBe(200);
-  expect(response.body.question).toBe('mockedQuestion');
-});
+    const response = await request(app).post('/addGeneratedQuestion').send(mockGeneratedQuestion);
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+  });
 
-// Test /getAllQuestionGenerator endpoint
-it('should get all questions from question generator service', async () => {
-  const response = await request(app)
-    .get('/getAllQuestionGenerator');
+  // Test /getAllGeneratedQuestions endpoint
+  it('should get all generated questions from generated question service', async () => {
+    const response = await request(app)
+      .get('/getAllGeneratedQuestions');
 
-  expect(response.statusCode).toBe(200);
-  expect(response.body.questions).toEqual(['question1', 'question2']);
-});
+    expect(response.statusCode).toBe(200);
+    expect(response.body.questions).toEqual(['question1', 'question2']);
+  });
 
-// Test /countQuestionGenerator endpoint
-it('should count all questions from question generator service', async () => {
-  const response = await request(app)
-    .get('/countQuestionGenerator');
+  // Test /getAllGeneratedQuestions endpoint error handling
+  it('should handle error in /getAllGeneratedQuestions', async () => {
+    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
+    const response = await request(app).get('/getAllGeneratedQuestions');
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+  });
 
-  expect(response.statusCode).toBe(200);
-  expect(response.body.count).toBe(2);
-});
+  // Test /getRecords/:userId endpoint
+  it('should get all records for a user from record service', async () => {
+    const mockUserId = 'testuserid';
+    const mockRecords = [
+      { recordId: 'record1', userId: mockUserId, score: 100 },
+      { recordId: 'record2', userId: mockUserId, score: 200 },
+    ];
 
-// Test /deleteFirstQuestionGenerator endpoint
-it('should delete the first question from question generator service', async () => {
-  const response = await request(app)
-    .delete('/deleteFirstQuestionGenerator');
+    // Mock the axios.get implementation for this test
+    axios.get.mockImplementationOnce((url) => {
+      if (url.endsWith(`/getRecords/${mockUserId}`)) {
+        return Promise.resolve({ data: mockRecords });
+      }
+    });
 
-  expect(response.statusCode).toBe(200);
-  expect(response.body.success).toBe(true);
-});
+    const response = await request(app).get(`/getRecords/${mockUserId}`);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual(mockRecords);
+  });
+
+  // Test /getRecords/:userId endpoint error handling
+  it('should handle error in /getRecords/:userId', async () => {
+    const response = await request(app).get('/getRecords/:userId');
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+  });
+
+  // Test /getAllUsers endpoint
+  it('should get all users from user service', async () => {
+    const response = await request(app)
+      .get('/getAllUsers');
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.users).toEqual(['user1', 'user2']);
+  });
+
+  // Test /getAllUsers endpoint error handling
+  it('should handle error in /getAllUsers', async () => {
+    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
+    const response = await request(app).get('/getAllUsers');
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+  });
+
+  // Test /getFullQuestion endpoint
+  it('should get a full question from question service', async () => {
+    const response = await request(app)
+      .get('/getFullQuestion');
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.question).toBe('mockedQuestion');
+  });
+
+  // Test /getFullQuestion endpoint error handling
+  it('should handle error in /getFullQuestion', async () => {
+    const response = await request(app).get('/getFullQuestion');
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+  });
+
+  // Test /actRanking endpoint
+  it('should get a ranking from ranking service', async () => {
+    const response = await request(app)
+      .get('/actRanking');
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.ranking).toBe('mockedRanking');
+  });
+
+  // Test /actRanking endpoint error handling
+  it('should handle error in /actRanking', async () => {
+    const response = await request(app).get('/actRanking');
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+  });
+
+  // Test /obtainRank endpoint
+  it('should get a rank from rank service', async () => {
+    const response = await request(app)
+      .get('/obtainRank');
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.rank).toBe('mockedRank');
+  });
+
+  // Test /obtainRank endpoint error handling
+  it('should handle error in /obtainRank', async () => {
+    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
+    const response = await request(app).get('/obtainRank');
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+  });
+
+  // Test /getRandomQuestionGenerator endpoint
+  it('should get a random question from question generator service', async () => {
+    const response = await request(app)
+      .get('/getRandomQuestionGenerator');
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.question).toBe('mockedQuestion');
+  });
+
+  // Test /getRandomQuestionGenerator endpoint error handling
+  it('should handle error in /getRandomQuestionGenerator', async () => {
+    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
+    const response = await request(app).get('/getRandomQuestionGenerator');
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+  });
+
+  // Test /getAllQuestionGenerator endpoint
+  it('should get all questions from question generator service', async () => {
+    const response = await request(app)
+      .get('/getAllQuestionGenerator');
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.questions).toEqual(['question1', 'question2']);
+  });
+
+  // Test /getAllQuestionGenerator endpoint error handling
+  it('should handle error in /getAllQuestionGenerator', async () => {
+    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
+    const response = await request(app).get('/getAllQuestionGenerator');
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+  });
+
+  // Test /countQuestionGenerator endpoint
+  it('should count all questions from question generator service', async () => {
+    const response = await request(app)
+      .get('/countQuestionGenerator');
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.count).toBe(2);
+  });
+
+  // Test /countQuestionGenerator endpoint error handling
+  it('should handle error in /countQuestionGenerator', async () => {
+    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
+    const response = await request(app).get('/countQuestionGenerator');
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+  });
+
+  // Test /deleteFirstQuestionGenerator endpoint
+  it('should delete the first question from question generator service', async () => {
+    const response = await request(app)
+      .delete('/deleteFirstQuestionGenerator');
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.success).toBe(true);
+  });
+
+  // Test /deleteFirstQuestionGenerator endpoint error handling
+  it('should handle error in /deleteFirstQuestionGenerator', async () => {
+    axios.delete.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
+    const response = await request(app).delete('/deleteFirstQuestionGenerator');
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+  });
 
 });
 
