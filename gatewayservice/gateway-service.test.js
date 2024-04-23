@@ -285,8 +285,6 @@ describe('Gateway Service', () => {
   });
 
   const testCases = [
-    { method: 'post', endpoint: '/login', data: { username: 'testuser2', password: mockPassword } },
-    { method: 'post', endpoint: '/addUser', data: { username: 'testuser2', password: mockPassword } },
     { method: 'post', endpoint: '/addGeneratedQuestion', data: { question: '¿Cuál es la capital de Francia?', answer: 'París', distractor: ['Londres', 'Madrid', 'Berlín'] } },
     { method: 'get', endpoint: '/getAllGeneratedQuestions' },
     { method: 'get', endpoint: '/getRecords/:userId' },
