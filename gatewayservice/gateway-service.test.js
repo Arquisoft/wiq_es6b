@@ -40,15 +40,9 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { ranking: 'mockedRanking' } });
     } else if (url.endsWith('/obtainRank')) {
       return Promise.resolve({ data: { rank: 'mockedRank' } });
-    } else if (url.endsWith('/getRandomQuestionDeporte')){
-      return Promise.resolve({ data: { question: 'mockedQuestion'} });
-    } else if (url.endsWith('/getRandomQuestionAnio')){
-      return Promise.resolve({ data: { question: 'mockedQuestion'} });
-    } else if (url.endsWith('/getRandomQuestionMusica')){
-      return Promise.resolve({ data: { question: 'mockedQuestion'} });
-    } else if (url.endsWith('/getRandomQuestionLibro')){
-      return Promise.resolve({ data: { question: 'mockedQuestion'} });
-    } else if (url.endsWith('/getRandomQuestionPaisYGeo')){
+    } else if (url.endsWith('/getRandomQuestionDeporte') || url.endsWith('/getRandomQuestionAnio')
+            || url.endsWith('/getRandomQuestionMusica') || url.endsWith('/getRandomQuestionLibro')
+            || url.endsWith('/getRandomQuestionPaisYGeo')) {
       return Promise.resolve({ data: { question: 'mockedQuestion'} });
     } else if (url.endsWith('/getAllQuestionGenerator')) {
       return Promise.resolve({ data: { questions: ['question1', 'question2'] } });
@@ -229,40 +223,16 @@ it('should get a rank from rank service', async () => {
 });
 
 // Test /getRandomQuestionXXXXXX endpoints (themes)
-it('should get a random question from question generator service with theme "sports"', async () => {
-  const response = await request(app).get('/getRandomQuestionSports');
+const themes = ['Sports', 'Music', 'ImportantDates', 'Literature', 'Countries'];
 
-  expect(response.statusCode).toBe(200);
-  expect(response.body.question).toBe('mockedQuestion');
-});
-it('should get a random question from question generator service with theme "music"', async () => {
-  const response = await request(app)
-    .get('/getRandomQuestionMusic');
+for (const theme of themes) {
+  it(`should get a random question from question generator service with theme "${theme}"`, async () => {
+    const response = await request(app).get(`/getRandomQuestion${theme}`);
 
-  expect(response.statusCode).toBe(200);
-  expect(response.body.question).toBe('mockedQuestion');
-});
-it('should get a random question from question generator service with theme "important dates"', async () => {
-  const response = await request(app)
-    .get('/getRandomQuestionImportantDates');
-
-  expect(response.statusCode).toBe(200);
-  expect(response.body.question).toBe('mockedQuestion');
-});
-it('should get a random question from question generator service with theme "literature"', async () => {
-  const response = await request(app)
-    .get('/getRandomQuestionLiterature');
-
-  expect(response.statusCode).toBe(200);
-  expect(response.body.question).toBe('mockedQuestion');
-});
-it('should get a random question from question generator service with theme "countries"', async () => {
-  const response = await request(app)
-    .get('/getRandomQuestionCountries');
-
-  expect(response.statusCode).toBe(200);
-  expect(response.body.question).toBe('mockedQuestion');
-});
+    expect(response.statusCode).toBe(200);
+    expect(response.body.question).toBe('mockedQuestion');
+  });
+}
 
 // Test /getAllQuestionGenerator endpoint
 it('should get all questions from question generator service', async () => {
