@@ -253,7 +253,6 @@ describe('Gateway Service', () => {
   });
 
 
-
   // Errors in external services
   async function testEndpointErrorHandling(method, endpoint, data) {
     const axiosMethod = axios[method];
@@ -262,10 +261,10 @@ describe('Gateway Service', () => {
     expect(response.statusCode).toBe(500);
     expect(response.body).toHaveProperty('error', 'Error interno del servidor');
   }
-  
+  const mockPassword = 'newpassword';
+
   // Test /login endpoint error handling
   it('should handle error in /login', async () => {
-    const mockPassword = 'newpassword';
     axios.post.mockImplementationOnce(() => Promise.reject({response: { status: 500, data: { error: 'Error interno del servidor' }}}));
     const response = await request(app).post('/login').send({ username: 'testuser2', password: mockPassword });
     expect(response.statusCode).toBe(500);
@@ -274,71 +273,32 @@ describe('Gateway Service', () => {
   
   // Test /addUser endpoint error handling
   it('should handle error in /addUser', async () => {
-    const mockPassword = 'newpassword2';
     axios.post.mockImplementationOnce(() => Promise.reject({response: { status: 500, data: { error: 'Error interno del servidor' }}}));
     const response = await request(app).post('/addUser').send({ username: 'testuser2', password: mockPassword });
     expect(response.statusCode).toBe(500);
     expect(response.body).toHaveProperty('error', 'Error interno del servidor');
   });
 
-  // Test /addGeneratedQuestion endpoint error handling
-  it('should handle error in /addGeneratedQuestion', async () => {
-    const mockGeneratedQuestion = {
-      question: '¿Cuál es la capital de Francia?',
-      answer: 'París',
-      distractor: ['Londres', 'Madrid', 'Berlín']
-    };
-    await testEndpointErrorHandling('post', '/addGeneratedQuestion', mockGeneratedQuestion);
-  });
-
-  // Test /getAllGeneratedQuestions endpoint error handling
-  it('should handle error in /getAllGeneratedQuestions', async () => {
-    await testEndpointErrorHandling('get', '/getAllGeneratedQuestions');
-  });
-
-  // Test /getRecords/:userId endpoint error handling
-  it('should handle error in /getRecords/:userId', async () => {
-    await testEndpointErrorHandling('get', '/getRecords/:userId');
-  });
-
-  // Test /getAllUsers endpoint error handling
-  it('should handle error in /getAllUsers', async () => {
-    await testEndpointErrorHandling('get', '/getAllUsers');
-  });
-
-  // Test /getFullQuestion endpoint error handling
-  it('should handle error in /getFullQuestion', async () => {
-    await testEndpointErrorHandling('get', '/getFullQuestion');
-  });
-
-  // Test /actRanking endpoint error handling
-  it('should handle error in /actRanking', async () => {
-    await testEndpointErrorHandling('get', '/actRanking');
-  });
-
-  // Test /obtainRank endpoint error handling
-  it('should handle error in /obtainRank', async () => {
-    await testEndpointErrorHandling('get', '/obtainRank');
-  });
-
-  // Test /getRandomQuestionGenerator endpoint error handling
-  it('should handle error in /getRandomQuestionGenerator', async () => {
-    await testEndpointErrorHandling('get', '/getRandomQuestionGenerator');
-  });
-
-  // Test /getAllQuestionGenerator endpoint error handling
-  it('should handle error in /getAllQuestionGenerator', async () => {
-    await testEndpointErrorHandling('get', '/getAllQuestionGenerator');
-  });
-
-  // Test /countQuestionGenerator endpoint error handling
-  it('should handle error in /countQuestionGenerator', async () => {
-    await testEndpointErrorHandling('get', '/countQuestionGenerator');
-  });
-
-  // Test /deleteFirstQuestionGenerator endpoint error handling
-  it('should handle error in /deleteFirstQuestionGenerator', async () => {
-    await testEndpointErrorHandling('delete', '/deleteFirstQuestionGenerator');
+  const testCases = [
+    { method: 'post', endpoint: '/login', data: { username: 'testuser2', password: mockPassword } },
+    { method: 'post', endpoint: '/addUser', data: { username: 'testuser2', password: mockPassword } },
+    { method: 'post', endpoint: '/addGeneratedQuestion', data: { question: '¿Cuál es la capital de Francia?', answer: 'París', distractor: ['Londres', 'Madrid', 'Berlín'] } },
+    { method: 'get', endpoint: '/getAllGeneratedQuestions' },
+    { method: 'get', endpoint: '/getRecords/:userId' },
+    { method: 'get', endpoint: '/getAllUsers' },
+    { method: 'get', endpoint: '/getFullQuestion' },
+    { method: 'get', endpoint: '/actRanking' },
+    { method: 'get', endpoint: '/obtainRank' },
+    { method: 'get', endpoint: '/getRandomQuestionGenerator' },
+    { method: 'get', endpoint: '/getAllQuestionGenerator' },
+    { method: 'get', endpoint: '/countQuestionGenerator' },
+    { method: 'delete', endpoint: '/deleteFirstQuestionGenerator' },
+  ];
+  
+  testCases.forEach(({ method, endpoint, data }) => {
+    it(`should handle error in ${endpoint}`, async () => {
+      await testEndpointErrorHandling(method, endpoint, data);
+    });
   });
 
 });
