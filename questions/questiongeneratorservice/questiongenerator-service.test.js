@@ -128,6 +128,9 @@ describe('Question Generator Service', () => {
     it('Should get one random question /getRandomQuestionDeporte', async () => {
         await request(app).post('/addOrUpdateQuestionGenerator').send(questionDep);
 
+        const r = await request(app).get(`/getAllQuestionGenerator`);
+        console.error(r.body);
+
         const response = await request(app).get(`/getRandomQuestionDeporte`);
         const tiposValidos = ['equipo_estadio','estadio_capacidad', 'estadio_ciudad', 'equipo_deporte', 'deporte_anio','deportista_anio' ];
 
@@ -137,8 +140,14 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
+w
+        const rw = await request(app).get(`/countQuestionGenerator`);
+        console.error(rw.body);
 
         await request(app).delete('/deleteFirstQuestionGenerator');
+
+        const re = await request(app).get(`/getAllQuestionGenerator`);
+        console.error(re.body);
     });
     it('Should get one random question /getRandomQuestionAnio', async () => {
         const response = await request(app).get(`/getRandomQuestionAnio`);
