@@ -257,6 +257,7 @@ app.get('/getRandomQuestionSports', async (req, res) => {
     if (error.response) {
       res.status(error.response.status).json({ error: error.response.data.error });
     } else {
+      console.error(error);
       res.status(500).json({ error: 'Error interno del servidor' });
     }
   }
