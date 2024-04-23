@@ -252,6 +252,8 @@ describe('Gateway Service', () => {
     expect(response.body.success).toBe(true);
   });
 
+
+  
   // Errors in external services
   // Mock error responses from external services
   axios.post.mockImplementation((url, data) => {
