@@ -39,17 +39,18 @@ describe('Gateway Service', () => {
     } else if (url.endsWith('/actRanking')) {
       return Promise.resolve({ data: { ranking: 'mockedRanking' } });
     } else if (url.endsWith('/obtainRank')) {
-      console.error("Si q entro");
       return Promise.resolve({ data: { rank: 'mockedRank' } });
-    } else if (url.endsWith('/getRandomQuestionSports') || url.endsWith('/getRandomQuestionImportantDates')){
+    } else if (url.endsWith('/getRandomQuestionSports')){
       console.error("Si q entro");
-      return Promise.resolve({ data: { question: 'mockedQuestion', typeQuestion:'deporte_anio' } });
+      return Promise.resolve({ data: { question: 'mockedQuestion'} });
+    } else if (url.endsWith('/getRandomQuestionImportantDates')){
+      return Promise.resolve({ data: { question: 'mockedQuestion'} });
     } else if (url.endsWith('/getRandomQuestionMusic')){
-      return Promise.resolve({ data: { question: 'mockedQuestion', typeQuestion:'cancion_anio' } });
+      return Promise.resolve({ data: { question: 'mockedQuestion'} });
     } else if (url.endsWith('/getRandomQuestionLiterature')){
-      return Promise.resolve({ data: { question: 'mockedQuestion', typeQuestion:'libro_anio' } });
+      return Promise.resolve({ data: { question: 'mockedQuestion'} });
     } else if (url.endsWith('/getRandomQuestionCountries')){
-      return Promise.resolve({ data: { question: 'mockedQuestion', typeQuestion:'pais_capital' } });
+      return Promise.resolve({ data: { question: 'mockedQuestion'} });
     } else if (url.endsWith('/getAllQuestionGenerator')) {
       return Promise.resolve({ data: { questions: ['question1', 'question2'] } });
     } else if (url.endsWith('/countQuestionGenerator')) {
@@ -230,9 +231,7 @@ it('should get a rank from rank service', async () => {
 
 // Test /getRandomQuestionXXXXXX endpoints (themes)
 it('should get a random question from question generator service with theme "sports"', async () => {
-  const response = await request(app)
-    .get('/getRandomQuestionSports');
-  console.error("Estoy en el test de sports");
+  const response = await request(app).get('/getRandomQuestionSports');
 
   expect(response.statusCode).toBe(200);
   expect(response.body.question).toBe('mockedQuestion');
