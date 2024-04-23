@@ -40,8 +40,10 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { ranking: 'mockedRanking' } });
     } else if (url.endsWith('/obtainRank')) {
       return Promise.resolve({ data: { rank: 'mockedRank' } });
-    } else if (url.endsWith('/getRandomQuestionGenerator')) {
-      return Promise.resolve({ data: { question: 'mockedQuestion' } });
+    } else if (url.endsWith('/getRandomQuestionDeporte') || url.endsWith('/getRandomQuestionAnio')
+            || url.endsWith('/getRandomQuestionMusica') || url.endsWith('/getRandomQuestionLibro')
+            || url.endsWith('/getRandomQuestionPaisYGeo')) {
+      return Promise.resolve({ data: { question: 'mockedQuestion'} });
     } else if (url.endsWith('/getAllQuestionGenerator')) {
       return Promise.resolve({ data: { questions: ['question1', 'question2'] } });
     } else if (url.endsWith('/countQuestionGenerator')) {
@@ -220,14 +222,17 @@ it('should get a rank from rank service', async () => {
   expect(response.body.rank).toBe('mockedRank');
 });
 
-// Test /getRandomQuestionGenerator endpoint
-it('should get a random question from question generator service', async () => {
-  const response = await request(app)
-    .get('/getRandomQuestionGenerator');
+// Test /getRandomQuestionXXXXXX endpoints (themes)
+const themes = ['Sports', 'Music', 'ImportantDates', 'Literature', 'Countries'];
 
-  expect(response.statusCode).toBe(200);
-  expect(response.body.question).toBe('mockedQuestion');
-});
+for (const theme of themes) {
+  it(`should get a random question from question generator service with theme "${theme}"`, async () => {
+    const response = await request(app).get(`/getRandomQuestion${theme}`);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.question).toBe('mockedQuestion');
+  });
+}
 
 // Test /getAllQuestionGenerator endpoint
 it('should get all questions from question generator service', async () => {
