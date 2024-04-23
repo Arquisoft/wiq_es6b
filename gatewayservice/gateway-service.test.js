@@ -41,6 +41,7 @@ describe('Gateway Service', () => {
     } else if (url.endsWith('/obtainRank')) {
       return Promise.resolve({ data: { rank: 'mockedRank' } });
     } else if (url.endsWith('/getRandomQuestionSports') || url.endsWith('/getRandomQuestionImportantDates')){
+      console.error("Si q entro");
       return Promise.resolve({ data: { question: 'mockedQuestion', typeQuestion:'deporte_anio' } });
     } else if (url.endsWith('/getRandomQuestionMusic')){
       return Promise.resolve({ data: { question: 'mockedQuestion', typeQuestion:'cancion_anio' } });
