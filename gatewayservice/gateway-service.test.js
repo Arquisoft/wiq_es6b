@@ -39,6 +39,7 @@ describe('Gateway Service', () => {
     } else if (url.endsWith('/actRanking')) {
       return Promise.resolve({ data: { ranking: 'mockedRanking' } });
     } else if (url.endsWith('/obtainRank')) {
+      console.error("Si q entro");
       return Promise.resolve({ data: { rank: 'mockedRank' } });
     } else if (url.endsWith('/getRandomQuestionSports') || url.endsWith('/getRandomQuestionImportantDates')){
       console.error("Si q entro");
@@ -231,6 +232,7 @@ it('should get a rank from rank service', async () => {
 it('should get a random question from question generator service with theme "sports"', async () => {
   const response = await request(app)
     .get('/getRandomQuestionSports');
+  console.error("Estoy en el test de sports");
 
   expect(response.statusCode).toBe(200);
   expect(response.body.question).toBe('mockedQuestion');

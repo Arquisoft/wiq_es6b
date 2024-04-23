@@ -251,6 +251,7 @@ app.post('/addOrUpdateQuestionGenerator', async (req, res) => {
 //TEMATICAS
 app.get('/getRandomQuestionSports', async (req, res) => {
   try {
+    console.error("estoy en gateway-service.js en la ruta /getRandomQuestionSports");
     const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionDeporte`);
     res.json(questionGeneratorResponse.data);
   } catch (error) {
