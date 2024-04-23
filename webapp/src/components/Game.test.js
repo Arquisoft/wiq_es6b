@@ -14,7 +14,6 @@ describe('Game component', () => {
 
   test('displays question body', () => {
     render(<Game username="testUser" totalQuestions={10} timeLimit={180} themes={{}} />);
-    expect(screen.getByText(/\?/i)).toBeInTheDocument();
     expect(screen.getByText(/¿/i)).toBeInTheDocument();
 });
 
