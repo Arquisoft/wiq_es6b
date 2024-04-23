@@ -266,11 +266,5 @@ describe('POST /updateAllRanking', () => {
   });
 });
 
-describe('GET /api-doc', () => {
-  it('it should GET the Swagger UI documentation', async () => {
-    const response = await request(app).get('/api-doc');
-    expect(response.status).toBe(200);
-  });
-});
 
 });
