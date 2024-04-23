@@ -128,9 +128,6 @@ describe('Question Generator Service', () => {
     it('Should get one random question /getRandomQuestionDeporte', async () => {
         await request(app).post('/addOrUpdateQuestionGenerator').send(questionDep);
 
-        const r = await request(app).get(`/getAllQuestionGenerator`);
-        console.error(r.body);
-
         const response = await request(app).get(`/getRandomQuestionDeporte`);
         const tiposValidos = ['equipo_estadio','estadio_capacidad', 'estadio_ciudad', 'equipo_deporte', 'deporte_anio','deportista_anio' ];
 
@@ -140,14 +137,6 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
-w
-        const rw = await request(app).get(`/countQuestionGenerator`);
-        console.error(rw.body);
-
-        await request(app).delete('/deleteFirstQuestionGenerator');
-
-        const re = await request(app).get(`/getAllQuestionGenerator`);
-        console.error(re.body);
     });
     it('Should get one random question /getRandomQuestionAnio', async () => {
         const response = await request(app).get(`/getRandomQuestionAnio`);
@@ -159,8 +148,6 @@ w
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
-        
-        await request(app).delete('/deleteFirstQuestionGenerator');
     });
     it('Should get one random question /getRandomQuestionMusica', async () => {
         await request(app).post('/addOrUpdateQuestionGenerator').send(questionMusic);
@@ -174,8 +161,6 @@ w
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
-
-        await request(app).delete('/deleteFirstQuestionGenerator');
     });
     it('Should get one random question /getRandomQuestionLibro', async () => {
         await request(app).post('/addOrUpdateQuestionGenerator').send(questionLit3);
@@ -189,8 +174,6 @@ w
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
-
-        await request(app).delete('/deleteFirstQuestionGenerator');
     });
     it('Should get one random question /getRandomQuestionPaisYGeo', async () => {
         await request(app).post('/addOrUpdateQuestionGenerator').send(questionCountries);
@@ -204,8 +187,6 @@ w
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
-
-        await request(app).delete('/deleteFirstQuestionGenerator');
     });
     // fin test extraer preguntas por temática determinada
 
