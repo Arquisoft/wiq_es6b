@@ -255,118 +255,84 @@ describe('Gateway Service', () => {
 
 
   // Errors in external services
-
+  async function testEndpointErrorHandling(method, endpoint, data) {
+    const axiosMethod = axios[method];
+    axiosMethod.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
+    const response = await request(app)[method](endpoint).send(data);
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+  }
+  
   // Test /login endpoint error handling
   it('should handle error in /login', async () => {
-    axios.post.mockImplementationOnce(() => Promise.reject({ response: { status: 500, data: { error: 'Error interno del servidor' } } }));
-    const response = await request(app).post('/login').send({ username: 'testuser', password: 'testpassword' });
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+    const mockPassword = 'newpassword';
+    await testEndpointErrorHandling('post', '/login', { username: 'testuser', password: mockPassword });
   });
-
+  
   // Test /addUser endpoint error handling
   it('should handle error in /addUser', async () => {
-    axios.post.mockImplementationOnce(() => Promise.reject({ response: { status: 500, data: { error: 'Error interno del servidor' } } }));
-    const mockUsername = 'newuser';
-    const mockPassword = 'newpassword';
-
-    const response = await request(app).post('/addUser').send({ username: mockUsername, password: mockPassword });
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+    const mockPassword = 'newpassword2';
+    await testEndpointErrorHandling('post', '/addUser', { username: 'newuser', password: mockPassword });
   });
 
   // Test /addGeneratedQuestion endpoint error handling
   it('should handle error in /addGeneratedQuestion', async () => {
-    axios.post.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
     const mockGeneratedQuestion = {
       question: '¿Cuál es la capital de Francia?',
       answer: 'París',
       distractor: ['Londres', 'Madrid', 'Berlín']
     };
-    
-    const response = await request(app).post('/addGeneratedQuestion').send(mockGeneratedQuestion);
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+    await testEndpointErrorHandling('post', '/addGeneratedQuestion', mockGeneratedQuestion);
   });
 
   // Test /getAllGeneratedQuestions endpoint error handling
   it('should handle error in /getAllGeneratedQuestions', async () => {
-    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
-    const response = await request(app).get('/getAllGeneratedQuestions');
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+    await testEndpointErrorHandling('get', '/getAllGeneratedQuestions');
   });
 
   // Test /getRecords/:userId endpoint error handling
   it('should handle error in /getRecords/:userId', async () => {
-    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
-    const response = await request(app).get('/getRecords/:userId');
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+    await testEndpointErrorHandling('get', '/getRecords/:userId');
   });
 
   // Test /getAllUsers endpoint error handling
   it('should handle error in /getAllUsers', async () => {
-    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
-    const response = await request(app).get('/getAllUsers');
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+    await testEndpointErrorHandling('get', '/getAllUsers');
   });
 
   // Test /getFullQuestion endpoint error handling
   it('should handle error in /getFullQuestion', async () => {
-    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
-    const response = await request(app).get('/getFullQuestion');
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+    await testEndpointErrorHandling('get', '/getFullQuestion');
   });
 
   // Test /actRanking endpoint error handling
   it('should handle error in /actRanking', async () => {
-    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
-    const response = await request(app).get('/actRanking');
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+    await testEndpointErrorHandling('get', '/actRanking');
   });
 
   // Test /obtainRank endpoint error handling
   it('should handle error in /obtainRank', async () => {
-    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
-    const response = await request(app).get('/obtainRank');
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+    await testEndpointErrorHandling('get', '/obtainRank');
   });
 
   // Test /getRandomQuestionGenerator endpoint error handling
   it('should handle error in /getRandomQuestionGenerator', async () => {
-    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
-    const response = await request(app).get('/getRandomQuestionGenerator');
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+    await testEndpointErrorHandling('get', '/getRandomQuestionGenerator');
   });
 
   // Test /getAllQuestionGenerator endpoint error handling
   it('should handle error in /getAllQuestionGenerator', async () => {
-    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
-    const response = await request(app).get('/getAllQuestionGenerator');
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+    await testEndpointErrorHandling('get', '/getAllQuestionGenerator');
   });
 
   // Test /countQuestionGenerator endpoint error handling
   it('should handle error in /countQuestionGenerator', async () => {
-    axios.get.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
-    const response = await request(app).get('/countQuestionGenerator');
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+    await testEndpointErrorHandling('get', '/countQuestionGenerator');
   });
 
   // Test /deleteFirstQuestionGenerator endpoint error handling
   it('should handle error in /deleteFirstQuestionGenerator', async () => {
-    axios.delete.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
-    const response = await request(app).delete('/deleteFirstQuestionGenerator');
-    expect(response.statusCode).toBe(500);
-    expect(response.body).toHaveProperty('error', 'Error interno del servidor');
+    await testEndpointErrorHandling('delete', '/deleteFirstQuestionGenerator');
   });
 
 });
