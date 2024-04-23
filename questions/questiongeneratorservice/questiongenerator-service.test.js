@@ -68,11 +68,14 @@ describe('Question Generator Service', () => {
 
         // Actualizamos las respuestas incorrectas
         const secondResponse = await request(app).post('/addOrUpdateQuestionGenerator').send(questionUpdated);
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('questionBody', "¿Quién escribió la novela 'El Extranjero'?");
-        expect(response.body).toHaveProperty('correcta', 'Albert Camus');
-        expect(response.body).toHaveProperty('incorrectas', ['Miguel Delibes','Osamu Dazai','Franz Kafka']);
-        expect(response.body).toHaveProperty('numquest', 1);
+        const todasIncorrectas = ['Miguel Delibes','Osamu Dazai','Franz Kafka','José Saramago','George Orwell'];
+
+        expect(secondResponse.status).toBe(200);
+        expect(secondResponse.body).toHaveProperty('questionBody', "¿Quién escribió la novela 'El Extranjero'?");
+        expect(secondResponse.body).toHaveProperty('correcta', 'Albert Camus');
+        // Comprueba que todos los valores de todasIncorrectas están contenidos en secondResponse.body.incorrectas
+        todasIncorrectas.every(val => expect(secondResponse.body.incorrectas).toContain(val));        
+        expect(secondResponse.body).toHaveProperty('numquest', 1);
     });
 
     it('Should get the last question added /getAllQuestionGenerator', async () => {
