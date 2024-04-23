@@ -144,6 +144,8 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
+
+        await request(app).delete('/deleteFirstQuestionGenerator');
     });
     it('Should get one random question /getRandomQuestionAnio', async () => {
         const response = await request(app).get(`/getRandomQuestionAnio`);
@@ -155,6 +157,8 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
+        
+        await request(app).delete('/deleteFirstQuestionGenerator');
     });
     it('Should get one random question /getRandomQuestionMusica', async () => {
         await request(app).post('/addOrUpdateQuestionGenerator').send(questionMusic);
@@ -168,6 +172,8 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
+
+        await request(app).delete('/deleteFirstQuestionGenerator');
     });
     it('Should get one random question /getRandomQuestionLibro', async () => {
         await request(app).post('/addOrUpdateQuestionGenerator').send(questionLit3);
@@ -181,6 +187,8 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
+
+        await request(app).delete('/deleteFirstQuestionGenerator');
     });
     it('Should get one random question /getRandomQuestionPaisYGeo', async () => {
         await request(app).post('/addOrUpdateQuestionGenerator').send(questionCountries);
@@ -194,6 +202,8 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
+
+        await request(app).delete('/deleteFirstQuestionGenerator');
     });
     // fin test extraer preguntas por temática determinada
 
