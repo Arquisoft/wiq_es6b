@@ -55,4 +55,14 @@ describe('User Service', () => {
        expect(usernames).toContain('testuser2');
 
       });
+
+      test('should throw an error when a required field is missing', async () => {
+        const response = await request(app)
+          .post('/adduser')
+          .send({ username: 'testuser' }); // password field is missing
+      
+        expect(response.status).toBe(400);
+        expect(response.body.error).toBe('Missing required field: password');
+      });
+      
 });
