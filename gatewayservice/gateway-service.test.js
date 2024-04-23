@@ -55,6 +55,25 @@ describe('Gateway Service', () => {
     }
   });
 
+  // Mock error responses from external services
+  axios.post.mockImplementation((url, data) => {
+    if (url.endsWith('/login') || url.endsWith('/addUser') || url.endsWith('/addRecord') || url.endsWith('/addQuestion') || url.endsWith('/createUserRank') || url.endsWith('/updateRanking') || url.endsWith('/addGeneratedQuestion')) {
+      return Promise.reject(new Error('Error interno del servidor'));
+    }
+  });
+
+  axios.get.mockImplementation((url) => {
+    if (url.endsWith('/getAllGeneratedQuestions') || url.endsWith('/getAllUsers') || url.endsWith('/getRecords/:userId') || url.endsWith('/getFullQuestion') || url.endsWith('/actRanking') || url.endsWith('/obtainRank') || url.endsWith('/getRandomQuestionGenerator') || url.endsWith('/getAllQuestionGenerator') || url.endsWith('/countQuestionGenerator')) {
+      return Promise.reject(new Error('Error interno del servidor'));
+    }
+  });
+
+  axios.delete.mockImplementation((url) => {
+    if (url.endsWith('/deleteFirstQuestionGenerator')) {
+      return Promise.reject(new Error('Error interno del servidor'));
+    }
+  });
+
   // Test /login endpoint
   it('should forward login request to auth service', async () => {
     const mockUsername = 'testuser';
@@ -158,25 +177,21 @@ describe('Gateway Service', () => {
     expect(response.body.updatedRanking).toBe(true);
   });
 
-  // Test /addGeneratedQuestion endpoint
+  // Test /addGeneratedQuestion endpoint success
   it('should add a generated question successfully', async () => {
     const mockGeneratedQuestion = {
-      generatedQuestionBody: '¿Cual es la capital de Francia?',
-      correctAnswer: 'Paris'
+      question: '¿Cuál es la capital de Francia?',
+      answer: 'París',
+      distractor: ['Londres', 'Madrid', 'Berlín']
     };
 
-    const response = await request(app)
-      .post('/addGeneratedQuestion')
-      .send(mockGeneratedQuestion);
-
+    const response = await request(app).post('/addGeneratedQuestion').send(mockGeneratedQuestion);
     expect(response.statusCode).toBe(200);
-    expect(response.body.generatedQuestionId).toBe('mockedGeneratedQuestionId');
+    expect(response.body).toHaveProperty('questionId', 'mockedQuestionId');
   });
 
   // Test /addGeneratedQuestion endpoint error handling
   it('should handle error in /addGeneratedQuestion', async () => {
-    axios.post.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
-
     const mockGeneratedQuestion = {
       question: '¿Cuál es la capital de Francia?',
       answer: 'París',
