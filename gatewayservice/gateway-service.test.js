@@ -39,8 +39,10 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { ranking: 'mockedRanking' } });
     } else if (url.endsWith('/obtainRank')) {
       return Promise.resolve({ data: { rank: 'mockedRank' } });
-    } else if (url.endsWith('/getRandomQuestionGenerator')) {
-      return Promise.resolve({ data: { question: 'mockedQuestion' } });
+    } else if (url.endsWith('/getRandomQuestionDeporte') || url.endsWith('/getRandomQuestionAnio')
+            || url.endsWith('/getRandomQuestionMusica') || url.endsWith('/getRandomQuestionLibro')
+            || url.endsWith('/getRandomQuestionPaisYGeo')) {
+      return Promise.resolve({ data: { question: 'mockedQuestion'} });
     } else if (url.endsWith('/getAllQuestionGenerator')) {
       return Promise.resolve({ data: { questions: ['question1', 'question2'] } });
     } else if (url.endsWith('/countQuestionGenerator')) {
