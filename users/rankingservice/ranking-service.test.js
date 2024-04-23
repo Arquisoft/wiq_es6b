@@ -232,4 +232,39 @@ it('should return 400 if user does not exist', async () => {
   expect(deletedUserRank).not.toBeNull(); // Expect the user rank to still exist
 });
 
+describe('GET /obtainRank', () => {
+  it('it should GET all the rankings', async () => {
+    const response = await request(app).get('/obtainRank');
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+  });
+});
+
+describe('POST /updateAllRanking', () => {
+  it('it should update all rankings', async () => {
+    const rankingData = [
+      {
+        username: 'testUser1',
+        preguntasCorrectas: 5,
+        preguntasFalladas: 3,
+        numPartidas: 1
+      },
+      {
+        username: 'testUser2',
+        preguntasCorrectas: 7,
+        preguntasFalladas: 2,
+        numPartidas: 1
+      }
+    ];
+
+    const response = await request(app)
+      .post('/updateAllRanking')
+      .send(rankingData);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('message', 'Rankings actualizados correctamente.');
+  });
+});
+
+
 });
