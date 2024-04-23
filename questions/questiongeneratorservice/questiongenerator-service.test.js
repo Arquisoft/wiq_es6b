@@ -115,9 +115,6 @@ describe('Question Generator Service', () => {
         expect(response2.body).toHaveProperty('correcta', '1928');
         expect(response2.body).toHaveProperty('incorrectas', ['1934','1926','1950']);
         expect(response2.body).toHaveProperty('numquest', 2);
-
-        const res = await request(app).get('/countQuestionGenerator');
-        console.error(res.body.count);
     });
 
     it('Should get the last question added /getAllQuestionGenerator', async () => {
@@ -141,9 +138,6 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
 
-        const res = await request(app).get('/countQuestionGenerator');
-        console.error(res.body.count);
-
         await request(app).delete('/deleteFirstQuestionGenerator');
     });
     it('Should get one random question /getRandomQuestionAnio', async () => {
@@ -156,9 +150,6 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
-
-        const res = await request(app).get('/countQuestionGenerator');
-        console.error(res.body.count);
         
         await request(app).delete('/deleteFirstQuestionGenerator');
     });
@@ -175,9 +166,6 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
 
-        const res = await request(app).get('/countQuestionGenerator');
-        console.error(res.body.count);
-
         await request(app).delete('/deleteFirstQuestionGenerator');
     });
     it('Should get one random question /getRandomQuestionLibro', async () => {
@@ -192,9 +180,6 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
-
-        const res = await request(app).get('/countQuestionGenerator');
-        console.error(res.body.count);
 
         await request(app).delete('/deleteFirstQuestionGenerator');
     });
@@ -211,15 +196,15 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('numquest');
         expect(tiposValidos).toContain(response.body.typeQuestion);
 
-        const res = await request(app).get('/countQuestionGenerator');
-        console.error(res.body.count);
-
         await request(app).delete('/deleteFirstQuestionGenerator');
     });
     // fin test extraer preguntas por temática determinada
 
-    it('Should count 2 generated questions in the database /countQuestionGenerator', async () => {
+    it('Should count 3 generated questions in the database /countQuestionGenerator', async () => {
         const response = await request(app).get('/countQuestionGenerator');
+
+        const res = await request(app).get(`/getAllQuestionGenerator`);
+        console.error(res.body);
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('count', 3);
