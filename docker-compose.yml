@@ -151,7 +151,7 @@ services:
   prometheus:
     image: prom/prometheus
     container_name: prometheus-${teamname:-wiq_es06b}
-    profiles: ["dev"]
+    profiles: ["dev", "prod"]
     networks:
       - mynetwork
     volumes:
@@ -165,7 +165,7 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana-${teamname:-wiq_es06b}
-    profiles: ["dev"]
+    profiles: ["dev", "prod"]
     networks:
       - mynetwork
     volumes:
