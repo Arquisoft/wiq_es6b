@@ -14,10 +14,9 @@ describe('Game component', () => {
 
   test('displays question body', () => {
     render(<Game username="testUser" totalQuestions={10} timeLimit={180} themes={{}} />);
-    expect(screen.getByText(/?/i)).toBeInTheDocument();
+    expect(screen.getByText(/\?/i)).toBeInTheDocument();
     expect(screen.getByText(/¿/i)).toBeInTheDocument();
-  });
-
+});
   test('displays game summary after 180 seconds', async () => {
     render(<Game username="testUser" totalQuestions={10} timeLimit={3} themes={{}} />); // Reducimos el límite de tiempo para el test
     // Esperamos a que se muestre el resumen del juego al finalizar el tiempo límite
