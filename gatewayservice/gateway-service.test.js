@@ -266,13 +266,13 @@ describe('Gateway Service', () => {
   // Test /login endpoint error handling
   it('should handle error in /login', async () => {
     const mockPassword = 'newpassword';
-    await testEndpointErrorHandling('post', '/login', { username: 'testuser', password: mockPassword });
+    await testEndpointErrorHandling('post', '/login', { username: 'testuser2', password: mockPassword });
   });
   
   // Test /addUser endpoint error handling
   it('should handle error in /addUser', async () => {
     const mockPassword = 'newpassword2';
-    await testEndpointErrorHandling('post', '/addUser', { username: 'newuser', password: mockPassword });
+    await testEndpointErrorHandling('post', '/addUser', { username: 'newuser2', password: mockPassword });
   });
 
   // Test /addGeneratedQuestion endpoint error handling
