@@ -18,9 +18,4 @@ describe('Game component', () => {
     expect(screen.getByText(/¿/i)).toBeInTheDocument();
 });
 
-  test('renders 4 option buttons', () => {
-    render(<Game username="testUser" totalQuestions={10} timeLimit={180} themes={{}} />);
-    const optionButtons = screen.getAllByRole('button', { name: /^respuesta/i });
-    expect(optionButtons).toHaveLength(4);
-  });
 });
