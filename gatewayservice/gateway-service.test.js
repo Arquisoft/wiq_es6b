@@ -110,7 +110,7 @@ describe('Gateway Service', () => {
       .send(mockQuestion);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.mockedQuestionId).toBe('mockedQuestionId');
+    expect(response.body.questionId).toBe('mockedQuestionId');
   });
 
   // Test /createUserRank endpoint
@@ -147,7 +147,7 @@ describe('Gateway Service', () => {
 
     const response = await request(app).post('/addGeneratedQuestion').send(mockGeneratedQuestion);
     expect(response.statusCode).toBe(200);
-    expect(response.body).toHaveProperty('questionId', 'mockedQuestionId');
+    expect(response.body).toHaveProperty('generatedQuestionId', 'mockedQuestionId');
   });
 
   // Test /getAllGeneratedQuestions endpoint
@@ -258,15 +258,15 @@ describe('Gateway Service', () => {
 
   // Test /login endpoint error handling
   it('should handle error in /login', async () => {
-    axios.post.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
+    axios.post.mockImplementationOnce(() => Promise.reject({ response: { status: 500, data: { error: 'Error interno del servidor' } } }));
     const response = await request(app).post('/login').send({ username: 'testuser', password: 'testpassword' });
     expect(response.statusCode).toBe(500);
     expect(response.body).toHaveProperty('error', 'Error interno del servidor');
-  }, 10000);
+  });
 
   // Test /addUser endpoint error handling
   it('should handle error in /addUser', async () => {
-    axios.post.mockImplementationOnce(() => Promise.reject(new Error('Error interno del servidor')));
+    axios.post.mockImplementationOnce(() => Promise.reject({ response: { status: 500, data: { error: 'Error interno del servidor' } } }));
     const mockUsername = 'newuser';
     const mockPassword = 'newpassword';
 
