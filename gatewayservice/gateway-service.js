@@ -248,20 +248,6 @@ app.post('/addOrUpdateQuestionGenerator', async (req, res) => {
   }
 });
 
-// Ruta para obtener una pregunta de prueba por su ID
-app.get('/getRandomQuestionGenerator', async (req, res) => {
-  try {
-    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionGenerator`);
-    res.json(questionGeneratorResponse.data);
-  } catch (error) {
-    if (error.response) {
-      res.status(error.response.status).json({ error: error.response.data.error });
-    } else {
-      res.status(500).json({ error: 'Error interno del servidor' });
-    }
-  }
-});
-
 //TEMATICAS
 app.get('/getRandomQuestionSports', async (req, res) => {
   try {
