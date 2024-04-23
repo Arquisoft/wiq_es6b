@@ -297,7 +297,7 @@ describe('Gateway Service', () => {
     { method: 'get', endpoint: '/getAllQuestionGenerator' },
     { method: 'get', endpoint: '/countQuestionGenerator' },
     { method: 'delete', endpoint: '/deleteFirstQuestionGenerator' },
-  ];
+  ]; 
   
   testCases.forEach(({ method, endpoint, data }) => {
     it(`should handle error in ${endpoint}`, async () => {
