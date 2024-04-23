@@ -147,7 +147,7 @@ describe('Gateway Service', () => {
 
     const response = await request(app).post('/addGeneratedQuestion').send(mockGeneratedQuestion);
     expect(response.statusCode).toBe(200);
-    expect(response.body).toHaveProperty('generatedQuestionId', 'mockedQuestionId');
+    expect(response.body).toHaveProperty('generatedQuestionId', 'mockedGeneratedQuestionId');
   });
 
   // Test /getAllGeneratedQuestions endpoint
