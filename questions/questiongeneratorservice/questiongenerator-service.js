@@ -65,18 +65,6 @@ app.get('/getAllQuestionGenerator', async (req, res) => {
   }
 });
 
-// Ruta para obtener una pregunta de manera aleatoria
-app.get('/getRandomQuestionGenerator', async (req, res) => {
-  try {
-    const rQuestion = await QuestionGenerator.aggregate([{ $sample: { size: 1 } }]);
-    const q = rQuestion[0];
-      
-    res.json(q);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
 // Ruta para eliminar la primera pregunta de la base de datos
 app.delete('/deleteFirstQuestionGenerator', async (req, res) => {
   try {

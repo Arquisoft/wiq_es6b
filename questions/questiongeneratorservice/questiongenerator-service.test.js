@@ -14,6 +14,13 @@ const question = {
     numquest: 1,
     typeQuestion: 'literatura'
 };
+const questionUpdated = {
+    questionBody: "¿Quién escribió la novela 'El Extranjero'?",
+    correcta: 'Albert Camus',
+    incorrectas: ['Miguel Delibes','Osamu Dazai','Franz Kafka'],
+    numquest: 4,
+    typeQuestion: 'literatura'
+};
 const question2 = {
     questionBody: "¿En qué año se publicó 'Romancero Gitano' de Federico García Lorca?",
     correcta: '1928',
@@ -51,6 +58,23 @@ describe('Question Generator Service', () => {
         expect(response.body).toHaveProperty('numquest', 1);
     });
 
+    it('Should perform two addOrUpdate operation /addOrUpdateQuestionGenerator for the same question', async () => {
+        const response = await request(app).post('/addOrUpdateQuestionGenerator').send(question);
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('questionBody', "¿Quién escribió la novela 'El Extranjero'?");
+        expect(response.body).toHaveProperty('correcta', 'Albert Camus');
+        expect(response.body).toHaveProperty('incorrectas', ['George Orwell','Franz Kafka','José Saramago']);
+        expect(response.body).toHaveProperty('numquest', 1);
+
+        // Actualizamos las respuestas incorrectas
+        const secondResponse = await request(app).post('/addOrUpdateQuestionGenerator').send(questionUpdated);
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('questionBody', "¿Quién escribió la novela 'El Extranjero'?");
+        expect(response.body).toHaveProperty('correcta', 'Albert Camus');
+        expect(response.body).toHaveProperty('incorrectas', ['Miguel Delibes','Osamu Dazai','Franz Kafka']);
+        expect(response.body).toHaveProperty('numquest', 1);
+    });
+
     it('Should get the last question added /getAllQuestionGenerator', async () => {
         const response = await request(app).get(`/getAllQuestionGenerator`);
 
@@ -82,15 +106,63 @@ describe('Question Generator Service', () => {
         expect(response.body.length).toBe(3);
     });
 
-    it('Should get one random question /getRandomQuestionGenerator', async () => {
-        const response = await request(app).get(`/getRandomQuestionGenerator`);
+    // comienzan los tests para extraer preguntas por temática determinada
+    it('Should get one random question /getRandomQuestionDeporte', async () => {
+        const response = await request(app).get(`/getRandomQuestionDeporte`);
+        const tiposValidos = ['equipo_estadio','estadio_capacidad', 'estadio_ciudad', 'equipo_deporte', 'deporte_anio','deportista_anio' ];
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
         expect(response.body).toHaveProperty('correcta');
         expect(response.body).toHaveProperty('incorrectas');
         expect(response.body).toHaveProperty('numquest');
+        expect(tiposValidos).toContain(response.body.typeQuestion);
     });
+    it('Should get one random question /getRandomQuestionAnio', async () => {
+        const response = await request(app).get(`/getRandomQuestionAnio`);
+        const tiposValidos = ['deporte_anio', 'deportista_anio', 'cancion_anio', 'libro_anio', 'cantante_anio'];
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('questionBody');
+        expect(response.body).toHaveProperty('correcta');
+        expect(response.body).toHaveProperty('incorrectas');
+        expect(response.body).toHaveProperty('numquest');
+        expect(tiposValidos).toContain(response.body.typeQuestion);
+    });
+    it('Should get one random question /getRandomQuestionMusica', async () => {
+        const response = await request(app).get(`/getRandomQuestionMusica`);
+        const tiposValidos = ['cancion_cantante', 'cancion_album', 'cancion_anio', 'cantante_anio']; 
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('questionBody');
+        expect(response.body).toHaveProperty('correcta');
+        expect(response.body).toHaveProperty('incorrectas');
+        expect(response.body).toHaveProperty('numquest');
+        expect(tiposValidos).toContain(response.body.typeQuestion);
+    });
+    it('Should get one random question /getRandomQuestionLibro', async () => {
+        const response = await request(app).get(`/getRandomQuestionLibro`);
+        const tiposValidos = ['libro_autor', 'libro_genero', 'libro_anio']; 
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('questionBody');
+        expect(response.body).toHaveProperty('correcta');
+        expect(response.body).toHaveProperty('incorrectas');
+        expect(response.body).toHaveProperty('numquest');
+        expect(tiposValidos).toContain(response.body.typeQuestion);
+    });
+    it('Should get one random question /getRandomQuestionPaisYGeo', async () => {
+        const response = await request(app).get(`/getRandomQuestionPaisYGeo`);
+        const tiposValidos = ['pais_capital', 'pais_poblacion', 'ciudad_pais', 'montana_altura', 'pais_moneda', 'rio_pais', 'lago_pais'];
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('questionBody');
+        expect(response.body).toHaveProperty('correcta');
+        expect(response.body).toHaveProperty('incorrectas');
+        expect(response.body).toHaveProperty('numquest');
+        expect(tiposValidos).toContain(response.body.typeQuestion);
+    });
+    // fin test extraer preguntas por temática determinada
 
     it('Should count 2 generated questions in the database /countQuestionGenerator', async () => {
         const response = await request(app).get('/countQuestionGenerator');
