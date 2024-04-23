@@ -55,6 +55,13 @@ describe('Gateway Service', () => {
     }
   });
 
+  // Test /health endpoint
+  it('should return OK status', async () => {
+    const response = await request(app).get('/health');
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: 'OK' });
+  });
+
   // Test /login endpoint
   it('should forward login request to auth service', async () => {
     const mockUsername = 'testuser';
