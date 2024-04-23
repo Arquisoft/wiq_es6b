@@ -192,7 +192,6 @@ describe('Question Generator Service', () => {
         const response = await request(app).get('/countQuestionGenerator');
 
         const res = await request(app).get(`/getAllQuestionGenerator`);
-        console.error(res.body);
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('count', 5);
