@@ -217,15 +217,18 @@ describe('Gateway Service', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.rank).toBe('mockedRank');
   });
+  
+  // Test /getRandomQuestionXXXXXX endpoints (themes)
+  const themes = ['Sports', 'Music', 'ImportantDates', 'Literature', 'Countries'];
 
-  // Test /getRandomQuestionGenerator endpoint
-  it('should get a random question from question generator service', async () => {
-    const response = await request(app)
-      .get('/getRandomQuestionGenerator');
+  for (const theme of themes) {
+    it(`should get a random question from question generator service with theme "${theme}"`, async () => {
+      const response = await request(app).get(`/getRandomQuestion${theme}`);
 
-    expect(response.statusCode).toBe(200);
-    expect(response.body.question).toBe('mockedQuestion');
-  });
+      expect(response.statusCode).toBe(200);
+      expect(response.body.question).toBe('mockedQuestion');
+    });
+  }
 
   // Test /getAllQuestionGenerator endpoint
   it('should get all questions from question generator service', async () => {
@@ -291,7 +294,6 @@ describe('Gateway Service', () => {
     { method: 'get', endpoint: '/getFullQuestion' },
     { method: 'get', endpoint: '/actRanking' },
     { method: 'get', endpoint: '/obtainRank' },
-    { method: 'get', endpoint: '/getRandomQuestionGenerator' },
     { method: 'get', endpoint: '/getAllQuestionGenerator' },
     { method: 'get', endpoint: '/countQuestionGenerator' },
     { method: 'delete', endpoint: '/deleteFirstQuestionGenerator' },
