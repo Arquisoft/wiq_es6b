@@ -163,8 +163,6 @@ describe('Question Generator Service', () => {
         expect(tiposValidos).toContain(response.body.typeQuestion);
     });
     it('Should get one random question /getRandomQuestionLibro', async () => {
-        await request(app).post('/addOrUpdateQuestionGenerator').send(questionLit3);
-
         const response = await request(app).get(`/getRandomQuestionLibro`);
         const tiposValidos = ['libro_autor', 'libro_genero', 'libro_anio']; 
 
@@ -190,18 +188,34 @@ describe('Question Generator Service', () => {
     });
     // fin test extraer preguntas por temática determinada
 
-    it('Should count 3 generated questions in the database /countQuestionGenerator', async () => {
+    it('Should count 5 generated questions in the database /countQuestionGenerator', async () => {
         const response = await request(app).get('/countQuestionGenerator');
 
         const res = await request(app).get(`/getAllQuestionGenerator`);
         console.error(res.body);
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('count', 3);
+        expect(response.body).toHaveProperty('count', 5);
     });
 
-    it('Should delete the first question added /deleteFirstQuestionGenerator', async () => {
-       const response = await request(app).delete('/deleteFirstQuestionGenerator');
+    it('Should delete the 3 first questions added /deleteFirstQuestionGenerator', async () => {
+        let response = await request(app).delete('/deleteFirstQuestionGenerator');
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('questionBody');
+        expect(response.body).toHaveProperty('correcta');
+        expect(response.body).toHaveProperty('incorrectas');
+        expect(response.body).toHaveProperty('numquest');
+
+        response = await request(app).delete('/deleteFirstQuestionGenerator');
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('questionBody');
+        expect(response.body).toHaveProperty('correcta');
+        expect(response.body).toHaveProperty('incorrectas');
+        expect(response.body).toHaveProperty('numquest');
+
+        response = await request(app).delete('/deleteFirstQuestionGenerator');
 
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('questionBody');
