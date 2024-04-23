@@ -40,16 +40,15 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { ranking: 'mockedRanking' } });
     } else if (url.endsWith('/obtainRank')) {
       return Promise.resolve({ data: { rank: 'mockedRank' } });
-    } else if (url.endsWith('/getRandomQuestionSports')){
-      console.error("Si q entro");
+    } else if (url.endsWith('/getRandomQuestionDeporte')){
       return Promise.resolve({ data: { question: 'mockedQuestion'} });
-    } else if (url.endsWith('/getRandomQuestionImportantDates')){
+    } else if (url.endsWith('/getRandomQuestionAnio')){
       return Promise.resolve({ data: { question: 'mockedQuestion'} });
-    } else if (url.endsWith('/getRandomQuestionMusic')){
+    } else if (url.endsWith('/getRandomQuestionMusica')){
       return Promise.resolve({ data: { question: 'mockedQuestion'} });
-    } else if (url.endsWith('/getRandomQuestionLiterature')){
+    } else if (url.endsWith('/getRandomQuestionLibro')){
       return Promise.resolve({ data: { question: 'mockedQuestion'} });
-    } else if (url.endsWith('/getRandomQuestionCountries')){
+    } else if (url.endsWith('/getRandomQuestionPaisYGeo')){
       return Promise.resolve({ data: { question: 'mockedQuestion'} });
     } else if (url.endsWith('/getAllQuestionGenerator')) {
       return Promise.resolve({ data: { questions: ['question1', 'question2'] } });
