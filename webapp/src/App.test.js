@@ -16,7 +16,7 @@ describe('App', () => {
 
   test('toggles view between login and register', () => {
     const { getByText } = result;
-    fireEvent.click(getByText("¿Ya tienes cuenta? Inicia sesión aqui."));
+    fireEvent.click(getByText("¿No tienes cuenta? Registrate aqui."));
     const loginButtons = screen.getAllByText(/Añadir usuario/i);
     expect(loginButtons[0]).toBeInTheDocument();
   });
