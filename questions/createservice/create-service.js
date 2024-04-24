@@ -9,6 +9,7 @@ const fs = require("fs")
 const YAML = require('yaml')
 
 const app = express();
+app.disable("x-powered-by");
 const port = 8005;
 
 // Middleware para analizar JSON en el cuerpo de la solicitud

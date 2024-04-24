@@ -8,6 +8,7 @@ const fs = require("fs")
 const YAML = require('yaml')
 
 const app = express();
+app.disable("x-powered-by");
 const port = 8003;
 
 // Middleware to parse JSON in request body

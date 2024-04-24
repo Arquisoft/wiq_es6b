@@ -8,6 +8,7 @@ const fs = require("fs")
 const YAML = require('yaml')
 
 const app = express();
+app.disable("x-powered-by");
 const port = 8000;
 
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
@@ -16,10 +17,13 @@ const questionServiceUrl = process.env.QUES_SERVICE_URL || 'http://localhost:800
 const recordServiceUrl = process.env.REC_SERVICE_URL || 'http://localhost:8006';
 const genQuestServiceUrl = process.env.GEN_SERVICE_URL || 'http://localhost:8003';
 const rankingServiceUrl = process.env.RANK_SERVICE_URL || 'http://localhost:8004';
-const questiongeneratorservice = process.env.QTEST_SERVICE_URL || 'http://questiongeneratorservice:8007';
+const questiongeneratorservice = process.env.QTEST_SERVICE_URL || 'http://localhost:8007';
 
+let corsOptions = {
+  origin: [ authServiceUrl, userServiceUrl, questionServiceUrl, recordServiceUrl, genQuestServiceUrl, rankingServiceUrl, questiongeneratorservice ]
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 //Prometheus configuration
