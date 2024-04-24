@@ -26,14 +26,17 @@ describe('User Service', () => {
       username: process.env.TEST_USER,
       password: process.env.TEST_PASSWORD,
     };
-
+  
+    // Mock the User.findOne method to return null (no existing user with the same username)
+    User.findOne.mockResolvedValue(null);
+  
     // Mock the User.create method
     User.create.mockResolvedValue({
       _id: 'some-id', // Add any necessary properties here
       username: newUser.username,
       password: newUser.password,
     });
-
+  
     const response = await request(app).post('/adduser').send(newUser);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('username', newUser.username);
