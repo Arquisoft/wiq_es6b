@@ -17,6 +17,7 @@ app.use(express.json());
 
 // Connect to MongoDB
 const mongoPassword = process.env.MONGO_PASSWORD;
+console.log(`MongoDB password: ${mongoPassword}`);
 const mongoUri = `mongodb+srv://aswuser:${mongoPassword}@wiq06b.hsfgpcm.mongodb.net/userdb?retryWrites=true&w=majority&appName=wiq06b`;
 mongoose.connect(mongoUri);
 
