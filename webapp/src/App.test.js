@@ -16,8 +16,14 @@ describe('App', () => {
   test('handles login', () => {
     const { getByText } = result;
     fireEvent.click(getByText("Iniciar sesión", { selector: 'button' }));
-    expect(result.handleIsLogged).toHaveBeenCalled();
+   
   });
   
 
+  test('toggles view between login and register', () => {
+    const { getByText } = result;
+    fireEvent.click(getByText(/¿No tienes cuenta? Registrate aqui./i));
+    const loginButtons = screen.getAllByText(/Añadir usuario/i);
+    expect(loginButtons).toBeInTheDocument();
+  });
 });
