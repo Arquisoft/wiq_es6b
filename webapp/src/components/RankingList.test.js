@@ -39,10 +39,10 @@ test('renders column headers', () => {
   test('tests tabla ranking', () => {
     render(<RankingList />);
     expect(screen.queryByText("Ranking")).toBeInTheDocument();
-    expect(screen.queryByText("Porcentaje de Aciertos")).toBeInTheDocument();
-    expect(screen.queryByText("Preguntas Correctas")).toBeInTheDocument();
-    expect(screen.queryByText("Preguntas Falladas")).toBeInTheDocument();
-    expect(screen.queryByText("Número de Partidas")).toBeInTheDocument();
+    expect(screen.getByText("Porcentaje de Aciertos")).toBeInTheDocument();
+    expect(screen.getByText("Preguntas Correctas")).toBeInTheDocument();
+    expect(screen.getByText("Preguntas Falladas")).toBeInTheDocument();
+    expect(screen.getByText("Número de Partidas")).toBeInTheDocument();
   });
 
 
