@@ -28,11 +28,15 @@ describe('User Service', () => {
     };
 
     // Mock the User.create method
-    User.create.mockResolvedValue(newUser);
+    User.create.mockResolvedValue({
+      _id: 'some-id', // Add any necessary properties here
+      username: newUser.username,
+      password: newUser.password,
+    });
 
     const response = await request(app).post('/adduser').send(newUser);
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('username', 'testuser');
+    expect(response.body).toHaveProperty('username', newUser.username);
   });
 
   it('should get all users on GET /getAllUsers', async () => {
