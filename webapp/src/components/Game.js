@@ -17,6 +17,10 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
     const pricePerQuestion = 25;
     const delayBeforeNextQuestion = 3000; // 3 segundos de retardo antes de pasar a la siguiente pregunta
 
+    const crypto = window.crypto || window.msCrypto;
+    const array = new Uint32Array(1);
+    crypto.getRandomValues(array);
+
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
     if(isNaN(totalQuestions)){
@@ -45,13 +49,13 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
             try {
                 const temas = Object.entries(themesSelected).filter(([tema, seleccionado]) => seleccionado)
                                                             .map(([tema]) => tema);
-                const randomIndex = Math.floor(Math.random() * temas.length);
+                const randomIndex = array[0] % temas.length;
                 const temaAleatorio = temas[randomIndex];
                 
                 const response = await axios.get(`${apiEndpoint}/getRandomQuestion${temaAleatorio}`);
                 setQuestion(response.data);
                 const respuestas = [...response.data.incorrectas, response.data.correcta];
-                setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
+                setRespuestasAleatorias(respuestas.sort(() => (array[0] / 4294967295) - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
             } catch (error) {
                 console.error("Error al obtener la pregunta aleatoria", error);
                 setError('Error al obtener la pregunta aleatoria');
@@ -93,13 +97,13 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
         try {
             const temas = Object.entries(themesSelected).filter(([tema, seleccionado]) => seleccionado)
                                                             .map(([tema]) => tema);
-            const randomIndex = Math.floor(Math.random() * (temas.length));
+            const randomIndex = array[0] % temas.length;
             const temaAleatorio = temas[randomIndex];
             
             const response = await axios.get(`${apiEndpoint}/getRandomQuestion${temaAleatorio}`);
             setQuestion(response.data);
             const respuestas = [...response.data.incorrectas, response.data.correcta];
-            setRespuestasAleatorias(respuestas.sort(() => Math.random() - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
+            setRespuestasAleatorias(respuestas.sort(() => (array[0] / 4294967295) - 0.5).slice(0, 4)); // Mostrar solo 4 respuestas
         } catch (error) {
             console.error("Error al obtener la pregunta aleatoria", error);
             setError('Error al obtener la pregunta aleatoria');

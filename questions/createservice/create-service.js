@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
 const Question = require('./create-model');
+const crypto = require('crypto');
 //libraries required for OpenAPI-Swagger
 const swaggerUi = require('swagger-ui-express'); 
 const fs = require("fs")
@@ -367,7 +368,7 @@ app.get('/getFullQuestion', async (req, res) => {
       let respuestaCorrecta;
 
       do {
-        const indexCorrecta = Math.floor(Math.random() * numEles);
+        const indexCorrecta = crypto.randomInt(0, numEles);
         resultCorrecta = data.results.bindings[indexCorrecta];
         informacionWikidata = resultCorrecta[questionLabel].value + '?';
         respuestaCorrecta = resultCorrecta[answerLabel].value;
@@ -375,7 +376,7 @@ app.get('/getFullQuestion', async (req, res) => {
 
       const respuestasFalsas = [];
       while (respuestasFalsas.length < 3) {
-        const indexFalsa = Math.floor(Math.random() * numEles);
+        const indexFalsa = crypto.randomInt(0, numEles);
         const resultFalsa = data.results.bindings[indexFalsa];
         const respuestaFalsa = resultFalsa[answerLabel].value;
 
