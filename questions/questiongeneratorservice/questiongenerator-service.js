@@ -2,12 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const QuestionGenerator = require('./questiongenerator-model');
+const crypto = require('crypto');
 //libraries required for OpenAPI-Swagger
 const swaggerUi = require('swagger-ui-express'); 
 const fs = require("fs")
 const YAML = require('yaml')
 
 const app = express();
+app.disable("x-powered-by");
 const port = 8007;
 
 // Middleware para analizar JSON en el cuerpo de la solicitud
@@ -99,7 +101,7 @@ const getRandomQuestion = async (tiposPregunta) => {
     // Iterar hasta que se encuentre una pregunta válida o no haya más tipos de pregunta disponibles
     while (filteredTiposPregunta.length > 0) {
       // Seleccionar un tipo de pregunta aleatorio de los tipos filtrados
-      const tipoPreguntaAleatorio = filteredTiposPregunta[Math.floor(Math.random() * filteredTiposPregunta.length)];
+      const tipoPreguntaAleatorio = filteredTiposPregunta[crypto.randomInt(0, filteredTiposPregunta.length)];
 
       // Consultar una pregunta aleatoria del tipo seleccionado
       const rQuestion = await QuestionGenerator.aggregate([
