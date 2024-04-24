@@ -1,5 +1,8 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+const User = require('./user-model');
+jest.mock('./user-model'); // Mock the User model
+
 require('dotenv').config();
 
 let mongoServer;
@@ -23,6 +26,9 @@ describe('User Service', () => {
       username: process.env.TEST_USER,
       password: process.env.TEST_PASSWORD,
     };
+
+    // Mock the User.create method
+    User.create.mockResolvedValue(newUser);
 
     const response = await request(app).post('/adduser').send(newUser);
     expect(response.status).toBe(200);
