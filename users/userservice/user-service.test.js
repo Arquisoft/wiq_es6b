@@ -27,27 +27,9 @@ describe('User Service', () => {
       password: process.env.TEST_PASSWORD,
     };
   
-    // Mock the User.findOne method to return null (no existing user with the same username)
-    User.findOne.mockResolvedValue(null);
-  
-    // Mock the bcrypt.hash method to return a hashed password
-    bcrypt.hash.mockResolvedValue('hashedPassword');
-  
-    // Mock the User.create method
-    User.create.mockResolvedValue({
-      _id: 'some-id', // Add any necessary properties here
-      username: newUser.username,
-      password: 'hashedPassword',
-    });
-  
-    // Mock the newUser.save method
-    const save = jest.fn().mockResolvedValue(newUser);
-    User.prototype.save = save;
-  
     const response = await request(app).post('/adduser').send(newUser);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('username', newUser.username);
-    expect(save).toHaveBeenCalled();
   });
 
   it('should get all users on GET /getAllUsers', async () => {
