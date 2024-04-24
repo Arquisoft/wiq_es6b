@@ -8,6 +8,8 @@ const swaggerUi = require('swagger-ui-express');
 const fs = require("fs")
 const YAML = require('yaml')
 
+require('dotenv').config();
+
 const app = express();
 app.disable("x-powered-by");
 const port = 8002; 
