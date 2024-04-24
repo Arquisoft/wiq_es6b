@@ -35,32 +35,21 @@ describe('User Service', () => {
     expect(response.body).toHaveProperty('username', 'testuser');
   });
 
+  it('should get all users on GET /getAllUsers', async () => {
+    // Mock the User.find method
+    User.find.mockResolvedValue([
+      { username: process.env.TEST_USER, password: process.env.TEST_PASSWORD },
+      { username: process.env.TEST_USER2, password: process.env.TEST_PASSWORD2 },
+    ]);
 
+    const response = await request(app).get('/getAllUsers');
+    expect(response.status).toBe(200);
+    expect(response.body).toBeInstanceOf(Array);
 
-      //prueba get
-      it('should get all users on GET /getAllUsers', async () => {
-        
-        // Agrego primero usuarios
-        await request(app).post('/adduser').send({
-          username: process.env.TEST_USER,
-          password: process.env.TEST_PASSWORD,
-        });
-
-        await request(app).post('/adduser').send({
-          username: process.env.TEST_USER2,
-          password: process.env.TEST_PASSWORD2,
-  
-        });
-      // llamo al get
-      const response = await request(app).get('/getAllUsers');
-      expect(response.status).toBe(200);
-      expect(response.body).toBeInstanceOf(Array);//obtengo elementos
-       // miro que esten los dos añadidos
-       const usernames = response.body.map(user => user.username);
-       expect(usernames).toContain('testuser');
-       expect(usernames).toContain('testuser2');
-
-      });
+    const usernames = response.body.map(user => user.username);
+    expect(usernames).toContain('testuser');
+    expect(usernames).toContain('testuser2');
+  });
 
       test('should throw an error when a required field is missing', async () => {
         const response = await request(app)
