@@ -8,7 +8,7 @@ WORKDIR /usr/src/userservice
 COPY --chown=root:root --chmod=75 package*.json ./
 
 # Install app dependencies
-RUN npm install --ignore-scripts
+RUN npm install
 
 # Copy the app source code to the working directory
 COPY --chown=root:root --chmod=75 .env ./
