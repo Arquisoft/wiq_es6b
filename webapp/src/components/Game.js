@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Typography, Button, Snackbar, Grid, List, ListItem, ListItemText } from '@mui/material';
+import cryptoRandomString from 'crypto-random-string';
 
 const Game = ({ username, totalQuestions, timeLimit, themes }) => {
     const [question, setQuestion] = useState({});
@@ -20,29 +21,13 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
     function getRandomIndex(length) {
-        let randomIndex;
-        if (typeof window !== 'undefined' && window.crypto) {
-          const crypto = window.crypto || window.msCrypto;
-          const array = new Uint32Array(1);
-          crypto.getRandomValues(array);
-          randomIndex = array[0] % length;
-        } else {
-          // Usar una alternativa que funcione en Node.js
-          randomIndex = Math.floor(Math.random() * length);
-        }
-        return randomIndex;
+        const randomValue = parseInt(cryptoRandomString({length: 10, type: 'numeric'}), 10);
+        return randomValue % length;
     } 
 
     function randomSort() {
-        if (typeof window !== 'undefined' && window.crypto) {
-          const crypto = window.crypto || window.msCrypto;
-          const array = new Uint32Array(1);
-          crypto.getRandomValues(array);
-          return array[0] / 4294967295 > 0.5 ? 1 : -1;
-        } else {
-          // Usar una alternativa que funcione en Node.js
-          return Math.random() > 0.5 ? 1 : -1;
-        }
+        const randomValue = parseInt(cryptoRandomString({length: 10, type: 'numeric'}), 10);
+        return randomValue % 2 === 0 ? 1 : -1;
     }
 
     if(isNaN(totalQuestions)){
