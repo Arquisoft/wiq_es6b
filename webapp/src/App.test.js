@@ -1,26 +1,32 @@
-import { render, screen } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import App from './App';
 
-test('renders login view by default', () => {
-  render(<App />);
-  const loginElement = screen.getByText(/Iniciar sesión/i);
-  expect(loginElement).toBeInTheDocument();
-});
+describe('App', () => {
+  let result;
+  beforeEach(() => {
+    result = render(<App />);
+  });
 
-test('renders register view when register link is clicked', async () => {
-  render(<App />);
-  const registerLink = await screen.findByRole('button', { name: /¿No tienes cuenta? Registrate aqui./i });
-  registerLink.click();
-  const registerElement = screen.getByText(/¿Ya tienes cuenta? Inicia sesión aqui./i);
-  expect(registerElement).toBeInTheDocument();
-});
-
-test('renders login view when login link is clicked in register view', async () => {
-  render(<App />);
-  const registerLink = await screen.findByRole('button', { name: /¿No tienes cuenta? Registrate aqui./i });
-  registerLink.click();
-  const loginLink = await screen.findByRole('button', { name: /¿Ya tienes cuenta? Inicia sesión aqui./i });
-  loginLink.click();
-  const loginElement = screen.getByText(/Inicia sesión aqui./i);
-  expect(loginElement).toBeInTheDocument();
+  test('handleIsLogged sets logged to true', () => {
+    const loginButtons = result.getAllByText(/Iniciar sesión/i);
+    fireEvent.click(loginButtons[0]); // Click the first login button
+    const registerLink = result.queryByText(/¿No tienes cuenta? Registrate aqui./i);
+    expect(registerLink).not.toBeInTheDocument();
+  });
+  
+  test('handleToggleView toggles the view to register', () => {
+    const toggleViewButton = result.getByText(/¿No tienes cuenta? Registrate aqui./i);
+    fireEvent.click(toggleViewButton);
+    const registerView = result.getByText(/Registrate/i);
+    expect(registerView).toBeInTheDocument();
+  });
+  
+  test('handleToggleView toggles the view back to login', () => {
+    const toggleViewButton = result.getByText(/¿No tienes cuenta? Registrate aqui./i);
+    fireEvent.click(toggleViewButton);
+    const backToLoginButton = result.getByText(/¿Ya tienes cuenta? Inicia sesión aqui./i);
+    fireEvent.click(backToLoginButton);
+    const loginButtons = result.getAllByText(/Iniciar sesión/i);
+    expect(loginButtons[0]).toBeInTheDocument(); // Expect the first login button to be in the document
+  });
 });
