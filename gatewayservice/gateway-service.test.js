@@ -1,6 +1,7 @@
 const request = require('supertest');
 const axios = require('axios');
 const app = require('./gateway-service'); 
+const e = require('express');
 
 afterAll(async () => {
     app.close();
@@ -22,6 +23,10 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { rankId: 'mockedRankId' } });
     } else if (url.endsWith('/updateRanking')) {
       return Promise.resolve({ data: { updatedRanking: true } });
+    } else if (url.endsWith('/updateAllRanking')) {
+      return Promise.resolve({ data: { updatedRanking: true } });
+    } else if (url.endsWith('/addOrUpdateQuestionGenerator')) {
+      return Promise.resolve({ data: { questionId: 'mockedQuestionId' } });
     } else if (url.endsWith('/addGeneratedQuestion')) {
       return Promise.resolve({ data: { generatedQuestionId: 'mockedGeneratedQuestionId' } });
     }
@@ -144,6 +149,30 @@ describe('Gateway Service', () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.updatedRanking).toBe(true);
+  });
+
+  // Test /updateAllRanking endpoint
+  it('should update all rankings in ranking service', async () => {
+    const mockRanking = { username: 'testuser' };
+
+    const response = await request(app)
+      .post('/updateAllRanking')
+      .send(mockRanking);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.updatedRanking).toBe(true);
+  });
+
+  // Test /addOrUpdateQuestionGenerator endpoint success
+  it('should add or update a question successfully', async () => {
+    const mockQuestion = {
+      questionBody: '¿Cual es la capital de Francia?',
+      typeQuestion: 'pais_capital'
+    };
+
+    const response = await request(app).post('/addOrUpdateQuestionGenerator').send(mockQuestion);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty('questionId', 'mockedQuestionId');
   });
 
   // Test /addGeneratedQuestion endpoint success
@@ -293,6 +322,17 @@ describe('Gateway Service', () => {
 
   const testCases = [
     { method: 'post', endpoint: '/addGeneratedQuestion', data: { question: '¿Cuál es la capital de Francia?', answer: 'París', distractor: ['Londres', 'Madrid', 'Berlín'] } },
+    { method: 'post', endpoint: '/addRecord', data: { userId: 'testuserid', date: new Date(), time: 60, money: 5000, correctQuestions: 8, failedQuestions: 2 } },
+    { method: 'post', endpoint: '/addQuestion', data: { questionBody: '¿Cual es la capital de Francia?', typeQuestion: 'pais_capital' } },
+    { method: 'post', endpoint: '/createUserRank', data: { username: 'testuser' } },
+    { method: 'post', endpoint: '/updateRanking', data: { username: 'testuser' } },
+    { method: 'post', endpoint: '/updateAllRanking', data: { username: 'testuser' } },
+    { method: 'post', endpoint: '/addOrUpdateQuestionGenerator', data: { questionBody: '¿Cual es la capital de Francia?', typeQuestion: 'pais_capital' } },
+    { method: 'get', endpoint: '/getRandomQuestionSports' },
+    { method: 'get', endpoint: '/getRandomQuestionMusic' },
+    { method: 'get', endpoint: '/getRandomQuestionImportantDates' },
+    { method: 'get', endpoint: '/getRandomQuestionLiterature' },
+    { method: 'get', endpoint: '/getRandomQuestionCountries' },
     { method: 'get', endpoint: '/getAllGeneratedQuestions' },
     { method: 'get', endpoint: '/getRecords/:userId' },
     { method: 'get', endpoint: '/getAllUsers' },
