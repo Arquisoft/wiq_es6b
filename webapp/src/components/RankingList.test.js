@@ -3,6 +3,7 @@ import { render, screen, waitFor, act } from '@testing-library/react';
 import RankingList from './RankingList';
 
 
+
 describe('RankingList', () => {
   it('renders without crashing', () => {
     render(<RankingList />);
@@ -33,5 +34,16 @@ test('renders column headers', () => {
     const table = screen.getByRole('table');
     expect(table).toBeInTheDocument();
   });
- 
+
+
+  test('tests tabla ranking', () => {
+    render(<RankingList />);
+    expect(screen.queryByText("Ranking")).toBeInTheDocument();
+    expect(screen.queryByText("Porcentaje de Aciertos")).toBeInTheDocument();
+    expect(screen.queryByText("Preguntas Correctas")).toBeInTheDocument();
+    expect(screen.queryByText("Preguntas Falladas")).toBeInTheDocument();
+    expect(screen.queryByText("Número de Partidas")).toBeInTheDocument();
+  });
+
+
 });
