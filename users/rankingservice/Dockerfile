@@ -14,6 +14,7 @@ COPY --chown=nodeuser:nodeuser package*.json ./
 RUN npm install --ignore-scripts
 
 # Copy the app source code to the working directory
+COPY --chown=nodeuser:nodeuser .env ./
 COPY --chown=nodeuser:nodeuser ranking-model.js ./
 COPY --chown=nodeuser:nodeuser ranking-service.js ./
 COPY --chown=nodeuser:nodeuser ranking-service.test.js ./

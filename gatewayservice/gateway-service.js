@@ -137,8 +137,12 @@ app.get('/getAllGeneratedQuestions', async (req, res) => {
 
 app.get('/getRecords/:userId', async (req, res) => {
   try {
- 
     const userId = req.params.userId;
+
+    // Validate userId
+    if (!/^\w+$/.test(userId)) {
+      return res.status(400).json({ error: 'Invalid userId' });
+    }
 
     const recordsResponse = await axios.get(`${recordServiceUrl}/getRecords/${userId}`);
     res.json(recordsResponse.data);

@@ -16,14 +16,16 @@ const port = 8004;
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/rankingdb?retryWrites=true&w=majority&appName=wiq06b';
+const mongoUser = process.env.MONGO_USER;
+const mongoPassword = process.env.MONGO_PASSWORD;
+const mongoUri = `mongodb+srv://${mongoUser}:${mongoPassword}@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b`;
 mongoose.connect(mongoUri);
 
 //actualiza el ranking de un usuario tras terminar la jugada
 app.post('/updateRanking', async (req, res) => {
   try {
     // Buscar al usuariopor su nombre de usuario
-    const username = req.body.username;
+    const username = req.body.username.toString();
     const existingUser = await UserRank.findOne({ username });
 
     if (!existingUser) {
@@ -52,7 +54,7 @@ app.post('/updateRanking', async (req, res) => {
 //tambien actualiza si se elimino un usuario de eliminar el elemento ranking correspondiente
 app.post('/createUserRank', async (req, res) => {
   try {
-    const { usernames } = req.body;
+    const { usernames } = req.body.toString();
 
     await deleteRankingElements(usernames);
 
@@ -130,7 +132,7 @@ app.post('/updateAllRanking', async (req, res) => {
 
     // Iterar sobre los datos recibidos y actualizar los rankings correspondientes
     for (const userData of rankingData) {
-      const username = userData.username;
+      const username = userData.username.toString();
       const preguntasCorrectas = userData.preguntasCorrectas;
       const preguntasFalladas = userData.preguntasFalladas;
       const numPartidas = userData.numPartidas;

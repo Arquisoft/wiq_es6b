@@ -16,7 +16,9 @@ const port = 8007;
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiongeneratordb?retryWrites=true&w=majority&appName=wiq06b';
+const mongoUser = process.env.MONGO_USER;
+const mongoPassword = process.env.MONGO_PASSWORD;
+const mongoUri = `mongodb+srv://${mongoUser}:${mongoPassword}@wiq06b.hsfgpcm.mongodb.net/questiondb?retryWrites=true&w=majority&appName=wiq06b`;
 mongoose.connect(mongoUri);
 
 
@@ -24,7 +26,7 @@ mongoose.connect(mongoUri);
 app.post('/addOrUpdateQuestionGenerator', async (req, res) => {
   try {
     // Buscar si ya existe una pregunta con el mismo questionBody
-    const existingQuestion = await QuestionGenerator.findOne({ questionBody: req.body.questionBody });
+    const existingQuestion = await QuestionGenerator.findOne({ questionBody: req.body.questionBody.toString() });
 
     if (existingQuestion) {
       // Si la pregunta ya existe, realizar una actualización
