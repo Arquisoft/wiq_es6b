@@ -20,4 +20,12 @@ describe('App', () => {
     const loginButtons = screen.getAllByText(/Añadir usuario/i);
     expect(loginButtons[0]).toBeInTheDocument();
   });
+
+  test('tests link Iniciar sesion', () => {
+    const { getByText } = result;
+    fireEvent.click(getByText("¿No tienes cuenta? Registrate aqui."));
+    fireEvent.click(getByText("¿Ya tienes cuenta? Inicia sesión aqui."));
+    const loginButtons = screen.getAllByText(/Iniciar sesión/i);
+    expect(loginButtons[0]).toBeInTheDocument();
+  });
 });
