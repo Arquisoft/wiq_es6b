@@ -26,7 +26,7 @@ const doesQuestionExist = async (questionBody) => {
   //devuelve true si la pregunta ya existe 
   try {
     const existingQuestion = await GeneratedQuestion.findOne({
-      generatedQuestionBody: questionBody.toString()
+      generatedQuestionBody: questionBody
     });
 
     return !!existingQuestion; // Convertir el resultado en un booleano

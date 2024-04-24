@@ -40,7 +40,7 @@ app.post('/adduser', async (req, res) => {
         validateRequiredFields(req, ['username', 'password']);
 
         // Siguiente comprobación: NO puede haber otro usuario en la BD con el mismo valor de username
-        const existingUser = await User.findOne({ username : req.body.username.toString() });
+        const existingUser = await User.findOne({ username : req.body.username });
         if(existingUser!=null){
             throw new Error(`The username "${req.body.username}" is already in use.`);
         }

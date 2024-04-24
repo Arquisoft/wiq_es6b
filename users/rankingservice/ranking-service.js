@@ -26,7 +26,7 @@ mongoose.connect(mongoUri);
 app.post('/updateRanking', async (req, res) => {
   try {
     // Buscar al usuariopor su nombre de usuario
-    const username = req.body.username.toString();
+    const username = req.body.username;
     const existingUser = await UserRank.findOne({ username });
 
     if (!existingUser) {
@@ -55,7 +55,7 @@ app.post('/updateRanking', async (req, res) => {
 //tambien actualiza si se elimino un usuario de eliminar el elemento ranking correspondiente
 app.post('/createUserRank', async (req, res) => {
   try {
-    const { usernames } = req.body.toString();
+    const { usernames } = req.body;
 
     await deleteRankingElements(usernames);
 
@@ -133,7 +133,7 @@ app.post('/updateAllRanking', async (req, res) => {
 
     // Iterar sobre los datos recibidos y actualizar los rankings correspondientes
     for (const userData of rankingData) {
-      const username = userData.username.toString();
+      const username = userData.username;
       const preguntasCorrectas = userData.preguntasCorrectas;
       const preguntasFalladas = userData.preguntasFalladas;
       const numPartidas = userData.numPartidas;
