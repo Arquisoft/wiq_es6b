@@ -20,6 +20,9 @@ COPY --chown=nodeuser:nodeuser ranking-service.js ./
 COPY --chown=nodeuser:nodeuser ranking-service.test.js ./
 COPY --chown=nodeuser:nodeuser openapi.yaml ./
 
+# Remove write permissions from all files
+RUN chmod -R 555 .
+
 # Switch to the new user in the Dockerfile
 USER nodeuser
 
