@@ -12,4 +12,12 @@ describe('App', () => {
     const loginButtons = screen.getAllByText(/Iniciar sesión/i);
     expect(loginButtons[0]).toBeInTheDocument();
   });
+
+  test('handles login', () => {
+    const { getByText } = result;
+    fireEvent.click(getByText(/Iniciar sesión/i));
+    expect(result.handleIsLogged).toHaveBeenCalled();
+  });
+  
+
 });
