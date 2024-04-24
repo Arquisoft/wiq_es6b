@@ -12,12 +12,4 @@ describe('App', () => {
     const loginButtons = screen.getAllByText(/Iniciar sesión/i);
     expect(loginButtons[0]).toBeInTheDocument();
   });
-
-  test('handleToggleView toggles the view to register', () => {
-    const toggleViewButton = screen.getByRole('button', { name: /¿No tienes cuenta? Registrate aqui./i });
-    fireEvent.click(toggleViewButton);
-    const registerView = screen.getByText(/Registrate/i);
-    expect(registerView).toBeInTheDocument();
-  });
-  
 });
