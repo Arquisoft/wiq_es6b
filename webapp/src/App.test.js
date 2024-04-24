@@ -15,7 +15,7 @@ describe('App', () => {
 
   test('handles login', () => {
     const { getByText } = result;
-    fireEvent.click(getByText(/Iniciar sesión/i));
+    fireEvent.click(getByText("Iniciar sesión", { selector: 'button' }));
     expect(result.handleIsLogged).toHaveBeenCalled();
   });
   
