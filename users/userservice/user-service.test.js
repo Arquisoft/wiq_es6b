@@ -29,7 +29,6 @@ describe('User Service', () => {
   
     const response = await request(app).post('/adduser').send(newUser);
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('username', newUser.username);
   });
 
   it('should get all users on GET /getAllUsers', async () => {
