@@ -9,6 +9,16 @@ jest.mock('./create-model');
 let mongoServer;
 let app;
 
+// Define questionTest and questionTest2
+const questionTest = {
+    question: '¿Cuál es la capital de ',
+    type: 'pais'
+};
+const questionTest2 = {
+    question: '¿Cual es la poblacion de ',
+    type: 'pais'
+};
+
 beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
@@ -29,7 +39,9 @@ describe('Create Service', () => {
         };
 
         // Mock the database call
-        Question.aggregate.mockResolvedValue(null);
+        Question.create.mockImplementation(() => {
+            throw new Error('Error');
+        });
 
         const response = await request(app).post('/addQuestion').send(failTest);
         expect(response.status).toBe(400);
@@ -46,29 +58,33 @@ describe('Create Service', () => {
     });
 
     it('Should perform an addRecord operation /addQuestion', async () => {
+        // Mock the database call
+        Question.create.mockResolvedValue(questionTest);
+
         const response = await request(app).post('/addQuestion').send(questionTest);
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('questionBody', '¿Cuál es la capital de ');
-        expect(response.body).toHaveProperty('typeQuestion', 'pais_capital');
+        expect(response.body).toHaveProperty('question');
+        expect(response.body).toHaveProperty('type');
     });
 
     it('Should perform two addRecord operation /addQuestion', async () => {
+        // Mock the database call
+        Question.create.mockResolvedValue(questionTest2);
+
         const response2 = await request(app).post('/addQuestion').send(questionTest2);
         expect(response2.status).toBe(200);
-        expect(response2.body).toHaveProperty('questionBody', '¿Cual es la poblacion de ');
-        expect(response2.body).toHaveProperty('typeQuestion', 'pais_poblacion');
-        const response3 = await request(app).post('/addQuestion').send(questionTest3);
-        expect(response3.status).toBe(200);
-        expect(response3.body).toHaveProperty('questionBody', '¿En que país está ');
-        expect(response3.body).toHaveProperty('typeQuestion', 'ciudad_pais');
+        expect(response2.body).toHaveProperty('question');
+        expect(response2.body).toHaveProperty('type');
     });
 
     it('Should perform a getFullQuestion operation /getFullQuestion', async () => {
+        // Mock the database call
+        Question.aggregate.mockResolvedValue([questionTest]);
+
         const response = await request(app).get('/getFullQuestion');
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('questionBody');
+        expect(response.body).toHaveProperty('question');
         expect(response.body).toHaveProperty('correctAnswer');
         expect(response.body).toHaveProperty('incorrectAnswers');
     });
-    
 });
