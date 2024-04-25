@@ -7,21 +7,18 @@ RUN useradd -m nodeuser
 # Set the working directory in the container
 WORKDIR /usr/src/createservice
 
-# Copy package.json and package-lock.json to the working directory
-COPY --chown=nodeuser:nodeuser package*.json ./
+# Copy package.json and package-lock.json to working directory
+COPY --chown=root:root --chmod=755 package*.json ./
 
 # Install app dependencies
 RUN npm install --ignore-scripts
 
 # Copy the app source code to the working directory
-COPY --chown=nodeuser:nodeuser .env ./
-COPY --chown=nodeuser:nodeuser create-model.js ./
-COPY --chown=nodeuser:nodeuser create-service.js ./
-COPY --chown=nodeuser:nodeuser create-service.test.js ./
-COPY --chown=nodeuser:nodeuser openapi.yaml ./
-
-# Remove write permissions from all files
-RUN chmod -R 444 .
+COPY --chown=root:root --chmod=755 .env ./
+COPY --chown=root:root --chmod=755 create-model.js ./
+COPY --chown=root:root --chmod=755 create-service.js ./
+COPY --chown=root:root --chmod=755 create-service.test.js ./
+COPY --chown=root:root --chmod=755 openapi.yaml ./
 
 # Switch to the new user in the Dockerfile
 USER nodeuser

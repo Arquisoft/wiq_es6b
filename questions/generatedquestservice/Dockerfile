@@ -1,4 +1,4 @@
-# Use an official Node.js runtime as a parent image
+# Use an official Node.js runtime as a parent
 FROM node:20
 
 # Create a non-root user: nodeuser
@@ -8,20 +8,17 @@ RUN useradd -m nodeuser
 WORKDIR /usr/src/generatedquestservice
 
 # Copy package.json and package-lock.json to the working directory
-COPY --chown=nodeuser:nodeuser package*.json ./
+COPY --chown=root:root --chmod=755 package*.json ./
 
 # Install app dependencies
 RUN npm install --ignore-scripts
 
 # Copy the app source code to the working directory
-COPY --chown=nodeuser:nodeuser .env ./
-COPY --chown=nodeuser:nodeuser generatedquest-model.js ./
-COPY --chown=nodeuser:nodeuser generatedquest-service.js ./
-COPY --chown=nodeuser:nodeuser generatedquest-service.test.js ./
-COPY --chown=nodeuser:nodeuser openapi.yaml ./
-
-# Remove write permissions from all files
-RUN chmod -R 444 .
+COPY --chown=root:root --chmod=755 .env ./
+COPY --chown=root:root --chmod=755 generatedquest-model.js ./
+COPY --chown=root:root --chmod=755 generatedquest-service.js ./
+COPY --chown=root:root --chmod=755 generatedquest-service.test.js ./
+COPY --chown=root:root --chmod=755 openapi.yaml ./
 
 # Switch to the new user in the Dockerfile
 USER nodeuser
