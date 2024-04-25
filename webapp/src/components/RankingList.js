@@ -26,7 +26,7 @@ const RankingList = ({setError}) => {
           setError('Error obteniendo el ranking del usuario');
         }
       } catch (error) {
-        setError('Error obteniendo el ranking del usuario: ', error);
+        setError(`Error obteniendo el ranking del usuario: ${error}`);
       }
     };
 
