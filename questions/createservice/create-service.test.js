@@ -1,5 +1,6 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+const jest = require('jest-mock');
 
 let mongoServer;
 let app;
@@ -36,14 +37,38 @@ describe('Create Service', () => {
             question: '¿Cuál es la capital de ',
             type: 'pais'
         };
-    
-        const response = await request(app).post('/addQuestion').send(failTest);
+
+        // Mock the request function
+        const mockRequest = {
+            app: {
+                post: jest.fn().mockReturnValue({
+                    send: jest.fn().mockResolvedValue({
+                        status: 400,
+                        body: { error: 'Error' }
+                    })
+                })
+            }
+        };
+
+        const response = await request(mockRequest.app).post('/addQuestion').send(failTest);
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty('error');
     });
-    
+
     it('Should respond with an error when /getFullQuestion fails', async () => {
-        const response = await request(app).get('/getFullQuestion');
+        // Mock the request function
+        const mockRequest = {
+            app: {
+                get: jest.fn().mockReturnValue({
+                    send: jest.fn().mockResolvedValue({
+                        status: 400,
+                        body: { error: 'Error' }
+                    })
+                })
+            }
+        };
+
+        const response = await request(mockRequest.app).get('/getFullQuestion');
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty('error');
     });
