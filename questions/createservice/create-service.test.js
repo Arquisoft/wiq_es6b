@@ -1,22 +1,13 @@
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+const fetch = require('node-fetch');
+const Question = require('./create-model');
+
+jest.mock('node-fetch');
+jest.mock('./create-model');
 
 let mongoServer;
 let app;
-
-//test question
-const questionTest = {
-    questionBody: '¿Cuál es la capital de ',
-    typeQuestion: 'pais_capital'
-};
-const questionTest2 = {
-    questionBody: '¿Cual es la poblacion de ',
-    typeQuestion: 'pais_poblacion'
-};
-const questionTest3 = {
-    questionBody: '¿En que país está ',
-    typeQuestion: 'ciudad_pais'
-};
 
 beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
@@ -37,37 +28,19 @@ describe('Create Service', () => {
             type: 'pais'
         };
 
-        // Mock the request function
-        const mockRequest = {
-            app: {
-                post: jest.fn().mockReturnValue({
-                    send: jest.fn().mockResolvedValue({
-                        status: 400,
-                        body: { error: 'Error' }
-                    })
-                })
-            }
-        };
+        // Mock the database call
+        Question.aggregate.mockResolvedValue(null);
 
-        const response = await request(mockRequest.app).post('/addQuestion').send(failTest);
+        const response = await request(app).post('/addQuestion').send(failTest);
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty('error');
     });
 
     it('Should respond with an error when /getFullQuestion fails', async () => {
-        // Mock the request function
-        const mockRequest = {
-            app: {
-                get: jest.fn().mockReturnValue({
-                    send: jest.fn().mockResolvedValue({
-                        status: 400,
-                        body: { error: 'Error' }
-                    })
-                })
-            }
-        };
+        // Mock the database call
+        Question.aggregate.mockResolvedValue(null);
 
-        const response = await request(mockRequest.app).get('/getFullQuestion');
+        const response = await request(app).get('/getFullQuestion');
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty('error');
     });
