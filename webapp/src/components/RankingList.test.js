@@ -131,7 +131,7 @@ describe('RankingList', () => {
       });
 
       // We wait for the users to be loaded and the table to be updated
-      rows = await screen.findAllByRole('row');
+      let rows = await screen.findAllByRole('row');
 
       // We check if the first row is the one with the username 'troll'
       expect(rows[4]).toHaveTextContent('manuel');
@@ -144,7 +144,7 @@ describe('RankingList', () => {
       });
 
       // We wait for the users to be loaded and the table to be updated
-      let rows = await screen.findAllByRole('row');
+      rows = await screen.findAllByRole('row');
 
       // We check if the first row is the one with the username 'manuel'
       expect(rows[1]).toHaveTextContent('manuel');
