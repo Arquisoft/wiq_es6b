@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import RankingList from './RankingList';
-import test, { before, describe } from 'node:test';
 import axios from 'axios';
 
 
