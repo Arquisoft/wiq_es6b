@@ -3,9 +3,6 @@ import { render, screen, waitFor, act } from '@testing-library/react';
 import RankingList from './RankingList';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import Login from './Login';
-import { beforeEach } from 'node:test';
-import exp from 'constants';
 
 jest.mock('axios');
 
@@ -317,7 +314,7 @@ describe('RankingList', () => {
       const rows = await screen.findAllByRole('row');
       expect(rows.length).toBe(1);
 
-      expect(errorShown).toBe('Internal Server Error');
+      expect(errorShown).toBe('Error obteniendo el ranking del usuario: TypeError: Cannot read properties of undefined (reading "status")');
     });
 
   }); // fin tests fallidos

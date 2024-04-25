@@ -23,10 +23,10 @@ const RankingList = ({setError}) => {
           const sortedUsers = [...uList].sort((a, b) => b.porcentajeAciertos - a.porcentajeAciertos);
           setTopThreeUsers(sortedUsers.slice(0, 3));
         } else {
-          setError('Error obteniendo la lista de usuarios');
+          setError('Error obteniendo el ranking del usuario');
         }
       } catch (error) {
-        setError('Error obteniendo la lista de usuarios: ', error);
+        setError('Error obteniendo el ranking del usuario: ', error);
       }
     };
 
