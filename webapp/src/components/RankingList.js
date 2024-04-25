@@ -4,7 +4,7 @@ import axios from 'axios';
 const RankingList = () => {
   const [listUsers, setListUsers] = useState([]);
   const [sortColumn, setSortColumn] = useState('porcentajeAciertos');
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortOrder, setSortOrder] = useState('desc');
   const [topThreeUsers, setTopThreeUsers] = useState([]);
 
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
