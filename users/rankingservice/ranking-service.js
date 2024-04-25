@@ -27,7 +27,7 @@ app.post('/updateRanking', async (req, res) => {
   try {
     // Buscar al usuariopor su nombre de usuario
     const username = req.body.username;
-    const existingUser = await UserRank.findOne({ username });
+    const existingUser = await UserRank.findOne({ username: { $eq: username } });
 
     if (!existingUser) {
         throw new Error(`Usuario '${username}' no encontrado.`);
@@ -62,7 +62,7 @@ app.post('/createUserRank', async (req, res) => {
     // Iterar sobre cada nombre de usuario recibido
     for (const username of usernames) {
       // Buscar si ya existe un ranking para el usuario
-      const existingUserRank = await UserRank.findOne({ username });
+      const existingUserRank = await UserRank.findOne({ username: { $eq: username } });
 
       if (existingUserRank) {
         // Si ya existe un ranking para el usuario, actualizar los valores a cero 
@@ -139,7 +139,7 @@ app.post('/updateAllRanking', async (req, res) => {
       const numPartidas = userData.numPartidas;
 
       // Buscar al usuario en la base de datos
-      const existingUser = await UserRank.findOne({ username });
+      const existingUser = await UserRank.findOne({ username: { $eq: username } });
 
       if (!existingUser) {
         // Si el usuario no tiene ranking, crear un nuevo ranking para él
