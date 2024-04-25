@@ -3,7 +3,7 @@ import { render, screen, waitFor, act } from '@testing-library/react';
 import RankingList from './RankingList';
 import axios from 'axios';
 
-
+jest.mock('axios');
 
 describe('RankingList', () => {
   describe('successful requests', () => {
