@@ -148,10 +148,10 @@ const Login = ({ setLogged }) => {
                 {showComponent === 'game' &&
                   <Game username={username} totalQuestions={settings.numberQuestions} timeLimit={totalTime} themes={settings.themes}/>
                 }
-                {showComponent === 'userList' && <UsersList />}
-                {showComponent === 'questionList' && <GeneratedQuestionsList />}
+                {showComponent === 'userList' && <UsersList errorHanndler={setError} />}
+                {showComponent === 'questionList' && <GeneratedQuestionsList errorHanndler={setError} />}
                 {showComponent === 'recordList' && <RecordList username={username} />}
-                {showComponent === 'rankingList' && <RankingList />}
+                {showComponent === 'rankingList' && <RankingList errorHanndler={setError} />}
                 {showComponent === 'settings' && <GameSettings setSettings={setSettings} currentUser={username} />}
                 {showComponent === 'login' && (
                   <div>

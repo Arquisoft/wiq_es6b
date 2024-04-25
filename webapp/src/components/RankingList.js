@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const RankingList = () => {
+const RankingList = ({setError}) => {
   const [listUsers, setListUsers] = useState([]);
   const [sortColumn, setSortColumn] = useState('porcentajeAciertos');
   const [sortOrder, setSortOrder] = useState('desc');
@@ -23,10 +23,10 @@ const RankingList = () => {
           const sortedUsers = [...uList].sort((a, b) => b.porcentajeAciertos - a.porcentajeAciertos);
           setTopThreeUsers(sortedUsers.slice(0, 3));
         } else {
-          console.error('Error obteniendo la lista de usuarios');
+          setError('Error obteniendo la lista de usuarios');
         }
       } catch (error) {
-        console.error('Error obteniendo la lista de usuarios:', error);
+        setError('Error obteniendo la lista de usuarios: ', error);
       }
     };
 

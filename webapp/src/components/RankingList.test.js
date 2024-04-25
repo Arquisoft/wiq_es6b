@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import RankingList from './RankingList';
 import axios from 'axios';
+import { before } from 'node:test';
 
 jest.mock('axios');
 
@@ -118,6 +119,40 @@ describe('RankingList', () => {
       expect(rows[3]).toHaveTextContent('pedro');
       expect(rows[4]).toHaveTextContent('troll');
 
+    });
+
+    test('show users ordered by "username" correctly', async () => {
+      await act(async () => {
+        render(<RankingList />);
+      });
+      const usernameHeader = screen.getByRole('columnheader', { name: /Nombre de Usuario/i });
+      
+      await act(async() => {
+        usernameHeader.click(); // DESC
+      });
+
+      // We wait for the users to be loaded and the table to be updated
+      let rows = await screen.findAllByRole('row');
+
+      // We check if the first row is the one with the username 'troll'
+      expect(rows[4]).toHaveTextContent('manuel');
+      expect(rows[3]).toHaveTextContent('maría');
+      expect(rows[2]).toHaveTextContent('pedro');
+      expect(rows[1]).toHaveTextContent('troll');
+
+      await act(async() => {
+        usernameHeader.click(); // ASC
+      });
+
+      // We wait for the users to be loaded and the table to be updated
+      rows = await screen.findAllByRole('row');
+
+      // We check if the first row is the one with the username 'manuel'
+      expect(rows[1]).toHaveTextContent('manuel');
+      expect(rows[2]).toHaveTextContent('maría');
+      expect(rows[3]).toHaveTextContent('pedro');
+      expect(rows[4]).toHaveTextContent('troll');
+      
     });
 
     test('show users ordered by "porcentajeAciertos" correctly', async () => {
@@ -254,5 +289,34 @@ describe('RankingList', () => {
     });
 
   }); // fin tests correctos
+
+  describe('failing requests', () => {
+    test('should display an error message when the request fails', async () => {
+      await act(async () => {
+        render(<RankingList />);
+      });
+
+      // simulate a failed request
+      mockAxios.onPost('http://localhost:8000/obtainRank').reply(500, { error: 'Internal Server Error' });
+
+      // Check if the table headers are in the document 
+      expect(screen.queryByText("Ranking")).toBeInTheDocument();
+      expect(screen.getByText(/Nombre de Usuario/i)).toBeInTheDocument();
+      expect(screen.queryAllByText(/Porcentaje de Aciertos/i)).not.toHaveLength(0);
+      expect(screen.getByText(/Preguntas Correctas/i)).toBeInTheDocument();
+      expect(screen.getByText(/Preguntas Falladas/i)).toBeInTheDocument();
+      expect(screen.getByText(/Número de Partidas/i)).toBeInTheDocument();
+
+      // and no users rows are shown
+      const rows = await screen.findAllByRole('row');
+      expect(rows.length).toBe(1);
+
+      // Wait for the error Snackbar to be open
+      await waitFor(() => {
+        expect(screen.getByText(/Error: Internal Server Error/i)).toBeInTheDocument();
+      });
+    });
+
+  }); // fin tests fallidos
 
 });

@@ -127,21 +127,13 @@ describe('UsersList', () => {
 
     
     describe('failing requests', () => {
-      beforeEach(() => {
-        axios.get.mockRejectedValue({
-          response: {
-            status: 500,
-            data: {
-              error: 'Internal Server Error'
-            },
-          },
-        });
-      });
-
-      it('users list is empty (only headers are shown) when petition fails', async () => {
+      test('users list is empty (only headers are shown) when petition fails', async () => {
         await act(async () => {
           render(<UsersList />);
         });
+
+        // simulate a failed request
+        mockAxios.onPost('http://localhost:8000/getAllUsers').reply(500, { error: 'Internal Server Error' });
 
         // Check if the table headers are in the document 
         const usernameHeader = screen.getByRole('columnheader', { name: /Nombre de Usuario/i });
@@ -153,6 +145,11 @@ describe('UsersList', () => {
         // and no users rows are shown
         const rows = await screen.findAllByRole('row');
         expect(rows.length).toBe(1);
+
+        // Wait for the error Snackbar to be open
+        await waitFor(() => {
+          expect(screen.getByText(/Error: Internal Server Error/i)).toBeInTheDocument();
+        });
       });
     });
     

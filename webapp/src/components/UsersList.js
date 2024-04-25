@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 //import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
 
-const UsersList = () => {
+const UsersList = ({ setError }) => {
  
   const [listUsers, setListUsers] = useState([]);
 
@@ -25,13 +25,12 @@ const UsersList = () => {
           setListUsers(uList);
 
         } else {
-          console.error('Error obteniendo la lista de usurios');
+          setError('Error obteniendo la lista de usurios');
         }
       } catch (error) {
-        console.error('Error obteniendo la lista de usurios:', error);
+        setError(`Error obteniendo la lista de usurios: ${error}`);
       }
     };
-
     fetchUsers();
   }, [apiEndpoint]);
 
