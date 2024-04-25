@@ -1,20 +1,30 @@
-# Use an official Node.js runtime as a parent image
+# Use an official Node.js runtime as a parent
 FROM node:20
+
+# Create a non-root user: nodeuser
+RUN useradd -m nodeuser
 
 # Set the working directory in the container
 WORKDIR /usr/src/createservice
 
 # Copy package.json and package-lock.json to the working directory
-COPY --chown=root:root --chmod=75 package*.json ./
+COPY --chown=nodeuser:nodeuser package*.json ./
 
 # Install app dependencies
 RUN npm install --ignore-scripts
 
 # Copy the app source code to the working directory
-COPY --chown=root:root --chmod=75 create-model.js ./
-COPY --chown=root:root --chmod=75 create-service.js ./
-COPY --chown=root:root --chmod=75 create-service.test.js ./
-COPY --chown=root:root --chmod=75 openapi.yaml ./
+COPY --chown=nodeuser:nodeuser .env ./
+COPY --chown=nodeuser:nodeuser create-model.js ./
+COPY --chown=nodeuser:nodeuser create-service.js ./
+COPY --chown=nodeuser:nodeuser create-service.test.js ./
+COPY --chown=nodeuser:nodeuser openapi.yaml ./
+
+# Remove write permissions from all files
+RUN chmod -R 555 .
+
+# Switch to the new user in the Dockerfile
+USER nodeuser
 
 # Expose the port the app runs on
 EXPOSE 8005
