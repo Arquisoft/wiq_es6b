@@ -8,6 +8,8 @@ const swaggerUi = require('swagger-ui-express');
 const fs = require("fs")
 const YAML = require('yaml')
 
+require('dotenv').config();
+
 const app = express();
 app.disable("x-powered-by");
 const port = 8004;
@@ -16,14 +18,15 @@ const port = 8004;
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/rankingdb?retryWrites=true&w=majority&appName=wiq06b';
+const mongoPassword = process.env.MONGO_PASSWORD;
+const mongoUri = process.env.MONGODB_URI || `mongodb+srv://aswuser:${mongoPassword}@wiq06b.hsfgpcm.mongodb.net/rankingdb?retryWrites=true&w=majority&appName=wiq06b`;
 mongoose.connect(mongoUri);
 
 //actualiza el ranking de un usuario tras terminar la jugada
 app.post('/updateRanking', async (req, res) => {
   try {
     // Buscar al usuariopor su nombre de usuario
-    const username = req.body.username;
+    const username = req.body.username.toString();
     const existingUser = await UserRank.findOne({ username });
 
     if (!existingUser) {
@@ -58,8 +61,11 @@ app.post('/createUserRank', async (req, res) => {
 
     // Iterar sobre cada nombre de usuario recibido
     for (const username of usernames) {
+      // Convertir el nombre de usuario en una cadena
+      const safeUsername = username.toString();
+
       // Buscar si ya existe un ranking para el usuario
-      const existingUserRank = await UserRank.findOne({ username });
+      const existingUserRank = await UserRank.findOne({ username: safeUsername });
 
       if (existingUserRank) {
         // Si ya existe un ranking para el usuario, actualizar los valores a cero 
@@ -130,7 +136,7 @@ app.post('/updateAllRanking', async (req, res) => {
 
     // Iterar sobre los datos recibidos y actualizar los rankings correspondientes
     for (const userData of rankingData) {
-      const username = userData.username;
+      const username = userData.username.toString();
       const preguntasCorrectas = userData.preguntasCorrectas;
       const preguntasFalladas = userData.preguntasFalladas;
       const numPartidas = userData.numPartidas;
