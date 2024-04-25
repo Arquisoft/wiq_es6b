@@ -104,6 +104,22 @@ describe('RankingList', () => {
       expect(rows).toHaveLength(5);
     });
 
+    test('show users ordered by "porcentajeAciertos" BY DEFAULT correctly', async () => {
+      await act(async () => {
+        render(<RankingList />);
+      });
+      
+      // We wait for the users to be loaded and the table to be updated
+      let rows = await screen.findAllByRole('row');
+
+      // We check if the first row is the one with the username 'manuel'
+      expect(rows[1]).toHaveTextContent('manuel');
+      expect(rows[2]).toHaveTextContent('maría');
+      expect(rows[3]).toHaveTextContent('pedro');
+      expect(rows[4]).toHaveTextContent('troll');
+
+    });
+
     test('show users ordered by "porcentajeAciertos" correctly', async () => {
       await act(async () => {
         render(<RankingList />);
