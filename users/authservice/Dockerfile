@@ -20,9 +20,6 @@ COPY --chown=root:root --chmod=755 auth-service.js ./
 COPY --chown=root:root --chmod=755 auth-service.test.js ./
 COPY --chown=root:root --chmod=755 openapi.yaml ./
 
-# Remove write permissions from all files
-RUN chmod -R 444 .
-
 # Switch to the new user in the Dockerfile
 USER nodeuser
 
