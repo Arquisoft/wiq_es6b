@@ -43,13 +43,17 @@ describe('RankingList', () => {
       });
     });
 
-    it('renders without crashing', () => {
-      render(<RankingList />);
+    it('renders without crashing', async () => {
+      await act(async () => {
+        render(<RankingList />);
+      });
     });
 
 
-    test('renders RankingList component and main heading', () => {
-      render(<RankingList />);
+    test('renders RankingList component and main heading', async () => {
+      await act(async () => {
+        render(<RankingList />);
+      });
 
       // Check if the main heading is in the document
       const heading = screen.getByRole('heading', { name: /Top 3 usuarios con mejor porcentaje de aciertos/i });
@@ -57,8 +61,10 @@ describe('RankingList', () => {
     });
 
     // Test for rendering the column headers
-    test('renders column headers', () => {
-      render(<RankingList />);
+    test('renders column headers', async () => {
+      await act(async () => {
+        render(<RankingList />);
+      });
     
       // Check if the column headers are in the document
       const columnHeaders = screen.getAllByRole('columnheader');
@@ -66,16 +72,20 @@ describe('RankingList', () => {
     });
     
     // Test for rendering the table
-    it('should display the table', () => {
-      render(<RankingList />);
+    it('should display the table', async () => {
+      await act(async () => {
+        render(<RankingList />);
+      });
 
       const table = screen.getByRole('table');
       expect(table).toBeInTheDocument();
     });
 
 
-    test('tests tabla ranking', () => {
-      render(<RankingList />);
+    test('tests tabla ranking', async () => {
+      await act(async () => {
+        render(<RankingList />);
+      });
 
       expect(screen.queryByText("Ranking")).toBeInTheDocument();
       expect(screen.getByText(/Nombre de Usuario/i)).toBeInTheDocument();
