@@ -27,7 +27,8 @@ mongoose.connect(mongoUri);
 app.post('/addOrUpdateQuestionGenerator', async (req, res) => {
   try {
     // Buscar si ya existe una pregunta con el mismo questionBody
-    const existingQuestion = await QuestionGenerator.findOne({ questionBody: { $eq: req.body.questionBody } });
+    const questionBody = req.body.questionBody.toString();
+    const existingQuestion = await QuestionGenerator.findOne({ questionBody });
 
     if (existingQuestion) {
       // Si la pregunta ya existe, realizar una actualización

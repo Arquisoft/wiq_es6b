@@ -26,8 +26,8 @@ mongoose.connect(mongoUri);
 app.post('/updateRanking', async (req, res) => {
   try {
     // Buscar al usuariopor su nombre de usuario
-    const username = req.body.username;
-    const existingUser = await UserRank.findOne({ username: { $eq: username } });
+    const username = req.body.username.toString();
+    const existingUser = await UserRank.findOne({ username });
 
     if (!existingUser) {
         throw new Error(`Usuario '${username}' no encontrado.`);
@@ -61,8 +61,11 @@ app.post('/createUserRank', async (req, res) => {
 
     // Iterar sobre cada nombre de usuario recibido
     for (const username of usernames) {
+      // Convertir el nombre de usuario en una cadena
+      const safeUsername = username.toString();
+
       // Buscar si ya existe un ranking para el usuario
-      const existingUserRank = await UserRank.findOne({ username: { $eq: username } });
+      const existingUserRank = await UserRank.findOne({ username: safeUsername });
 
       if (existingUserRank) {
         // Si ya existe un ranking para el usuario, actualizar los valores a cero 
@@ -133,13 +136,13 @@ app.post('/updateAllRanking', async (req, res) => {
 
     // Iterar sobre los datos recibidos y actualizar los rankings correspondientes
     for (const userData of rankingData) {
-      const username = userData.username;
+      const username = userData.username.toString();
       const preguntasCorrectas = userData.preguntasCorrectas;
       const preguntasFalladas = userData.preguntasFalladas;
       const numPartidas = userData.numPartidas;
 
       // Buscar al usuario en la base de datos
-      const existingUser = await UserRank.findOne({ username: { $eq: username } });
+      const existingUser = await UserRank.findOne({ username });
 
       if (!existingUser) {
         // Si el usuario no tiene ranking, crear un nuevo ranking para él

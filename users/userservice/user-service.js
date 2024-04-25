@@ -38,7 +38,8 @@ app.post('/adduser', async (req, res) => {
         validateRequiredFields(req, ['username', 'password']);
 
         // Siguiente comprobación: NO puede haber otro usuario en la BD con el mismo valor de username
-        const existingUser = await User.findOne({ username : { $eq: req.body.username } });
+        const username = req.body.username.toString();
+        const existingUser = await User.findOne({ username });
         if(existingUser!=null){
             throw new Error(`The username "${req.body.username}" is already in use.`);
         }
@@ -46,7 +47,7 @@ app.post('/adduser', async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
         const newUser = new User({
-            username: req.body.username,
+            username,
             password: hashedPassword,
         });
 
