@@ -127,20 +127,7 @@ describe('RankingList', () => {
       const porcentajeAciertosHeader = screen.getByRole('columnheader', { name: /Porcentaje de Aciertos/i });
       
       await act(async() => {
-        porcentajeAciertosHeader.click();
-      });
-
-      // We wait for the users to be loaded and the table to be updated
-      let rows = await screen.findAllByRole('row');
-
-      // We check if the first row is the one with the username 'manuel'
-      expect(rows[1]).toHaveTextContent('manuel');
-      expect(rows[2]).toHaveTextContent('maría');
-      expect(rows[3]).toHaveTextContent('pedro');
-      expect(rows[4]).toHaveTextContent('troll');
-
-      await act(async() => {
-        porcentajeAciertosHeader.click();
+        porcentajeAciertosHeader.click(); // ASC
       });
 
       // We wait for the users to be loaded and the table to be updated
@@ -151,6 +138,20 @@ describe('RankingList', () => {
       expect(rows[3]).toHaveTextContent('maría');
       expect(rows[2]).toHaveTextContent('pedro');
       expect(rows[1]).toHaveTextContent('troll');
+
+      await act(async() => {
+        porcentajeAciertosHeader.click(); // DESC
+      });
+
+      // We wait for the users to be loaded and the table to be updated
+      let rows = await screen.findAllByRole('row');
+
+      // We check if the first row is the one with the username 'manuel'
+      expect(rows[1]).toHaveTextContent('manuel');
+      expect(rows[2]).toHaveTextContent('maría');
+      expect(rows[3]).toHaveTextContent('pedro');
+      expect(rows[4]).toHaveTextContent('troll');
+      
     });
 
     test('show users ordered by "preguntasCorrectas" correctly', async () => {
@@ -160,7 +161,7 @@ describe('RankingList', () => {
       const preguntasCorrectasHeader = screen.getByRole('columnheader', { name: /Preguntas Correctas/i });
       
       await act(async() => {
-        preguntasCorrectasHeader.click();
+        preguntasCorrectasHeader.click(); // DESC
       });
 
       // We wait for the users to be loaded and the table to be updated
@@ -173,7 +174,7 @@ describe('RankingList', () => {
       expect(rows[4]).toHaveTextContent('troll');
 
       await act(async() => {
-        preguntasCorrectasHeader.click();
+        preguntasCorrectasHeader.click(); // ASC
       });
 
       // We wait for the users to be loaded and the table to be updated
@@ -193,7 +194,7 @@ describe('RankingList', () => {
       const preguntasFalladasHeader = screen.getByRole('columnheader', { name: /Preguntas Falladas/i });
       
       await act(async() => {
-        preguntasFalladasHeader.click();
+        preguntasFalladasHeader.click(); // DESC
       });
 
       // We wait for the users to be loaded and the table to be updated
@@ -206,7 +207,7 @@ describe('RankingList', () => {
       expect(rows[1]).toHaveTextContent('troll');
 
       await act(async() => {
-        preguntasFalladasHeader.click();
+        preguntasFalladasHeader.click(); // ASC
       });
 
       // We wait for the users to be loaded and the table to be updated
@@ -226,7 +227,7 @@ describe('RankingList', () => {
       const numPartidasHeader = screen.getByRole('columnheader', { name: /Número de Partidas/i });
       
       await act(async() => {
-        numPartidasHeader.click();
+        numPartidasHeader.click(); // DESC
       });
 
       // We wait for the users to be loaded and the table to be updated
@@ -239,7 +240,7 @@ describe('RankingList', () => {
       expect(rows[2]).toHaveTextContent('troll');
 
       await act(async() => {
-        numPartidasHeader.click();
+        numPartidasHeader.click(); // ASC
       });
 
       // We wait for the users to be loaded and the table to be updated
