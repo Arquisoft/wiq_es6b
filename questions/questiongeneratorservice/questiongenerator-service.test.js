@@ -191,8 +191,6 @@ describe('Question Generator Service', () => {
     it('Should count 5 generated questions in the database /countQuestionGenerator', async () => {
         const response = await request(app).get('/countQuestionGenerator');
 
-        const res = await request(app).get(`/getAllQuestionGenerator`);
-
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('count', 5);
     });
