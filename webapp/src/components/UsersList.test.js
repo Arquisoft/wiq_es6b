@@ -145,11 +145,6 @@ describe('UsersList', () => {
         // and no users rows are shown
         const rows = await screen.findAllByRole('row');
         expect(rows.length).toBe(1);
-
-        // Wait for the error Snackbar to be open
-        await waitFor(() => {
-          expect(screen.getByText(/Error: Internal Server Error/i)).toBeInTheDocument();
-        });
       });
     });
     

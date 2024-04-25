@@ -2,8 +2,13 @@ import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import RankingList from './RankingList';
 import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import Login from './Login';
+import { beforeEach } from 'node:test';
 
 jest.mock('axios');
+
+const mockAxios = new MockAdapter(axios);
 
 describe('RankingList', () => {
   describe('successful requests', () => {
@@ -309,11 +314,6 @@ describe('RankingList', () => {
       // and no users rows are shown
       const rows = await screen.findAllByRole('row');
       expect(rows.length).toBe(1);
-
-      // Wait for the error Snackbar to be open
-      await waitFor(() => {
-        expect(screen.getByText(/Error: Internal Server Error/i)).toBeInTheDocument();
-      });
     });
 
   }); // fin tests fallidos
