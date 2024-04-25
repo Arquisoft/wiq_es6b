@@ -76,6 +76,7 @@ describe('RankingList', () => {
 
     test('tests tabla ranking', () => {
       render(<RankingList />);
+
       expect(screen.queryByText("Ranking")).toBeInTheDocument();
       expect(screen.getByText(/Nombre de Usuario/i)).toBeInTheDocument();
       expect(screen.queryAllByText(/Porcentaje de Aciertos/i)).not.toHaveLength(0);
@@ -85,14 +86,18 @@ describe('RankingList', () => {
     });
 
     test('show ranking table with content', async () => {
-      render(<RankingList />);
+      await act(async () => {
+        render(<RankingList />);
+      });
       const table = screen.getByRole('table');
       const rows = await screen.findAllByRole('row');
       expect(rows).toHaveLength(5);
     });
 
     test('show users ordered by "porcentajeAciertos" correctly', async () => {
-      render(<RankingList />);
+      await act(async () => {
+        render(<RankingList />);
+      });
       const porcentajeAciertosHeader = screen.getByRole('columnheader', { name: /Porcentaje de Aciertos/i });
       
       await act(async() => {
@@ -123,7 +128,9 @@ describe('RankingList', () => {
     });
 
     test('show users ordered by "preguntasCorrectas" correctly', async () => {
-      render(<RankingList />);
+      await act(async () => {
+        render(<RankingList />);
+      });
       const preguntasCorrectasHeader = screen.getByRole('columnheader', { name: /Preguntas Correctas/i });
       
       await act(async() => {
@@ -154,7 +161,9 @@ describe('RankingList', () => {
     });
 
     test('show users ordered by "preguntasFalladas" correctly', async () => {
-      render(<RankingList />);
+      await act(async () => {
+        render(<RankingList />);
+      });
       const preguntasFalladasHeader = screen.getByRole('columnheader', { name: /Preguntas Falladas/i });
       
       await act(async() => {
@@ -185,7 +194,9 @@ describe('RankingList', () => {
     });
 
     test('show users ordered by "numeroPartidas" correctly', async () => {
-      render(<RankingList />);
+      await act(async () => {
+        render(<RankingList />);
+      });
       const numPartidasHeader = screen.getByRole('columnheader', { name: /Número de Partidas/i });
       
       await act(async() => {
