@@ -1,7 +1,7 @@
 // user-service.js
 const express = require('express');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const User = require('./user-model')
 //libraries required for OpenAPI-Swagger
