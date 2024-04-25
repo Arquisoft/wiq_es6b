@@ -59,7 +59,12 @@ describe('Create Service', () => {
 
     it('Should perform an addRecord operation /addQuestion', async () => {
         // Mock the database call
-        Question.create.mockResolvedValue(questionTest);
+        Question.create.mockResolvedValue({
+            _id: 'someId',
+            question: questionTest.question,
+            type: questionTest.type,
+            __v: 0
+        });
 
         const response = await request(app).post('/addQuestion').send(questionTest);
         expect(response.status).toBe(200);
@@ -69,7 +74,12 @@ describe('Create Service', () => {
 
     it('Should perform two addRecord operation /addQuestion', async () => {
         // Mock the database call
-        Question.create.mockResolvedValue(questionTest2);
+        Question.create.mockResolvedValue({
+            _id: 'someId',
+            question: questionTest2.question,
+            type: questionTest2.type,
+            __v: 0
+        });
 
         const response2 = await request(app).post('/addQuestion').send(questionTest2);
         expect(response2.status).toBe(200);
@@ -79,7 +89,12 @@ describe('Create Service', () => {
 
     it('Should perform a getFullQuestion operation /getFullQuestion', async () => {
         // Mock the database call
-        Question.aggregate.mockResolvedValue([questionTest]);
+        Question.aggregate.mockResolvedValue([{
+            _id: 'someId',
+            question: questionTest.question,
+            type: questionTest.type,
+            __v: 0
+        }]);
 
         const response = await request(app).get('/getFullQuestion');
         expect(response.status).toBe(200);
