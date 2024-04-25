@@ -147,7 +147,7 @@ describe('UsersList', () => {
         const rows = await screen.findAllByRole('row');
         expect(rows.length).toBe(1);
 
-        expect(errorShown).toBe('Error obteniendo la lista de usurios: TypeError: Cannot read properties of undefined (reading "status")');
+        expect(errorShown).toBe("Error obteniendo la lista de usurios: TypeError: Cannot read properties of undefined (reading 'status')");
       });
     });
     
