@@ -1,20 +1,27 @@
 # Use an official Node.js runtime as a parent image
 FROM node:20
 
+# Create a non-root user: nodeuser
+RUN useradd -m nodeuser
+
 # Set the working directory in the container
 WORKDIR /usr/src/rankingservice
 
 # Copy package.json and package-lock.json to the working directory
-COPY --chown=root:root --chmod=75 package*.json ./
+COPY --chown=root:root --chmod=755 package*.json ./
 
 # Install app dependencies
 RUN npm install --ignore-scripts
 
 # Copy the app source code to the working directory
-COPY --chown=root:root --chmod=75 ranking-model.js ./
-COPY --chown=root:root --chmod=75 ranking-service.js ./
-COPY --chown=root:root --chmod=75 ranking-service.test.js ./
-COPY --chown=root:root --chmod=75 openapi.yaml ./
+COPY --chown=root:root --chmod=755 .env ./
+COPY --chown=root:root --chmod=755 ranking-model.js ./
+COPY --chown=root:root --chmod=755 ranking-service.js ./
+COPY --chown=root:root --chmod=755 ranking-service.test.js ./
+COPY --chown=root:root --chmod=755 openapi.yaml ./
+
+# Switch to the new user in the Dockerfile
+USER nodeuser
 
 # Expose the port the app runs on
 EXPOSE 8004
