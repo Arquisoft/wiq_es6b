@@ -8,6 +8,7 @@ const fs = require("fs")
 const YAML = require('yaml')
 
 const app = express();
+app.disable("x-powered-by");
 const port = 8000;
 
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
@@ -16,10 +17,15 @@ const questionServiceUrl = process.env.QUES_SERVICE_URL || 'http://localhost:800
 const recordServiceUrl = process.env.REC_SERVICE_URL || 'http://localhost:8006';
 const genQuestServiceUrl = process.env.GEN_SERVICE_URL || 'http://localhost:8003';
 const rankingServiceUrl = process.env.RANK_SERVICE_URL || 'http://localhost:8004';
-const questiongeneratorservice = process.env.QTEST_SERVICE_URL || 'http://questiongeneratorservice:8007';
+const questiongeneratorserviceUrl = process.env.QTEST_SERVICE_URL || 'http://localhost:8007';
 
+const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+const serverUrl = process.env.CLIENT_URL || 'http://localhost:8000';
+let corsOptions = {
+  origin: [  clientUrl, serverUrl ]
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 //Prometheus configuration
@@ -237,7 +243,7 @@ app.post('/updateAllRanking', async (req, res) => {
 // Ruta para agregar una pregunta de prueba
 app.post('/addOrUpdateQuestionGenerator', async (req, res) => {
   try {
-    const questionGeneratorResponse = await axios.post(`${questiongeneratorservice}/addOrUpdateQuestionGenerator`, req.body);
+    const questionGeneratorResponse = await axios.post(`${questiongeneratorserviceUrl}/addOrUpdateQuestionGenerator`, req.body);
     res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
@@ -251,7 +257,7 @@ app.post('/addOrUpdateQuestionGenerator', async (req, res) => {
 //TEMATICAS
 app.get('/getRandomQuestionSports', async (req, res) => {
   try {
-    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionDeporte`);
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorserviceUrl}/getRandomQuestionDeporte`);
     res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
@@ -264,7 +270,7 @@ app.get('/getRandomQuestionSports', async (req, res) => {
 
 app.get('/getRandomQuestionImportantDates', async (req, res) => {
   try {
-    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionAnio`);
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorserviceUrl}/getRandomQuestionAnio`);
     res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
@@ -277,7 +283,7 @@ app.get('/getRandomQuestionImportantDates', async (req, res) => {
 
 app.get('/getRandomQuestionMusic', async (req, res) => {
   try {
-    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionMusica`);
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorserviceUrl}/getRandomQuestionMusica`);
     res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
@@ -290,7 +296,7 @@ app.get('/getRandomQuestionMusic', async (req, res) => {
 
 app.get('/getRandomQuestionLiterature', async (req, res) => {
   try {
-    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionLibro`);
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorserviceUrl}/getRandomQuestionLibro`);
     res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
@@ -303,7 +309,7 @@ app.get('/getRandomQuestionLiterature', async (req, res) => {
 
 app.get('/getRandomQuestionCountries', async (req, res) => {
   try {
-    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getRandomQuestionPaisYGeo`);
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorserviceUrl}/getRandomQuestionPaisYGeo`);
     res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
@@ -318,7 +324,7 @@ app.get('/getRandomQuestionCountries', async (req, res) => {
 // Ruta para obtener todas las preguntas de prueba
 app.get('/getAllQuestionGenerator', async (req, res) => {
   try {
-    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/getAllQuestionGenerator`);
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorserviceUrl}/getAllQuestionGenerator`);
     res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
@@ -332,7 +338,7 @@ app.get('/getAllQuestionGenerator', async (req, res) => {
 // Ruta para obtener todas las preguntas de prueba
 app.get('/countQuestionGenerator', async (req, res) => {
   try {
-    const questionGeneratorResponse = await axios.get(`${questiongeneratorservice}/countQuestionGenerator`);
+    const questionGeneratorResponse = await axios.get(`${questiongeneratorserviceUrl}/countQuestionGenerator`);
     res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
@@ -346,7 +352,7 @@ app.get('/countQuestionGenerator', async (req, res) => {
 // Ruta para eliminar la primera pregunta de prueba
 app.delete('/deleteFirstQuestionGenerator', async (req, res) => {
   try {
-    const questionGeneratorResponse = await axios.delete(`${questiongeneratorservice}/deleteFirstQuestionGenerator`);
+    const questionGeneratorResponse = await axios.delete(`${questiongeneratorserviceUrl}/deleteFirstQuestionGenerator`);
     res.json(questionGeneratorResponse.data);
   } catch (error) {
     if (error.response) {
