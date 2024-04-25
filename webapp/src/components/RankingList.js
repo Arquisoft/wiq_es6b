@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const RankingList = () => {
   const [listUsers, setListUsers] = useState([]);
-  const [sortColumn, setSortColumn] = useState(null);
+  const [sortColumn, setSortColumn] = useState('porcentajeAciertos');
   const [sortOrder, setSortOrder] = useState('asc');
   const [topThreeUsers, setTopThreeUsers] = useState([]);
 
