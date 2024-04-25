@@ -55,7 +55,7 @@ const RankingList = () => {
       setSortOrder((order) => (order === 'asc' ? 'desc' : 'asc'));
     } else {
       setSortColumn(column);
-      setSortOrder('asc');
+      setSortOrder('desc');
     }
   };  
 
