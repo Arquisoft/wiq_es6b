@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import RankingList from './RankingList';
 import axios from 'axios';
-import { before } from 'node:test';
 
 jest.mock('axios');
 
