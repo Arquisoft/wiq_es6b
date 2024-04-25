@@ -128,8 +128,9 @@ describe('UsersList', () => {
     
     describe('failing requests', () => {
       test('users list is empty (only headers are shown) when petition fails', async () => {
+        let errorShown = "";
         await act(async () => {
-          render(<UsersList />);
+          render(<UsersList setError={(errorMsg) => {errorShown=errorMsg}} />);
         });
 
         // simulate a failed request
@@ -145,6 +146,8 @@ describe('UsersList', () => {
         // and no users rows are shown
         const rows = await screen.findAllByRole('row');
         expect(rows.length).toBe(1);
+
+        expect(errorShown).toBe('Internal Server Error');
       });
     });
     

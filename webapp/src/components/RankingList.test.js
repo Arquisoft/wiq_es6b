@@ -5,6 +5,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import Login from './Login';
 import { beforeEach } from 'node:test';
+import exp from 'constants';
 
 jest.mock('axios');
 
@@ -296,9 +297,10 @@ describe('RankingList', () => {
 
   describe('failing requests', () => {
     test('should display an error message when the request fails', async () => {
-      await act(async () => {
-        render(<RankingList />);
-      });
+      let errorShown = "";
+        await act(async () => {
+          render(<RankingList setError={(errorMsg) => {errorShown=errorMsg}} />);
+        });
 
       // simulate a failed request
       mockAxios.onPost('http://localhost:8000/obtainRank').reply(500, { error: 'Internal Server Error' });
@@ -314,6 +316,8 @@ describe('RankingList', () => {
       // and no users rows are shown
       const rows = await screen.findAllByRole('row');
       expect(rows.length).toBe(1);
+
+      expect(errorShown).toBe('Internal Server Error');
     });
 
   }); // fin tests fallidos
