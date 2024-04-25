@@ -99,7 +99,7 @@ describe('RankingList', () => {
       await act(async () => {
         render(<RankingList />);
       });
-      const table = screen.getByRole('table');
+  
       const rows = await screen.findAllByRole('row');
       expect(rows).toHaveLength(5);
     });
