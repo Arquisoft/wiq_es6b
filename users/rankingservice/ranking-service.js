@@ -51,8 +51,7 @@ app.post('/updateRanking', async (req, res) => {
   
   });
 
-//crea un elemento ranking si no existe y si existe lo deja a 0 para actualizar a posterior sus datos
-//tambien actualiza si se elimino un usuario de eliminar el elemento ranking correspondiente
+//crea un elemento ranking si no existe 
 app.post('/createUserRank', async (req, res) => {
   try {
     const { usernames } = req.body;
@@ -67,16 +66,7 @@ app.post('/createUserRank', async (req, res) => {
       // Buscar si ya existe un ranking para el usuario
       const existingUserRank = await UserRank.findOne({ username: safeUsername });
 
-      if (existingUserRank) {
-        // Si ya existe un ranking para el usuario, actualizar los valores a cero 
-        // para actualizarlos después con los valores de las jugadas
-        existingUserRank.porcentajeAciertos = 0;
-        existingUserRank.preguntasCorrectas = 0;
-        existingUserRank.preguntasFalladas = 0;
-        existingUserRank.numPartidas = 0;
-
-        await existingUserRank.save();
-      } else {
+      if (!existingUserRank) {
         // Si no existe un ranking para el usuario, crear uno nuevo
         const newUserRank = new UserRank({
           username,
