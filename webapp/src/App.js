@@ -21,9 +21,9 @@ function App() {
 
   return (
     <Container component="main" maxWidth="lg" style={{ marginTop: '2rem' }}>
-      <Grid container justifyContent="center" alignItems="center">
-        <Grid item xs={12} sm={8} md={6} lg={4}>
-          <Paper elevation={3} style={{ padding: '2rem', textAlign: 'center', overflow: 'auto' }}>
+      <Grid container justifyContent="center" spacing={3}>
+        <Grid item xs={12} sm={8} md={6}>
+          <Paper elevation={3} style={{ padding: '2rem', textAlign: 'center', minHeight: '400px' }}>
             {showLogin ? <Login setLogged={handleIsLogged}/> : <AddUser />}
             {!isLogged && (
               <Typography component="div" align="center" sx={{ marginTop: 4 }}>
@@ -46,4 +46,3 @@ function App() {
 }
 
 export default App;
-
