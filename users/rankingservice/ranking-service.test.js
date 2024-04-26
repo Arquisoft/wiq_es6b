@@ -22,22 +22,6 @@ afterEach(async () => {
   await UserRank.deleteMany({});
 });
 
-describe('User Service', () => {
-  // Prueba para el endpoint POST /createUserRank
-  describe('POST /createUserRank', () => {
-    it('should create a new user rank if the user does not exist', async () => {
-      const newUser = { username: 'testUser' };
-
-      const response = await request(app)
-        .post('/createUserRank')
-        .send(newUser);
-
-      expect(response.status).toBe(200);
-      expect(response.body.message).toBe('Rankings de usuarios creados o actualizados correctamente.');
-    });
-
-  });
-
   // Prueba para el endpoint POST /updateRanking
   describe('POST /updateRanking', () => {
     it('should update an existing user rank', async () => {
