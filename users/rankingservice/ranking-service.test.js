@@ -22,6 +22,8 @@ afterEach(async () => {
   await UserRank.deleteMany({});
 });
 
+describe('User Service', () => {
+
   // Prueba para el endpoint POST /updateRanking
   describe('POST /updateRanking', () => {
     it('should update an existing user rank', async () => {
