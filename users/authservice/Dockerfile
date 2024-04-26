@@ -1,20 +1,27 @@
-# Use an official Node.js runtime as a parent image
+# Use an official Node.js runtime as a parent
 FROM node:20
+
+# Create a non-root user: nodeuser
+RUN useradd -m nodeuser
 
 # Set the working directory in the container
 WORKDIR /usr/src/authservice
 
 # Copy package.json and package-lock.json to the working directory
-COPY --chown=root:root --chmod=75 package*.json ./
+COPY --chown=root:root --chmod=755 package*.json ./
 
 # Install app dependencies
-RUN npm install
+RUN npm install --ignore-scripts
 
 # Copy the app source code to the working directory
-COPY --chown=root:root --chmod=75 auth-model.js ./
-COPY --chown=root:root --chmod=75 auth-service.js ./
-COPY --chown=root:root --chmod=75 auth-service.test.js ./
-COPY --chown=root:root --chmod=75 openapi.yaml ./
+COPY --chown=root:root --chmod=755 .env ./
+COPY --chown=root:root --chmod=755 auth-model.js ./
+COPY --chown=root:root --chmod=755 auth-service.js ./
+COPY --chown=root:root --chmod=755 auth-service.test.js ./
+COPY --chown=root:root --chmod=755 openapi.yaml ./
+
+# Switch to the new user in the Dockerfile
+USER nodeuser
 
 # Expose the port the app runs on
 EXPOSE 8002

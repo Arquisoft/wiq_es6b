@@ -1,13 +1,15 @@
 // user-service.js
 const express = require('express');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const User = require('./user-model')
 //libraries required for OpenAPI-Swagger
 const swaggerUi = require('swagger-ui-express'); 
 const fs = require("fs")
 const YAML = require('yaml')
+
+require('dotenv').config();
 
 const app = express();
 app.disable("x-powered-by");
@@ -17,10 +19,9 @@ const port = 8001;
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/userdb?retryWrites=true&w=majority&appName=wiq06b';
+const mongoPassword = process.env.MONGO_PASSWORD;
+const mongoUri = process.env.MONGODB_URI || `mongodb+srv://aswuser:${mongoPassword}@wiq06b.hsfgpcm.mongodb.net/userdb?retryWrites=true&w=majority&appName=wiq06b`;
 mongoose.connect(mongoUri);
-
-
 
 // Function to validate required fields in the request body
 function validateRequiredFields(req, requiredFields) {
@@ -37,7 +38,8 @@ app.post('/adduser', async (req, res) => {
         validateRequiredFields(req, ['username', 'password']);
 
         // Siguiente comprobación: NO puede haber otro usuario en la BD con el mismo valor de username
-        const existingUser = await User.findOne({ username : req.body.username });
+        const username = req.body.username.toString();
+        const existingUser = await User.findOne({ username });
         if(existingUser!=null){
             throw new Error(`The username "${req.body.username}" is already in use.`);
         }
@@ -45,7 +47,7 @@ app.post('/adduser', async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
         const newUser = new User({
-            username: req.body.username,
+            username,
             password: hashedPassword,
         });
 

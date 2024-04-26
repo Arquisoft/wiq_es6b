@@ -1,6 +1,9 @@
 # Use an official Node.js runtime as a parent image
 FROM node:20
 
+# Create a non-root user: nodeuser
+RUN useradd -m nodeuser
+
 # Set the working directory in the container
 WORKDIR /usr/src/gatewayservice
 
@@ -14,6 +17,9 @@ RUN npm install --ignore-scripts
 COPY --chown=root:root --chmod=75 gateway-service.js ./
 COPY --chown=root:root --chmod=75 gateway-service.test.js ./
 COPY --chown=root:root --chmod=75 openapi.yaml ./
+
+# Switch to the new user in the Dockerfile
+USER nodeuser
 
 # Define the command to run your app
 CMD ["node", "gateway-service.js"]
