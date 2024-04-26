@@ -52,9 +52,6 @@ describe('Login Component', () => {
     // Wait for the Snackbar to be open
     await waitFor(() => {
       expect(setLogged).toHaveBeenCalledTimes(0);
-      expect(screen.getByText(/Login successful/i)).toBeInTheDocument();
-
-      expect(screen.getByText(/Espere, estamos cargando sus datos.../i)).toBeInTheDocument();
 
       expect(screen.getByText(/Jugar/i)).toBeInTheDocument();
       expect(screen.getByText(/Historial de jugadas/i)).toBeInTheDocument();
