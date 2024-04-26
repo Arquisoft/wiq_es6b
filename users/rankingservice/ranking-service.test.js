@@ -25,27 +25,21 @@ afterEach(async () => {
 describe('User Service', () => {
   // Prueba para el endpoint POST /createUserRank
   describe('POST /createUserRank', () => {
-    it('should create new user ranks', async () => {
-      const newUser = { username: 'testuser1' };
-      const newUser2 = { username: 'testuser2' };
-      const newUser3 = { username: 'testuser3' };
-      const newUser4 = { username: 'testuser4' };
-      const users = [newUser, newUser2, newUser3, newUser4];
+    it('should create new user rank if user does not exist', async () => {
+      const username = 'testuser1';
   
-      // Realizar una solicitud POST para crear nuevos rankings de usuarios
+      // Realizar una solicitud POST para crear un nuevo ranking de usuario
       const response = await request(app)
-        .post('/createUserRank') // Cambio en el endpoint
-        .send({ usernames: users.map(user => user.username) });
+        .post('/createUserRank')
+        .send({ username }); // Enviamos solo el nombre de usuario
   
       // Verificar el código de estado de la respuesta
       expect(response.status).toBe(200);
   
-      // Verificar si se crearon correctamente los nuevos rankings de usuario en la base de datos
-      for (const user of users) {
-        const createdUserRank = await UserRank.findOne({ username: user.username });
-        expect(createdUserRank).toBeTruthy();
-        expect(createdUserRank.username).toBe(user.username);
-      }
+      // Verificar si se creó correctamente el nuevo ranking de usuario en la base de datos
+      const createdUserRank = await UserRank.findOne({ username });
+      expect(createdUserRank).toBeTruthy();
+      expect(createdUserRank.username).toBe(username);
     });
   });
 
@@ -110,16 +104,27 @@ describe('User Service', () => {
   describe('User Service (Negative Tests)', () => {
     // Prueba negativa para el endpoint POST /createUserRank
     describe('POST /createUserRank (Negative Test)', () => {
-      it('should return 400 if username is missing', async () => {
-        // Realizar una solicitud POST sin proporcionar el nombre de usuario
+      it('should not create new user rank if user already exists', async () => {
+        const existingUser = new UserRank({
+          username: 'existinguser',
+          porcentajeAciertos: 50,
+          preguntasCorrectas: 20,
+          preguntasFalladas: 10,
+          numPartidas: 5
+        });
+        await existingUser.save();
+    
+        // Realizar una solicitud POST para crear un nuevo ranking de usuario con el mismo nombre de usuario
         const response = await request(app)
           .post('/createUserRank')
-          .send({});
-  
+          .send({ username: existingUser.username }); // Enviamos solo el nombre de usuario existente
+    
         // Verificar el código de estado de la respuesta
-        expect(response.status).toBe(400);
-        // Verificar si el cuerpo de la respuesta contiene un mensaje de error
-        expect(response.body.error).toBeTruthy();
+        expect(response.status).toBe(200);
+    
+        // Verificar que no se haya creado un nuevo ranking para el usuario existente
+        const userRankCount = await UserRank.countDocuments({ username: existingUser.username });
+        expect(userRankCount).toBe(1); // Debería seguir siendo solo 1 (el existente)
       });
     });
   
