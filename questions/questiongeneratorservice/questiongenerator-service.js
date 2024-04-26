@@ -8,6 +8,8 @@ const swaggerUi = require('swagger-ui-express');
 const fs = require("fs")
 const YAML = require('yaml')
 
+require('dotenv').config();
+
 const app = express();
 app.disable("x-powered-by");
 const port = 8007;
@@ -16,7 +18,8 @@ const port = 8007;
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiongeneratordb?retryWrites=true&w=majority&appName=wiq06b';
+const mongoPassword = process.env.MONGO_PASSWORD;
+const mongoUri = process.env.MONGODB_URI || `mongodb+srv://aswuser:${mongoPassword}@wiq06b.hsfgpcm.mongodb.net/questiongeneratordb?retryWrites=true&w=majority&appName=wiq06b`;
 mongoose.connect(mongoUri);
 
 
@@ -24,7 +27,8 @@ mongoose.connect(mongoUri);
 app.post('/addOrUpdateQuestionGenerator', async (req, res) => {
   try {
     // Buscar si ya existe una pregunta con el mismo questionBody
-    const existingQuestion = await QuestionGenerator.findOne({ questionBody: req.body.questionBody });
+    const questionBody = req.body.questionBody.toString();
+    const existingQuestion = await QuestionGenerator.findOne({ questionBody });
 
     if (existingQuestion) {
       // Si la pregunta ya existe, realizar una actualización
