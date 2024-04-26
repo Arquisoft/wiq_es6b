@@ -59,8 +59,6 @@ const Login = ({ setLogged }) => {
     // Envía todos los nombres de usuario en una sola solicitud
     await axios.post(`${apiEndpoint}/createUserRank`, { usernames });
 
-      //const { data: updatedRankingData } = await axios.get(`${apiEndpoint}/actRanking`);
-
       setLoading(false);
       setOpenSnackbar(true);
     } catch (error) {

@@ -132,15 +132,6 @@ app.get('/getFullQuestion', async (req, res) => {
   }
 });
 
-app.get('/actRanking', async (req, res) => {
-  try {      
-      const rankingResponse = await axios.get(`${recordServiceUrl}/actRanking`);
-      res.json(rankingResponse.data);
-  } catch (error) {
-    res.status(500).json({ error: 'Error interno del servidor' });   
-  }
-});
-
 
 ////////////////////////ranking
 app.post('/createUserRank', async (req, res) => {

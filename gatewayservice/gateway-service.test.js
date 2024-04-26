@@ -38,8 +38,6 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { records: ['record1', 'record2'] } });
     } else if (url.endsWith('/getFullQuestion')) {
       return Promise.resolve({ data: { question: 'mockedQuestion' } });
-    } else if (url.endsWith('/actRanking')) {
-      return Promise.resolve({ data: { ranking: 'mockedRanking' } });
     } else if (url.endsWith('/obtainRank')) {
       return Promise.resolve({ data: { rank: 'mockedRank' } });
     } else if (url.endsWith('/getRandomQuestionDeporte') || url.endsWith('/getRandomQuestionAnio')
@@ -222,15 +220,6 @@ describe('Gateway Service', () => {
     expect(response.body.question).toBe('mockedQuestion');
   });
 
-  // Test /actRanking endpoint
-  it('should get a ranking from ranking service', async () => {
-    const response = await request(app)
-      .get('/actRanking');
-
-    expect(response.statusCode).toBe(200);
-    expect(response.body.ranking).toBe('mockedRanking');
-  });
-
   // Test /obtainRank endpoint
   it('should get a rank from rank service', async () => {
     const response = await request(app)
@@ -322,7 +311,6 @@ describe('Gateway Service', () => {
     { method: 'get', endpoint: '/getRecords/:userId' },
     { method: 'get', endpoint: '/getAllUsers' },
     { method: 'get', endpoint: '/getFullQuestion' },
-    { method: 'get', endpoint: '/actRanking' },
     { method: 'get', endpoint: '/obtainRank' },
     { method: 'get', endpoint: '/getAllQuestionGenerator' },
     { method: 'get', endpoint: '/countQuestionGenerator' },
