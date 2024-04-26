@@ -54,60 +54,33 @@ app.post('/updateRanking', async (req, res) => {
 //crea un elemento ranking si no existe 
 app.post('/createUserRank', async (req, res) => {
   try {
-    const { usernames } = req.body;
+    const { username } = req.body;
 
-    await deleteRankingElements(usernames);
+    // Convertir el nombre de usuario en una cadena
+    const safeUsername = username.toString();
 
-    // Iterar sobre cada nombre de usuario recibido
-    for (const username of usernames) {
-      // Convertir el nombre de usuario en una cadena
-      const safeUsername = username.toString();
+    // Buscar si ya existe un ranking para el usuario
+    const existingUserRank = await UserRank.findOne({ username: safeUsername });
 
-      // Buscar si ya existe un ranking para el usuario
-      const existingUserRank = await UserRank.findOne({ username: safeUsername });
+    if (!existingUserRank) {
+      // Si no existe un ranking para el usuario, crear uno nuevo
+      const newUserRank = new UserRank({
+        username: safeUsername,
+        porcentajeAciertos: 0,
+        preguntasCorrectas: 0,
+        preguntasFalladas: 0,
+        numPartidas: 0
+      });
 
-      if (!existingUserRank) {
-        // Si no existe un ranking para el usuario, crear uno nuevo
-        const newUserRank = new UserRank({
-          username,
-          porcentajeAciertos: 0,
-          preguntasCorrectas: 0,
-          preguntasFalladas: 0,
-          numPartidas: 0
-        });
-
-        await newUserRank.save();
-      }
+      await newUserRank.save();
     }
 
+    // Respuesta inmediata al cliente indicando que la operación se ha completado con éxito
     res.json({ message: 'Rankings de usuarios creados o actualizados correctamente.' });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
-
-
-//actualiza si se elimino un usuario de eliminar el elemento ranking correspondiente
-async function deleteRankingElements(usernames) {
-  try {
-    // Obtener todos los elementos de ranking
-    const allUserRanks = await UserRank.find({});
-
-    // Crear un conjunto de nombres de usuario en la lista recibida
-    const usernamesSet = new Set(usernames);
-
-    // Iterar sobre cada elemento de ranking
-    for (const userRank of allUserRanks) {
-      // Verificar si el nombre de usuario del elemento de ranking no está en la lista recibida
-      if (!usernamesSet.has(userRank.username)) {
-        // Si el nombre de usuario no está en la lista, eliminar el elemento de ranking
-        await UserRank.deleteOne({ username: userRank.username });
-      }
-    }
-  } catch (error) {
-    throw new Error('Error al actualizar los rankings de usuarios: ' + error.message);
-  }
-}
 
 app.get('/obtainRank', async (req, res) => {
   try {
