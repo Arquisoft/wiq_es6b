@@ -2,6 +2,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Login from './Login';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+
+jest.mock('axios');
+
+const mockAxios = new MockAdapter(axios);
 
 // Define the test suite
 describe('Login Component', () => {
