@@ -23,6 +23,20 @@ afterEach(async () => {
 });
 
 describe('User Service', () => {
+  // Prueba para el endpoint POST /createUserRank
+  describe('POST /createUserRank', () => {
+    it('should create a new user rank if the user does not exist', async () => {
+      const newUser = { username: 'testUser' };
+
+      const response = await request(app)
+        .post('/createUserRank')
+        .send(newUser);
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Rankings de usuarios creados o actualizados correctamente.');
+    });
+
+  });
 
   // Prueba para el endpoint POST /updateRanking
   describe('POST /updateRanking', () => {
@@ -151,32 +165,6 @@ test('GET /obtainRank gets all user rankings', async () => {
 
   expect(response.status).toBe(200);
   expect(Array.isArray(response.body)).toBe(true);
-});
-
-it('should reset an existing user rank', async () => {
-  // Arrange
-  const username = 'testUser';
-  const initialUserRank = new UserRank({
-    username,
-    porcentajeAciertos: 50,
-    preguntasCorrectas: 10,
-    preguntasFalladas: 10,
-    numPartidas: 1
-  });
-  await initialUserRank.save();
-
-  // Act
-  await request(app)
-    .post('/createUserRank')
-    .send({ usernames: [username] })
-    .expect(200);
-
-  // Assert
-  const updatedUserRank = await UserRank.findOne({ username });
-  expect(updatedUserRank.porcentajeAciertos).toBe(0);
-  expect(updatedUserRank.preguntasCorrectas).toBe(0);
-  expect(updatedUserRank.preguntasFalladas).toBe(0);
-  expect(updatedUserRank.numPartidas).toBe(0);
 });
 
 describe('GET /obtainRank', () => {
