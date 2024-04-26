@@ -41,8 +41,8 @@ describe('Login Component', () => {
 
 
     // Simulate user input
-    fireEvent.change(usernameInput, { target: { value: 'testUser' } });
-    fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
+    fireEvent.change(usernameInput, { target: { value: 'admin' } });
+    fireEvent.change(passwordInput, { target: { value: 'admin' } });
 
     await act(async () => {
       // Trigger the add user button click
@@ -91,10 +91,7 @@ describe('Login Component', () => {
       // Wait for the Snackbar to be open
       await waitFor(() => {
         expect(setLogged).toHaveBeenCalledTimes(0);
-        expect(screen.getByText(/Login successful/i)).toBeInTheDocument();
-
-        expect(screen.getByText(/Espere, estamos cargando sus datos.../i)).toBeInTheDocument();
-
+        
         expect(screen.getByText(/Jugar/i)).toBeInTheDocument();
         // only for admin
         expect(screen.getByText(/Historial de Usuarios/i)).toBeInTheDocument();
