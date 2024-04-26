@@ -25,6 +25,7 @@ describe('Login Component', () => {
     await act(async () => {
       const setLogged = jest.fn();
       render(<Login setLogged={setLogged}/>);
+    });
 
       const usernameInput = screen.getByLabelText(/Username/i);
       const passwordInput = screen.getByLabelText(/Password/i);
@@ -42,8 +43,10 @@ describe('Login Component', () => {
       fireEvent.change(usernameInput, { target: { value: 'testUser' } });
       fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
 
+    await act(async () => {
       // Trigger the add user button click
       fireEvent.click(loginButton);
+    });
 
       // Wait for the Snackbar to be open
       await waitFor(() => {
@@ -61,7 +64,6 @@ describe('Login Component', () => {
         expect(screen.getByText(/Tu cuenta fue creada el/i)).toBeInTheDocument();
         expect(screen.getByText(/Comenzar a jugar/i)).toBeInTheDocument();
       });
-    });
   });
 
   test('login with valid admin credentials', async () => {
