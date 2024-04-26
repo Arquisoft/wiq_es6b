@@ -33,18 +33,17 @@ describe('Login Component', () => {
     const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
 
     // Mock the axios.post & axios.get requests to simulate successful responses
-    mockAxios.onPost('http://localhost:8000/login').reply(200);
+    mockAxios.onPost('http://localhost:8000/login').reply(200, { createdAt: '2024-01-01T12:34:56Z' });
     mockAxios.onGet('http://localhost:8000/getAllUsers').reply(200);
     mockAxios.onPost('http://localhost:8000/createUserRank').reply(200);
     mockAxios.onGet('http://localhost:8000/actRanking').reply(200);
     mockAxios.onPost('http://localhost:8000/updateAllRanking').reply(200);
 
-
-    // Simulate user input
-    fireEvent.change(usernameInput, { target: { value: 'admin' } });
-    fireEvent.change(passwordInput, { target: { value: 'admin' } });
-
     await act(async () => {
+      // Simulate user input
+      fireEvent.change(usernameInput, { target: { value: 'admin' } });
+      fireEvent.change(passwordInput, { target: { value: 'admin' } });
+
       // Trigger the add user button click
       fireEvent.click(loginButton);
     });
