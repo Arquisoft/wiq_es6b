@@ -20,10 +20,10 @@ function App() {
   };
 
   return (
-    <Container component="main" maxWidth="md" style={{ marginTop: '2rem' }}>
+    <Container component="main" maxWidth="xl" style={{ marginTop: '2rem' }}>
       <Grid container justifyContent="center" spacing={3}>
-        <Grid item xs={12} md={8} lg={6}>
-          <Paper elevation={3} style={{ padding: '2rem', textAlign: 'center', minHeight: '400px' }}>
+        <Grid item xs={12} md={10} lg={8}>
+          <Paper elevation={3} style={{ padding: '2rem', textAlign: 'center', minHeight: '400px', minWidth: '300px' }}>
             {showLogin ? <Login setLogged={handleIsLogged}/> : <AddUser />}
             {!isLogged && (
               <Typography component="div" align="center" sx={{ marginTop: 4 }}>
