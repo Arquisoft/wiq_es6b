@@ -23,8 +23,8 @@ describe('Login Component', () => {
 
   test('login with valid normal (not "admin") credentials', async () => {
     await act(async () => {
-      var logged = false;
-      render(<Login setLogged={(val) => {logged = val}}/>);
+      const setLogged = jest.fn();
+      render(<Login setLogged={setLogged}/>);
     });
 
     const usernameInput = screen.getByLabelText(/Username/i);
@@ -48,7 +48,7 @@ describe('Login Component', () => {
 
     // Wait for the Snackbar to be open
     await waitFor(() => {
-      expect(logged).toBe(true);
+      expect(setLogged).toHaveBeenCalledTimes(0);
       expect(screen.getByText(/Login successful/i)).toBeInTheDocument();
 
       expect(screen.getByText(/Espere, estamos cargando sus datos.../i)).toBeInTheDocument();
@@ -66,8 +66,8 @@ describe('Login Component', () => {
 
   test('login with valid admin credentials', async () => {
     await act(async () => {
-      var logged = false;
-      render(<Login setLogged={(val) => {logged = val}}/>);
+      const setLogged = jest.fn();
+      render(<Login setLogged={setLogged}/>);
     });
 
     const usernameInput = screen.getByLabelText(/Username/i);
@@ -91,7 +91,7 @@ describe('Login Component', () => {
 
     // Wait for the Snackbar to be open
     await waitFor(() => {
-      expect(logged).toBe(true);
+      expect(setLogged).toHaveBeenCalledTimes(0);
       expect(screen.getByText(/Login successful/i)).toBeInTheDocument();
 
       expect(screen.getByText(/Espere, estamos cargando sus datos.../i)).toBeInTheDocument();
@@ -113,8 +113,8 @@ describe('Login Component', () => {
 
   test('login fails on post /login and error is handled ', async () => {
     await act(async () => {
-      var logged = false;
-      render(<Login setLogged={(val) => {logged = val}}/>);
+      const setLogged = jest.fn();
+      render(<Login setLogged={setLogged}/>);
 
       const usernameInput = screen.getByLabelText(/Username/i);
       const passwordInput = screen.getByLabelText(/Password/i);
@@ -132,7 +132,7 @@ describe('Login Component', () => {
 
       // Wait for the Snackbar to be open
       await waitFor(() => {
-        expect(logged).toBe(false);
+        expect(setLogged).toHaveBeenCalled();
         expect(screen.getByText(/Login successful/i)).toBeInTheDocument();
       });
     });
