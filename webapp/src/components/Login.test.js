@@ -1,6 +1,6 @@
 // Import necessary dependencies
 import React from 'react';
-import { render, screen, act, fireEvent } from '@testing-library/react';
+import { render, screen, act, fireEvent, waitFor } from '@testing-library/react';
 import Login from './Login';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
@@ -115,26 +115,26 @@ describe('Login Component', () => {
     await act(async () => {
       var logged = false;
       render(<Login setLogged={(val) => {logged = val}}/>);
-    });
 
-    const usernameInput = screen.getByLabelText(/Username/i);
-    const passwordInput = screen.getByLabelText(/Password/i);
-    const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
+      const usernameInput = screen.getByLabelText(/Username/i);
+      const passwordInput = screen.getByLabelText(/Password/i);
+      const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
 
-    // Mock the axios.post & axios.get requests to simulate successful responses
-    mockAxios.onPost('http://localhost:8000/login').reply(500);
+      // Mock the axios.post & axios.get requests to simulate successful responses
+      mockAxios.onPost('http://localhost:8000/login').reply(500);
 
-    // Simulate user input
-    fireEvent.change(usernameInput, { target: { value: 'testUser' } });
-    fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
+      // Simulate user input
+      fireEvent.change(usernameInput, { target: { value: 'testUser' } });
+      fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
 
-    // Trigger the add user button click
-    fireEvent.click(loginButton);
+      // Trigger the add user button click
+      fireEvent.click(loginButton);
 
-    // Wait for the Snackbar to be open
-    await waitFor(() => {
-      expect(logged).toBe(false);
-      expect(screen.getByText(/Login successful/i)).toBeInTheDocument();
+      // Wait for the Snackbar to be open
+      await waitFor(() => {
+        expect(logged).toBe(false);
+        expect(screen.getByText(/Login successful/i)).toBeInTheDocument();
+      });
     });
   });
 });
