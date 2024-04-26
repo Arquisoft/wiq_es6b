@@ -1,6 +1,6 @@
 // Import necessary dependencies
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import Login from './Login';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
