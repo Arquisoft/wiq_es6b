@@ -209,29 +209,6 @@ it('should reset an existing user rank', async () => {
   expect(updatedUserRank.numPartidas).toBe(0);
 });
 
-it('should return 400 if user does not exist', async () => {
-  // Arrange
-  const username = 'testUser';
-  const initialUserRank = new UserRank({
-    username,
-    porcentajeAciertos: 50,
-    preguntasCorrectas: 10,
-    preguntasFalladas: 10,
-    numPartidas: 1
-  });
-  await initialUserRank.save();
-
-  // Act
-  await request(app)
-    .post('/updateAllRanking')
-    .send({ usernames: ['anotherUser'] }) // username not included
-    .expect(400); // Expect 400 status code
-
-  // Assert
-  const deletedUserRank = await UserRank.findOne({ username });
-  expect(deletedUserRank).not.toBeNull(); // Expect the user rank to still exist
-});
-
 describe('GET /obtainRank', () => {
   it('it should GET all the rankings', async () => {
     const response = await request(app).get('/obtainRank');
@@ -239,32 +216,5 @@ describe('GET /obtainRank', () => {
     expect(Array.isArray(response.body)).toBe(true);
   });
 });
-
-describe('POST /updateAllRanking', () => {
-  it('it should update all rankings', async () => {
-    const rankingData = [
-      {
-        username: 'testUser1',
-        preguntasCorrectas: 5,
-        preguntasFalladas: 3,
-        numPartidas: 1
-      },
-      {
-        username: 'testUser2',
-        preguntasCorrectas: 7,
-        preguntasFalladas: 2,
-        numPartidas: 1
-      }
-    ];
-
-    const response = await request(app)
-      .post('/updateAllRanking')
-      .send(rankingData);
-
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('message', 'Rankings actualizados correctamente.');
-  });
-});
-
 
 });

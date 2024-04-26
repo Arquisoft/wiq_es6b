@@ -119,52 +119,6 @@ app.get('/obtainRank', async (req, res) => {
   }
 });
 
-//actualiza al inicio los rankings si hubo algun cambio en la base de datos
-app.post('/updateAllRanking', async (req, res) => {
-  try {
-    const rankingData = req.body;
-
-    // Iterar sobre los datos recibidos y actualizar los rankings correspondientes
-    for (const userData of rankingData) {
-      const username = userData.username.toString();
-      const preguntasCorrectas = userData.preguntasCorrectas;
-      const preguntasFalladas = userData.preguntasFalladas;
-      const numPartidas = userData.numPartidas;
-
-      // Buscar al usuario en la base de datos
-      const existingUser = await UserRank.findOne({ username });
-
-      if (!existingUser) {
-        // Si el usuario no tiene ranking, crear un nuevo ranking para él
-        const newUserRank = new UserRank({
-          username,
-          porcentajeAciertos: 0,
-          preguntasCorrectas,
-          preguntasFalladas,
-          numPartidas // Al ser el primer registro, el número de partidas es 1
-        });
-
-        await newUserRank.save();
-      } else {
-        // Si el usuario ya existe, actualizar su ranking
-        existingUser.preguntasCorrectas += preguntasCorrectas;
-        existingUser.preguntasFalladas += preguntasFalladas;
-        existingUser.numPartidas += numPartidas;
-
-        const totalPreguntas = existingUser.preguntasCorrectas + existingUser.preguntasFalladas;
-        const porcentajeAciertos = (existingUser.preguntasCorrectas / totalPreguntas) * 100;
-        existingUser.porcentajeAciertos = porcentajeAciertos.toFixed(2);
-
-        await existingUser.save();
-      }
-    }
-
-    res.json({ message: 'Rankings actualizados correctamente.' });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
-
 // Read the OpenAPI YAML file synchronously
 const openapiPath='./openapi.yaml'
 if (fs.existsSync(openapiPath)) {

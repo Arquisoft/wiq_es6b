@@ -174,17 +174,6 @@ app.post('/updateRanking', async (req, res) => {
   }
 });
 
-app.post('/updateAllRanking', async (req, res) => {
-  try {
-      // Reenviar la solicitud POST al servicio de ranking para actualizar el ranking de un usuario
-      const rankingResponse = await axios.post(`${rankingServiceUrl}/updateAllRanking`, req.body);
-      res.json(rankingResponse.data);
-  } catch (error) {
-     res.status(500).json({ error: 'Error interno del servidor' });   
-  }
-});
-
-
 
 ///////////////para los question del juego
 // Ruta para agregar una pregunta de prueba

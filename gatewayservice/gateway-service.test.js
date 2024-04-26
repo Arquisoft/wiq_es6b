@@ -23,9 +23,7 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { rankId: 'mockedRankId' } });
     } else if (url.endsWith('/updateRanking')) {
       return Promise.resolve({ data: { updatedRanking: true } });
-    } else if (url.endsWith('/updateAllRanking')) {
-      return Promise.resolve({ data: { updatedRanking: true } });
-    } else if (url.endsWith('/addOrUpdateQuestionGenerator')) {
+    }  else if (url.endsWith('/addOrUpdateQuestionGenerator')) {
       return Promise.resolve({ data: { questionId: 'mockedQuestionId' } });
     } else if (url.endsWith('/addGeneratedQuestion')) {
       return Promise.resolve({ data: { generatedQuestionId: 'mockedGeneratedQuestionId' } });
@@ -145,18 +143,6 @@ describe('Gateway Service', () => {
 
     const response = await request(app)
       .post('/updateRanking')
-      .send(mockRanking);
-
-    expect(response.statusCode).toBe(200);
-    expect(response.body.updatedRanking).toBe(true);
-  });
-
-  // Test /updateAllRanking endpoint
-  it('should update all rankings in ranking service', async () => {
-    const mockRanking = { username: 'testuser' };
-
-    const response = await request(app)
-      .post('/updateAllRanking')
       .send(mockRanking);
 
     expect(response.statusCode).toBe(200);
@@ -326,7 +312,6 @@ describe('Gateway Service', () => {
     { method: 'post', endpoint: '/addQuestion', data: { questionBody: '¿Cual es la capital de Francia?', typeQuestion: 'pais_capital' } },
     { method: 'post', endpoint: '/createUserRank', data: { username: 'testuser' } },
     { method: 'post', endpoint: '/updateRanking', data: { username: 'testuser' } },
-    { method: 'post', endpoint: '/updateAllRanking', data: { username: 'testuser' } },
     { method: 'post', endpoint: '/addOrUpdateQuestionGenerator', data: { questionBody: '¿Cual es la capital de Francia?', typeQuestion: 'pais_capital' } },
     { method: 'get', endpoint: '/getRandomQuestionSports' },
     { method: 'get', endpoint: '/getRandomQuestionMusic' },

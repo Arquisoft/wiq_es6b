@@ -60,7 +60,6 @@ const Login = ({ setLogged }) => {
     await axios.post(`${apiEndpoint}/createUserRank`, { usernames });
 
       //const { data: updatedRankingData } = await axios.get(`${apiEndpoint}/actRanking`);
-      //await axios.post(`${apiEndpoint}/updateAllRanking`, updatedRankingData);
 
       setLoading(false);
       setOpenSnackbar(true);
