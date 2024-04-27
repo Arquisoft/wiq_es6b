@@ -25,28 +25,17 @@ afterEach(async () => {
 describe('User Service', () => {
   // Prueba para el endpoint POST /createUserRank
   describe('POST /createUserRank', () => {
-    it('should create new user ranks', async () => {
-      const newUser = { username: 'testuser1' };
-      const newUser2 = { username: 'testuser2' };
-      const newUser3 = { username: 'testuser3' };
-      const newUser4 = { username: 'testuser4' };
-      const users = [newUser, newUser2, newUser3, newUser4];
-  
-      // Realizar una solicitud POST para crear nuevos rankings de usuarios
+    it('should create a new user rank if the user does not exist', async () => {
+      const newUser = { username: 'testUser' };
+
       const response = await request(app)
-        .post('/createUserRank') // Cambio en el endpoint
-        .send({ usernames: users.map(user => user.username) });
-  
-      // Verificar el código de estado de la respuesta
+        .post('/createUserRank')
+        .send(newUser);
+
       expect(response.status).toBe(200);
-  
-      // Verificar si se crearon correctamente los nuevos rankings de usuario en la base de datos
-      for (const user of users) {
-        const createdUserRank = await UserRank.findOne({ username: user.username });
-        expect(createdUserRank).toBeTruthy();
-        expect(createdUserRank.username).toBe(user.username);
-      }
+      expect(response.body.message).toBe('Rankings de usuarios creados o actualizados correctamente.');
     });
+
   });
 
   // Prueba para el endpoint POST /updateRanking
@@ -110,16 +99,27 @@ describe('User Service', () => {
   describe('User Service (Negative Tests)', () => {
     // Prueba negativa para el endpoint POST /createUserRank
     describe('POST /createUserRank (Negative Test)', () => {
-      it('should return 400 if username is missing', async () => {
-        // Realizar una solicitud POST sin proporcionar el nombre de usuario
+      it('should not create new user rank if user already exists', async () => {
+        const existingUser = new UserRank({
+          username: 'existinguser',
+          porcentajeAciertos: 50,
+          preguntasCorrectas: 20,
+          preguntasFalladas: 10,
+          numPartidas: 5
+        });
+        await existingUser.save();
+    
+        // Realizar una solicitud POST para crear un nuevo ranking de usuario con el mismo nombre de usuario
         const response = await request(app)
           .post('/createUserRank')
-          .send({});
-  
+          .send({ username: existingUser.username }); // Enviamos solo el nombre de usuario existente
+    
         // Verificar el código de estado de la respuesta
-        expect(response.status).toBe(400);
-        // Verificar si el cuerpo de la respuesta contiene un mensaje de error
-        expect(response.body.error).toBeTruthy();
+        expect(response.status).toBe(200);
+    
+        // Verificar que no se haya creado un nuevo ranking para el usuario existente
+        const userRankCount = await UserRank.countDocuments({ username: existingUser.username });
+        expect(userRankCount).toBe(1); // Debería seguir siendo solo 1 (el existente)
       });
     });
   
@@ -160,76 +160,11 @@ describe('User Service', () => {
   
   });
 
-test('POST /createUserRank creates or resets a user ranking', async () => {
-  const username = 'testUser';
-
-  const response = await request(app)
-    .post('/createUserRank')
-    .send({ usernames: [username] });
-
-  expect(response.status).toBe(200);
-  expect(response.body.message).toBe('Rankings de usuarios creados o actualizados correctamente.');
-
-  const userRank = await UserRank.findOne({ username });
-  expect(userRank.preguntasCorrectas).toBe(0);
-  expect(userRank.preguntasFalladas).toBe(0);
-  expect(userRank.numPartidas).toBe(0);
-});
-
 test('GET /obtainRank gets all user rankings', async () => {
   const response = await request(app).get('/obtainRank');
 
   expect(response.status).toBe(200);
   expect(Array.isArray(response.body)).toBe(true);
-});
-
-it('should reset an existing user rank', async () => {
-  // Arrange
-  const username = 'testUser';
-  const initialUserRank = new UserRank({
-    username,
-    porcentajeAciertos: 50,
-    preguntasCorrectas: 10,
-    preguntasFalladas: 10,
-    numPartidas: 1
-  });
-  await initialUserRank.save();
-
-  // Act
-  await request(app)
-    .post('/createUserRank')
-    .send({ usernames: [username] })
-    .expect(200);
-
-  // Assert
-  const updatedUserRank = await UserRank.findOne({ username });
-  expect(updatedUserRank.porcentajeAciertos).toBe(0);
-  expect(updatedUserRank.preguntasCorrectas).toBe(0);
-  expect(updatedUserRank.preguntasFalladas).toBe(0);
-  expect(updatedUserRank.numPartidas).toBe(0);
-});
-
-it('should return 400 if user does not exist', async () => {
-  // Arrange
-  const username = 'testUser';
-  const initialUserRank = new UserRank({
-    username,
-    porcentajeAciertos: 50,
-    preguntasCorrectas: 10,
-    preguntasFalladas: 10,
-    numPartidas: 1
-  });
-  await initialUserRank.save();
-
-  // Act
-  await request(app)
-    .post('/updateAllRanking')
-    .send({ usernames: ['anotherUser'] }) // username not included
-    .expect(400); // Expect 400 status code
-
-  // Assert
-  const deletedUserRank = await UserRank.findOne({ username });
-  expect(deletedUserRank).not.toBeNull(); // Expect the user rank to still exist
 });
 
 describe('GET /obtainRank', () => {
@@ -239,32 +174,5 @@ describe('GET /obtainRank', () => {
     expect(Array.isArray(response.body)).toBe(true);
   });
 });
-
-describe('POST /updateAllRanking', () => {
-  it('it should update all rankings', async () => {
-    const rankingData = [
-      {
-        username: 'testUser1',
-        preguntasCorrectas: 5,
-        preguntasFalladas: 3,
-        numPartidas: 1
-      },
-      {
-        username: 'testUser2',
-        preguntasCorrectas: 7,
-        preguntasFalladas: 2,
-        numPartidas: 1
-      }
-    ];
-
-    const response = await request(app)
-      .post('/updateAllRanking')
-      .send(rankingData);
-
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('message', 'Rankings actualizados correctamente.');
-  });
-});
-
 
 });

@@ -51,73 +51,36 @@ app.post('/updateRanking', async (req, res) => {
   
   });
 
-//crea un elemento ranking si no existe y si existe lo deja a 0 para actualizar a posterior sus datos
-//tambien actualiza si se elimino un usuario de eliminar el elemento ranking correspondiente
+//crea un elemento ranking si no existe 
 app.post('/createUserRank', async (req, res) => {
   try {
-    const { usernames } = req.body;
+    const { username } = req.body;
 
-    await deleteRankingElements(usernames);
+    // Convertir el nombre de usuario en una cadena
+    const safeUsername = username.toString();
 
-    // Iterar sobre cada nombre de usuario recibido
-    for (const username of usernames) {
-      // Convertir el nombre de usuario en una cadena
-      const safeUsername = username.toString();
+    // Buscar si ya existe un ranking para el usuario
+    const existingUserRank = await UserRank.findOne({ username: safeUsername });
 
-      // Buscar si ya existe un ranking para el usuario
-      const existingUserRank = await UserRank.findOne({ username: safeUsername });
+    if (!existingUserRank) {
+      // Si no existe un ranking para el usuario, crear uno nuevo
+      const newUserRank = new UserRank({
+        username: safeUsername,
+        porcentajeAciertos: 0,
+        preguntasCorrectas: 0,
+        preguntasFalladas: 0,
+        numPartidas: 0
+      });
 
-      if (existingUserRank) {
-        // Si ya existe un ranking para el usuario, actualizar los valores a cero 
-        // para actualizarlos después con los valores de las jugadas
-        existingUserRank.porcentajeAciertos = 0;
-        existingUserRank.preguntasCorrectas = 0;
-        existingUserRank.preguntasFalladas = 0;
-        existingUserRank.numPartidas = 0;
-
-        await existingUserRank.save();
-      } else {
-        // Si no existe un ranking para el usuario, crear uno nuevo
-        const newUserRank = new UserRank({
-          username,
-          porcentajeAciertos: 0,
-          preguntasCorrectas: 0,
-          preguntasFalladas: 0,
-          numPartidas: 0
-        });
-
-        await newUserRank.save();
-      }
+      await newUserRank.save();
     }
 
+    // Respuesta inmediata al cliente indicando que la operación se ha completado con éxito
     res.json({ message: 'Rankings de usuarios creados o actualizados correctamente.' });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
-
-
-//actualiza si se elimino un usuario de eliminar el elemento ranking correspondiente
-async function deleteRankingElements(usernames) {
-  try {
-    // Obtener todos los elementos de ranking
-    const allUserRanks = await UserRank.find({});
-
-    // Crear un conjunto de nombres de usuario en la lista recibida
-    const usernamesSet = new Set(usernames);
-
-    // Iterar sobre cada elemento de ranking
-    for (const userRank of allUserRanks) {
-      // Verificar si el nombre de usuario del elemento de ranking no está en la lista recibida
-      if (!usernamesSet.has(userRank.username)) {
-        // Si el nombre de usuario no está en la lista, eliminar el elemento de ranking
-        await UserRank.deleteOne({ username: userRank.username });
-      }
-    }
-  } catch (error) {
-    throw new Error('Error al actualizar los rankings de usuarios: ' + error.message);
-  }
-}
 
 app.get('/obtainRank', async (req, res) => {
   try {
@@ -126,52 +89,6 @@ app.get('/obtainRank', async (req, res) => {
       res.json(rankings);
   } catch (error) {
       res.status(400).json({ error: 'Error al obtener la lista de rankings.' });
-  }
-});
-
-//actualiza al inicio los rankings si hubo algun cambio en la base de datos
-app.post('/updateAllRanking', async (req, res) => {
-  try {
-    const rankingData = req.body;
-
-    // Iterar sobre los datos recibidos y actualizar los rankings correspondientes
-    for (const userData of rankingData) {
-      const username = userData.username.toString();
-      const preguntasCorrectas = userData.preguntasCorrectas;
-      const preguntasFalladas = userData.preguntasFalladas;
-      const numPartidas = userData.numPartidas;
-
-      // Buscar al usuario en la base de datos
-      const existingUser = await UserRank.findOne({ username });
-
-      if (!existingUser) {
-        // Si el usuario no tiene ranking, crear un nuevo ranking para él
-        const newUserRank = new UserRank({
-          username,
-          porcentajeAciertos: 0,
-          preguntasCorrectas,
-          preguntasFalladas,
-          numPartidas // Al ser el primer registro, el número de partidas es 1
-        });
-
-        await newUserRank.save();
-      } else {
-        // Si el usuario ya existe, actualizar su ranking
-        existingUser.preguntasCorrectas += preguntasCorrectas;
-        existingUser.preguntasFalladas += preguntasFalladas;
-        existingUser.numPartidas += numPartidas;
-
-        const totalPreguntas = existingUser.preguntasCorrectas + existingUser.preguntasFalladas;
-        const porcentajeAciertos = (existingUser.preguntasCorrectas / totalPreguntas) * 100;
-        existingUser.porcentajeAciertos = porcentajeAciertos.toFixed(2);
-
-        await existingUser.save();
-      }
-    }
-
-    res.json({ message: 'Rankings actualizados correctamente.' });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
 });
 

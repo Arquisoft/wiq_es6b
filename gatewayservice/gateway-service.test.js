@@ -23,9 +23,7 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { rankId: 'mockedRankId' } });
     } else if (url.endsWith('/updateRanking')) {
       return Promise.resolve({ data: { updatedRanking: true } });
-    } else if (url.endsWith('/updateAllRanking')) {
-      return Promise.resolve({ data: { updatedRanking: true } });
-    } else if (url.endsWith('/addOrUpdateQuestionGenerator')) {
+    }  else if (url.endsWith('/addOrUpdateQuestionGenerator')) {
       return Promise.resolve({ data: { questionId: 'mockedQuestionId' } });
     } else if (url.endsWith('/addGeneratedQuestion')) {
       return Promise.resolve({ data: { generatedQuestionId: 'mockedGeneratedQuestionId' } });
@@ -40,8 +38,6 @@ describe('Gateway Service', () => {
       return Promise.resolve({ data: { records: ['record1', 'record2'] } });
     } else if (url.endsWith('/getFullQuestion')) {
       return Promise.resolve({ data: { question: 'mockedQuestion' } });
-    } else if (url.endsWith('/actRanking')) {
-      return Promise.resolve({ data: { ranking: 'mockedRanking' } });
     } else if (url.endsWith('/obtainRank')) {
       return Promise.resolve({ data: { rank: 'mockedRank' } });
     } else if (url.endsWith('/getRandomQuestionDeporte') || url.endsWith('/getRandomQuestionAnio')
@@ -151,18 +147,6 @@ describe('Gateway Service', () => {
     expect(response.body.updatedRanking).toBe(true);
   });
 
-  // Test /updateAllRanking endpoint
-  it('should update all rankings in ranking service', async () => {
-    const mockRanking = { username: 'testuser' };
-
-    const response = await request(app)
-      .post('/updateAllRanking')
-      .send(mockRanking);
-
-    expect(response.statusCode).toBe(200);
-    expect(response.body.updatedRanking).toBe(true);
-  });
-
   // Test /addOrUpdateQuestionGenerator endpoint success
   it('should add or update a question successfully', async () => {
     const mockQuestion = {
@@ -234,15 +218,6 @@ describe('Gateway Service', () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.question).toBe('mockedQuestion');
-  });
-
-  // Test /actRanking endpoint
-  it('should get a ranking from ranking service', async () => {
-    const response = await request(app)
-      .get('/actRanking');
-
-    expect(response.statusCode).toBe(200);
-    expect(response.body.ranking).toBe('mockedRanking');
   });
 
   // Test /obtainRank endpoint
@@ -326,7 +301,6 @@ describe('Gateway Service', () => {
     { method: 'post', endpoint: '/addQuestion', data: { questionBody: '¿Cual es la capital de Francia?', typeQuestion: 'pais_capital' } },
     { method: 'post', endpoint: '/createUserRank', data: { username: 'testuser' } },
     { method: 'post', endpoint: '/updateRanking', data: { username: 'testuser' } },
-    { method: 'post', endpoint: '/updateAllRanking', data: { username: 'testuser' } },
     { method: 'post', endpoint: '/addOrUpdateQuestionGenerator', data: { questionBody: '¿Cual es la capital de Francia?', typeQuestion: 'pais_capital' } },
     { method: 'get', endpoint: '/getRandomQuestionSports' },
     { method: 'get', endpoint: '/getRandomQuestionMusic' },
@@ -337,7 +311,6 @@ describe('Gateway Service', () => {
     { method: 'get', endpoint: '/getRecords/:userId' },
     { method: 'get', endpoint: '/getAllUsers' },
     { method: 'get', endpoint: '/getFullQuestion' },
-    { method: 'get', endpoint: '/actRanking' },
     { method: 'get', endpoint: '/obtainRank' },
     { method: 'get', endpoint: '/getAllQuestionGenerator' },
     { method: 'get', endpoint: '/countQuestionGenerator' },

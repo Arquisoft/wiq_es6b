@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor, fireEvent, queryByAltText } from '@testing-library/react';
+import { render, waitFor, fireEvent } from '@testing-library/react';
 import GameSettings from './GameSettings';
 
 describe('GameSettings', () => {
