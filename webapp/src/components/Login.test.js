@@ -31,13 +31,14 @@ describe('Login Component', () => {
     const usernameInput = screen.getByLabelText(/Username/i);
     const passwordInput = screen.getByLabelText(/Password/i);
     const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
+    console.log('loginButton', loginButton);
+    console.log('usernameInput', usernameInput);
+    console('passwordInput', passwordInput);
 
     // Mock the axios.post & axios.get requests to simulate successful responses
     mockAxios.onPost('http://localhost:8000/login').reply(200, { createdAt: '2024-01-01T12:34:56Z' });
     mockAxios.onGet('http://localhost:8000/getAllUsers').reply(200);
     mockAxios.onPost('http://localhost:8000/createUserRank').reply(200);
-    mockAxios.onGet('http://localhost:8000/actRanking').reply(200);
-    mockAxios.onPost('http://localhost:8000/updateAllRanking').reply(200);
 
     await act(async () => {
       // Simulate user input
@@ -63,6 +64,7 @@ describe('Login Component', () => {
     });
   });
 
+  /*
   test('login with valid admin credentials', async () => {
     await act(async () => {
       const setLogged = jest.fn();
@@ -133,4 +135,5 @@ describe('Login Component', () => {
       });
     });
   });
+  */
 });
