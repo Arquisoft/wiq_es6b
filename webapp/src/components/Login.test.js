@@ -21,6 +21,20 @@ describe('Login Component', () => {
     expect(loginButton).toBeInTheDocument();
   });
 
+  axios.post.mockImplementation((url, data) => {
+    if (url.endsWith('/login')) {
+      return Promise.resolve({ data: { token: 'mockedToken' } });
+    }else if (url.endsWith('/createUserRank')) {
+      return Promise.resolve({ data: { rankId: 'mockedRankId' } });
+    }
+  });
+
+  axios.get.mockImplementation((url) => {
+    if (url.endsWith('/getAllUsers')) {
+      return Promise.resolve({ data: { users: ['user1', 'user2'] } });
+    }
+  });
+
   test('login with valid normal (not "admin") credentials', async () => {
     const setLogged = jest.fn();
 
@@ -36,13 +50,12 @@ describe('Login Component', () => {
     expect(usernameInput).toBeInTheDocument();
     expect(passwordInput).toBeInTheDocument();
 
-    let username = 'admin';  
-    let password = 'admin';     
-
+    /*
     // Mock the axios.post & axios.get requests to simulate successful responses
-    mockAxios.onPost('http://localhost:8000/login', { username, password }).reply(200, { data: { createdAt: '2024-01-01T12:34:56Z' }});
+    mockAxios.onPost('http://localhost:8000/login').reply(200, { data: { createdAt: '2024-01-01T12:34:56Z' }});
     mockAxios.onGet('http://localhost:8000/getAllUsers').reply(200, { data: []});
     mockAxios.onPost('http://localhost:8000/createUserRank').reply(200);
+    */
 
     await act(async () => {
       // Simulate user input
