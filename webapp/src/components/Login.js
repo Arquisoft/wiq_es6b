@@ -45,7 +45,7 @@ const Login = ({ setLogged }) => {
     try {
       console.error("En login estamos");
       const response = await axios.post(`${apiEndpoint}/login`, { username, password });
-      console.error("RESPONSE.DATA "+response.data);
+      console.error("RESPONSE... "+response);
       const { createdAt: userCreatedAt } = response.data;
       await axios.get(`${apiEndpoint}/getAllUsers`);
       // const users = usersResponse.data;
