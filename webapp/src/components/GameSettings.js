@@ -200,7 +200,7 @@ const GameSettings = ({ setSettings, currentUser }) => {
 
 GameSettings.propTypes = {
     setSettings: PropTypes.func.isRequired,
-    currentUser: PropTypes.func.isRequired,
+    currentUser: PropTypes.string.isRequired,
 };
 
 export default GameSettings;

@@ -29,7 +29,7 @@ describe('RecordList', () => {
   });
 
   it('renders record list correctly', async () => {
-    const { getByText } = render(<RankingList setError={() => {}} username="testuser" />);
+    const { getByText } = render(<RecordList setError={() => {}} username="testuser" />);
     
     await waitFor(() => {
       expect(getByText('Tu historial de jugadas')).toBeInTheDocument();

@@ -59,7 +59,7 @@ const RecordList = ({ username }) => {
 };
 
 RecordList.propTypes = {
-  username: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
 };
 
 export default RecordList;
