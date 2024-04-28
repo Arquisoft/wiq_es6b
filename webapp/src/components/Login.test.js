@@ -165,7 +165,7 @@ describe('Login Component', () => {
       }
     });
     // Mock para la petición get de login fallada
-    axios.get.mockRejectedValueOnce({ response: { status: 500} });
+    axios.get.mockRejectedValueOnce({ response: { status: 500, data: { error: 'Internal Server Error' } } });
 
     await act(async () => {
       render(<Login setLogged={setLogged}/>);
@@ -184,7 +184,7 @@ describe('Login Component', () => {
 
     await waitFor(() => {
       expect(setLogged).not.toHaveBeenCalled();
-      expect(screen.getByText(/Error interno del servidor/i)).toBeInTheDocument();
+      expect(screen.getByText(/Internal Server Error/i)).toBeInTheDocument();
       expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument();
     });
   });
@@ -223,7 +223,7 @@ describe('Login Component', () => {
     });
 
     await waitFor(() => {
-      expect(setLogged).not.toHaveBeenCalled();
+      expect(setLogged).toHaveBeenCalled(); // se ha loggeado pero no se ha creado el ranking del usuario
       expect(screen.getByText(/Error interno del servidor/i)).toBeInTheDocument();
       expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument();
     });
