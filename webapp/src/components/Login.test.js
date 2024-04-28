@@ -11,6 +11,22 @@ const mockAxios = new MockAdapter(axios);
 
 // Define the test suite
 describe('Login Component', () => {
+  axios.post.mockImplementation((url, data) => {
+    if (url.endsWith('/login')) {
+      console.error("En login estamos manejandonos con el mock de axios"); //borrar
+      return Promise.resolve({ data: { createdAt: 'mockedToken' } });
+    }else if (url.endsWith('/createUserRank')) {
+      return Promise.resolve({ data: { rankId: 'mockedRankId' } });
+    }else{
+      console.error("NO ENTRAMOS "+url + " - " + data);
+    }
+  });
+
+  axios.get.mockImplementation((url) => {
+    if (url.endsWith('/getAllUsers')) {
+      return Promise.resolve({ data: { users: ['user1', 'user2'] } });
+    }
+  });
   // Define the test
   test('renders login button', () => {
     // Render the Login component
@@ -19,21 +35,6 @@ describe('Login Component', () => {
     // Check if the login button is in the document
     const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
     expect(loginButton).toBeInTheDocument();
-  });
-
-  axios.post.mockImplementation((url, data) => {
-    if (url.endsWith('/login')) {
-      console.error("En login estamos manejandonos con el mock de axios"); //borrar
-      return Promise.resolve({ data: { createdAt: 'mockedToken' } });
-    }else if (url.endsWith('/createUserRank')) {
-      return Promise.resolve({ data: { rankId: 'mockedRankId' } });
-    }
-  });
-
-  axios.get.mockImplementation((url) => {
-    if (url.endsWith('/getAllUsers')) {
-      return Promise.resolve({ data: { users: ['user1', 'user2'] } });
-    }
   });
 
   test('login with valid normal (not "admin") credentials', async () => {
