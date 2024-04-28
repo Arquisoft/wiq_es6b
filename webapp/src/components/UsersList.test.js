@@ -36,7 +36,7 @@ describe('UsersList', () => {
 
     it('renders headers list correctly', async () => {
       await act(async () => {
-        render(<UsersList />);
+        render(<UsersList setError={() => {}} />);
       });
 
       // Check if the table headers are in the document
@@ -49,7 +49,7 @@ describe('UsersList', () => {
 
     it('renders all the users rows', async () => {
       await act(async () => {
-        render(<UsersList />);
+        render(<UsersList setError={() => {}} />);
       });    
       // Check if the table rows are in the document
       const tableRows = screen.getAllByRole('row');
@@ -58,7 +58,7 @@ describe('UsersList', () => {
 
     it('should order users by username correctly', async () => {
       await act(async () => {
-        render(<UsersList />);
+        render(<UsersList setError={() => {}} />);
       }); 
 
       // We click the username header to order the users by username
@@ -92,7 +92,7 @@ describe('UsersList', () => {
 
       it('should order users by createdAt date correctly', async () => {
         await act(async () => {
-          render(<UsersList />);
+          render(<UsersList setError={() => {}} />);
         }); 
     
         // We click the username header to order the users by username
