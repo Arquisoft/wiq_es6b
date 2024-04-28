@@ -46,7 +46,6 @@ const Login = ({ setLogged }) => {
       const response = await axios.post(`${apiEndpoint}/login`, { username, password });
       const { createdAt: userCreatedAt } = response.data;
       await axios.get(`${apiEndpoint}/getAllUsers`);
-      // const users = usersResponse.data;
       setCreatedAt(userCreatedAt);
       setLoginSuccess(true);
       setLogged();

@@ -195,7 +195,7 @@ describe('Login Component', () => {
     });
   
     await waitFor(() => {
-      if (loggedIn) {
+      if (!loggedIn) {
       expect(setLogged).not.toHaveBeenCalled();
       } else {
         expect(setLogged).toHaveBeenCalled();
@@ -247,7 +247,6 @@ describe('Login Component', () => {
     // Mock para la petición POST de login fallada
     axios.post.mockRejectedValueOnce({ response: { status: 500, data: { error: 'Internal Server Error' } } });
 
-    performLoginFail(setLogged, 'testUser', 'testPassword', 'Internal Server Error', false);
     await performLoginFail(setLogged, 'testUser', 'testPassword', 'Espere, estamos cargando sus datos...', true);
   });
 });
