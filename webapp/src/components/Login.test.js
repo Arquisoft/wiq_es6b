@@ -21,26 +21,32 @@ describe('Login Component', () => {
     expect(loginButton).toBeInTheDocument();
   });
 
-  test('login with valid normal (not "admin") credentials', async () => {
+  function setupMocksSuccess() {
     const setLogged = jest.fn();
-
+  
     // Mock para la petición POST de login exitosa
     axios.post.mockResolvedValueOnce({
       data: {
         createdAt: new Date().toISOString()
       }
     });
-
+  
     // Mock para la petición GET de obtener todos los usuarios
     axios.get.mockResolvedValueOnce({
       data: [] // Puedes ajustar esto según lo que necesites en tu test
     });
-
+  
     // Mock para la petición POST de createUserRank exitosa
     axios.post.mockResolvedValueOnce({
       data: {} // Puedes ajustar esto según lo que necesites en tu test
     });
+  
+    return setLogged;
+  }
 
+  test('login with valid normal (not "admin") credentials', async () => {
+    const setLogged = setupMocksSuccess();
+    
     await act(async () => {
       render(<Login setLogged={setLogged}/>);
     });
@@ -48,10 +54,6 @@ describe('Login Component', () => {
     const usernameInput = screen.getByLabelText(/Username/i);
     const passwordInput = screen.getByLabelText(/Password/i);
     const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
-    // Verificar que los elementos están presentes
-    expect(loginButton).toBeInTheDocument();
-    expect(usernameInput).toBeInTheDocument();
-    expect(passwordInput).toBeInTheDocument();
 
     await act(async () => {
       fireEvent.change(usernameInput, { target: { value: 'testUser' } });
@@ -75,24 +77,7 @@ describe('Login Component', () => {
   });
 
   test('login with valid admin credentials', async () => {
-    const setLogged = jest.fn();
-
-    // Mock para la petición POST de login exitosa
-    axios.post.mockResolvedValueOnce({
-      data: {
-        createdAt: new Date().toISOString()
-      }
-    });
-
-    // Mock para la petición GET de obtener todos los usuarios
-    axios.get.mockResolvedValueOnce({
-      data: [] // Puedes ajustar esto según lo que necesites en tu test
-    });
-
-    // Mock para la petición POST de createUserRank exitosa
-    axios.post.mockResolvedValueOnce({
-      data: {} // Puedes ajustar esto según lo que necesites en tu test
-    });
+    const setLogged = setupMocksSuccess();    
     
     await act(async () => {
       render(<Login setLogged={setLogged}/>);
@@ -193,13 +178,7 @@ describe('Login Component', () => {
 */
   });
 
-
-  test('login fails on post /login and error is handled ', async () => {
-    const setLogged = jest.fn();
-
-    // Mock para la petición POST de login fallada
-    axios.post.mockRejectedValueOnce({ response: { status: 500, data: { error: 'Internal Server Error' } } });
-
+  async function performLoginFail(setLogged, username = 'testUser', password = 'testPassword', error = 'Internal Server Error', loggedIn = false) {
     await act(async () => {
       render(<Login setLogged={setLogged}/>);
     });
@@ -207,19 +186,32 @@ describe('Login Component', () => {
     const usernameInput = screen.getByLabelText(/Username/i);
     const passwordInput = screen.getByLabelText(/Password/i);
     const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
-
+  
     await act(async () => {
-      fireEvent.change(usernameInput, { target: { value: 'testUser' } });
-      fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
-
+      fireEvent.change(usernameInput, { target: { value: username } });
+      fireEvent.change(passwordInput, { target: { value: password } });
+  
       fireEvent.click(loginButton);
     });
-
+  
     await waitFor(() => {
+      if (loggedIn) {
       expect(setLogged).not.toHaveBeenCalled();
-      expect(screen.getByText(/Internal Server Error/i)).toBeInTheDocument();
+      } else {
+        expect(setLogged).toHaveBeenCalled();
+      }
+      expect(screen.getByText(new RegExp(error, 'i'))).toBeInTheDocument();
       expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument();
     });
+  }
+
+  test('login fails on post /login and error is handled ', async () => {
+    const setLogged = jest.fn();
+
+    // Mock para la petición POST de login fallada
+    axios.post.mockRejectedValueOnce({ response: { status: 500, data: { error: 'Internal Server Error' } } });
+
+    await performLoginFail(setLogged);
   });
 
   test('login fails on get /getAllUsers and error is handled ', async () => {
@@ -234,26 +226,7 @@ describe('Login Component', () => {
     // Mock para la petición get de login fallada
     axios.get.mockRejectedValueOnce({ response: { status: 500, data: { error: 'Internal Server Error' } } });
 
-    await act(async () => {
-      render(<Login setLogged={setLogged}/>);
-    });
-  
-    const usernameInput = screen.getByLabelText(/Username/i);
-    const passwordInput = screen.getByLabelText(/Password/i);
-    const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
-
-    await act(async () => {
-      fireEvent.change(usernameInput, { target: { value: 'testUser' } });
-      fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
-
-      fireEvent.click(loginButton);
-    });
-
-    await waitFor(() => {
-      expect(setLogged).not.toHaveBeenCalled();
-      expect(screen.getByText(/Internal Server Error/i)).toBeInTheDocument();
-      expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument();
-    });
+    await performLoginFail(setLogged);
   });
 
   test('login fails on post /createUserRank and error is handled ', async () => {
@@ -274,25 +247,7 @@ describe('Login Component', () => {
     // Mock para la petición POST de login fallada
     axios.post.mockRejectedValueOnce({ response: { status: 500, data: { error: 'Internal Server Error' } } });
 
-    await act(async () => {
-      render(<Login setLogged={setLogged}/>);
-    });
-  
-    const usernameInput = screen.getByLabelText(/Username/i);
-    const passwordInput = screen.getByLabelText(/Password/i);
-    const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
-
-    await act(async () => {
-      fireEvent.change(usernameInput, { target: { value: 'testUser' } });
-      fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
-
-      fireEvent.click(loginButton);
-    });
-
-    await waitFor(() => {
-      expect(setLogged).toHaveBeenCalled(); // se ha loggeado pero no se ha creado el ranking del usuario
-      expect(screen.getByText(/Espere, estamos cargando sus datos.../i)).toBeInTheDocument(); // se queda esperando cargando
-      expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument(); // no te deja jugar
-    });
+    performLoginFail(setLogged, 'testUser', 'testPassword', 'Internal Server Error', false);
+    await performLoginFail(setLogged, 'testUser', 'testPassword', 'Espere, estamos cargando sus datos...', true);
   });
 });
