@@ -44,7 +44,6 @@ const Login = ({ setLogged }) => {
   const loginUser = async () => {
     try {
       const response = await axios.post(`${apiEndpoint}/login`, { username, password });
-      console.error("RESPONSE... "+response);
       const { createdAt: userCreatedAt } = response.data;
       await axios.get(`${apiEndpoint}/getAllUsers`);
       // const users = usersResponse.data;
@@ -64,7 +63,7 @@ const Login = ({ setLogged }) => {
       } else if (error.request) {
         setError('No response from server. Please try again later.');
       } else {
-        setError('An unexpected error occurred...' + error.message);
+        setError('An unexpected error occurred');
       }
     }
   };

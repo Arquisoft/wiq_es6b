@@ -54,17 +54,14 @@ describe('Login Component', () => {
     expect(passwordInput).toBeInTheDocument();
 
     await act(async () => {
-      // Simulate user input
-      fireEvent.change(usernameInput, { target: { value: 'admin' } });
-      fireEvent.change(passwordInput, { target: { value: 'admin' } });
+      fireEvent.change(usernameInput, { target: { value: 'normalUser' } });
+      fireEvent.change(passwordInput, { target: { value: 'test123' } });
 
-      // Trigger the add user button click
       fireEvent.click(loginButton);
     });
 
-    // Wait for the Snackbar to be open
     await waitFor(() => {
-      expect(setLogged).toHaveBeenCalledTimes(0);
+      expect(setLogged).toHaveBeenCalledTimes(1);
 
       expect(screen.getByText(/Jugar/i)).toBeInTheDocument();
       expect(screen.getByText(/Historial de jugadas/i)).toBeInTheDocument();
@@ -77,76 +74,158 @@ describe('Login Component', () => {
     });
   });
 
-  /*
   test('login with valid admin credentials', async () => {
+    const setLogged = jest.fn();
+
+    // Mock para la petición POST de login exitosa
+    axios.post.mockResolvedValueOnce({
+      data: {
+        createdAt: new Date().toISOString()
+      }
+    });
+
+    // Mock para la petición GET de obtener todos los usuarios
+    axios.get.mockResolvedValueOnce({
+      data: [] // Puedes ajustar esto según lo que necesites en tu test
+    });
+
+    // Mock para la petición POST de createUserRank exitosa
+    axios.post.mockResolvedValueOnce({
+      data: {} // Puedes ajustar esto según lo que necesites en tu test
+    });
+    
     await act(async () => {
-      const setLogged = jest.fn();
       render(<Login setLogged={setLogged}/>);
+    });
 
-      const usernameInput = screen.getByLabelText(/Username/i);
-      const passwordInput = screen.getByLabelText(/Password/i);
-      const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
+    const usernameInput = screen.getByLabelText(/Username/i);
+    const passwordInput = screen.getByLabelText(/Password/i);
+    const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
 
-      // Mock the axios.post & axios.get requests to simulate successful responses
-      mockAxios.onPost('http://localhost:8000/login').reply(200);
-      mockAxios.onGet('http://localhost:8000/getAllUsers').reply(200);
-      mockAxios.onPost('http://localhost:8000/createUserRank').reply(200);
-      mockAxios.onGet('http://localhost:8000/actRanking').reply(200);
-      mockAxios.onPost('http://localhost:8000/updateAllRanking').reply(200);
-
-
-      // Simulate user input
+    await act(async () => {
       fireEvent.change(usernameInput, { target: { value: 'admin' } });
       fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
 
-      // Trigger the add user button click
       fireEvent.click(loginButton);
+    });
 
-      // Wait for the Snackbar to be open
-      await waitFor(() => {
-        expect(setLogged).toHaveBeenCalledTimes(0);
-        
-        expect(screen.getByText(/Jugar/i)).toBeInTheDocument();
-        // only for admin
-        expect(screen.getByText(/Historial de Usuarios/i)).toBeInTheDocument();
-        expect(screen.getByText(/Historial de Preguntas Generadas/i)).toBeInTheDocument();
-        // end only for admin
-        expect(screen.getByText(/Historial de jugadas/i)).toBeInTheDocument();
-        expect(screen.getByText(/Ranking/i)).toBeInTheDocument();
-        expect(screen.getByText(/Ajustes de partida/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(setLogged).toHaveBeenCalledTimes(1);
+      
+      expect(screen.getByText(/Jugar/i)).toBeInTheDocument();
+      // only for admin
+      expect(screen.getByText(/Historial de Usuarios/i)).toBeInTheDocument();
+      expect(screen.getByText(/Historial de Preguntas Generadas/i)).toBeInTheDocument();
+      // end only for admin
+      expect(screen.getByText(/Historial de jugadas/i)).toBeInTheDocument();
+      expect(screen.getByText(/Ranking/i)).toBeInTheDocument();
+      expect(screen.getByText(/Ajustes de partida/i)).toBeInTheDocument();
 
-        expect(screen.getByText(/Hola testUser!/i)).toBeInTheDocument();
-        expect(screen.getByText(/Tu cuenta fue creada el/i)).toBeInTheDocument();
-        expect(screen.getByText(/Comenzar a jugar/i)).toBeInTheDocument();
-      });
+      expect(screen.getByText(/Hola testUser!/i)).toBeInTheDocument();
+      expect(screen.getByText(/Tu cuenta fue creada el/i)).toBeInTheDocument();
+      expect(screen.getByText(/Comenzar a jugar/i)).toBeInTheDocument();
     });
   });
 
   test('login fails on post /login and error is handled ', async () => {
+    const setLogged = jest.fn();
+
+    // Mock para la petición POST de login fallada
+    axios.post.mockRejectedValueOnce({ response: { status: 500, data: { error: 'Internal Server Error' } } });
+
     await act(async () => {
-      const setLogged = jest.fn();
       render(<Login setLogged={setLogged}/>);
+    });
+  
+    const usernameInput = screen.getByLabelText(/Username/i);
+    const passwordInput = screen.getByLabelText(/Password/i);
+    const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
 
-      const usernameInput = screen.getByLabelText(/Username/i);
-      const passwordInput = screen.getByLabelText(/Password/i);
-      const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
-
-      // Mock the axios.post & axios.get requests to simulate successful responses
-      mockAxios.onPost('http://localhost:8000/login').reply(500);
-
-      // Simulate user input
+    await act(async () => {
       fireEvent.change(usernameInput, { target: { value: 'testUser' } });
       fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
 
-      // Trigger the add user button click
       fireEvent.click(loginButton);
+    });
 
-      // Wait for the Snackbar to be open
-      await waitFor(() => {
-        expect(setLogged).toHaveBeenCalled();
-        expect(screen.getByText(/Login successful/i)).toBeInTheDocument();
-      });
+    await waitFor(() => {
+      expect(setLogged).toHaveBeenCalled(0);
+      expect(screen.getByText(/Internal Server Error/i)).toBeInTheDocument();
+      expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument();
     });
   });
-  */
+
+  test('login fails on get /getAllUsers and error is handled ', async () => {
+    const setLogged = jest.fn();
+
+    // Mock para la petición POST de login exitosa
+    axios.post.mockResolvedValueOnce({
+      data: {
+        createdAt: new Date().toISOString()
+      }
+    });
+    // Mock para la petición get de login fallada
+    axios.get.mockRejectedValueOnce({ response: { status: 500} });
+
+    await act(async () => {
+      render(<Login setLogged={setLogged}/>);
+    });
+  
+    const usernameInput = screen.getByLabelText(/Username/i);
+    const passwordInput = screen.getByLabelText(/Password/i);
+    const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
+
+    await act(async () => {
+      fireEvent.change(usernameInput, { target: { value: 'testUser' } });
+      fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
+
+      fireEvent.click(loginButton);
+    });
+
+    await waitFor(() => {
+      expect(setLogged).toHaveBeenCalled(0);
+      expect(screen.getByText(/Error interno del servidor/i)).toBeInTheDocument();
+      expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument();
+    });
+  });
+
+  test('login fails on post /createUserRank and error is handled ', async () => {
+    const setLogged = jest.fn();
+
+    // Mock para la petición POST de login exitosa
+    axios.post.mockResolvedValueOnce({
+      data: {
+        createdAt: new Date().toISOString()
+      }
+    });
+
+    // Mock para la petición GET de obtener todos los usuarios
+    axios.get.mockResolvedValueOnce({
+      data: [] // Puedes ajustar esto según lo que necesites en tu test
+    });
+
+    // Mock para la petición POST de login fallada
+    axios.post.mockRejectedValueOnce({ response: { status: 500} });
+
+    await act(async () => {
+      render(<Login setLogged={setLogged}/>);
+    });
+  
+    const usernameInput = screen.getByLabelText(/Username/i);
+    const passwordInput = screen.getByLabelText(/Password/i);
+    const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
+
+    await act(async () => {
+      fireEvent.change(usernameInput, { target: { value: 'testUser' } });
+      fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
+
+      fireEvent.click(loginButton);
+    });
+
+    await waitFor(() => {
+      expect(setLogged).toHaveBeenCalled(0);
+      expect(screen.getByText(/Error interno del servidor/i)).toBeInTheDocument();
+      expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument();
+    });
+  });
 });
