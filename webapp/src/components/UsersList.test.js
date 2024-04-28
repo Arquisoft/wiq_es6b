@@ -129,12 +129,14 @@ describe('UsersList', () => {
         });
     });
 
+    function errorFunction(errorMsg) {
+      expect(errorMsg).toBe("Error obteniendo la lista de usurios: TypeError: Cannot read properties of undefined (reading 'status')");
+    }
     
     describe('failing requests', () => {
       test('users list is empty (only headers are shown) when petition fails', async () => {
-        let errorShown = "";
         await act(async () => {
-          render(<UsersList setError={(errorMsg) => {errorShown=errorMsg}} />);
+          render(<UsersList setError={errorFunction} />);
         });
 
         // simulate a failed request
@@ -150,8 +152,6 @@ describe('UsersList', () => {
         // and no users rows are shown
         const rows = await screen.findAllByRole('row');
         expect(rows.length).toBe(1);
-
-        expect(errorShown).toBe("Error obteniendo la lista de usurios: TypeError: Cannot read properties of undefined (reading 'status')");
       });
     });
     
