@@ -11,22 +11,6 @@ const mockAxios = new MockAdapter(axios);
 
 // Define the test suite
 describe('Login Component', () => {
-  axios.post.mockImplementation((url, data) => {
-    if (url.endsWith('/login')) {
-      console.error("En login estamos manejandonos con el mock de axios"); //borrar
-      return Promise.resolve({ data: { createdAt: 'mockedToken' } });
-    }else if (url.endsWith('/createUserRank')) {
-      return Promise.resolve({ data: { rankId: 'mockedRankId' } });
-    }else{
-      console.error("NO ENTRAMOS "+url + " - " + data);
-    }
-  });
-
-  axios.get.mockImplementation((url) => {
-    if (url.endsWith('/getAllUsers')) {
-      return Promise.resolve({ data: { users: ['user1', 'user2'] } });
-    }
-  });
   // Define the test
   test('renders login button', () => {
     // Render the Login component
@@ -52,12 +36,12 @@ describe('Login Component', () => {
     expect(usernameInput).toBeInTheDocument();
     expect(passwordInput).toBeInTheDocument();
 
-    /*
     // Mock the axios.post & axios.get requests to simulate successful responses
     mockAxios.onPost('http://localhost:8000/login').reply(200, { data: { createdAt: '2024-01-01T12:34:56Z' }});
+    mockAxios.onPost('http://localhost:8002/login').reply(200, { data: { createdAt: '2024-01-01T12:34:56Z' }});
+
     mockAxios.onGet('http://localhost:8000/getAllUsers').reply(200, { data: []});
     mockAxios.onPost('http://localhost:8000/createUserRank').reply(200);
-    */
 
     await act(async () => {
       // Simulate user input

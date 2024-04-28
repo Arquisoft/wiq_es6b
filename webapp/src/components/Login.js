@@ -43,13 +43,11 @@ const Login = ({ setLogged }) => {
 
   const loginUser = async () => {
     try {
-      console.error("En login estamos");
       const response = await axios.post(`${apiEndpoint}/login`, { username, password });
       console.error("RESPONSE... "+response);
       const { createdAt: userCreatedAt } = response.data;
       await axios.get(`${apiEndpoint}/getAllUsers`);
       // const users = usersResponse.data;
-      console.error("USERCREATEDAT "+userCreatedAt);
       setCreatedAt(userCreatedAt);
       setLoginSuccess(true);
       setLogged();
