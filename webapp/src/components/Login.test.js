@@ -44,9 +44,7 @@ describe('Login Component', () => {
     return setLogged;
   }
 
-  test('login with valid normal (not "admin") credentials', async () => {
-    const setLogged = setupMocksSuccess();
-    
+  async function loginAndSearch(setLogged, username, password, search=true, all = false){
     await act(async () => {
       render(<Login setLogged={setLogged}/>);
     });
@@ -56,60 +54,43 @@ describe('Login Component', () => {
     const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
 
     await act(async () => {
-      fireEvent.change(usernameInput, { target: { value: 'testUser' } });
-      fireEvent.change(passwordInput, { target: { value: 'test123' } });
+      fireEvent.change(usernameInput, { target: { value: username } });
+      fireEvent.change(passwordInput, { target: { value: password } });
 
       fireEvent.click(loginButton);
     });
 
-    await waitFor(() => {
-      expect(setLogged).toHaveBeenCalledTimes(1);
+    if(search){
+      await waitFor(() => {
+        expect(setLogged).toHaveBeenCalledTimes(1);
+  
+        expect(screen.getAllByText(/Jugar/i)).toHaveLength(2);
+        expect(screen.getByText(/Historial de jugadas/i)).toBeInTheDocument();
+        expect(screen.getByText(/Ranking/i)).toBeInTheDocument();
+        expect(screen.getByText(/Ajustes de partida/i)).toBeInTheDocument();
+  
+        expect(screen.getByText(/Hola testUser!/i)).toBeInTheDocument();
+        expect(screen.getByText(/Tu cuenta fue creada el/i)).toBeInTheDocument();
+        expect(screen.getByText(/Comenzar a jugar/i)).toBeInTheDocument();
+  
+        if(all){ // only for admin
+          expect(screen.getByText(/Historial de Usuarios/i)).toBeInTheDocument();
+          expect(screen.getByText(/Historial de Preguntas Generadas/i)).toBeInTheDocument();
+        }
+      });
+    }
+  }
 
-      expect(screen.getAllByText(/Jugar/i)).toHaveLength(2);
-      expect(screen.getByText(/Historial de jugadas/i)).toBeInTheDocument();
-      expect(screen.getByText(/Ranking/i)).toBeInTheDocument();
-      expect(screen.getByText(/Ajustes de partida/i)).toBeInTheDocument();
-
-      expect(screen.getByText(/Hola testUser!/i)).toBeInTheDocument();
-      expect(screen.getByText(/Tu cuenta fue creada el/i)).toBeInTheDocument();
-      expect(screen.getByText(/Comenzar a jugar/i)).toBeInTheDocument();
-    });
+  test('login with valid normal (not "admin") credentials', async () => {
+    const setLogged = setupMocksSuccess();
+    
+    await loginAndSearch(setLogged, 'testUser', 'testPassword');
   });
 
   test('login with valid admin credentials', async () => {
     const setLogged = setupMocksSuccess();    
     
-    await act(async () => {
-      render(<Login setLogged={setLogged}/>);
-    });
-
-    const usernameInput = screen.getByLabelText(/Username/i);
-    const passwordInput = screen.getByLabelText(/Password/i);
-    const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
-
-    await act(async () => {
-      fireEvent.change(usernameInput, { target: { value: 'admin' } });
-      fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
-
-      fireEvent.click(loginButton);
-    });
-
-    await waitFor(() => {
-      expect(setLogged).toHaveBeenCalledTimes(1);
-      
-      expect(screen.getAllByText(/Jugar/i)).toHaveLength(2);
-      // only for admin
-      expect(screen.getByText(/Historial de Usuarios/i)).toBeInTheDocument();
-      expect(screen.getByText(/Historial de Preguntas Generadas/i)).toBeInTheDocument();
-      // end only for admin
-      expect(screen.getByText(/Historial de jugadas/i)).toBeInTheDocument();
-      expect(screen.getByText(/Ranking/i)).toBeInTheDocument();
-      expect(screen.getByText(/Ajustes de partida/i)).toBeInTheDocument();
-
-      expect(screen.getByText(/Hola admin!/i)).toBeInTheDocument();
-      expect(screen.getByText(/Tu cuenta fue creada el/i)).toBeInTheDocument();
-      expect(screen.getByText(/Comenzar a jugar/i)).toBeInTheDocument();
-    });
+    await loginAndSearch(setLogged, 'admin', 'testPassword');
   });
 
   describe('sucessful login cases trying to access to: userList, questionList, recordList, rankingList, settings', () => {
@@ -133,20 +114,7 @@ describe('Login Component', () => {
         data: {} // Puedes ajustar esto según lo que necesites en tu test
       });
       
-      await act(async () => {
-        render(<Login setLogged={setLogged}/>);
-      });
-
-      const usernameInput = screen.getByLabelText(/Username/i);
-      const passwordInput = screen.getByLabelText(/Password/i);
-      const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
-
-      await act(async () => {
-        fireEvent.change(usernameInput, { target: { value: 'admin' } });
-        fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
-
-        fireEvent.click(loginButton);
-      });
+      
     });
 
     test('from login try to access to usersList', async () => {
@@ -179,21 +147,8 @@ describe('Login Component', () => {
   });
 
   async function performLoginFail(setLogged, username = 'testUser', password = 'testPassword', error = 'Internal Server Error', loggedIn = false) {
-    await act(async () => {
-      render(<Login setLogged={setLogged}/>);
-    });
-  
-    const usernameInput = screen.getByLabelText(/Username/i);
-    const passwordInput = screen.getByLabelText(/Password/i);
-    const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
-  
-    await act(async () => {
-      fireEvent.change(usernameInput, { target: { value: username } });
-      fireEvent.change(passwordInput, { target: { value: password } });
-  
-      fireEvent.click(loginButton);
-    });
-  
+    await loginAndSearch(setLogged, username, password, false);
+
     await waitFor(() => {
       if (!loggedIn) {
       expect(setLogged).not.toHaveBeenCalled();
