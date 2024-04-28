@@ -33,7 +33,7 @@ describe('GeneratedQuestionsList component', () => {
     });
   });
 
-  async function render(){
+  async function renderGeneratedQuestionsList(){
     await act( async () => {
       render(<GeneratedQuestionsList setError={() => {}} />);
     });
@@ -66,9 +66,7 @@ describe('GeneratedQuestionsList component', () => {
   });
 
   test('should order questions by questionBody correctly', async () => {
-    await act(async () => {
-      render(<GeneratedQuestionsList setError={() => {}} />);
-    });   
+    await render();  
 
     const questionBodyHeader = screen.getByRole('columnheader', { name: /Pregunta/i });
           
@@ -96,9 +94,7 @@ describe('GeneratedQuestionsList component', () => {
   });
 
   test('should order questions by answer correctly', async () => {
-    await act(async () => {
-      render(<GeneratedQuestionsList setError={() => {}} />);
-    });
+    await render();
 
     const answerHeader = screen.getByRole('columnheader', { name: /Respuesta Correcta/i });
           
