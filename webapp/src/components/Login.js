@@ -142,7 +142,7 @@ const Login = ({ setLogged }) => {
                 }
                 {showComponent === 'userList' && <UsersList setError={setError} />}
                 {showComponent === 'questionList' && <GeneratedQuestionsList setError={setError} />}
-                {showComponent === 'recordList' && <RecordList username={username} />}
+                {showComponent === 'recordList' && <RecordList username={username} setError={setError} />}
                 {showComponent === 'rankingList' && <RankingList setError={setError} />}
                 {showComponent === 'settings' && <GameSettings setSettings={setSettings} currentUser={username} />}
                 {showComponent === 'login' && (

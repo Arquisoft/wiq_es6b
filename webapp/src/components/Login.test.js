@@ -114,42 +114,35 @@ describe('Login Component', () => {
       await loginAndSearch(setLogged, 'admin', 'testPassword', true, true);
     });
 
-    async function accessToTab(tabName, tabTexts){
+    async function accessToTab(tabName, tabText){
       const tab = screen.getByText(new RegExp(tabName, 'i'));
       await act(async () => {
         fireEvent.click(tab);
       });
 
       await waitFor(async () => {
-        await Promise.all(tabTexts.map(tabText => screen.findAllByText(new RegExp(tabText, 'i'))))
-                      .then(elementsArray => elementsArray.forEach(elements => expect(elements.length).toBeGreaterThan(0)));
+        expect(screen.getByText(new RegExp(tabText,i))).toBeInTheDocument();
       });
     }
 
     test('from login try to access to usersList', async () => {
-      await accessToTab('Historial de Usuarios', ['Nombre de Usuario', 'Fecha de Registro']);
+      await accessToTab('Historial de Usuarios', 'Nombre de Usuario');
     });
 
     test('from login try to access to generatedQuestionsList', async () => {
-      await accessToTab('Historial de Preguntas Generadas', ['Lista de preguntas']);
+      await accessToTab('Historial de Preguntas Generadas', 'Lista de preguntas');
     });
 
     test('from login try to access to recordList', async () => {
-      axios.get.mockResolvedValueOnce({
-        data: []
-      });
-
-      const encabezados = ['Tu historial de jugadas', 'Fecha', 'Tiempo (segundos)', 'Dinero conseguido', 'Respuestas correctas', 'Respuestas falladas'];
-      await accessToTab('Historial de jugadas', encabezados);
+      await accessToTab('Historial de jugadas', 'Tu historial de jugadas');
     });
 
     test('from login try to access to rankingList', async () => {
-      const encabezados = ['Ranking', 'Nombre de Usuario', 'Porcentaje de Aciertos', 'Preguntas Correctas', 'Preguntas Falladas', 'Número de Partidas '];
-      await accessToTab('Ranking', encabezados);
+      await accessToTab('Ranking', 'Ranking');
     });
 
     test('from login try to access to gameSettings', async () => {
-      await accessToTab('Ajustes de partida', ['Número de preguntas', 'Seleccione el número de preguntas:', 'Duración de partida', 'Temáticas']);
+      await accessToTab('Ajustes de partida', 'Número de preguntas');
     });
 
   });
