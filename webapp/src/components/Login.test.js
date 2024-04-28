@@ -97,30 +97,27 @@ describe('Login Component', () => {
     beforeEach(async () => {
       const setLogged = jest.fn();
 
-      // Mock para la petición POST de login exitosa
       axios.post.mockResolvedValueOnce({
         data: {
           createdAt: new Date().toISOString()
         }
       });
 
-      // Mock para la petición GET de obtener todos los usuarios
       axios.get.mockResolvedValueOnce({
-        data: [] // Puedes ajustar esto según lo que necesites en tu test
+        data: [] 
       });
 
-      // Mock para la petición POST de createUserRank exitosa
       axios.post.mockResolvedValueOnce({
-        data: {} // Puedes ajustar esto según lo que necesites en tu test
+        data: {} 
       });
       
       await loginAndSearch(setLogged, 'admin', 'testPassword', true, true);
     });
 
     async function accessToTab(tabName, tabTexts){
-      const usersListTab = screen.getByText(new RegExp(tabName, 'i'));
+      const tab = screen.getByText(new RegExp(tabName, 'i'));
       await act(async () => {
-        fireEvent.click(usersListTab);
+        fireEvent.click(tab);
       });
 
       await waitFor(async () => {
@@ -138,6 +135,10 @@ describe('Login Component', () => {
     });
 
     test('from login try to access to recordList', async () => {
+      axios.get.mockResolvedValueOnce({
+        data: []
+      });
+
       const encabezados = ['Tu historial de jugadas', 'Fecha', 'Tiempo (segundos)', 'Dinero conseguido', 'Respuestas correctas', 'Respuestas falladas'];
       await accessToTab('Historial de jugadas', encabezados);
     });
