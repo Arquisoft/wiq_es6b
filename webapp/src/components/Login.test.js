@@ -24,6 +24,23 @@ describe('Login Component', () => {
   test('login with valid normal (not "admin") credentials', async () => {
     const setLogged = jest.fn();
 
+    // Mock para la petición POST de login exitosa
+    axios.post.mockResolvedValueOnce({
+      data: {
+        createdAt: new Date().toISOString()
+      }
+    });
+
+    // Mock para la petición GET de obtener todos los usuarios
+    axios.get.mockResolvedValueOnce({
+      data: [] // Puedes ajustar esto según lo que necesites en tu test
+    });
+
+    // Mock para la petición POST de createUserRank exitosa
+    axios.post.mockResolvedValueOnce({
+      data: {} // Puedes ajustar esto según lo que necesites en tu test
+    });
+
     await act(async () => {
       render(<Login setLogged={setLogged}/>);
     });
@@ -35,13 +52,6 @@ describe('Login Component', () => {
     expect(loginButton).toBeInTheDocument();
     expect(usernameInput).toBeInTheDocument();
     expect(passwordInput).toBeInTheDocument();
-
-    // Mock the axios.post & axios.get requests to simulate successful responses
-    mockAxios.onPost('http://localhost:8000/login').reply(200, { data: { createdAt: '2024-01-01T12:34:56Z' }});
-    mockAxios.onPost('http://localhost:8002/login').reply(200, { data: { createdAt: '2024-01-01T12:34:56Z' }});
-
-    mockAxios.onGet('http://localhost:8000/getAllUsers').reply(200, { data: []});
-    mockAxios.onPost('http://localhost:8000/createUserRank').reply(200);
 
     await act(async () => {
       // Simulate user input
