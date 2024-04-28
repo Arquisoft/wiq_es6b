@@ -15,19 +15,19 @@ describe('GeneratedQuestionsList component', () => {
       data: [
         {
           generatedQuestionBody: "¿A qué género literario pertenece 'Cinco horas con Mario'?",
-          correcta: 'Narrativo'
+          correctAnswer: 'Narrativo'
         },
         {
           generatedQuestionBody: "¿De qué grupo es la canción 'Vino Tinto'?",
-          correcta: 'Estopa'
+          correctAnswer: 'Estopa'
         },
         {
           generatedQuestionBody: "¿Cuál es la capital de Portugal?",
-          correcta: 'Lisboa'
+          correctAnswer: 'Lisboa'
         },
         {
           generatedQuestionBody: "¿Quién escribió la novela 'El Extranjero'?",
-          correcta: 'Albert Camus'
+          correctAnswer: 'Albert Camus'
         },
       ],
     });
