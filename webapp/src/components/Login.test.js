@@ -63,7 +63,7 @@ describe('Login Component', () => {
     await waitFor(() => {
       expect(setLogged).toHaveBeenCalledTimes(1);
 
-      expect(screen.getByText(/Jugar/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/Jugar/i)).toHaveLength(2);
       expect(screen.getByText(/Historial de jugadas/i)).toBeInTheDocument();
       expect(screen.getByText(/Ranking/i)).toBeInTheDocument();
       expect(screen.getByText(/Ajustes de partida/i)).toBeInTheDocument();
@@ -112,7 +112,7 @@ describe('Login Component', () => {
     await waitFor(() => {
       expect(setLogged).toHaveBeenCalledTimes(1);
       
-      expect(screen.getByText(/Jugar/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/Jugar/i)).toHaveLength(2);
       // only for admin
       expect(screen.getByText(/Historial de Usuarios/i)).toBeInTheDocument();
       expect(screen.getByText(/Historial de Preguntas Generadas/i)).toBeInTheDocument();
@@ -149,7 +149,7 @@ describe('Login Component', () => {
     });
 
     await waitFor(() => {
-      expect(setLogged).toHaveBeenCalled(0);
+      expect(setLogged).not.toHaveBeenCalled();
       expect(screen.getByText(/Internal Server Error/i)).toBeInTheDocument();
       expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument();
     });
@@ -183,7 +183,7 @@ describe('Login Component', () => {
     });
 
     await waitFor(() => {
-      expect(setLogged).toHaveBeenCalled(0);
+      expect(setLogged).not.toHaveBeenCalled();
       expect(screen.getByText(/Error interno del servidor/i)).toBeInTheDocument();
       expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument();
     });
@@ -223,7 +223,7 @@ describe('Login Component', () => {
     });
 
     await waitFor(() => {
-      expect(setLogged).toHaveBeenCalled(0);
+      expect(setLogged).not.toHaveBeenCalled();
       expect(screen.getByText(/Error interno del servidor/i)).toBeInTheDocument();
       expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument();
     });
