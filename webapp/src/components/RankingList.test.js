@@ -48,7 +48,7 @@ describe('RankingList', () => {
 
     async function renderRankingList() {
       await act(async () => {
-        render(<RankingList setError={emptyFunction} />);
+        render(<RankingList setError={() => {}} />);
       });
     }
 
