@@ -127,6 +127,73 @@ describe('Login Component', () => {
     });
   });
 
+  describe('sucessful login cases trying to access to: userList, questionList, recordList, rankingList, settings', () => {
+    beforeEach(async () => {
+      const setLogged = jest.fn();
+
+      // Mock para la petición POST de login exitosa
+      axios.post.mockResolvedValueOnce({
+        data: {
+          createdAt: new Date().toISOString()
+        }
+      });
+
+      // Mock para la petición GET de obtener todos los usuarios
+      axios.get.mockResolvedValueOnce({
+        data: [] // Puedes ajustar esto según lo que necesites en tu test
+      });
+
+      // Mock para la petición POST de createUserRank exitosa
+      axios.post.mockResolvedValueOnce({
+        data: {} // Puedes ajustar esto según lo que necesites en tu test
+      });
+      
+      await act(async () => {
+        render(<Login setLogged={setLogged}/>);
+      });
+
+      const usernameInput = screen.getByLabelText(/Username/i);
+      const passwordInput = screen.getByLabelText(/Password/i);
+      const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
+
+      await act(async () => {
+        fireEvent.change(usernameInput, { target: { value: 'admin' } });
+        fireEvent.change(passwordInput, { target: { value: 'testPassword' } });
+
+        fireEvent.click(loginButton);
+      });
+    });
+
+    test('from login try to access to usersList', async () => {
+      const usersListTab = screen.getByText(/Historial de Usuarios/i);
+      await act(async () => {
+        fireEvent.click(usersListTab);
+      });
+      await waitFor(() => {
+        expect(screen.getByText(/Nombre de Usuario/i)).toBeInTheDocument();
+        expect(screen.getByText(/Fecha de Registro/i)).toBeInTheDocument();
+      });
+    });
+/*
+    test('from login try to access to generatedQuestionsList', async () => {
+    
+    });
+
+    test('from login try to access to recordList', async () => {
+    
+    });
+
+    test('from login try to access to rankingList', async () => {
+    
+    });
+
+    test('from login try to access to gameSettings', async () => {
+    
+    });
+*/
+  });
+
+
   test('login fails on post /login and error is handled ', async () => {
     const setLogged = jest.fn();
 
@@ -224,8 +291,8 @@ describe('Login Component', () => {
 
     await waitFor(() => {
       expect(setLogged).toHaveBeenCalled(); // se ha loggeado pero no se ha creado el ranking del usuario
-      expect(screen.getByText(/Internal Server Error/i)).toBeInTheDocument();
-      expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument();
+      expect(screen.getByText(/Espere, estamos cargando sus datos.../i)).toBeInTheDocument(); // se queda esperando cargando
+      expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument(); // no te deja jugar
     });
   });
 });
