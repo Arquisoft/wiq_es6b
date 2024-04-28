@@ -36,6 +36,9 @@ describe('Login Component', () => {
     expect(usernameInput).toBeInTheDocument();
     expect(passwordInput).toBeInTheDocument();
 
+    expect(screen.getByText(/Probando una cosa/i)).toBeInTheDocument();
+
+
     // Mock the axios.post & axios.get requests to simulate successful responses
     mockAxios.onPost('http://localhost:8000/login').reply(200, { createdAt: '2024-01-01T12:34:56Z' });
     mockAxios.onGet('http://localhost:8000/getAllUsers').reply(200);
