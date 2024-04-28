@@ -114,36 +114,44 @@ describe('Login Component', () => {
         data: {} // Puedes ajustar esto según lo que necesites en tu test
       });
       
-      
+      await loginAndSearch(setLogged, 'admin', 'testPassword', true, true);
     });
 
-    test('from login try to access to usersList', async () => {
-      const usersListTab = screen.getByText(/Historial de Usuarios/i);
+    async function accessToTab(tabName, tabTexts){
+      const usersListTab = screen.getByText(new RegExp(tabName, 'i'));
       await act(async () => {
         fireEvent.click(usersListTab);
       });
+
       await waitFor(() => {
-        expect(screen.getByText(/Nombre de Usuario/i)).toBeInTheDocument();
-        expect(screen.getByText(/Fecha de Registro/i)).toBeInTheDocument();
+        tabTexts.forEach(async (tabText) => {
+          expect(screen.getByText(new RegExp(tabText, 'i'))).toBeInTheDocument();
+        });
       });
+    }
+
+    test('from login try to access to usersList', async () => {
+      await accessToTab('Historial de Usuarios', ['Nombre de Usuario', 'Fecha de Registro']);
     });
-/*
+
     test('from login try to access to generatedQuestionsList', async () => {
-    
+      await accessToTab('Historial de Preguntas Generadas', ['Lista de preguntas']);
     });
 
     test('from login try to access to recordList', async () => {
-    
+      const encabezados = ['Tu historial de jugadas', 'Fecha', 'Tiempo (segundos)', 'Dinero conseguido', 'Respuestas correctas', 'Respuestas falladas'];
+      await accessToTab('Historial de jugadas', encabezados);
     });
 
     test('from login try to access to rankingList', async () => {
-    
+      const encabezados = ['Ranking', 'Nombre de Usuario', 'Porcentaje de Aciertos', 'Preguntas Correctas', 'Preguntas Falladas', 'Número de Partidas '];
+      await accessToTab('Ranking', encabezados);
     });
 
     test('from login try to access to gameSettings', async () => {
-    
+      await accessToTab('Ajustes de partida', ['Número de preguntas', 'Seleccione el número de preguntas:', 'Duración de partida', 'Temáticas']);
     });
-*/
+
   });
 
   async function performLoginFail(setLogged, username = 'testUser', password = 'testPassword', error = 'Internal Server Error', loggedIn = false) {
