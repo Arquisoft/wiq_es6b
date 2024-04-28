@@ -224,7 +224,7 @@ describe('Login Component', () => {
 
     await waitFor(() => {
       expect(setLogged).toHaveBeenCalled(); // se ha loggeado pero no se ha creado el ranking del usuario
-      expect(screen.getByText(/Error interno del servidor/i)).toBeInTheDocument();
+      expect(screen.getByText(/Internal Server Error/i)).toBeInTheDocument();
       expect(screen.queryByText(/Comenzar a jugar/i)).not.toBeInTheDocument();
     });
   });
