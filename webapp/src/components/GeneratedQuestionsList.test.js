@@ -33,32 +33,36 @@ describe('GeneratedQuestionsList component', () => {
     });
   });
 
-  test('renders GeneratedQuestionsList component and main heading', () => {
-    render(<GeneratedQuestionsList setError={() => {}} />);
-
+  test('renders GeneratedQuestionsList component and main heading', async () => {
+    await act( async () => {
+      render(<GeneratedQuestionsList setError={() => {}} />);
+    });
     const heading = screen.getByRole('heading', { name: /Lista de preguntas/i });
     expect(heading).toBeInTheDocument();
   });
 
-  it('should display the table', () => {
-    render(<GeneratedQuestionsList setError={() => {}} />);
-
+  it('should display the table', async () => {
+    await act( async () => {
+      render(<GeneratedQuestionsList setError={() => {}} />);
+    });
     const table = screen.getByRole('table');
     expect(table).toBeInTheDocument();
   });
 
-  test('renders table headers', () => {
-    render(<GeneratedQuestionsList setError={() => {}} />);
-
+  test('renders table headers', async () => {
+    await act( async () => {
+      render(<GeneratedQuestionsList setError={() => {}} />);
+    });
     const questionHeader = screen.getByRole('columnheader', { name: /Pregunta/i });
     const answerHeader = screen.getByRole('columnheader', { name: /Respuesta Correcta/i });
     expect(questionHeader).toBeInTheDocument();
     expect(answerHeader).toBeInTheDocument();
   });
 
-  test('renders table rows', () => {
-    render(<GeneratedQuestionsList setError={() => {}} />);
-
+  test('renders table rows', async () => {
+    await act( async () => {
+      render(<GeneratedQuestionsList setError={() => {}} />);
+    });
     const tableRows = screen.getAllByRole('row');
     expect(tableRows).not.toHaveLength(0);
   });
@@ -66,7 +70,7 @@ describe('GeneratedQuestionsList component', () => {
   test('should order questions by questionBody correctly', async () => {
     await act(async () => {
       render(<GeneratedQuestionsList setError={() => {}} />);
-    });
+    });   
 
     const questionBodyHeader = screen.getByRole('columnheader', { name: /Pregunta/i });
           
