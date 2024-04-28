@@ -54,7 +54,7 @@ describe('Login Component', () => {
     expect(passwordInput).toBeInTheDocument();
 
     await act(async () => {
-      fireEvent.change(usernameInput, { target: { value: 'normalUser' } });
+      fireEvent.change(usernameInput, { target: { value: 'testUser' } });
       fireEvent.change(passwordInput, { target: { value: 'test123' } });
 
       fireEvent.click(loginButton);
@@ -121,7 +121,7 @@ describe('Login Component', () => {
       expect(screen.getByText(/Ranking/i)).toBeInTheDocument();
       expect(screen.getByText(/Ajustes de partida/i)).toBeInTheDocument();
 
-      expect(screen.getByText(/Hola testUser!/i)).toBeInTheDocument();
+      expect(screen.getByText(/Hola admin!/i)).toBeInTheDocument();
       expect(screen.getByText(/Tu cuenta fue creada el/i)).toBeInTheDocument();
       expect(screen.getByText(/Comenzar a jugar/i)).toBeInTheDocument();
     });
