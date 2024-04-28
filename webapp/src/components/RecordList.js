@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
-const RecordList = ({ username }) => {
+const RecordList = ({ username, setError }) => {
   const [listRecords, setListRecords] = useState([]);
   const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -17,10 +18,10 @@ const RecordList = ({ username }) => {
           }));
           setListRecords(userRecords);
         } else {
-          console.error('Error obtaining the user records list');
+          setError('Error obtaining the user records list');
         }
       } catch (error) {
-        console.error('Error obtaining the user records list:', error);
+        setError('Error obtaining the user records list: '+ error);
       }
     };
 
@@ -54,6 +55,11 @@ const RecordList = ({ username }) => {
       </table>
     </div>
   );
+};
+
+RecordList.propTypes = {
+  username: PropTypes.string.isRequired,
+  setError: PropTypes.func.isRequired,
 };
 
 export default RecordList;

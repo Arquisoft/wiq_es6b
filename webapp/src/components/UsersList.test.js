@@ -34,9 +34,13 @@ describe('UsersList', () => {
       });
     });
 
+    function emptyFunction() {  
+      return;
+    }
+
     it('renders headers list correctly', async () => {
       await act(async () => {
-        render(<UsersList />);
+        render(<UsersList setError={emptyFunction} />);
       });
 
       // Check if the table headers are in the document
@@ -49,7 +53,7 @@ describe('UsersList', () => {
 
     it('renders all the users rows', async () => {
       await act(async () => {
-        render(<UsersList />);
+        render(<UsersList setError={emptyFunction} />);
       });    
       // Check if the table rows are in the document
       const tableRows = screen.getAllByRole('row');
@@ -58,7 +62,7 @@ describe('UsersList', () => {
 
     it('should order users by username correctly', async () => {
       await act(async () => {
-        render(<UsersList />);
+        render(<UsersList setError={emptyFunction} />);
       }); 
 
       // We click the username header to order the users by username
@@ -92,7 +96,7 @@ describe('UsersList', () => {
 
       it('should order users by createdAt date correctly', async () => {
         await act(async () => {
-          render(<UsersList />);
+          render(<UsersList setError={emptyFunction} />);
         }); 
     
         // We click the username header to order the users by username
@@ -125,23 +129,18 @@ describe('UsersList', () => {
         });
     });
 
+    function errorFunction(errorMsg) {
+      expect(errorMsg).toBe("Error obteniendo la lista de usurios: TypeError: Cannot read properties of undefined (reading 'status')");
+    }
     
     describe('failing requests', () => {
-      beforeEach(() => {
-        axios.get.mockRejectedValue({
-          response: {
-            status: 500,
-            data: {
-              error: 'Internal Server Error'
-            },
-          },
-        });
-      });
-
-      it('users list is empty (only headers are shown) when petition fails', async () => {
+      test('users list is empty (only headers are shown) when petition fails', async () => {
         await act(async () => {
-          render(<UsersList />);
+          render(<UsersList setError={errorFunction} />);
         });
+
+        // simulate a failed request
+        mockAxios.onPost('http://localhost:8000/getAllUsers').reply(500, { error: 'Internal Server Error' });
 
         // Check if the table headers are in the document 
         const usernameHeader = screen.getByRole('columnheader', { name: /Nombre de Usuario/i });

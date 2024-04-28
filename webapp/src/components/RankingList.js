@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
-const RankingList = () => {
+const RankingList = ({setError}) => {
   const [listUsers, setListUsers] = useState([]);
   const [sortColumn, setSortColumn] = useState('porcentajeAciertos');
   const [sortOrder, setSortOrder] = useState('desc');
@@ -23,10 +24,10 @@ const RankingList = () => {
           const sortedUsers = [...uList].sort((a, b) => b.porcentajeAciertos - a.porcentajeAciertos);
           setTopThreeUsers(sortedUsers.slice(0, 3));
         } else {
-          console.error('Error obteniendo la lista de usuarios');
+          setError('Error obteniendo el ranking del usuario');
         }
       } catch (error) {
-        console.error('Error obteniendo la lista de usuarios:', error);
+        setError(`Error obteniendo el ranking del usuario: ${error}`);
       }
     };
 
@@ -97,6 +98,11 @@ const RankingList = () => {
       </table>
     </div>
   );
+};
+
+
+RankingList.propTypes = {
+  setError: PropTypes.func.isRequired,
 };
 
 export default RankingList;
