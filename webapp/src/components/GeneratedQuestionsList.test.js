@@ -64,6 +64,10 @@ describe('GeneratedQuestionsList component', () => {
   });
 
   test('should order questions by questionBody correctly', async () => {
+    await act(async () => {
+      render(<GeneratedQuestionsList setError={() => {}} />);
+    });
+
     const questionBodyHeader = screen.getByRole('columnheader', { name: /Pregunta/i });
           
     await act(async() => {
