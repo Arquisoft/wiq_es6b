@@ -64,7 +64,7 @@ const Login = ({ setLogged }) => {
       } else if (error.request) {
         setError('No response from server. Please try again later.');
       } else {
-        setError('An unexpected error occurred.');
+        setError('An unexpected error occurred. -> ' + error.message);
       }
     }
   };
