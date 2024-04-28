@@ -46,16 +46,20 @@ describe('RankingList', () => {
       });
     });
 
+    function emptyFunction() {
+      return;
+    }
+
     it('renders without crashing', async () => {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
     });
 
 
     test('renders RankingList component and main heading', async () => {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
 
       // Check if the main heading is in the document
@@ -66,7 +70,7 @@ describe('RankingList', () => {
     // Test for rendering the column headers
     test('renders column headers', async () => {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
     
       // Check if the column headers are in the document
@@ -77,7 +81,7 @@ describe('RankingList', () => {
     // Test for rendering the table
     it('should display the table', async () => {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
 
       const table = screen.getByRole('table');
@@ -87,7 +91,7 @@ describe('RankingList', () => {
 
     test('tests tabla ranking', async () => {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
 
       expect(screen.queryByText("Ranking")).toBeInTheDocument();
@@ -100,7 +104,7 @@ describe('RankingList', () => {
 
     test('show ranking table with content', async () => {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
   
       const rows = await screen.findAllByRole('row');
@@ -109,7 +113,7 @@ describe('RankingList', () => {
 
     test('show users ordered by "porcentajeAciertos" BY DEFAULT correctly', async () => {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
       
       // We wait for the users to be loaded and the table to be updated
@@ -125,7 +129,7 @@ describe('RankingList', () => {
 
     test('show users ordered by "username" correctly', async () => {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
       const usernameHeader = screen.getByRole('columnheader', { name: /Nombre de Usuario/i });
       
@@ -159,7 +163,7 @@ describe('RankingList', () => {
 
     test('show users ordered by "porcentajeAciertos" correctly', async () => {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
       const porcentajeAciertosHeader = screen.getByRole('columnheader', { name: /Porcentaje de Aciertos/i });
       
@@ -193,7 +197,7 @@ describe('RankingList', () => {
 
     test('show users ordered by "preguntasCorrectas" correctly', async () => {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
       const preguntasCorrectasHeader = screen.getByRole('columnheader', { name: /Preguntas Correctas/i });
       
@@ -226,7 +230,7 @@ describe('RankingList', () => {
 
     test('show users ordered by "preguntasFalladas" correctly', async () => {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
       const preguntasFalladasHeader = screen.getByRole('columnheader', { name: /Preguntas Falladas/i });
       
@@ -259,7 +263,7 @@ describe('RankingList', () => {
 
     test('show users ordered by "numeroPartidas" correctly', async () => {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
       const numPartidasHeader = screen.getByRole('columnheader', { name: /Número de Partidas/i });
       
