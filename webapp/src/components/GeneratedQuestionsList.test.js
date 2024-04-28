@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import GeneratedQuestionsList from './GeneratedQuestionsList';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
