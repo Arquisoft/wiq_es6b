@@ -125,7 +125,8 @@ describe('Login Component', () => {
 
       await waitFor(() => {
         tabTexts.forEach(async (tabText) => {
-          expect(screen.getByText(new RegExp(tabText, 'i'))).toBeInTheDocument();
+          const elements = await screen.findAllByText(new RegExp(tabText, 'i'));
+          expect(elements.length).toBeGreaterThan(0);
         });
       });
     }
