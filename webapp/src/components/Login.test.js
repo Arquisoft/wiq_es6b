@@ -205,7 +205,7 @@ describe('Login Component', () => {
     });
 
     // Mock para la petición POST de login fallada
-    axios.post.mockRejectedValueOnce({ response: { status: 500} });
+    axios.post.mockRejectedValueOnce({ response: { status: 500, data: { error: 'Internal Server Error' } } });
 
     await act(async () => {
       render(<Login setLogged={setLogged}/>);
