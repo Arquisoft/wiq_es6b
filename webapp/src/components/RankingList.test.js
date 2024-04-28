@@ -2,8 +2,11 @@ import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import RankingList from './RankingList';
 import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 
 jest.mock('axios');
+
+const mockAxios = new MockAdapter(axios);
 
 describe('RankingList', () => {
   describe('successful requests', () => {
@@ -43,17 +46,23 @@ describe('RankingList', () => {
       });
     });
 
-    it('renders without crashing', async () => {
+    function emptyFunction() {  
+      return;
+    }
+
+    async function renderRankingList() {
       await act(async () => {
-        render(<RankingList />);
+        render(<RankingList setError={emptyFunction} />);
       });
+    }
+
+    it('renders without crashing', async () => {
+      await renderRankingList();
     });
 
 
     test('renders RankingList component and main heading', async () => {
-      await act(async () => {
-        render(<RankingList />);
-      });
+      await renderRankingList();
 
       // Check if the main heading is in the document
       const heading = screen.getByRole('heading', { name: /Top 3 usuarios con mejor porcentaje de aciertos/i });
@@ -62,9 +71,7 @@ describe('RankingList', () => {
 
     // Test for rendering the column headers
     test('renders column headers', async () => {
-      await act(async () => {
-        render(<RankingList />);
-      });
+      await renderRankingList();
     
       // Check if the column headers are in the document
       const columnHeaders = screen.getAllByRole('columnheader');
@@ -73,9 +80,7 @@ describe('RankingList', () => {
     
     // Test for rendering the table
     it('should display the table', async () => {
-      await act(async () => {
-        render(<RankingList />);
-      });
+      await renderRankingList();
 
       const table = screen.getByRole('table');
       expect(table).toBeInTheDocument();
@@ -83,9 +88,7 @@ describe('RankingList', () => {
 
 
     test('tests tabla ranking', async () => {
-      await act(async () => {
-        render(<RankingList />);
-      });
+      await renderRankingList();
 
       expect(screen.queryByText("Ranking")).toBeInTheDocument();
       expect(screen.getByText(/Nombre de Usuario/i)).toBeInTheDocument();
@@ -96,18 +99,14 @@ describe('RankingList', () => {
     });
 
     test('show ranking table with content', async () => {
-      await act(async () => {
-        render(<RankingList />);
-      });
+      await renderRankingList();
   
       const rows = await screen.findAllByRole('row');
       expect(rows).toHaveLength(5);
     });
 
     test('show users ordered by "porcentajeAciertos" BY DEFAULT correctly', async () => {
-      await act(async () => {
-        render(<RankingList />);
-      });
+      await renderRankingList();
       
       // We wait for the users to be loaded and the table to be updated
       let rows = await screen.findAllByRole('row');
@@ -120,10 +119,40 @@ describe('RankingList', () => {
 
     });
 
-    test('show users ordered by "porcentajeAciertos" correctly', async () => {
-      await act(async () => {
-        render(<RankingList />);
+    test('show users ordered by "username" correctly', async () => {
+      await renderRankingList();
+      const usernameHeader = screen.getByRole('columnheader', { name: /Nombre de Usuario/i });
+      
+      await act(async() => {
+        usernameHeader.click(); // DESC
       });
+
+      // We wait for the users to be loaded and the table to be updated
+      let rows = await screen.findAllByRole('row');
+
+      // We check if the first row is the one with the username 'troll'
+      expect(rows[4]).toHaveTextContent('manuel');
+      expect(rows[3]).toHaveTextContent('maría');
+      expect(rows[2]).toHaveTextContent('pedro');
+      expect(rows[1]).toHaveTextContent('troll');
+
+      await act(async() => {
+        usernameHeader.click(); // ASC
+      });
+
+      // We wait for the users to be loaded and the table to be updated
+      rows = await screen.findAllByRole('row');
+
+      // We check if the first row is the one with the username 'manuel'
+      expect(rows[1]).toHaveTextContent('manuel');
+      expect(rows[2]).toHaveTextContent('maría');
+      expect(rows[3]).toHaveTextContent('pedro');
+      expect(rows[4]).toHaveTextContent('troll');
+      
+    });
+
+    test('show users ordered by "porcentajeAciertos" correctly', async () => {
+      await renderRankingList();
       const porcentajeAciertosHeader = screen.getByRole('columnheader', { name: /Porcentaje de Aciertos/i });
       
       await act(async() => {
@@ -155,9 +184,7 @@ describe('RankingList', () => {
     });
 
     test('show users ordered by "preguntasCorrectas" correctly', async () => {
-      await act(async () => {
-        render(<RankingList />);
-      });
+      await renderRankingList();
       const preguntasCorrectasHeader = screen.getByRole('columnheader', { name: /Preguntas Correctas/i });
       
       await act(async() => {
@@ -188,9 +215,7 @@ describe('RankingList', () => {
     });
 
     test('show users ordered by "preguntasFalladas" correctly', async () => {
-      await act(async () => {
-        render(<RankingList />);
-      });
+      await renderRankingList();
       const preguntasFalladasHeader = screen.getByRole('columnheader', { name: /Preguntas Falladas/i });
       
       await act(async() => {
@@ -221,9 +246,7 @@ describe('RankingList', () => {
     });
 
     test('show users ordered by "numeroPartidas" correctly', async () => {
-      await act(async () => {
-        render(<RankingList />);
-      });
+      await renderRankingList();
       const numPartidasHeader = screen.getByRole('columnheader', { name: /Número de Partidas/i });
       
       await act(async() => {
@@ -254,5 +277,29 @@ describe('RankingList', () => {
     });
 
   }); // fin tests correctos
+
+  test('should display an error message when the request fails', async () => {
+    let errorShown = "";
+      await act(async () => {
+        render(<RankingList setError={(errorMsg) => {errorShown=errorMsg}} />);
+      });
+
+    // simulate a failed request
+    mockAxios.onPost('http://localhost:8000/obtainRank').reply(500, { error: 'Internal Server Error' });
+
+    // Check if the table headers are in the document 
+    expect(screen.queryByText("Ranking")).toBeInTheDocument();
+    expect(screen.getByText(/Nombre de Usuario/i)).toBeInTheDocument();
+    expect(screen.queryAllByText(/Porcentaje de Aciertos/i)).not.toHaveLength(0);
+    expect(screen.getByText(/Preguntas Correctas/i)).toBeInTheDocument();
+    expect(screen.getByText(/Preguntas Falladas/i)).toBeInTheDocument();
+    expect(screen.getByText(/Número de Partidas/i)).toBeInTheDocument();
+
+    // and no users rows are shown
+    const rows = await screen.findAllByRole('row');
+    expect(rows.length).toBe(1);
+
+    expect(errorShown).toBe("Error obteniendo el ranking del usuario: TypeError: Cannot read properties of undefined (reading 'status')");
+  });
 
 });
