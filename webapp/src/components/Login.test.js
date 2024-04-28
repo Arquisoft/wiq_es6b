@@ -23,6 +23,7 @@ describe('Login Component', () => {
 
   axios.post.mockImplementation((url, data) => {
     if (url.endsWith('/login')) {
+      console.error("En login estamos manejandonos con el mock de axios"); //borrar
       return Promise.resolve({ data: { token: 'mockedToken' } });
     }else if (url.endsWith('/createUserRank')) {
       return Promise.resolve({ data: { rankId: 'mockedRankId' } });
