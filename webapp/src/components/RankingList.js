@@ -99,4 +99,9 @@ const RankingList = ({setError}) => {
   );
 };
 
+
+RankingList.propTypes = {
+  setError: PropTypes.func.isRequired,
+};
+
 export default RankingList;

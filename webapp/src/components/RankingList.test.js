@@ -292,31 +292,28 @@ describe('RankingList', () => {
 
   }); // fin tests correctos
 
-  describe('failing requests', () => {
-    test('should display an error message when the request fails', async () => {
-      let errorShown = "";
-        await act(async () => {
-          render(<RankingList setError={(errorMsg) => {errorShown=errorMsg}} />);
-        });
+  test('should display an error message when the request fails', async () => {
+    let errorShown = "";
+      await act(async () => {
+        render(<RankingList setError={(errorMsg) => {errorShown=errorMsg}} />);
+      });
 
-      // simulate a failed request
-      mockAxios.onPost('http://localhost:8000/obtainRank').reply(500, { error: 'Internal Server Error' });
+    // simulate a failed request
+    mockAxios.onPost('http://localhost:8000/obtainRank').reply(500, { error: 'Internal Server Error' });
 
-      // Check if the table headers are in the document 
-      expect(screen.queryByText("Ranking")).toBeInTheDocument();
-      expect(screen.getByText(/Nombre de Usuario/i)).toBeInTheDocument();
-      expect(screen.queryAllByText(/Porcentaje de Aciertos/i)).not.toHaveLength(0);
-      expect(screen.getByText(/Preguntas Correctas/i)).toBeInTheDocument();
-      expect(screen.getByText(/Preguntas Falladas/i)).toBeInTheDocument();
-      expect(screen.getByText(/Número de Partidas/i)).toBeInTheDocument();
+    // Check if the table headers are in the document 
+    expect(screen.queryByText("Ranking")).toBeInTheDocument();
+    expect(screen.getByText(/Nombre de Usuario/i)).toBeInTheDocument();
+    expect(screen.queryAllByText(/Porcentaje de Aciertos/i)).not.toHaveLength(0);
+    expect(screen.getByText(/Preguntas Correctas/i)).toBeInTheDocument();
+    expect(screen.getByText(/Preguntas Falladas/i)).toBeInTheDocument();
+    expect(screen.getByText(/Número de Partidas/i)).toBeInTheDocument();
 
-      // and no users rows are shown
-      const rows = await screen.findAllByRole('row');
-      expect(rows.length).toBe(1);
+    // and no users rows are shown
+    const rows = await screen.findAllByRole('row');
+    expect(rows.length).toBe(1);
 
-      expect(errorShown).toBe("Error obteniendo el ranking del usuario: TypeError: Cannot read properties of undefined (reading 'status')");
-    });
-
-  }); // fin tests fallidos
+    expect(errorShown).toBe("Error obteniendo el ranking del usuario: TypeError: Cannot read properties of undefined (reading 'status')");
+  });
 
 });

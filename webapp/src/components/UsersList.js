@@ -80,4 +80,8 @@ const UsersList = ({ setError }) => {
   );
 };
 
+UsersList.propTypes = {
+  setError: PropTypes.func.isRequired,
+};
+
 export default UsersList;

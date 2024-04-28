@@ -123,11 +123,9 @@ describe('Login Component', () => {
         fireEvent.click(usersListTab);
       });
 
-      await waitFor(() => {
-        tabTexts.forEach(async (tabText) => {
-          const elements = await screen.findAllByText(new RegExp(tabText, 'i'));
-          expect(elements.length).toBeGreaterThan(0);
-        });
+      await waitFor(async () => {
+        await Promise.all(tabTexts.map(tabText => screen.findAllByText(new RegExp(tabText, 'i'))))
+                      .then(elementsArray => elementsArray.forEach(elements => expect(elements.length).toBeGreaterThan(0)));
       });
     }
 

@@ -76,4 +76,8 @@ const GeneratedQuestionsList = ({setError}) => {
   );
 };
 
+GeneratedQuestionsList.propTypes = {
+  setError: PropTypes.func.isRequired,
+};
+
 export default GeneratedQuestionsList;
