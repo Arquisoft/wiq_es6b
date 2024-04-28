@@ -36,21 +36,10 @@ describe('Login Component', () => {
     expect(usernameInput).toBeInTheDocument();
     expect(passwordInput).toBeInTheDocument();
 
-    // Mock the axios.post & axios.get requests to simulate successful responses
-    // mockAxios.onPost('http://localhost:8000/login').reply(200, { data:{ createdAt: '2024-01-01T12:34:56Z' }});
-    mockAxios.onPost('http://localhost:8000/login').reply(config => {
-      // Parse the data from the request config
-      const { username, password } = JSON.parse(config.data);
+    let username = 'admin';
 
-      // Check the username and password
-      if (username === 'admin' && password === 'admin') {
-        // If the username and password are correct, return a 200 status and a data property
-        return [200, { data: { createdAt: '2024-01-01T12:34:56Z' } }];
-      } else {
-        // If the username and password are incorrect, return a 401 status and an error message
-        return [401, { message: 'Invalid username or password' }];
-      }
-    });
+    // Mock the axios.post & axios.get requests to simulate successful responses
+    mockAxios.onPost('http://localhost:8000/login', { username, username }).reply(200, { data: { createdAt: '2024-01-01T12:34:56Z' }});
     mockAxios.onGet('http://localhost:8000/getAllUsers').reply(200, { data: []});
     mockAxios.onPost('http://localhost:8000/createUserRank').reply(200);
 
