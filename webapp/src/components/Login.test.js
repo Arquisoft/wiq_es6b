@@ -31,9 +31,10 @@ describe('Login Component', () => {
     const usernameInput = screen.getByLabelText(/Username/i);
     const passwordInput = screen.getByLabelText(/Password/i);
     const loginButton = screen.getByRole('button', { name: /Iniciar sesión/i });
-    console.log('loginButton', loginButton);
-    console.log('usernameInput', usernameInput);
-    console('passwordInput', passwordInput);
+    // Verificar que los elementos están presentes
+    expect(loginButton).toBeInTheDocument();
+    expect(usernameInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
 
     // Mock the axios.post & axios.get requests to simulate successful responses
     mockAxios.onPost('http://localhost:8000/login').reply(200, { createdAt: '2024-01-01T12:34:56Z' });
