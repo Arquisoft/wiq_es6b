@@ -46,9 +46,13 @@ describe('RankingList', () => {
       });
     });
 
+    function emptyFunction() {  
+      return;
+    }
+
     async function renderRankingList() {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
     }
 

@@ -4,8 +4,6 @@ import { Box, Typography, Slider, TextField, FormGroup, FormControlLabel, Checkb
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import PropTypes from 'prop-types';
 
-import Game from './Game';
-
 const GameSettings = ({ setSettings, currentUser }) => {
     const [isWarningVisible, setIsWarningVisible] = useState(false);
     const [isWarningMinsVisible, setIsWarningMinsVisible] = useState(false);
