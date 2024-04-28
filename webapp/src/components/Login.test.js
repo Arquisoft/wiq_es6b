@@ -69,7 +69,7 @@ describe('Login Component', () => {
         expect(screen.getByText(/Ranking/i)).toBeInTheDocument();
         expect(screen.getByText(/Ajustes de partida/i)).toBeInTheDocument();
   
-        expect(screen.getByText(/Hola testUser!/i)).toBeInTheDocument();
+        expect(screen.getByText(new RegExp(`Hola ${username}!`, 'i'))).toBeInTheDocument();
         expect(screen.getByText(/Tu cuenta fue creada el/i)).toBeInTheDocument();
         expect(screen.getByText(/Comenzar a jugar/i)).toBeInTheDocument();
   
