@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import { userInfo } from 'os';
 
 const RecordList = ({ username }) => {
   const [listRecords, setListRecords] = useState([]);
@@ -54,6 +56,10 @@ const RecordList = ({ username }) => {
       </table>
     </div>
   );
+};
+
+RecordList.propTypes = {
+  username: PropTypes.func.isRequired,
 };
 
 export default RecordList;

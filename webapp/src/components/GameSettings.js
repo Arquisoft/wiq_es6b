@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Slider, TextField, FormGroup, FormControlLabel, Checkbox, Tab } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
+import PropTypes from 'prop-types';
+
+import Game from './Game';
 
 const GameSettings = ({ setSettings, currentUser }) => {
     const [isWarningVisible, setIsWarningVisible] = useState(false);
@@ -193,6 +196,11 @@ const GameSettings = ({ setSettings, currentUser }) => {
             </div>
         </div>
     );
+};
+
+GameSettings.propTypes = {
+    setSettings: PropTypes.func.isRequired,
+    currentUser: PropTypes.func.isRequired,
 };
 
 export default GameSettings;
