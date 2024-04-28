@@ -41,7 +41,6 @@ app.post('/login', async (req, res) => {
   try {
     // Forward the login request to the authentication service
     const authResponse = await axios.post(authServiceUrl+'/login', req.body);
-    console.error("RESPONSE GATEWAY... "+authResponse);//borrar
     res.json(authResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });

@@ -12,6 +12,7 @@ describe('Gateway Service', () => {
   // Mock responses from external services
   axios.post.mockImplementation((url, data) => {
     if (url.endsWith('/login')) {
+      console.error("en gateway tests estamos"); // borrar
       return Promise.resolve({ data: { token: 'mockedToken' } });
     } else if (url.endsWith('/adduser')) {
       return Promise.resolve({ data: { userId: 'mockedUserId' } });
