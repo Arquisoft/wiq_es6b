@@ -80,11 +80,10 @@ describe('GeneratedQuestionsList component', () => {
 
     let rows = await screen.findAllByRole('row');
 
-    expect(rows[1]).toHaveTextContent('¿A qué género literario pertenece "Cinco horas con Mario"?');
-    expect(rows[2]).toHaveTextContent('¿Cuál es la capital de Portugal?');
-    expect(rows[3]).toHaveTextContent('¿De qué grupo es la canción "Vino Tinto"?');
-    expect(rows[4]).toHaveTextContent('¿Quién escribió la novela "El Extranjero"?');
-
+    expect(rows[1]).toHaveTextContent("¿A qué género literario pertenece 'Cinco horas con Mario'?");
+    expect(rows[2]).toHaveTextContent("¿Cuál es la capital de Portugal?");
+    expect(rows[3]).toHaveTextContent("¿De qué grupo es la canción 'Vino Tinto'?");
+    expect(rows[4]).toHaveTextContent("¿Quién escribió la novela 'El Extranjero'?");
 
     await act(async() => {
       questionBodyHeader.click();
@@ -92,10 +91,10 @@ describe('GeneratedQuestionsList component', () => {
 
     rows = await screen.findAllByRole('row');
 
-    expect(rows[4]).toHaveTextContent('¿A qué género literario pertenece "Cinco horas con Mario"?');
-    expect(rows[3]).toHaveTextContent('¿Cuál es la capital de Portugal?');
-    expect(rows[2]).toHaveTextContent('¿De qué grupo es la canción "Vino Tinto"?');
-    expect(rows[1]).toHaveTextContent('¿Quién escribió la novela "El Extranjero"?');
+    expect(rows[4]).toHaveTextContent("¿A qué género literario pertenece 'Cinco horas con Mario'?");
+    expect(rows[3]).toHaveTextContent("¿Cuál es la capital de Portugal?");
+    expect(rows[2]).toHaveTextContent("¿De qué grupo es la canción 'Vino Tinto'?");
+    expect(rows[1]).toHaveTextContent("¿Quién escribió la novela 'El Extranjero'?");
   });
 
   test('should order questions by answer correctly', async () => {
@@ -107,10 +106,10 @@ describe('GeneratedQuestionsList component', () => {
 
     let rows = await screen.findAllByRole('row');
 
-    expect(rows[1]).toHaveTextContent('Albert Camus');
-    expect(rows[2]).toHaveTextContent('Estopa');
-    expect(rows[3]).toHaveTextContent('Lisboa');
-    expect(rows[4]).toHaveTextContent('Narrativo');
+    expect(rows[1]).toHaveTextContent("Albert Camus");
+    expect(rows[2]).toHaveTextContent("Estopa");
+    expect(rows[3]).toHaveTextContent("Lisboa");
+    expect(rows[4]).toHaveTextContent("Narrativo");
 
 
     await act(async() => {
@@ -119,10 +118,10 @@ describe('GeneratedQuestionsList component', () => {
 
     rows = await screen.findAllByRole('row');
 
-    expect(rows[4]).toHaveTextContent('Albert Camus');
-    expect(rows[3]).toHaveTextContent('Estopa');
-    expect(rows[2]).toHaveTextContent('Lisboa');
-    expect(rows[1]).toHaveTextContent('Narrativo');
+    expect(rows[4]).toHaveTextContent("Albert Camus");
+    expect(rows[3]).toHaveTextContent("Estopa");
+    expect(rows[2]).toHaveTextContent("Lisboa");
+    expect(rows[1]).toHaveTextContent("Narrativo");
   });
 
 });
