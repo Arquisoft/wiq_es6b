@@ -3,7 +3,6 @@ import { render, screen, waitFor, act } from '@testing-library/react';
 import RankingList from './RankingList';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import exp from 'constants';
 
 jest.mock('axios');
 
@@ -49,7 +48,7 @@ describe('RankingList', () => {
 
     async function renderRankingList() {
       await act(async () => {
-        render(<RankingList setError={() => {}} />);
+        render(<RankingList setError={emptyFunction} />);
       });
     }
 
@@ -116,7 +115,14 @@ describe('RankingList', () => {
 
     });
 
-    async function expectOrder(header) {
+    test('show users ordered by "username" correctly', async () => {
+      await renderRankingList();
+      const usernameHeader = screen.getByRole('columnheader', { name: /Nombre de Usuario/i });
+      
+      await act(async() => {
+        usernameHeader.click(); // DESC
+      });
+
       // We wait for the users to be loaded and the table to be updated
       let rows = await screen.findAllByRole('row');
 
@@ -127,7 +133,7 @@ describe('RankingList', () => {
       expect(rows[1]).toHaveTextContent('troll');
 
       await act(async() => {
-        header.click(); // ASC
+        usernameHeader.click(); // ASC
       });
 
       // We wait for the users to be loaded and the table to be updated
@@ -138,17 +144,7 @@ describe('RankingList', () => {
       expect(rows[2]).toHaveTextContent('maría');
       expect(rows[3]).toHaveTextContent('pedro');
       expect(rows[4]).toHaveTextContent('troll');
-    }
-
-    test('show users ordered by "username" correctly', async () => {
-      await renderRankingList();
-      const usernameHeader = screen.getByRole('columnheader', { name: /Nombre de Usuario/i });
       
-      await act(async() => {
-        usernameHeader.click(); // DESC
-      });
-
-      expectOrder(usernameHeader);
     });
 
     test('show users ordered by "porcentajeAciertos" correctly', async () => {
@@ -159,7 +155,28 @@ describe('RankingList', () => {
         porcentajeAciertosHeader.click(); // ASC
       });
 
-      expectOrder(porcentajeAciertosHeader);
+      // We wait for the users to be loaded and the table to be updated
+      let rows = await screen.findAllByRole('row');
+
+      // We check if the first row is the one with the username 'troll'
+      expect(rows[4]).toHaveTextContent('manuel');
+      expect(rows[3]).toHaveTextContent('maría');
+      expect(rows[2]).toHaveTextContent('pedro');
+      expect(rows[1]).toHaveTextContent('troll');
+
+      await act(async() => {
+        porcentajeAciertosHeader.click(); // DESC
+      });
+
+      // We wait for the users to be loaded and the table to be updated
+      rows = await screen.findAllByRole('row');
+
+      // We check if the first row is the one with the username 'manuel'
+      expect(rows[1]).toHaveTextContent('manuel');
+      expect(rows[2]).toHaveTextContent('maría');
+      expect(rows[3]).toHaveTextContent('pedro');
+      expect(rows[4]).toHaveTextContent('troll');
+      
     });
 
     test('show users ordered by "preguntasCorrectas" correctly', async () => {
