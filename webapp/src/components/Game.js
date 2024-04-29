@@ -70,7 +70,7 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
         };
     
         obtenerPreguntaAleatoria();
-    }, [apiEndpoint, setQuestion, setRespuestasAleatorias, setError]);
+    }, [apiEndpoint, setQuestion, setRespuestasAleatorias, setError, themesSelected]);
 
     const handleTimeRemaining = () => {
         let minsR = Math.floor((timeLimit - timer) / 60);
@@ -181,7 +181,7 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
             })();
             setAlmacenado(true);
         }
-    }, [timer, numberClics, totalQuestions, timeLimit, almacenado, apiEndpoint, correctQuestions, username]);
+    }, [timer, numberClics, totalQuestions, timeLimit, almacenado, apiEndpoint, correctQuestions, username, setError]);
 
     if(isNaN(totalQuestions)){
         totalQuestions=10;
