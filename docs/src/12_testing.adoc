@@ -2,7 +2,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-glossary]]
 == Testing
-Se llevarán a cabo pruebas e2e, unitarias y de carga para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
+Se llevarán a cabo pruebas unitarias, E2E y de carga para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
 
 === Tests Unitarios
 
