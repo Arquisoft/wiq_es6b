@@ -112,10 +112,14 @@ app.get('/getAllGeneratedQuestions', async (req, res) => {
 
 app.get('/getRecords/:userId', async (req, res) => {
   try {
- 
     const userId = req.params.userId;
 
-    const recordsResponse = await axios.get(`${recordServiceUrl}/getRecords/${userId}`);
+    const recordsUrl = url.format({
+      pathname: `${recordServiceUrl}/getRecords/${userId}`,
+      query: {  }
+    });
+
+    const recordsResponse = await axios.get(recordsUrl);
     res.json(recordsResponse.data);
   } catch (error) {
       res.status(500).json({ error: 'Error interno del servidor' });
