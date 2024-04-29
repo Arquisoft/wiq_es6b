@@ -30,5 +30,6 @@ Para lograr esto, seguimos los principios FIRST:
 |===
 
 === E2E. Tests de integración
+uscaremos garantizar que la aplicación sea fácil de usar para proporcionar una experiencia satisfactoria al usuario. Nos centraremos en verificar diversas funcionalidades, desde la jugabilidad hasta acciones como el registro, inicio de sesión y cambios en los ajustes. Simularemos interacciones que haría un usuario real para asegurar que la aplicación sea intuitiva y funcione correctamente.
 
 === Tests de carga
