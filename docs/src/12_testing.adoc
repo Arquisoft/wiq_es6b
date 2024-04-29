@@ -1,0 +1,23 @@
+ifndef::imagesdir[:imagesdir: ../images]
+
+[[section-glossary]]
+== Testing
+Se llevarán a cabo pruebas e2e, unitarias y de carga para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
+
+=== Tests Unitarios
+En nuestro proyecto estos tests son esenciales para garantizar
+la correcta funcionalidad. Por lo que se probará 
+cada componente de todo el código (funciones, métodos, clases...)
+se probarán de manera exhaustiva.
+
+Para poder lograr esto, cada tests se centra solo en una sola función o método siguiento los
+principios FIRST: 
+  *Fast: La ejecución de los tests serán rapidos.
+  *Independent: Los tests serán independientes unos de otros.
+  *Repeatable: Tests consistentes de manera que se obtendrá siempre los mismos resultados.
+  *Self-Checking: Se podrá saber si el resultado de los tests ha pasado o no sin necesidad de intervenir.
+  *Timely: La ampliación e incremento de los tests se irá haceindo durante el desarrollo del proyecto. 
+
+=== E2E. Tests de integración
+
+=== Tests de carga
