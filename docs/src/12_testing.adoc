@@ -2,22 +2,34 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-glossary]]
 == Testing
-Se llevarán a cabo pruebas e2e, unitarias y de carga para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
+Se llevarán a cabo pruebas unitarias, E2E y de carga para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
 
 === Tests Unitarios
-En nuestro proyecto estos tests son esenciales para garantizar
-la correcta funcionalidad. Por lo que se probará 
-cada componente de todo el código (funciones, métodos, clases...)
-se probarán de manera exhaustiva.
 
-Para poder lograr esto, cada tests se centra solo en una sola función o método siguiento los
-principios FIRST: 
-  *Fast: La ejecución de los tests serán rapidos.
-  *Independent: Los tests serán independientes unos de otros.
-  *Repeatable: Tests consistentes de manera que se obtendrá siempre los mismos resultados.
-  *Self-Checking: Se podrá saber si el resultado de los tests ha pasado o no sin necesidad de intervenir.
-  *Timely: La ampliación e incremento de los tests se irá haceindo durante el desarrollo del proyecto. 
+En nuestro proyecto, los tests unitarios son fundamentales para garantizar la correcta funcionalidad de cada componente del código. Cada función, método o clase será probado exhaustivamente para asegurar su integridad y rendimiento.
+
+Para lograr esto, seguimos los principios FIRST:
+
+|===
+|Principio | Descripción
+
+|Fast (Rápido)
+|Los tests unitarios se ejecutan rápidamente, proporcionando retroalimentación inmediata sobre la integridad del código.
+
+|Independent (Independiente)
+|Cada test es independiente de los demás, evitando dependencias y permitiendo su ejecución en cualquier orden.
+
+|Repeatable (Repetible)
+|Los resultados de los tests son consistentes y predecibles, independientemente de cuántas veces se ejecuten o del entorno de ejecución.
+
+|Self-Checking (Autoverificable)
+|Los tests determinan automáticamente si han pasado o fallado, sin necesidad de intervención humana para su validación.
+
+|Timely (Oportuno)
+|La creación y ampliación de tests se realiza durante todo el desarrollo del proyecto, garantizando una cobertura adecuada en todo momento.
+|===
 
 === E2E. Tests de integración
+uscaremos garantizar que la aplicación sea fácil de usar para proporcionar una experiencia satisfactoria al usuario. Nos centraremos en verificar diversas funcionalidades, desde la jugabilidad hasta acciones como el registro, inicio de sesión y cambios en los ajustes. Simularemos interacciones que haría un usuario real para asegurar que la aplicación sea intuitiva y funcione correctamente.
 
 === Tests de carga
