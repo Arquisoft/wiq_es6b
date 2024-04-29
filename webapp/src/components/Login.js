@@ -45,22 +45,14 @@ const Login = ({ setLogged }) => {
     try {
       const response = await axios.post(`${apiEndpoint}/login`, { username, password });
       const { createdAt: userCreatedAt } = response.data;
-      const usersResponse = await axios.get(`${apiEndpoint}/getAllUsers`);
-      const users = usersResponse.data;
-
+      await axios.get(`${apiEndpoint}/getAllUsers`);
       setCreatedAt(userCreatedAt);
       setLoginSuccess(true);
       setLogged();
       setLoading(true);
-      
-    // Reúne todos los nombres de usuario en un array
-    const usernames = users.map(user => user.username);
 
-    // Envía todos los nombres de usuario en una sola solicitud
-    await axios.post(`${apiEndpoint}/createUserRank`, { usernames });
-
-      const { data: updatedRankingData } = await axios.get(`${apiEndpoint}/actRanking`);
-      await axios.post(`${apiEndpoint}/updateAllRanking`, updatedRankingData);
+      // Envía todos los nombres de usuario en una sola solicitud
+      await axios.post(`${apiEndpoint}/createUserRank`, { username });
 
       setLoading(false);
       setOpenSnackbar(true);
@@ -70,7 +62,7 @@ const Login = ({ setLogged }) => {
       } else if (error.request) {
         setError('No response from server. Please try again later.');
       } else {
-        setError('An unexpected error occurred.');
+        setError('An unexpected error occurred');
       }
     }
   };
@@ -148,10 +140,10 @@ const Login = ({ setLogged }) => {
                 {showComponent === 'game' &&
                   <Game username={username} totalQuestions={settings.numberQuestions} timeLimit={totalTime} themes={settings.themes}/>
                 }
-                {showComponent === 'userList' && <UsersList />}
-                {showComponent === 'questionList' && <GeneratedQuestionsList />}
-                {showComponent === 'recordList' && <RecordList username={username} />}
-                {showComponent === 'rankingList' && <RankingList />}
+                {showComponent === 'userList' && <UsersList setError={setError} />}
+                {showComponent === 'questionList' && <GeneratedQuestionsList setError={setError} />}
+                {showComponent === 'recordList' && <RecordList username={username} setError={setError} />}
+                {showComponent === 'rankingList' && <RankingList setError={setError} />}
                 {showComponent === 'settings' && <GameSettings setSettings={setSettings} currentUser={username} />}
                 {showComponent === 'login' && (
                   <div>

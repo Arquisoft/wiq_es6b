@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-//import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
+import PropTypes from 'prop-types';
 
-const GeneratedQuestionsList = () => {
+const GeneratedQuestionsList = ({setError}) => {
  
   const [listquestions, setListquestions] = useState([]);
   const [sortColumn, setSortColumn] = useState(null);
@@ -23,10 +23,10 @@ const GeneratedQuestionsList = () => {
             setListquestions(qList);
 
         } else {
-          console.error('Error obteniendo la lista de preguntas generadas');
+          setError('Error obteniendo la lista de preguntas generadas');
         }
       } catch (error) {
-        console.error('Error obteniendo la lista de preguntas generadas:', error);
+        setError('Error obteniendo la lista de preguntas generadas:', error);
       }
     };
 
@@ -75,6 +75,10 @@ const GeneratedQuestionsList = () => {
 
 
   );
+};
+
+GeneratedQuestionsList.propTypes = {
+  setError: PropTypes.func.isRequired,
 };
 
 export default GeneratedQuestionsList;
