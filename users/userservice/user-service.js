@@ -29,7 +29,9 @@ function validateRequiredFields(req, requiredFields) {
       if (!(field in req.body)) {
         throw new Error(`Missing required field: ${field}`);
       }
+      console.error(field);
       if(field != null && typeof(field) != "undefined" && field.trim() != ""){
+        console.error("field: "+field);
         throw new Error(`Field ${field} cannot be empty`);
       }
     }
