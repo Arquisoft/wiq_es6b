@@ -25,8 +25,9 @@ mongoose.connect(mongoUri);
 const doesQuestionExist = async (questionBody) => {
   //devuelve true si la pregunta ya existe 
   try {
+    const safeQuestionBody = questionBody.toString();
     const existingQuestion = await GeneratedQuestion.findOne({
-      generatedQuestionBody: { $eq: questionBody }
+      generatedQuestionBody: safeQuestionBody
     });
 
     return !!existingQuestion; // Convertir el resultado en un booleano

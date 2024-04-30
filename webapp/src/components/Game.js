@@ -9,10 +9,10 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
     const [error, setError] = useState('');
     const [correctQuestions, setCorrectQuestions] = useState(0);
     const [timer, setTimer] = useState(0);
-    const [themesSelected, setThemesSelected] = useState(themes);
+    const [themesSelected] = useState(themes);
     const [numberClics, setNumberClics] = useState(0);
     const [finished, setFinished] = useState(false);
-    const [selectedAnswer, setSelectedAnswer] = useState('');
+    const [setSelectedAnswer] = useState('');
     const [selectedOption, setSelectedOption] = useState(null); // Opción seleccionada actualmente
     const [almacenado, setAlmacenado] = useState(false);
     const pricePerQuestion = 25;
