@@ -31,7 +31,7 @@ const GeneratedQuestionsList = ({setError}) => {
     };
 
     fetchQuestions();
-  }, [apiEndpoint]);
+  }, [apiEndpoint, setError]);
 
   const handleSort = (column) => {
     if (sortColumn === column) {

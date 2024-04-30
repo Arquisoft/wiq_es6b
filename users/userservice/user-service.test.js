@@ -29,40 +29,76 @@ describe('User Service', () => {
     expect(response.body).toHaveProperty('username', 'testuser');
   });
 
+  //prueba get
+  it('should get all users on GET /getAllUsers', async () => {
+    
+    // Agrego primero usuarios
+    await request(app).post('/adduser').send({
+      username: process.env.TEST_USER,
+      password: process.env.TEST_PASSWORD,
+    });
 
+    await request(app).post('/adduser').send({
+      username: process.env.TEST_USER2,
+      password: process.env.TEST_PASSWORD2,
 
-      //prueba get
-      it('should get all users on GET /getAllUsers', async () => {
-        
-        // Agrego primero usuarios
-        await request(app).post('/adduser').send({
-          username: process.env.TEST_USER,
-          password: process.env.TEST_PASSWORD,
-        });
+    });
+  // llamo al get
+  const response = await request(app).get('/getAllUsers');
+  expect(response.status).toBe(200);
+  expect(response.body).toBeInstanceOf(Array);//obtengo elementos
+    // miro que esten los dos añadidos
+    const usernames = response.body.map(user => user.username);
+    expect(usernames).toContain('testuser');
+    expect(usernames).toContain('testuser2');
 
-        await request(app).post('/adduser').send({
-          username: process.env.TEST_USER2,
-          password: process.env.TEST_PASSWORD2,
+  });
+
+  test('should throw an error when a required field is missing', async () => {
+    const response = await request(app)
+      .post('/adduser')
+      .send({ username: 'testuser' }); // password field is missing
   
-        });
-      // llamo al get
-      const response = await request(app).get('/getAllUsers');
-      expect(response.status).toBe(200);
-      expect(response.body).toBeInstanceOf(Array);//obtengo elementos
-       // miro que esten los dos añadidos
-       const usernames = response.body.map(user => user.username);
-       expect(usernames).toContain('testuser');
-       expect(usernames).toContain('testuser2');
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe('Missing required field: password');
+  });
 
-      });
+  describe('should throw an error when a required field is present but empty', () => {
+    test('password is empty and it throws an error', async () => {
+      const response = await request(app)
+        .post('/adduser')
+        .send({ username: process.env.TEST_USER3, password: ''}); // password field is empty
+    
+      expect(response.status).toBe(400);
+      expect(response.body.error).toBe('Field password must not be empty');
+    });
 
-      test('should throw an error when a required field is missing', async () => {
-        const response = await request(app)
-          .post('/adduser')
-          .send({ username: 'testuser' }); // password field is missing
-      
-        expect(response.status).toBe(400);
-        expect(response.body.error).toBe('Missing required field: password');
-      });
-      
+    test('password is empty and it throws an error', async () => {
+      const response = await request(app)
+        .post('/adduser')
+        .send({ username: process.env.TEST_USER3, password: process.env.EMPTY_PASSWORD}); // password field is empty
+    
+      expect(response.status).toBe(400);
+      expect(response.body.error).toBe('Field password must not be empty');
+    });
+
+    test('username is empty and it throws an error', async () => {
+      const response = await request(app)
+        .post('/adduser')
+        .send({ username: '', password: process.env.TEST_PASSWORD}); // username field is empty
+    
+      expect(response.status).toBe(400);
+      expect(response.body.error).toBe('Field username must not be empty');
+    });
+
+    test('username is empty and it throws an error', async () => {
+      const response = await request(app)
+        .post('/adduser')
+        .send({ username: '     ', password: process.env.TEST_PASSWORD}); // username field is empty
+    
+      expect(response.status).toBe(400);
+      expect(response.body.error).toBe('Field username must not be empty');
+    });
+  });
+  
 });

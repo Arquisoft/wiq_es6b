@@ -32,7 +32,7 @@ const UsersList = ({ setError }) => {
       }
     };
     fetchUsers();
-  }, [apiEndpoint]);
+  }, [apiEndpoint, setError]);
 
   const sortedUsers = [...listUsers].sort((a, b) => {
     if (sortColumn === 'username') {
