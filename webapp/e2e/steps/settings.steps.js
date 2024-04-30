@@ -2,7 +2,6 @@ const puppeteer = require('puppeteer');
 const { defineFeature, loadFeature }=require('jest-cucumber');
 const setDefaultOptions = require('expect-puppeteer').setDefaultOptions
 const feature = loadFeature('./features/settings.feature');
-const {textVerifyByXpath}=require('../steps_testUtils');
 
 let page;
 let browser;
