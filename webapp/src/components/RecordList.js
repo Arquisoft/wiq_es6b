@@ -26,7 +26,7 @@ const RecordList = ({ username, setError }) => {
     };
 
     fetchRecords();
-  }, [apiEndpoint, username]);
+  }, [apiEndpoint, username, setError]);
 
   return (
     <div>
