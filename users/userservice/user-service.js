@@ -29,7 +29,7 @@ function validateRequiredFields(req, requiredFields) {
       if (!(field in req.body)) {
         throw new Error(`Missing required field: ${field}`);
       }
-      if (req.body[field].trim() == '' || req.body[field] == null || typeof(req.body[field]) == undefined) {
+      if (req.body[field].trim() == '' || req.body[field] == null || req.body[field] === undefined) {
         throw new Error(`Field ${field} must not be empty`);
       }
     }

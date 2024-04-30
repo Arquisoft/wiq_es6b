@@ -76,7 +76,7 @@ describe('User Service', () => {
     test('password is empty and it throws an error', async () => {
       const response = await request(app)
         .post('/adduser')
-        .send({ username: process.env.TEST_USER3, password: '    '}); // password field is empty
+        .send({ username: process.env.TEST_USER3, password: process.env.EMPTY_PASSWORD}); // password field is empty
     
       expect(response.status).toBe(400);
       expect(response.body.error).toBe('Field password must not be empty');
