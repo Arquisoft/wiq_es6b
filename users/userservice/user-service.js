@@ -25,14 +25,15 @@ mongoose.connect(mongoUri);
 
 // Function to validate required fields in the request body
 function validateRequiredFields(req, requiredFields) {
-    for (const field of requiredFields) {
+  console.error("req.body: "+req.body);
+  console.error("requiredFields: "+requiredFields);  
+  for (const field of requiredFields) {
       if (!(field in req.body)) {
         throw new Error(`Missing required field: ${field}`);
       }
-      console.error(field);
-      if(field != null && typeof(field) != "undefined" && field.trim() != ""){
-        console.error("field: "+field);
-        throw new Error(`Field ${field} cannot be empty`);
+      console.error("field: "+req.body[field]);
+      if (req.body[field] === '') {
+        throw new Error(`Field ${field} must not be empty`);
       }
     }
 }
