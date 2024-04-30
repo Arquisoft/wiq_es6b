@@ -67,19 +67,19 @@ describe('User Service', () => {
     test('password is empty and it throws an error', async () => {
       const response = await request(app)
         .post('/adduser')
-        .send({ username: process.env.TEST_USER, password: ''}); // password field is empty
+        .send({ username: process.env.TEST_USER3, password: ''}); // password field is empty
     
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('Field password cannot be empty');
+      expect(response.body.error).toBe('Field password must not be empty');
     });
 
     test('password is empty and it throws an error', async () => {
       const response = await request(app)
         .post('/adduser')
-        .send({ username: process.env.TEST_USER, password: '    '}); // password field is empty
+        .send({ username: process.env.TEST_USER3, password: '    '}); // password field is empty
     
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('Field password cannot be empty');
+      expect(response.body.error).toBe('Field password must not be empty');
     });
 
     test('username is empty and it throws an error', async () => {
@@ -88,7 +88,7 @@ describe('User Service', () => {
         .send({ username: '', password: process.env.TEST_PASSWORD}); // username field is empty
     
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('Field username cannot be empty');
+      expect(response.body.error).toBe('Field username must not be empty');
     });
 
     test('username is empty and it throws an error', async () => {
@@ -97,7 +97,7 @@ describe('User Service', () => {
         .send({ username: '     ', password: process.env.TEST_PASSWORD}); // username field is empty
     
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('Field username cannot be empty');
+      expect(response.body.error).toBe('Field username must not be empty');
     });
   });
   
