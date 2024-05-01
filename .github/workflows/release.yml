@@ -146,7 +146,7 @@ jobs:
         registry: ghcr.io
         workdir: questions/recordservice
   docker-push-rankingservice:
-    name: Push record service Docker Image to GitHub Packages
+    name: Push ranking service Docker Image to GitHub Packages
     runs-on: ubuntu-latest
     permissions:
       contents: read
