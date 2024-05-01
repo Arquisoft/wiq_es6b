@@ -69,7 +69,7 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
         };
     
         obtenerPreguntaAleatoria();
-    }, [apiEndpoint, setQuestion, setRespuestasAleatorias, setError, themesSelected]);
+    }, [apiEndpoint, setQuestion, setRespuestasAleatorias, setError, themesSelected, selectedAnswer]);
 
     const handleTimeRemaining = () => {
         let minsR = Math.floor((timeLimit - timer) / 60);
