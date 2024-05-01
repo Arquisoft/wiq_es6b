@@ -30,7 +30,7 @@ Para lograr esto, seguimos los principios FIRST:
 |===
 
 === E2E. Tests de integración
-Buscaremos garantizar que la aplicación sea fácil de usar para proporcionar una experiencia satisfactoria al usuario. Nos centraremos en verificar diversas funcionalidades, desde la jugabilidad hasta acciones como el registro, inicio de sesión y cambios en los ajustes. Simularemos interacciones que haría un usuario real para asegurar que la aplicación sea intuitiva y funcione correctamente.
+Buscaremos garantizar que la aplicación sea fácil de usar para proporcionar una experiencia satisfactoria al usuario. Nos centraremos en verificar diversas funcionalidades, desde la jugabilidad hasta acciones como el registro e inicio de sesión. Simularemos interacciones que haría un usuario real para asegurar que la aplicación sea intuitiva y funcione correctamente.
 
 === Tests de carga
 Hemos realizado pruebas con 120 usuarios llegado a una tasa de 2 usuarios por segundo. La prueba consiste en logearse, jugar una partida, consultar todos los apartados de la barra de navegación, cambiar los ajustes bajando el numero de preguntas y volviendo a jugar una partida.

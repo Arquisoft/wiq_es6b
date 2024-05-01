@@ -1,6 +1,5 @@
 const express = require('express');
 const axios = require('axios');
-const cors = require('cors');
 const promBundle = require('express-prom-bundle');
 //libraries required for OpenAPI-Swagger
 const swaggerUi = require('swagger-ui-express'); 
@@ -19,13 +18,7 @@ const genQuestServiceUrl = process.env.GEN_SERVICE_URL || 'http://localhost:8003
 const rankingServiceUrl = process.env.RANK_SERVICE_URL || 'http://localhost:8004';
 const questiongeneratorserviceUrl = process.env.QTEST_SERVICE_URL || 'http://localhost:8007';
 
-const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
-const serverUrl = process.env.CLIENT_URL || 'http://localhost:8000';
-let corsOptions = {
-  origin: [  clientUrl, serverUrl ]
-};
-
-app.use(cors(corsOptions));
+app.use();
 app.use(express.json());
 
 //Prometheus configuration
