@@ -31,6 +31,11 @@ const corsOptions = {
   optionsSuccessStatus: 200
 }
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://51.142.17.139:3000');
+  next();
+});
+
 console.log(`Using the following URLs for CORS: ${corsOptions.origin}`)
 
 app.use(cors(corsOptions));
