@@ -1,4 +1,5 @@
 const { MongoMemoryServer } = require('mongodb-memory-server');
+const testQuestions = require('./testQuestions.js');
 
 
 let mongoserver;
@@ -23,6 +24,8 @@ async function startServer() {
     rankingservice = await require("../../users/rankingservice/ranking-service");
     generatedquestservice = await require("../../questions/generatedquestservice/generatedquest-service");
     questiongeneratorservice = await require("../../questions/questiongeneratorservice/questiongenerator-service");
+
+    testQuestions.insertTestData();
   }
 
   startServer();

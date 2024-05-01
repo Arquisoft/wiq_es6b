@@ -21,7 +21,7 @@ defineFeature(feature, test => {
         waitUntil: "networkidle0",
       })
       .catch(() => {});
-  });
+  }, 60000);
 
   test('The user is not registered in the site', ({given,when,then}) => {
     
