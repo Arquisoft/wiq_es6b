@@ -184,7 +184,7 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
             })();
             setAlmacenado(true);
         }
-    }, [timer, numberClics, totalQuestions, timeLimit, almacenado, apiEndpoint, correctQuestions, username, setError]);
+    }, [timer, numberClics, totalQuestions, timeLimit, almacenado, apiEndpoint, correctQuestions, username, setError, themes, setThemesSelected]);
 
     if(isNaN(totalQuestions)){
         totalQuestions=10;
