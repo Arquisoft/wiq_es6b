@@ -21,24 +21,7 @@ const genQuestServiceUrl = process.env.GEN_SERVICE_URL || 'http://localhost:8003
 const rankingServiceUrl = process.env.RANK_SERVICE_URL || 'http://localhost:8004';
 const questiongeneratorserviceUrl = process.env.QTEST_SERVICE_URL || 'http://localhost:8007';
 
-const devUrl3000 = process.env.DEV_URL_3000 || 'http://localhost:3000';
-const devUrl8000 = process.env.DEV_URL_8000 || 'http://localhost:8000';
-const prodUrl3000 = process.env.PROD_URL_3000;
-const prodUrl8000 = process.env.PROD_URL_8000;
-
-const corsOptions = {
-  origin: [devUrl3000, devUrl8000, prodUrl3000, prodUrl8000],
-  optionsSuccessStatus: 200
-}
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://51.142.17.139:3000');
-  next();
-});
-
-console.log(`Using the following URLs for CORS: ${corsOptions.origin}`)
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 //Prometheus configuration
