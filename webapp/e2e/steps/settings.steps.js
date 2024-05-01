@@ -42,8 +42,8 @@ defineFeature(feature, test => {
   });
 
 
-  test('A registered user changes the number of questions', ({given,when,then}) => {
-    given('A registered user in the play view', async () => {
+  test('A registered user changes the number of questions in the game', ({given,when,then}) => {
+    given('A registered user in the settings view', async () => {
         await expect(page).toClick('button', { text: 'AJUSTES DE PARTIDA' });
     });
 
@@ -66,24 +66,24 @@ defineFeature(feature, test => {
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
         await expect(getByText('¡Gracias por jugar!')).toBeInTheDocument();
     });
+  });
 
-    test('A registered user changes the number of questions', ({given,when,then}) => {
-        given('A registered user in the play view', async () => {
-            await expect(page).toClick('button', { text: 'AJUSTES DE PARTIDA' });
-        });
+  test('A registered user changes the time limit in the game', ({given,when,then}) => {
+      given('A registered user in the settings view', async () => {
+          await expect(page).toClick('button', { text: 'AJUSTES DE PARTIDA' });
+      });
     
-        when('I change the game settings to 5:30 minutes', async () => {
-            await expect(page).toClick('button', { text: 'DURACIÓN DE PARTIDA' });
-            await expect(page).toFill('input[name="Minutos"]', 5);
-            await expect(page).toFill('input[name="Segundos"]', 30);
-        });
-        then('the game settings should be updated', async () => {
-            await expect(page).toClick('button', { text: 'JUGAR' });
-            await expect(page).toClick('button', { text: 'COMENZAR A JUGAR' })
-            await expect(getByText('¡Tiempo restante 05:30!')).toBeInTheDocument();
-        });
+      when('I change the game settings to 5:30 minutes', async () => {
+          await expect(page).toClick('button', { text: 'DURACIÓN DE PARTIDA' });
+          await expect(page).toFill('input[name="Minutos"]', 5);
+          await expect(page).toFill('input[name="Segundos"]', 30);
+      });
+      then('the game settings should be updated', async () => {
+          await expect(page).toClick('button', { text: 'JUGAR' });
+          await expect(page).toClick('button', { text: 'COMENZAR A JUGAR' })
+          await expect(getByText('¡Tiempo restante 05:30!')).toBeInTheDocument();
+      });
 
-    });
   });
 
   async function changeSliderValueTo5() {
