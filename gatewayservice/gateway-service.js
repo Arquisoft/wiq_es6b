@@ -31,6 +31,8 @@ const corsOptions = {
   optionsSuccessStatus: 200
 }
 
+console.log(`Using the following URLs for CORS: ${corsOptions.origin}`)
+
 app.use(cors(corsOptions));
 app.use(express.json());
 
