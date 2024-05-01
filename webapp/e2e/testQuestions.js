@@ -26,7 +26,7 @@ async function insertTestData() {
                 correctAnswer: 'Estados Unidos',
             },
             { 
-                _id : new ObjectId('66185ed83a6bade7b8c1211v'),
+                _id : new ObjectId('66185ed83a6bade7b8c1211f'),
                 generatedQuestionBody: '¿En qué album está la canción Calling All Girls?',
                 correctAnswer: 'Hot Space',
             },
@@ -36,12 +36,12 @@ async function insertTestData() {
                 correctAnswer: 'Polonia',
             },
             { 
-                _id : new ObjectId('66185ef33a6bade7b8c1212g'),
+                _id : new ObjectId('66185ef33a6bade7b8c1212a'),
                 generatedQuestionBody: '¿En que año se publicó el libro Escultismo para muchachos?',
                 correctAnswer: '1908',
             },
             { 
-                _id : new ObjectId('66185ef43a6bade7b8c1212t'),
+                _id : new ObjectId('66185ef43a6bade7b8c1212e'),
                 generatedQuestionBody: '¿Cuál es la capital de República Dominicana?',
                 correctAnswer: 'Santo Domingo',
             },
@@ -61,7 +61,7 @@ async function insertTestData() {
                 correctAnswer: '100024',
             },
             { 
-                _id : new ObjectId('66185efc3a6bade7bmc12148'),
+                _id : new ObjectId('66185efc3a6bade7bbc12148'),
                 generatedQuestionBody: '¿En que año nacio Fernanda Abreu?',
                 correctAnswer: '1961',
             }
