@@ -19,8 +19,8 @@ const genQuestServiceUrl = process.env.GEN_SERVICE_URL || 'http://localhost:8003
 const rankingServiceUrl = process.env.RANK_SERVICE_URL || 'http://localhost:8004';
 const questiongeneratorserviceUrl = process.env.QTEST_SERVICE_URL || 'http://localhost:8007';
 
-const devUrl = 'http://localhost';
-const prodUrl = 'http://51.142.17.139';
+const devUrl = process.env.DEV_URL || 'http://localhost';
+const prodUrl = process.env.PROD_URL || 'http://51.142.17.139';
 
 const corsOptions = {
   origin: [devUrl, prodUrl],
