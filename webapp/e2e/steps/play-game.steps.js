@@ -34,7 +34,6 @@ defineFeature(feature, test => {
           waitUntil: "networkidle0",
         })
         .catch(() => {});
-        await expect(page).toClick("button", { text: "¿Ya tienes cuenta? Inicia sesión aqui." });
         await expect(page).toFill('input[name="username"]', username);
         await expect(page).toFill('input[name="password"]', password);
         await expect(page).toClick('button', { text: 'Iniciar sesión' })
@@ -44,7 +43,7 @@ defineFeature(feature, test => {
   });
   test('Starts a new game', ({given,when,then}) => {
     given('A logged user in play view', async () => {
-        await expect(page).toMatchElement("h5", { text: 'Hola '+ username +'!' });
+        await expect(page).toMatchElement("h1", { text: 'Hola '+ username +'!' });
     });
 
     when('I press "COMENZAR A JUGAR"', async () => {

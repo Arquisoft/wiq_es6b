@@ -46,7 +46,7 @@ defineFeature(feature, test => {
     });
 
     then('The user should be redirected to the home page', async () => {
-      await expect(page).toMatchElement("h5", { text: `Hola ${username}!` });
+      await expect(page).toMatchElement("h1", { text: `Hola ${username}!` });
     });
   })
 
