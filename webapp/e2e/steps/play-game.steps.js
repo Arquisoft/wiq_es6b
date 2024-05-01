@@ -73,7 +73,6 @@ defineFeature(feature, test => {
 
 
   test('Shows the next questions',({given,when,then})=>{
-    let text;
     given('A logged user in a game',async()=>{
         await expect(page).toClick('button', { text: 'COMENZAR A JUGAR' })
     });
@@ -89,7 +88,7 @@ defineFeature(feature, test => {
     given('A logged user in a game',async()=>{
         await expect(page).toClick('button', { text: 'COMENZAR A JUGAR' })
     });
-    when('I play while the game ends',async()=>{
+    when('I play until the game ends',async()=>{
         await expect(getByText('Pregunta Número 1')).toBeInTheDocument();
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
         await waitFor(() => expect(getByText('Pregunta Número 2')).toBeInTheDocument());
