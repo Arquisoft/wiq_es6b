@@ -5,7 +5,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 == Vista de bloques de construcción
 === Vista general del sistema
 
-A continuación se muestra el diagrama que muestra una vista completa y genérica de lo que será la estructura de la aplicación en su entorno. Se divide en tres principales componentes que mediante interacciones detalladas en los siguientes apartados lograrán una ejecución correcta del sistema. It contains
+A continuación se muestra el diagrama que muestra una vista completa y genérica de lo que será la estructura de la aplicación en su entorno. Se divide en tres principales componentes que mediante interacciones detalladas en los siguientes apartados lograrán una ejecución correcta del sistema.
 
 _**Diagrama de vista general**_
 
