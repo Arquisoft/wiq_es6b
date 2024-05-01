@@ -27,7 +27,7 @@ const prodUrl3000 = process.env.PROD_URL_3000;
 const prodUrl8000 = process.env.PROD_URL_8000;
 
 const corsOptions = {
-  origin: [ devUrl3000, devUrl8000, prodUrl3000, prodUrl8000 ],
+  origin: '*',
   optionsSuccessStatus: 200
 }
 
