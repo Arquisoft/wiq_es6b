@@ -7,7 +7,8 @@ let page;
 let browser;
 
 defineFeature(feature, test => {
-
+  const username = "testUserLogin"
+  const password = "testUserLogin"
   beforeAll(async () => {
     browser = process.env.GITHUB_ACTIONS
       ? await puppeteer.launch()
@@ -21,6 +22,10 @@ defineFeature(feature, test => {
         waitUntil: "networkidle0",
       })
       .catch(() => {});
+      await expect(page).toClick("button", { text: "¿No tienes cuenta? Registrate aqui." });
+      await expect(page).toFill('input[name="username"]', username);
+      await expect(page).toFill('input[name="password"]', password);
+      await expect(page).toClick('button', { text: 'Añadir usuario' })
   });
 
   test('An user logs in with valid credentials', ({given,when,then}) => {
@@ -29,8 +34,8 @@ defineFeature(feature, test => {
     let password;
 
     given('An user is in the login page', async () => {
-      username = "jesus"
-      password = "jesus"
+      username = "testUserLogin"
+      password = "testUserLogin"
     });
 
     when('I fill the data in the form and press submit', async () => {
