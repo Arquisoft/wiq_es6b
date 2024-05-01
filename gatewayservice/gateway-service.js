@@ -21,8 +21,8 @@ const genQuestServiceUrl = process.env.GEN_SERVICE_URL || 'http://localhost:8003
 const rankingServiceUrl = process.env.RANK_SERVICE_URL || 'http://localhost:8004';
 const questiongeneratorserviceUrl = process.env.QTEST_SERVICE_URL || 'http://localhost:8007';
 
-const devUrl3000 = process.env.DEV_URL_3000;
-const devUrl8000 = process.env.DEV_URL_8000;
+const devUrl3000 = process.env.DEV_URL_3000 || 'http://localhost:3000';
+const devUrl8000 = process.env.DEV_URL_8000 || 'http://localhost:8000';
 const prodUrl3000 = process.env.PROD_URL_3000;
 const prodUrl8000 = process.env.PROD_URL_8000;
 
@@ -32,7 +32,10 @@ const corsOptions = {
 }
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   next();
 });
 
