@@ -93,23 +93,23 @@ defineFeature(feature, test => {
     when('I play until the game ends',async()=>{
         await expect(page).toMatchElement("h1", { text: 'Pregunta Número 1' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 2' }));
+        await expect(page).toMatchElement("h1", { text: 'Pregunta Número 2' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 3' }));
+        await expect(page).toMatchElement("h1", { text: 'Pregunta Número 3' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 4' }));
+        await expect(page).toMatchElement("h1", { text: 'Pregunta Número 4' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 5' }));
+        await expect(page).toMatchElement("h1", { text: 'Pregunta Número 5' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 6' }));
+        await expect(page).toMatchElement("h1", { text: 'Pregunta Número 6' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 7' }));
+        await expect(page).toMatchElement("h1", { text: 'Pregunta Número 7' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 8' }));
+        await expect(page).toMatchElement("h1", { text: 'Pregunta Número 8' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 9' }));
+        await expect(page).toMatchElement("h1", { text: 'Pregunta Número 9' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 10' }));
+        await expect(page).toMatchElement("h1", { text: 'Pregunta Número 10' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
         
     });
