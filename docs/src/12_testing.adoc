@@ -30,6 +30,24 @@ Para lograr esto, seguimos los principios FIRST:
 |===
 
 === E2E. Tests de integración
-uscaremos garantizar que la aplicación sea fácil de usar para proporcionar una experiencia satisfactoria al usuario. Nos centraremos en verificar diversas funcionalidades, desde la jugabilidad hasta acciones como el registro, inicio de sesión y cambios en los ajustes. Simularemos interacciones que haría un usuario real para asegurar que la aplicación sea intuitiva y funcione correctamente.
+Buscaremos garantizar que la aplicación sea fácil de usar para proporcionar una experiencia satisfactoria al usuario. Nos centraremos en verificar diversas funcionalidades, desde la jugabilidad hasta acciones como el registro, inicio de sesión y cambios en los ajustes. Simularemos interacciones que haría un usuario real para asegurar que la aplicación sea intuitiva y funcione correctamente.
 
 === Tests de carga
+Hemos realizado pruebas con 120 usuarios llegado a una tasa de 2 usuarios por segundo. La prueba consiste en logearse, jugar una partida, consultar todos los apartados de la barra de navegación, cambiar los ajustes bajando el numero de preguntas y volviendo a jugar una partida.
+
+image::tc_response_times.png["Tiempos de respuesta"]
+
+image::tc_active_users.png["Usuarios activos a lo largo de la simulación"]
+
+image::tc_response_time_distribution.png["Distribución de tiempos de respuesta"]
+
+image::tc_response_time_distribution.png["Percentiles de tiempos de respuesta"]
+
+image::tc_requests.png["Peticiones por segundo"]
+
+image::tc_responses.png["Respuestas por segundo"]
+
+=== SonarCloud
+En la siguiente imagen podemos comprobar todos los analisis realizados por SonarCloud.
+
+image::sonarcloud.png["SonarCloud"]
