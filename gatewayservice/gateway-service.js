@@ -33,6 +33,7 @@ const corsOptions = {
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
+  console.log('Request from origin: ' + origin);
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
