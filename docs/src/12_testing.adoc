@@ -49,4 +49,5 @@ image::tc_responses.png["Respuestas por segundo"]
 
 === SonarCloud
 En la siguiente imagen podemos comprobar todos los analisis realizados por SonarCloud.
+
 image::sonarcloud.png["SonarCloud"]
