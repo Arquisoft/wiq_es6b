@@ -47,7 +47,7 @@ defineFeature(feature, test => {
     });
 
     when('I press "COMENZAR A JUGAR"', async () => {
-        await expect(page).toClick('button', { text: 'COMENZAR A JUGAR' })
+        await expect(page).toClick('button', { text: 'Comenzar a jugar' })
     });
     then('A new game starts', async () => {
       await page.waitForTimeout(3000);
@@ -59,7 +59,7 @@ defineFeature(feature, test => {
   test('Results are shown', ({given,when,then}) => {
     let buttonColor;
     given('A logged user in a game', async () => {
-      await expect(page).toClick('button', { text: 'COMENZAR A JUGAR' })
+      await expect(page).toClick('button', { text: 'Comenzar a jugar' })
     });
     when('I choose an option', async () => {
       buttonColor = await page.waitForSelector('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root').backgroundColor;
@@ -75,7 +75,7 @@ defineFeature(feature, test => {
 
   test('Shows the next questions',({given,when,then})=>{
     given('A logged user in a game',async()=>{
-        await expect(page).toClick('button', { text: 'COMENZAR A JUGAR' })
+        await expect(page).toClick('button', { text: 'Comenzar a jugar' })
     });
     when('I choose an option',async()=>{
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
@@ -87,7 +87,7 @@ defineFeature(feature, test => {
 
   test('Finish the game',({given,when,then})=>{
     given('A logged user in a game',async()=>{
-        await expect(page).toClick('button', { text: 'COMENZAR A JUGAR' })
+        await expect(page).toClick('button', { text: 'Comenzar a jugar' })
     });
     when('I play until the game ends',async()=>{
         await expect(page).toMatchElement("h1", { text: 'Pregunta Número 1' });

@@ -45,7 +45,7 @@ defineFeature(feature, test => {
 
   test('A registered user changes the number of questions in the game', ({given,when,then}) => {
     given('A registered user in the settings view', async () => {
-        await expect(page).toClick('button', { text: 'AJUSTES DE PARTIDA' });
+        await expect(page).toClick('button', { text: 'Ajustes de partida' });
     });
 
     when('I change the game settings to 5 questions', async () => {
@@ -53,8 +53,8 @@ defineFeature(feature, test => {
         changeSliderValueTo5();
     });
     then('the game settings should be updated', async () => {
-        await expect(page).toClick('button', { text: 'JUGAR' });
-        await expect(page).toClick('button', { text: 'COMENZAR A JUGAR' })
+        await expect(page).toClick('button', { text: 'Jugar' });
+        await expect(page).toClick('button', { text: 'Comenzar a jugar' })
         await expect(page).toMatchElement("h1", { text: 'Pregunta Número 1' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
         await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 2' }));
@@ -71,17 +71,17 @@ defineFeature(feature, test => {
 
   test('A registered user changes the time limit in the game', ({given,when,then}) => {
       given('A registered user in the settings view', async () => {
-          await expect(page).toClick('button', { text: 'AJUSTES DE PARTIDA' });
+          await expect(page).toClick('button', { text: 'Ajustes de partida' });
       });
     
       when('I change the game settings to 5:30 minutes', async () => {
-          await expect(page).toClick('button', { text: 'DURACIÓN DE PARTIDA' });
+          await expect(page).toClick('button', { text: 'Duración de partida' });
           await expect(page).toFill('input[name="Minutos"]', 5);
           await expect(page).toFill('input[name="Segundos"]', 30);
       });
       then('the game settings should be updated', async () => {
-          await expect(page).toClick('button', { text: 'JUGAR' });
-          await expect(page).toClick('button', { text: 'COMENZAR A JUGAR' })
+          await expect(page).toClick('button', { text: 'Jugar' });
+          await expect(page).toClick('button', { text: 'Comenzar a jugar' })
           await expect(page).toMatchElement("h2", { text: '¡Tiempo restante 05:30!'});
       });
 
