@@ -9,7 +9,6 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
     const [error, setError] = useState('');
     const [correctQuestions, setCorrectQuestions] = useState(0);
     const [timer, setTimer] = useState(0);
-    const [themesSelected, setThemesSelected] = useState(themes);
     const [numberClics, setNumberClics] = useState(0);
     const [finished, setFinished] = useState(false);
     const [selectedAnswer, setSelectedAnswer] = useState('');
@@ -17,7 +16,7 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
     const [almacenado, setAlmacenado] = useState(false);
     const pricePerQuestion = 25;
     const delayBeforeNextQuestion = 3000; // 3 segundos de retardo antes de pasar a la siguiente pregunta
-
+    const themesSelected = themes;
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
     function getRandomIndex(length) {
@@ -58,7 +57,6 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
                                                             .map(([tema]) => tema);
                 const randomIndex = getRandomIndex(temas.length);
                 const temaAleatorio = temas[randomIndex];
-                console.log(setThemesSelected);
                 console.log(selectedAnswer);
                 const response = await axios.get(`${apiEndpoint}/getRandomQuestion${temaAleatorio}`);
                 setQuestion(response.data);
