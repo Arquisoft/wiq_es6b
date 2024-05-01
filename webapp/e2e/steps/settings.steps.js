@@ -12,7 +12,7 @@ defineFeature(feature, test => {
   beforeAll(async () => {
     browser = process.env.GITHUB_ACTIONS
       ? await puppeteer.launch()
-      : await puppeteer.launch({ headless: false, slowMo: 100 });
+      : await puppeteer.launch({ headless: false, slowMo: 100, defaultViewport: { width: 1200, height: 800 }});
     page = await browser.newPage();
     setDefaultOptions({ timeout: 10000 })
 
@@ -54,6 +54,7 @@ defineFeature(feature, test => {
         changeSliderValueTo5();
     });
     then('the game settings should be updated', async () => {
+        await page.waitForSelector('button', { text: 'Jugar' });
         await expect(page).toClick('button', { text: 'Jugar' });
         await expect(page).toClick('button', { text: 'Comenzar a jugar' })
         await expect(page).toMatchElement("h1", { text: 'Pregunta Número 1' });
@@ -105,7 +106,9 @@ defineFeature(feature, test => {
     for (let i = 0; i < steps; i++) {
         await page.mouse.move(sliderMidX - 50, sliderMidY, { steps: 10 });
     }
+    await page.waitForTimeout(500);
     await page.mouse.up();
   }
+
 });
 
