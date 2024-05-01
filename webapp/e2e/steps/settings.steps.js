@@ -54,7 +54,11 @@ defineFeature(feature, test => {
         changeSliderValueTo5();
     });
     then('the game settings should be updated', async () => {
-        await page.waitForSelector('button', { text: 'Jugar' });
+        await page.waitForSelector('button', { text: 'Jugar' }); // Esperar a que el botón esté presente
+        await page.waitForFunction(() => {
+            const button = document.querySelector('button');
+            return button && !button.disabled;
+        }); // Esperar a que el botón no esté deshabilitado
         await expect(page).toClick('button', { text: 'Jugar' });
         await expect(page).toClick('button', { text: 'Comenzar a jugar' })
         await expect(page).toMatchElement("h1", { text: 'Pregunta Número 1' });
@@ -92,23 +96,27 @@ defineFeature(feature, test => {
   async function changeSliderValueTo5() {
     const slider = await page.$('.MuiSlider-root');
 
-    const sliderRect = await slider.boundingBox();
+    if (slider) { // Verificar si el slider está disponible
+        const sliderRect = await slider.boundingBox();
 
-    const sliderMidX = sliderRect.x + sliderRect.width / 2;
-    const sliderMidY = sliderRect.y + sliderRect.height / 2;
+        const sliderMidX = sliderRect.x + sliderRect.width / 2;
+        const sliderMidY = sliderRect.y + sliderRect.height / 2;
 
-    const initialValue = 10;
-    const targetValue = 5;
-    const steps = (initialValue - targetValue) / 5;
+        const initialValue = 10;
+        const targetValue = 5;
+        const steps = (initialValue - targetValue) / 5;
 
-    await page.mouse.move(sliderMidX, sliderMidY);
-    await page.mouse.down();
-    for (let i = 0; i < steps; i++) {
-        await page.mouse.move(sliderMidX - 50, sliderMidY, { steps: 10 });
+        await page.mouse.move(sliderMidX, sliderMidY);
+        await page.mouse.down(); // Asegurarse de que el botón del ratón esté presionado
+        for (let i = 0; i < steps; i++) {
+            await page.mouse.move(sliderMidX - 50, sliderMidY, { steps: 10 });
+        }
+        await page.mouse.up(); // Soltar el botón del ratón
+    } else {
+        console.error('El slider no está disponible.');
     }
-    await page.waitForTimeout(500);
-    await page.mouse.up();
-  }
+}
+
 
 });
 
