@@ -12,7 +12,7 @@ defineFeature(feature, test => {
   beforeAll(async () => {
     browser = process.env.GITHUB_ACTIONS
       ? await puppeteer.launch()
-      : await puppeteer.launch({ headless: false, slowMo: 100 });
+      : await puppeteer.launch({ headless: false, slowMo: 1 });
     page = await browser.newPage();
     setDefaultOptions({ timeout: 10000 })
 
@@ -42,7 +42,7 @@ defineFeature(feature, test => {
   });
   test('Starts a new game', ({given,when,then}) => {
     given('A logged user in play view', async () => {
-        await expect(getByText('Hola '+ username +'!')).toBeInTheDocument();
+        await expect(page).toMatchElement("h1", { text: 'Hola '+ username +'!' });
     });
 
     when('I press "COMENZAR A JUGAR"', async () => {
@@ -50,7 +50,7 @@ defineFeature(feature, test => {
     });
     then('A new game starts', async () => {
       await page.waitForTimeout(3000);
-      await expect(getByText('Pregunta Número 1')).toBeInTheDocument();
+      await expect(page).toMatchElement("h1", { text: 'Pregunta Número 1' });
     });
   });
 
@@ -80,7 +80,7 @@ defineFeature(feature, test => {
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
     });
     then('New Question appears',async()=>{
-        await expect(getByText('Pregunta Número 2')).toBeInTheDocument();
+      await expect(page).toMatchElement("h1", { text: 'Pregunta Número 2' });
     });
   });
 
@@ -89,30 +89,30 @@ defineFeature(feature, test => {
         await expect(page).toClick('button', { text: 'COMENZAR A JUGAR' })
     });
     when('I play until the game ends',async()=>{
-        await expect(getByText('Pregunta Número 1')).toBeInTheDocument();
+        await expect(page).toMatchElement("h1", { text: 'Pregunta Número 1' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(getByText('Pregunta Número 2')).toBeInTheDocument());
+        r(() => expect(pagawait waitFoe).toMatchElement("h1", { text: 'Pregunta Número 2' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(getByText('Pregunta Número 3')).toBeInTheDocument());
+        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 3' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(getByText('Pregunta Número 4')).toBeInTheDocument());
+        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 4' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(getByText('Pregunta Número 5')).toBeInTheDocument());
+        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 5' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(getByText('Pregunta Número 6')).toBeInTheDocument());
+        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 6' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(getByText('Pregunta Número 7')).toBeInTheDocument());
+        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 7' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(getByText('Pregunta Número 8')).toBeInTheDocument());
+        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 8' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(getByText('Pregunta Número 9')).toBeInTheDocument());
+        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 9' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(getByText('Pregunta Número 10')).toBeInTheDocument());
+        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 10' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
         
     });
     then('The game is finished',async()=>{
-        await expect(getByText('¡Gracias por jugar!')).toBeInTheDocument();
+        await expect(page).toMatchElement("h6", { text: '¡Gracias por jugar!' });
     });
   })
 });

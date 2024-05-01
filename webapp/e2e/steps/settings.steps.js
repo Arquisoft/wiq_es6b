@@ -56,17 +56,17 @@ defineFeature(feature, test => {
     then('the game settings should be updated', async () => {
         await expect(page).toClick('button', { text: 'JUGAR' });
         await expect(page).toClick('button', { text: 'COMENZAR A JUGAR' })
-        await expect(getByText('Pregunta Número 1')).toBeInTheDocument();
+        await expect(page).toMatchElement("h1", { text: 'Pregunta Número 1' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(getByText('Pregunta Número 2')).toBeInTheDocument());
+        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 2' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(getByText('Pregunta Número 3')).toBeInTheDocument());
+        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 3' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(getByText('Pregunta Número 4')).toBeInTheDocument());
+        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 4' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await waitFor(() => expect(getByText('Pregunta Número 5')).toBeInTheDocument());
+        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 5' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        await expect(getByText('¡Gracias por jugar!')).toBeInTheDocument();
+        await expect(page).toMatchElement("h6", { text: '¡Gracias por jugar!' });
     });
   });
 
@@ -83,7 +83,7 @@ defineFeature(feature, test => {
       then('the game settings should be updated', async () => {
           await expect(page).toClick('button', { text: 'JUGAR' });
           await expect(page).toClick('button', { text: 'COMENZAR A JUGAR' })
-          await expect(getByText('¡Tiempo restante 05:30!')).toBeInTheDocument();
+          await expect(page).toMatchElement("h2", { text: '¡Tiempo restante 05:30!'});
       });
 
   });
