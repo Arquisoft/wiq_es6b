@@ -487,7 +487,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_cambio_de_ajustes_de_partida">6.9. Cambio de ajustes de partida</a></li>
 </ul>
 </li>
-<li><a href="#section-deployment-view">7. Deployment View</a>
+<li><a href="#section-deployment-view">7. Vista de despliegue</a>
 <ul class="sectlevel2">
 <li><a href="#_infrastructura_nivel_1">7.1. Infrastructura Nivel 1</a></li>
 </ul>
@@ -506,7 +506,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#section-technical-risks">11. Riesgos y Deudas Técnicas</a></li>
-<li><a href="#section-glossary">12. Glosario</a></li>
+<li><a href="#section-testing">12. Testing</a>
+<ul class="sectlevel2">
+<li><a href="#_tests_unitarios">12.1. Tests Unitarios</a></li>
+<li><a href="#_e2e_tests_de_integración">12.2. E2E. Tests de integración</a></li>
+<li><a href="#_tests_de_carga">12.3. Tests de carga</a></li>
+<li><a href="#_sonarcloud">12.4. SonarCloud</a></li>
+</ul>
+</li>
+<li><a href="#section-glossary">13. Glosario</a></li>
 </ul>
 </div>
 </div>
@@ -1215,7 +1223,7 @@ que trabajar sobre una base de datos local.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-deployment-view">7. Deployment View</h2>
+<h2 id="section-deployment-view">7. Vista de despliegue</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_infrastructura_nivel_1">7.1. Infrastructura Nivel 1</h3>
@@ -1356,7 +1364,7 @@ que trabajar sobre una base de datos local.</p>
 <p><strong>Implementación:</strong> Para la creación de esta aplicación se usará el lenguaje de programación JavaScript, para el front-end se utilizará React, Node.js y la construccion de microservicios para el back-end y MongoDB para la gestion de la base de datos NoSQL.</p>
 </li>
 <li>
-<p><strong>Pruebas:</strong> Se llevarán a cabo pruebas e2e y unitarias, de integración, de aceptación, de capacidad/rendimiento y de regresión, todas ellas siguiendo los principios FIRST(Fast, Independent, Repeatable, Self-Checking y Timely) para garantizar la ejecución correcta de todas las funcionalidades de la aplicación.</p>
+<p><strong>Pruebas:</strong> Se llevarán a cabo pruebas e2e, de carga y unitarias todas ellas siguiendo los principios FIRST(Fast, Independent, Repeatable, Self-Checking y Timely) para garantizar la ejecución correcta de todas las funcionalidades de la aplicación.</p>
 </li>
 </ul>
 </div>
@@ -1694,7 +1702,112 @@ buena idea usarlo.</p></td>
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-glossary">12. Glosario</h2>
+<h2 id="section-testing">12. Testing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Se llevarán a cabo pruebas unitarias, E2E y de carga para garantizar la ejecución correcta de todas las funcionalidades de la aplicación.</p>
+</div>
+<div class="sect2">
+<h3 id="_tests_unitarios">12.1. Tests Unitarios</h3>
+<div class="paragraph">
+<p>En nuestro proyecto, los tests unitarios son fundamentales para garantizar la correcta funcionalidad de cada componente del código. Cada función, método o clase será probado exhaustivamente para asegurar su integridad y rendimiento.</p>
+</div>
+<div class="paragraph">
+<p>Para lograr esto, seguimos los principios FIRST:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Principio</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fast (Rápido)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Los tests unitarios se ejecutan rápidamente, proporcionando retroalimentación inmediata sobre la integridad del código.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Independent (Independiente)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cada test es independiente de los demás, evitando dependencias y permitiendo su ejecución en cualquier orden.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Repeatable (Repetible)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Los resultados de los tests son consistentes y predecibles, independientemente de cuántas veces se ejecuten o del entorno de ejecución.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Self-Checking (Autoverificable)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Los tests determinan automáticamente si han pasado o fallado, sin necesidad de intervención humana para su validación.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Timely (Oportuno)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">La creación y ampliación de tests se realiza durante todo el desarrollo del proyecto, garantizando una cobertura adecuada en todo momento.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_e2e_tests_de_integración">12.2. E2E. Tests de integración</h3>
+<div class="paragraph">
+<p>Buscaremos garantizar que la aplicación sea fácil de usar para proporcionar una experiencia satisfactoria al usuario. Nos centraremos en verificar diversas funcionalidades, desde la jugabilidad hasta acciones como el registro, inicio de sesión y cambios en los ajustes. Simularemos interacciones que haría un usuario real para asegurar que la aplicación sea intuitiva y funcione correctamente.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tests_de_carga">12.3. Tests de carga</h3>
+<div class="paragraph">
+<p>Hemos realizado pruebas con 120 usuarios llegado a una tasa de 2 usuarios por segundo. La prueba consiste en logearse, jugar una partida, consultar todos los apartados de la barra de navegación, cambiar los ajustes bajando el numero de preguntas y volviendo a jugar una partida.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc_response_times.png" alt="Tiempos de respuesta">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc_active_users.png" alt="Usuarios activos a lo largo de la simulación">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc_response_time_distribution.png" alt="Distribución de tiempos de respuesta">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc_response_time_distribution.png" alt="Percentiles de tiempos de respuesta">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc_requests.png" alt="Peticiones por segundo">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc_responses.png" alt="Respuestas por segundo">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sonarcloud">12.4. SonarCloud</h3>
+<div class="paragraph">
+<p>En la siguiente imagen podemos comprobar todos los analisis realizados por SonarCloud.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/sonarcloud.png" alt="SonarCloud">
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="section-glossary">13. Glosario</h2>
 <div class="sectionbody">
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1744,7 +1857,7 @@ buena idea usarlo.</p></td>
 <div id="footer">
 <div id="footer-text">
 Version 8.2 EN<br>
-Last updated 2024-02-04 16:22:27 +0100
+Last updated 2024-05-01 13:18:45 +0200
 </div>
 </div>
 </body>
