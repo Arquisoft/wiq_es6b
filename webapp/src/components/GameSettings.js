@@ -66,10 +66,10 @@ const GameSettings = ({ setSettings, currentUser }) => {
             return;
         }
         setIsWarningSecsVisible(false);
-        if (newValue === 60 ) {
-            if(totalMins === 10) {
-                return;
-            }
+        if(totalMins === 20) {
+            return;
+        }
+        if (newValue === 60 ) {            
             setTotalSecs(0);
             setTotalMins((totalMins) => totalMins + 1);
         }else {
