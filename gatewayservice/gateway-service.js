@@ -19,7 +19,12 @@ const genQuestServiceUrl = process.env.GEN_SERVICE_URL || 'http://localhost:8003
 const rankingServiceUrl = process.env.RANK_SERVICE_URL || 'http://localhost:8004';
 const questiongeneratorserviceUrl = process.env.QTEST_SERVICE_URL || 'http://localhost:8007';
 
-app.use(cors());
+const corsOptions = {
+  origin: ['http://localhost', 'http://51.142.17.139'],
+  optionsSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 //Prometheus configuration
