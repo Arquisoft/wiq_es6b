@@ -142,7 +142,7 @@ async function insertTestData() {
                 typeQuestion:'estadio_capacidad'
             },
             { 
-                _id : new ObjectId('66185efc3a6bade7b8c12148'),
+                _id : new ObjectId('66185efc3a6badd7b8c12148'),
                 questionBody: '¿En que año nacio Fernanda Abreu?',
                 correcta: '1961',
                 incorrectas: ['1964','1947','1976'],
