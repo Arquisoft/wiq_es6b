@@ -7,6 +7,8 @@ const swaggerUi = require('swagger-ui-express');
 const fs = require("fs")
 const YAML = require('yaml')
 
+require('dotenv').config();
+
 const app = express();
 app.disable("x-powered-by");
 const port = 8000;
@@ -20,7 +22,7 @@ const rankingServiceUrl = process.env.RANK_SERVICE_URL || 'http://localhost:8004
 const questiongeneratorserviceUrl = process.env.QTEST_SERVICE_URL || 'http://localhost:8007';
 
 const devUrl = process.env.DEV_URL || 'http://localhost';
-const prodUrl = process.env.PROD_URL || 'http://51.142.17.139';
+const prodUrl = process.env.PROD_URL;
 
 const corsOptions = {
   origin: [devUrl, prodUrl],
