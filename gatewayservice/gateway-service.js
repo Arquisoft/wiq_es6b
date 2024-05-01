@@ -23,24 +23,13 @@ const questiongeneratorserviceUrl = process.env.QTEST_SERVICE_URL || 'http://loc
 
 const devUrl3000 = process.env.DEV_URL_3000 || 'http://localhost:3000';
 const devUrl8000 = process.env.DEV_URL_8000 || 'http://localhost:8000';
-const prodUrl3000 = process.env.PROD_URL_3000;
-const prodUrl8000 = process.env.PROD_URL_8000;
+const prodUrl3000 = process.env.PROD_URL_3000 || 'http://51.142.17.139:3000' ;
+const prodUrl8000 = process.env.PROD_URL_8000 || 'http://51.142.17.139:8000' ;
 
 const corsOptions = {
   origin: [devUrl3000, devUrl8000, prodUrl3000, prodUrl8000],
   optionsSuccessStatus: 200
 }
-
-const allowedOrigins = [devUrl3000, devUrl8000, prodUrl3000, prodUrl8000];
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Origin,Content-Type,Authorization');
-  next();
-});
 
 app.use(cors(corsOptions));
 app.use(express.json());
