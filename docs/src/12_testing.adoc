@@ -1,6 +1,6 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
-[[section-glossary]]
+[[section-testing]]
 == Testing
 Se llevarán a cabo pruebas unitarias, E2E y de carga para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
 
