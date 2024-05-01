@@ -95,7 +95,6 @@ services:
     environment:
       MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/rankingdb?retryWrites=true&w=majority&appName=wiq06b
 
-
   questiongeneratorservice:
     container_name: questiongeneratorservice-${teamname:-wiq_es06b}
     image: ghcr.io/arquisoft/wiq_es6b/questiongeneratorservice:latest
@@ -109,7 +108,6 @@ services:
       - mynetwork
     environment:
       MONGODB_URI: mongodb+srv://aswuser:aswuser@wiq06b.hsfgpcm.mongodb.net/questiongeneratordb?retryWrites=true&w=majority&appName=wiq06b
-
 
   gatewayservice:
     container_name: gatewayservice-${teamname:-wiq_es06b}

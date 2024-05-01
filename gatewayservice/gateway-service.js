@@ -7,6 +7,8 @@ const swaggerUi = require('swagger-ui-express');
 const fs = require("fs")
 const YAML = require('yaml')
 
+require('dotenv').config();
+
 const app = express();
 app.disable("x-powered-by");
 const port = 8000;
@@ -19,13 +21,7 @@ const genQuestServiceUrl = process.env.GEN_SERVICE_URL || 'http://localhost:8003
 const rankingServiceUrl = process.env.RANK_SERVICE_URL || 'http://localhost:8004';
 const questiongeneratorserviceUrl = process.env.QTEST_SERVICE_URL || 'http://localhost:8007';
 
-const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
-const serverUrl = process.env.CLIENT_URL || 'http://localhost:8000';
-let corsOptions = {
-  origin: [  clientUrl, serverUrl ]
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 //Prometheus configuration

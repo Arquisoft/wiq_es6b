@@ -65,7 +65,7 @@ const RankingList = ({setError}) => {
       <h2>Top 3 usuarios con mejor porcentaje de aciertos</h2>
       <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px' }}>
         {topThreeUsers.map((user, index) => (
-          <div key={index} style={{ width: '30%', padding: '20px', backgroundColor: index === 0 ? '#ffd700' : index === 1 ? '#c0c0c0' : '#cd7f32', color: 'white', textAlign: 'center', borderRadius: '10px', boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)', transition: '0.3s', border: '1px solid #ddd' }}>
+          <div key={index} style={{ width: '30%', padding: '20px', backgroundColor: index === 0 ? '#ffd700' : index === 1 ? '#c0c0c0' : '#cd7f32', color: 'black', textAlign: 'center', borderRadius: '10px', boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)', transition: '0.3s', border: '1px solid #ddd' }}>
             <h3 style={{ margin: '0' }}>{index + 1}</h3>
             <p style={{ fontWeight: 'bold', fontSize: '20px' }}>{user.username}</p>
             <p style={{ marginBottom: '5px' }}>{user.porcentajeAciertos}% Aciertos</p>
