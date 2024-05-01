@@ -37,6 +37,7 @@ defineFeature(feature, test => {
         await expect(page).toFill('input[name="username"]', username);
         await expect(page).toFill('input[name="password"]', password);
         await expect(page).toClick('button', { text: 'Iniciar sesión' })
+        await waitFor(() => expect(page).toMatchElement("h1", { text: `Hola ${username}!` }));
   });
   afterAll(async ()=>{
     browser.close();
