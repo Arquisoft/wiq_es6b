@@ -26,7 +26,7 @@ defineFeature(feature, test => {
     await expect(page).toFill('input[name="password"]', password);
     await expect(page).toClick('button', { text: 'Añadir usuario' })
     await page.waitForNavigation();
-  });
+  }, 60000);
   beforeEach(async()=>{
     await page
         .goto("http://localhost:3000", {
@@ -91,7 +91,7 @@ defineFeature(feature, test => {
     when('I play until the game ends',async()=>{
         await expect(page).toMatchElement("h1", { text: 'Pregunta Número 1' });
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
-        r(() => expect(pagawait waitFoe).toMatchElement("h1", { text: 'Pregunta Número 2' }));
+        await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 2' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')
         await waitFor(() => expect(page).toMatchElement("h1", { text: 'Pregunta Número 3' }));
         await expect(page).toClick('.MuiGrid-root:nth-child(1) > .MuiButtonBase-root')

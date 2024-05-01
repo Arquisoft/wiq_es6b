@@ -26,7 +26,7 @@ defineFeature(feature, test => {
     await expect(page).toFill('input[name="password"]', password);
     await expect(page).toClick('button', { text: 'Añadir usuario' })
     await page.waitForNavigation();
-  });
+  }, 60000);
 
   
   beforeEach(async()=>{
