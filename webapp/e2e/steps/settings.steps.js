@@ -12,7 +12,7 @@ defineFeature(feature, test => {
   beforeAll(async () => {
     browser = process.env.GITHUB_ACTIONS
       ? await puppeteer.launch()
-      : await puppeteer.launch({ headless: false, slowMo: 1 });
+      : await puppeteer.launch({ headless: false, slowMo: 100 });
     page = await browser.newPage();
     setDefaultOptions({ timeout: 10000 })
 
@@ -27,6 +27,8 @@ defineFeature(feature, test => {
     await expect(page).toClick('button', { text: 'Añadir usuario' })
     await page.waitForNavigation();
   });
+
+  
   beforeEach(async()=>{
     await page
         .goto("http://localhost:3000", {
