@@ -20,7 +20,7 @@ image::tc0_active_users.png["Usuarios activos a lo largo de la simulación"]
 
 image::tc0_response_time_distribution.png["Distribución de tiempos de respuesta"]
 
-image::tc0_response_time_distribution.png["Percentiles de tiempos de respuesta"]
+image::tc0_response_time_percentiles.png["Percentiles de tiempos de respuesta"]
 
 image::tc0_requests.png["Peticiones por segundo"]
 
