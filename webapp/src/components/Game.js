@@ -177,7 +177,7 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
             }
         };
         
-        if ((timer >= timeLimit || numberClics === totalQuestions - 1)&& !almacenado) {
+        if ((timer >= timeLimit || numberClics === totalQuestions)&& !almacenado) {
             (async () => {
                 await addRecord();
                 await updateRanking();
