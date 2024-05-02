@@ -12,7 +12,21 @@ En nuestro proyecto, los tests unitarios son fundamentales para garantizar la co
 Buscaremos garantizar que la aplicación sea fácil de usar para proporcionar una experiencia satisfactoria al usuario. Nos centraremos en verificar diversas funcionalidades, desde la jugabilidad hasta acciones como el registro e inicio de sesión. Simularemos interacciones que haría un usuario real para asegurar que la aplicación sea intuitiva y funcione correctamente.
 
 === Tests de carga
-Hemos realizado pruebas con 120 usuarios llegado a una tasa de 2 usuarios por segundo. La prueba consiste en logearse, jugar una partida, consultar todos los apartados de la barra de navegación, cambiar los ajustes bajando el numero de preguntas y volviendo a jugar una partida.
+Hemos realizado inicialmente una prueba con un usuario por segundo durante 60 segundos de tal forma que quedaría en un computo total de 60 usuarios. La prueba consiste en logearse, jugar una partida, consultar todos los apartados de la barra de navegación, cambiar los ajustes bajando el numero de preguntas y volviendo a jugar una partida.
+
+image::tc0_response_times.png["Tiempos de respuesta"]
+
+image::tc0_active_users.png["Usuarios activos a lo largo de la simulación"]
+
+image::tc0_response_time_distribution.png["Distribución de tiempos de respuesta"]
+
+image::tc0_response_time_percentiles.png["Percentiles de tiempos de respuesta"]
+
+image::tc0_requests.png["Peticiones por segundo"]
+
+image::tc0_responses.png["Respuestas por segundo"]
+
+Posteriormente realizamos siguiendo una tasa de 2 usuarios por segundo durante 60 segundos llegando a un total de 120 usuarios. Cada usuario haría las mismas operaciones que se han descrito antes. 
 
 image::tc_response_times.png["Tiempos de respuesta"]
 
@@ -20,11 +34,26 @@ image::tc_active_users.png["Usuarios activos a lo largo de la simulación"]
 
 image::tc_response_time_distribution.png["Distribución de tiempos de respuesta"]
 
-image::tc_response_time_distribution.png["Percentiles de tiempos de respuesta"]
+image::tc_response_time_percentiles.png["Percentiles de tiempos de respuesta"]
 
 image::tc_requests.png["Peticiones por segundo"]
 
 image::tc_responses.png["Respuestas por segundo"]
+
+Finalmente hemos hecho pruebas metiendo un total de 300 usuarios a una tasa de 5 usuarios por segundo duante un tiempo de 60 segundos. Los cuales probarian las mismas funcionalidades que los anteriores. 
+
+image::tc2_response_times.png["Tiempos de respuesta"]
+
+image::tc2_active_users.png["Usuarios activos a lo largo de la simulación"]
+
+image::tc2_response_time_distribution.png["Distribución de tiempos de respuesta"]
+
+image::tc2_response_time_percentiles.png["Percentiles de tiempos de respuesta"]
+
+image::tc2_requests.png["Peticiones por segundo"]
+
+image::tc2_responses.png["Respuestas por segundo"]
+
 
 === SonarCloud
 En la siguiente imagen podemos comprobar todos los analisis realizados por SonarCloud.
