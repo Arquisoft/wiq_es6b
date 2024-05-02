@@ -1,5 +1,19 @@
 # wiq_es6b
 
+## Contributors
+<div align="center">
+    
+| Contributor | Profile |
+| ------------- | ------------- | 
+| Luis Miguel Gómez Cueto | <a href="https://github.com/uo277310"><img src="https://img.shields.io/badge/UO277310-Luis Miguel Gómez-yellow"></a> |
+| Sergio Díaz Cancillo | <a href="https://github.com/uo287627"><img src="https://img.shields.io/badge/UO287627-Sergio Díaz-purple"></a> |
+| Jesús García Ruiz | <a href="https://github.com/uo285427"><img src="https://img.shields.io/badge/UO285427-Jesús García-blue"></a>  |
+| Laura Menéndez García | <a href="https://github.com/uo283055"><img src="https://img.shields.io/badge/UO283055-Laura Menéndez-red"></a> |
+
+</div>
+
+## Code Analysis
+
 [![Deploy on release](https://github.com/Arquisoft/wiq_es6b/actions/workflows/release.yml/badge.svg)](https://github.com/Arquisoft/wiq_es6b/actions/workflows/release.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_wiq_es6b&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Arquisoft_wiq_es6b)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_wiq_es6b&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Arquisoft_wiq_es6b)
@@ -11,6 +25,11 @@ This repo is a basic application composed of several components.
 - **Gateway service**. Express service that is exposed to the public and serves as a proxy to the two previous ones.
 - **User service**. Express service that handles the insertion of new users in the system.
 - **Auth service**. Express service that handles the authentication of users.
+- **Create service**. Express service that, using some queries and the WikiData API, generates the questions and answers.
+- **Question Generator service**. Express service that handles the storage of the generated questions and answers to use them in the games.
+- **Generated Questions service**. Express service that stores every question and correct answer that has been shown during games (useful to list "Historial de Preguntas generadas" or "Generated Questions History").
+- **Record service**. Express service that handles the storage of the result of every game that has been played by a user.
+- **Ranking service**. Express service that handles the storage of the statistics of every player since he/she created his/her account.
 - **Webapp**. React web application that uses the gateway service to allow basic login and new user features.
 
 Both the user and auth service share a Mongo database that is accessed with mongoose.
