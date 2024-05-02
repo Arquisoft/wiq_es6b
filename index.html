@@ -512,6 +512,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_e2e_tests_de_integración">12.2. E2E. Tests de integración</a></li>
 <li><a href="#_tests_de_carga">12.3. Tests de carga</a></li>
 <li><a href="#_sonarcloud">12.4. SonarCloud</a></li>
+<li><a href="#_monitorización">12.5. Monitorización</a></li>
 </ul>
 </li>
 <li><a href="#section-glossary">13. Glosario</a></li>
@@ -1705,7 +1706,7 @@ buena idea usarlo.</p></td>
 <h2 id="section-testing">12. Testing</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Se llevarán a cabo pruebas unitarias, E2E y de carga para garantizar la ejecución correcta de todas las funcionalidades de la aplicación.</p>
+<p>Se llevarán a cabo pruebas unitarias, E2E y de carga para garantizar la ejecución correcta de todas las funcionalidades de la aplicación, así como también la monitorización de la aplicación.</p>
 </div>
 <div class="sect2">
 <h3 id="_tests_unitarios">12.1. Tests Unitarios</h3>
@@ -1722,7 +1723,40 @@ buena idea usarlo.</p></td>
 <div class="sect2">
 <h3 id="_tests_de_carga">12.3. Tests de carga</h3>
 <div class="paragraph">
-<p>Hemos realizado pruebas con 120 usuarios llegado a una tasa de 2 usuarios por segundo. La prueba consiste en logearse, jugar una partida, consultar todos los apartados de la barra de navegación, cambiar los ajustes bajando el numero de preguntas y volviendo a jugar una partida.</p>
+<p>Hemos realizado inicialmente una prueba con un usuario por segundo durante 60 segundos de tal forma que quedaría en un computo total de 60 usuarios. La prueba consiste en logearse, jugar una partida, consultar todos los apartados de la barra de navegación, cambiar los ajustes bajando el numero de preguntas y volviendo a jugar una partida.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc0_response_times.png" alt="Tiempos de respuesta">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc0_active_users.png" alt="Usuarios activos a lo largo de la simulación">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc0_response_time_distribution.png" alt="Distribución de tiempos de respuesta">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc0_response_time_percentiles.png" alt="Percentiles de tiempos de respuesta">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc0_requests.png" alt="Peticiones por segundo">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc0_responses.png" alt="Respuestas por segundo">
+</div>
+</div>
+<div class="paragraph">
+<p>Posteriormente realizamos siguiendo una tasa de 2 usuarios por segundo durante 60 segundos llegando a un total de 120 usuarios. Cada usuario haría las mismas operaciones que se han descrito antes.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1741,7 +1775,7 @@ buena idea usarlo.</p></td>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="./images/tc_response_time_distribution.png" alt="Percentiles de tiempos de respuesta">
+<img src="./images/tc_response_time_percentiles.png" alt="Percentiles de tiempos de respuesta">
 </div>
 </div>
 <div class="imageblock">
@@ -1752,6 +1786,39 @@ buena idea usarlo.</p></td>
 <div class="imageblock">
 <div class="content">
 <img src="./images/tc_responses.png" alt="Respuestas por segundo">
+</div>
+</div>
+<div class="paragraph">
+<p>Finalmente hemos hecho pruebas metiendo un total de 300 usuarios a una tasa de 5 usuarios por segundo duante un tiempo de 60 segundos. Los cuales probarian las mismas funcionalidades que los anteriores.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc2_response_times.png" alt="Tiempos de respuesta">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc2_active_users.png" alt="Usuarios activos a lo largo de la simulación">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc2_response_time_distribution.png" alt="Distribución de tiempos de respuesta">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc2_response_time_percentiles.png" alt="Percentiles de tiempos de respuesta">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc2_requests.png" alt="Peticiones por segundo">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/tc2_responses.png" alt="Respuestas por segundo">
 </div>
 </div>
 </div>
@@ -1765,7 +1832,59 @@ buena idea usarlo.</p></td>
 <img src="./images/sonarcloud.png" alt="SonarCloud">
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_monitorización">12.5. Monitorización</h3>
+<div class="paragraph">
+<p>Hemos añadido el perfil de producción tanto a prometeus como a grafana en el Docker compose, tras ello procedimos a abrir los puertos 9090 y 9091 en la máquina virtual tal y como se muestra en esta imagen:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/aperturaDePuertosMV.png" alt="AperturaDePuertosMV">
+</div>
+</div>
+<div class="sect3">
+<h4 id="_monitorización_en_remoto">12.5.1. Monitorización en remoto</h4>
+<div class="paragraph">
+<p>Tras llevar a cabo todo lo anterior hemos pasado a comprobar que nos funcionaba todo correctamente, primero accediendo a prometheus el cual a pesar de abrir los puertos no lograbamos acceder correctamente:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/prometheus.png" alt="Prometheus">
+</div>
+</div>
+<div class="paragraph">
+<p>Y por lo tanto a pesar de poder acceder correctamente a grafana no obtenemos ningun resutado del análisis de las distintas peticiones llevadas a cabo en la aplicación:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/grafana.png" alt="Grafana">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_monitorización_en_local">12.5.2. Monitorización en local</h4>
+<div class="paragraph">
+<p>Hemos llevado a cabo también una monitorización en local en la rama master que ha resultado exitosa.</p>
+</div>
+<div class="paragraph">
+<p>Tal y como se puede apreciar en este caso nos ha cargado correctamente prometheus:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/prometheusLocal.png" alt="PrometheusLocal">
+</div>
+</div>
+<div class="paragraph">
+<p>Tras interaccionar con la aplicación un rato hemos accedido a posterior a grafana dando como resultado un número de peticiones falladas( E ) nulo y los consiguientes datos del número de peticiones por minuto( R ) y del tiempo de procesamiento de petición( D ):</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="./images/grafanaLocal.png" alt="GrafanaLocal">
+</div>
+</div>
 <div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 </div>
