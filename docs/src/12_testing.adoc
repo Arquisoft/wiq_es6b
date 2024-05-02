@@ -2,7 +2,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-testing]]
 == Testing
-Se llevarán a cabo pruebas unitarias, E2E y de carga para garantizar la ejecución correcta de todas las funcionalidades de la aplicación. 
+Se llevarán a cabo pruebas unitarias, E2E y de carga para garantizar la ejecución correcta de todas las funcionalidades de la aplicación, así como también la monitorización de la aplicación.
 
 === Tests Unitarios
 
@@ -30,3 +30,29 @@ image::tc_responses.png["Respuestas por segundo"]
 En la siguiente imagen podemos comprobar todos los analisis realizados por SonarCloud.
 
 image::sonarcloud.png["SonarCloud"]
+
+=== Monitorización
+Hemos añadido el perfil de producción tanto a prometeus como a grafana en el Docker compose, tras ello procedimos a abrir los puertos 9090 y 9091 en la máquina virtual tal y como se muestra en esta imagen: 
+
+image::aperturaDePuertosMV.png["AperturaDePuertosMV"]
+
+==== Monitorización en remoto
+
+Tras llevar a cabo todo lo anterior hemos pasado a comprobar que nos funcionaba todo correctamente, primero accediendo a prometheus el cual a pesar de abrir los puertos no lograbamos acceder correctamente: 
+
+image::prometheus.png["Prometheus"]
+
+Y por lo tanto a pesar de poder acceder correctamente a grafana no obtenemos ningun resutado del análisis de las distintas peticiones llevadas a cabo en la aplicación:   
+
+image::grafana.png["Grafana"]
+
+==== Monitorización en local
+Hemos llevado a cabo también una monitorización en local en la rama master que ha resultado exitosa. 
+
+Tal y como se puede apreciar en este caso nos ha cargado correctamente prometheus: 
+
+image::prometheusLocal.png["PrometheusLocal"]
+
+Tras interaccionar con la aplicación un rato hemos accedido a posterior a grafana dando como resultado un número de peticiones falladas(E) nulo y los consiguientes datos del número de peticiones por minuto(R) y del tiempo de procesamiento de petición(D): 
+
+image::grafanaLocal.png["GrafanaLocal"]
