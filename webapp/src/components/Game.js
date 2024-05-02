@@ -137,10 +137,10 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
 
             // Después de 3 segundos, restablecer la selección y pasar a la siguiente pregunta
             setTimeout(async() => {
+                setNumberClics(numberClics + 1);
                 await obtenerPreguntaAleatoria();
                 setSelectedOption(null);
                 await addGeneratedQuestionBody();
-                setNumberClics(numberClics + 1);
                 setSelectedAnswer('');
             }, delayBeforeNextQuestion);
         }
@@ -177,14 +177,14 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
             }
         };
         
-        if ((timer >= timeLimit || numberClics === totalQuestions - 1)&& !almacenado) {
+        if ((timer >= timeLimit || finished)&& !almacenado) {
             (async () => {
                 await addRecord();
                 await updateRanking();
             })();
             setAlmacenado(true);
         }
-    }, [timer, numberClics, totalQuestions, timeLimit, almacenado, apiEndpoint, correctQuestions, username, setError]);
+    }, [timer, finished, totalQuestions, timeLimit, almacenado, apiEndpoint, correctQuestions, username, setError, themes, setThemesSelected ]);
 
     if(isNaN(totalQuestions)){
         totalQuestions=10;
@@ -195,7 +195,7 @@ const Game = ({ username, totalQuestions, timeLimit, themes }) => {
 
     return (
         <Container maxWidth="lg">
-            {numberClics >= totalQuestions || timer >= timeLimit ? (
+            {(numberClics >= totalQuestions || timer >= timeLimit) && almacenado? (
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
                         ¡Gracias por jugar!
