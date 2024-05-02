@@ -60,7 +60,7 @@ describe('User Service', () => {
       .send({ username: 'testuser' }); // password field is missing
   
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe('Missing required field: password');
+    expect(response.body.error).toBe('Falta el campo obligatorio: password');
   });
 
   describe('should throw an error when a required field is present but empty', () => {
@@ -70,7 +70,7 @@ describe('User Service', () => {
         .send({ username: process.env.TEST_USER3, password: ''}); // password field is empty
     
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('Field password must not be empty');
+      expect(response.body.error).toBe('El campo password no debe estar vacío.');
     });
 
     test('password is empty and it throws an error', async () => {
@@ -79,7 +79,7 @@ describe('User Service', () => {
         .send({ username: process.env.TEST_USER3, password: process.env.EMPTY_PASSWORD}); // password field is empty
     
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('Field password must not be empty');
+      expect(response.body.error).toBe('El campo password no debe estar vacío.');
     });
 
     test('username is empty and it throws an error', async () => {
@@ -88,7 +88,7 @@ describe('User Service', () => {
         .send({ username: '', password: process.env.TEST_PASSWORD}); // username field is empty
     
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('Field username must not be empty');
+      expect(response.body.error).toBe('El campo username no debe estar vacío.');
     });
 
     test('username is empty and it throws an error', async () => {
@@ -97,7 +97,7 @@ describe('User Service', () => {
         .send({ username: '     ', password: process.env.TEST_PASSWORD}); // username field is empty
     
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('Field username must not be empty');
+      expect(response.body.error).toBe('El campo username no debe estar vacío.');
     });
   });
   
