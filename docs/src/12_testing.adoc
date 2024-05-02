@@ -53,6 +53,6 @@ Tal y como se puede apreciar en este caso nos ha cargado correctamente prometheu
 
 image::prometheusLocal.png["PrometheusLocal"]
 
-Tras interaccionar con la aplicación un rato hemos accedido a posterior a grafana dando como resultado un número de peticiones falladas(E) nulo y los consiguientes datos del número de peticiones por minuto(R) y del tiempo de procesamiento de petición(D): 
+Tras interaccionar con la aplicación un rato hemos accedido a posterior a grafana dando como resultado un número de peticiones falladas( E ) nulo y los consiguientes datos del número de peticiones por minuto( R ) y del tiempo de procesamiento de petición( D ): 
 
 image::grafanaLocal.png["GrafanaLocal"]
