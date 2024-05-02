@@ -27,10 +27,10 @@ mongoose.connect(mongoUri);
 function validateRequiredFields(req, requiredFields) {
   for (const field of requiredFields) {
       if (!(field in req.body)) {
-        throw new Error(`Missing required field: ${field}`);
+        throw new Error(`Falta el campo obligatorio: ${field}`);
       }
       if (req.body[field].trim() == '' || req.body[field] == null || req.body[field] === undefined) {
-        throw new Error(`Field ${field} must not be empty`);
+        throw new Error(`El campo ${field} no debe estar vacío.`);
       }
     }
 }
@@ -44,7 +44,7 @@ app.post('/adduser', async (req, res) => {
         const username = req.body.username.toString();
         const existingUser = await User.findOne({ username });
         if(existingUser!=null){
-            throw new Error(`The username "${req.body.username}" is already in use.`);
+            throw new Error(`El usuario "${req.body.username}" ya está ocupado.`);
         }
         // Encrypt the password before saving it
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
