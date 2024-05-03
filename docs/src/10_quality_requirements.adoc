@@ -13,7 +13,7 @@ Los requisitos de calidad son la piedra angular del desarrollo de nuestro proyec
 |Disponibilidad|La aplicación deberá permanecer disponible en el mayor ratio de tiempo posible, proporcionando así una experiencia satisfactoria al público de la misma que pueda disfrutar de ella cuando deseen.||*
 |Seguridad|Se asegurará la protección de los datos sensibles de los usuarios así como se dará garantía de que los datos almacenados a modo de registro hisrórico de puntuaciones permanecerán inmutables. Se bloquearán los accesos no autorizados a la aplicación.||*
 |Rendimiento|Trataremos de minimizar los tiempos de respuesta por parte del sistema tratando así de garantizar la mejor experiencia por parte del usuario.|SC2|*
-|Variedad y Precisión|Las preguntas y las respuestas generadas por nuestra aplicación  deberán caracterizarse por tener la mayor precisión posible para garantizar que la respuesta correcta sea única. Además deberán abarcar diversos temas para no crear un juego de preguntas monotemáticas. |SC3|
+|Variabilidad y Precisión|Las preguntas y las respuestas generadas por nuestra aplicación  deberán caracterizarse por tener la mayor precisión posible para garantizar que la respuesta correcta sea única. Además deberán abarcar diversos temas para no crear un juego de preguntas monotemáticas. |SC3|
 |Accesibilidad|Aseguraremos una experiencia satisfactoria para todo tipo de usuario por lo que nuestra aplicación pondrá especial atención a la accesibilidad de la misma, previniendo las posibles dificultades que le podrían surgir a los distintos grupos de usuarios según sus capacidades físicas y/o cognitivas. |SC4|*
 |===
 
