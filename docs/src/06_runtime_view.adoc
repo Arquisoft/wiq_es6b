@@ -5,7 +5,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 === Registro en la aplicación
 
-[plantuml,"Registro",png]
+[plantuml,"Registro usuario",png]
 ----
 actor User
 participant App
@@ -39,7 +39,7 @@ end
 
 === Inicio de sesión en la aplicación 
 
-[plantuml,"Login",png]
+[plantuml,"Login usuario",png]
 ----
 actor User
 participant App
@@ -70,7 +70,7 @@ end
 
 === Generacion de preguntas
 
-[plantuml,"Generacion",png]
+[plantuml,"Generacion preguntas",png]
 ----
 database DBquestions
 participant CreateService
@@ -96,7 +96,7 @@ end
 
 === Respuesta a una pregunta
 
-[plantuml,"Respuesta",png]
+[plantuml,"Respuesta pregunta",png]
 ----
 actor User
 participant App
@@ -149,7 +149,7 @@ end
 
 === Consulta del historial de usuarios
 
-[plantuml,"Usuarios",png]
+[plantuml,"Historial usuarios",png]
 ----
 actor User
 participant App
@@ -171,7 +171,7 @@ end
 
 === Consulta del historial de preguntas generadas
 
-[plantuml,"Preguntas",png]
+[plantuml,"Historial preguntas",png]
 ----
 actor User
 participant App
@@ -193,7 +193,7 @@ end
 
 === Consulta del historial de jugadas
 
-[plantuml,"Jugadas",png]
+[plantuml,"Historial jugadas",png]
 ----
 actor User
 participant App
@@ -213,7 +213,7 @@ User <-- App: Muestra el historial de jugadas
 
 === Consulta del ranking
 
-[plantuml,"Ranking",png]
+[plantuml,"Ranking usuarios",png]
 ----
 actor User
 participant App
@@ -233,7 +233,7 @@ User <-- App: Muestra el ranking
 
 === Cambio de ajustes de partida
 
-[plantuml,"Ajustes",png]
+[plantuml,"Ajustes partida",png]
 ----
 actor User
 participant App
