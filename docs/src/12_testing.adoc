@@ -10,12 +10,12 @@ En nuestro proyecto, los tests unitarios son fundamentales para garantizar la co
 
 === E2E. Tests de integración
 Buscaremos garantizar que la aplicación sea fácil de usar para proporcionar una experiencia satisfactoria al usuario. Nos centraremos en verificar diversas funcionalidades, desde la jugabilidad hasta acciones como el registro e inicio de sesión. Simularemos interacciones que haría un usuario real para asegurar que la aplicación sea intuitiva y funcione correctamente. 
-Las funcionalidades probadas han sido: 
+Las funcionalidades probadas han sido:
 
-*Registro
-*Login
-*Registro + Login
-*Mostrado del juego.
+* Registro 
+* Login 
+* Registro + Login 
+* Mostrado del juego 
 
 === Tests de carga
 Hemos realizado inicialmente una prueba con un usuario por segundo durante 60 segundos de tal forma que quedaría en un computo total de 60 usuarios. La prueba consiste en logearse, jugar una partida, consultar todos los apartados de la barra de navegación, cambiar los ajustes bajando el numero de preguntas y volviendo a jugar una partida.
