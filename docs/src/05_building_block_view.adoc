@@ -19,7 +19,9 @@ La vista general de la aplicación y de su entorno es sencilla a la par que esqu
 Bloques contenidos::
 |===
 |Nombre|Responsabilidad
+|_User_| Se trata del usuario que accede a la aplicación.
 |_WIQ_| Se trata del bloque genérico que contiene *todo* lo relativo a la aplicación que desarrollaremos.
+|_WikiData API_| Se trata de la api de Wikidata que da el contenido para la creación de las preguntas.
 |===
 
 
@@ -48,7 +50,7 @@ image::05_bbv_level03.jpg["Level3"]
 
 Este esquema concreta la estructura interna del bloque "Users Managemer" que se encarga, descrito de manera rápida y locuaz, de gestionar las credenciales, fechas de registro y peticiones de login de los usuarios ya registrados y también de aquellos que traten de registrarse por primera vez en nuestra aplicación. También está entre sus labores la de mantener un registro actualizado del ranking (porcentaje de aciertos, numero de partidas jugadas...) de cada uno de los usuarios registrado (lo hará en una base de datos dedicada específicamente a ello). 
 
-El diagrama se divide en cuatro principales componentes (_User Service_, _Authentication Service_, _Ranking Service_) que interactuan con sus respectivas bases de datos. 
+El diagrama se divide en tres principales componentes (_User Service_, _Authentication Service_, _Ranking Service_) que interactuan con sus respectivas bases de datos. 
 
 |===
 |Nombre|Responsabilidad
@@ -66,7 +68,7 @@ Este segundo esquema trata de describir con mayor hondura el funcionamiento inte
 
 Cabe destacar que los microservicios _"GeneratedQuestion Service"_ y _"Create Service"_ comparten una misma base de datos "questiondb" pero utilizan dos colecciones diferentes ("generatedquestions" y "questions" respectivamente). El microservicio "GeneratedQuestions" se encarga de almacenar preguntas completas y, solamente, las respuestas correctas de cada una de las preguntas (lo hace para poder mostrar en cierta funcionalidad del juego las preguntas que ya han sido generadas a modo de "enciclopedia"). Por otro lado el microservicio "Create Service" almacena en su base de datos las plantillas de las preguntas (p.e: "¿Cuál es la capital de ") y el "typeQuestion" (cadena de texto) que resulta relevante dentro de la lógica del microservicio para extraer la "query" (consulta de WikiData) idónea para conseguir completar la pregunta y obtener sus respuestas correctas e incorrectas.
 
-Los otros dos microservicios son "QuestionGenerator" y "Record". Cada uno de ellos utiliza una base de datos separada para almacenar: el primero de ellos las preguntas con todas sus respuestas (correcta e incorrectas); el segundo de ellos las puntuaciones de cada una de las partidas que se juegen por cada uno de los usuarios.
+Los otros dos microservicios son "QuestionGenerator" y "Record". Cada uno de ellos utiliza una base de datos separada para almacenar: el primero de ellos las preguntas con todas sus respuestas (correcta e incorrectas) que se irían generando en el "CreateService"; el segundo de ellos las puntuaciones de cada una de las partidas que se juegen por cada uno de los usuarios.
 
 |===
 |Nombre|Responsabilidad
@@ -74,6 +76,13 @@ Los otros dos microservicios son "QuestionGenerator" y "Record". Cada uno de ell
 |GeneratedQuestion Service|Se encarga de almacenar las preguntas generadas y sus respuestas correctas para mostrarlas en una especie de recopilatorio de preguntas generadas que se podrán consultar en la aplicación.
 |QuestionGenerator Service|Almacena las preguntas completas (interrogante, respuestas incorrectas y respuesta correcta) para poder mostrarlas durante la partida.
 |Record Service|Registra las estadísticas _de cada una de las partidas_ (de manera independiente para cada partida) de cada uno de los jugadores.
+|Question Database|Contiene dos colecciones, una con las bases de las preguntas para generar las preguntas completas usando la API de wikidata y la segunda para almacenar las preguntas y respuestas correctas (que corresponderían a las que le han sido mostradas al usuario). 
+|QuestionGenerator Database|Almacena las preguntas generadas de wikidata junto con su respuesta correcta y sus tres incorrectas.
+|Record Database|Almacena todas las jugadas realizadas.
 |===
 
-_Cabe destacar que hemos situado *Record Service* en el paquete relativo a las preguntas. Esto lo hemos hecho así porque creemos que mantiene mayor relación con las mismas y con el "juego" en sí, más que con el paquete relativo a la información de los usuarios. Sin embargo, la decisión contraria también tiene su lógica._
+==== Gateway Service
+Se trataría de un microservicio que hace de nexo entre los diferentes microservicos y las a estos desde el frontend
+
+
+_*Cabe destacar que hemos situado *Record Service* en el paquete relativo a las preguntas. Esto lo hemos hecho así porque creemos que mantiene mayor relación con las mismas y con el "juego" en sí, más que con el paquete relativo a la información de los usuarios. Sin embargo, la decisión contraria también tiene su lógica._

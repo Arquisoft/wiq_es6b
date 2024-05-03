@@ -13,6 +13,7 @@ La lista de riesgos es la siguiente:
 | Trabajo en equipo | Trabajar en equipo nos puede ser complicado al no haber hecho nunca un proyecto tan grande de esta manera. | Mantener una buena comunicación y ser colaborativos.
 | Reuniones poco productivas | Perder mucho tiempo en reuniones y no conseguir avances puede generar problemas. | Hacer una pequeña preparación de estas para saber que temas tratar en concreto.
 | Abandono de un miembro | Que un miembro deje el trabajo significaría tener que repartir sus tareas y que aumente la carga de trabajo. | Asignar cada tarea a más de una persona e intentar ayudar para evitar un abandono.
+| Fallo de servicios externos | Un servicio externo utilizado en la aplicación cómo Wikidata o Azure dejan de funcionar durante un tiempo. | Estar atentos a las novedades de los mismos e intentar que funcione de nuevo lo antes posible.
 |===
 
 La lista de deudas técnicas es la siguiente:

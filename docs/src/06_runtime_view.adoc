@@ -5,163 +5,244 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 === Registro en la aplicación
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Registro usuario",png]
 ----
 actor User
 participant App
-database DB
+participant Gateway
+participant UserService
+database DBuser
 
 User -> App: Selecciona opción de registro
 User <-- App: Muestra pantalla de registro
 User -> App: Ingresa datos de registro
-App -> DB: Comprueba los datos
-App <-- DB: Valida los datos
+App -> Gateway: Envía los datos
+Gateway -> UserService: Envía los datos
+UserService -> UserService: Comprueba los datos
+
 alt usuario válido
-    App -> DB: Guarda datos de registro
-    App <-- DB: Confirma registro
+
+    UserService -> DBuser: Guarda datos de registro
+    UserService <-- DBuser: Confirma registro
+    Gateway <-- UserService : Confirma registro
+    App<-- Gateway: Confirma registro
     User <-- App: Confirma Registro
-alt usuario inválido
+
+else usuario no valido
+
+    Gateway <-- UserService: Deniega registro
+    App <-- Gateway: Deniega registro
     User <-- App: Deniega registro
+
+end
 ----
 
 === Inicio de sesión en la aplicación 
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Login usuario",png]
 ----
 actor User
 participant App
-database DB
+participant Gateway
+participant AuthService
+database DBuser
 
-User -> App: Ingresa credenciales de inicio de sesión
-App -> DB: Verifica cerdenciales
-App <-- DB: Válida las credenciales
-alt credenciales válidas
-    User <-- App:  Confirma inicio de sesión
-    alt usuario que nunca habia iniciado sesion
-        App -> DB: Crea ranking para el usuario
-    App -> DB: Pide datos de los records de todos los usuarios
-    App <-- DB: Devuelve datos de los records de todos los usuarios
-    App -> DB: Actualiza los rankings de todos los usuarios
-else credenciales inválidas
-    User <-- App:  Deniega inicio de sesión
+User -> App: Ingresa credenciales
+App -> Gateway: Envía los datos
+Gateway -> AuthService: Envía los datos
+AuthService-> DBuser: Comprueba los datos
+
+alt usuario válido
+
+    AuthService<-- DBuser: Confirma login
+    Gateway <-- AuthService: Confirma login
+    App<-- Gateway: Confirma login
+    User <-- App: Confirma login
+
+else usuario no valido
+    AuthService <-- DBuser : Deniega login
+    Gateway <-- AuthService: Deniega login
+    App <-- Gateway: Deniega login
+    User <-- App: Deniega login
+
+end
 ----
 
 === Generacion de preguntas
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Generacion preguntas",png]
 ----
-participant WApi
-database DB
+database DBquestions
+participant CreateService
+participant Gateway
+participant QuestionGeneratorService
+database DBquestiongenerator
 
-loop cada 2 segundos
-    WApi -> DB: Genera una pregunta y la guarda
+loop cada 60 segundos
+    CreateService -> DBquestions: Pide plantilla de pregunta
+    CreateService <-- DBquestions: Devuelve plantilla de pregunta
+    CreateService -> CreateService: Genera una pregunta
+    Gateway <-- CreateService: Envía la pregunta generada
+    Gateway -> QuestionGeneratorService: Envía la pregunta generada
+    QuestionGeneratorService-> DBquestiongenerator: Envía la pregunta generada
+    DBquestiongenerator-> DBquestiongenerator: Guarda la pregunta generada
     alt mas de 500 preguntas generadas
-        WApi -> DB: Borra la pregunta que más tiempo lleva guardada
+        DBquestiongenerator-> DBquestiongenerator: Borra la pregunta que más tiempo lleva guardada
+    else pregunta existente
+        DBquestiongenerator-> DBquestiongenerator: Actualiza la pregunta
+    end
+end
 ----
 
 === Respuesta a una pregunta
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Respuesta pregunta",png]
 ----
 actor User
 participant App
-participant WApi
-database DB
+participant Gateway
+participant GeneratedQuestionService
+database DBquestions
+participant QuestionGeneratorService
+database DBquestiongenerator
+participant RecordService
+database DBrecords
 
 User -> App: Pide una pregunta
-App -> DB: Pide una pregunta
-App <-- DB: Devuelve una pregunta generada
+App -> Gateway: Pide una pregunta
+Gateway-> QuestionGeneratorService: Pide una pregunta
+QuestionGeneratorService -> DBquestiongenerator: Pide una pregunta
+QuestionGeneratorService <-- DBquestiongenerator: Devuelve una pregunta generada
+Gateway <-- QuestionGeneratorService : Devuelve una pregunta generada
+App <-- Gateway: Devuelve una pregunta generada
 User <-- App: Muestra pregunta con opciones
+Gateway -> GeneratedQuestionService: Envía la pregunta generada
+GeneratedQuestionService-> DBquestions: Guarda la pregunta generada
 alt tiempo no finalizado
     User -> App: Selecciona opción de respuesta
-    App -> DB: Verifica respuesta seleccionada
-    App <-- DB: Confirma la respuesta
-    App -> DB: Guarda o actualiza la pregunta con su respuesta correcta
+    App -> App: Verifica respuesta seleccionada
     alt respuesta correcta
         alt ultima pregunta
             User <-- App: Muestra mensaje de respuesta correcta y finaliza el juego
-            App -> DB: Guarda los datos de la partida
+            App -> RecordService: Envía los datos de la partida
+            RecordService -> DBrecords: Guarda los datos de la partida
             User <-- App: Muestra los datos de la partida
         else no ultima pregunta
             User <-- App: Muestra mensaje de respuesta correcta y continua el juego
+        end
     else respuesta incorrecta
         alt ultima pregunta
-            User <-- App: Muestra mensaje de respuesta correcta y finaliza el juego
-            App -> DB: Guarda los datos de la partida
+            User <-- App: Muestra mensaje de respuesta incorrecta y finaliza el juego
+            App -> RecordService: Envía los datos de la partida
+            RecordService -> DBrecords: Guarda los datos de la partida
             User <-- App: Muestra los datos de la partida
         else no ultima pregunta
-            User <-- App: Muestra mensaje de respuesta correcta y continua el juego
+            User <-- App: Muestra mensaje de respuesta incorrecta y continua el juego
+        end
+    end
 else tiempo finalizado
-    User <-- App: Finaliza el juego
-    App -> DB: Guarda los datos de la partida
+    App -> RecordService: Envía los datos de la partida
+    RecordService -> DBrecords: Guarda los datos de la partida
     User <-- App: Muestra los datos de la partida
+end
 ----
 
 === Consulta del historial de usuarios
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Historial usuarios",png]
 ----
 actor User
 participant App
-database DB
+participant Gateway
+participant UserService
+database DBuser
 
+alt usuario admin
 User -> App: Selecciona opción de ver el historial de usuarios
-App -> DB: Consulta el historial de usuarios
-App <-- DB: Devuelve el historial de usuarios
+App -> Gateway: Pide el historial de usuarios
+Gateway -> UserService: Pide el historial de usuarios
+UserService -> DBuser: Pide todos los usuarios
+UserService <-- DBuser: Devuelve todos los usuarios
+Gateway <-- UserService: Devuelve todos los usuarios
+App <-- Gateway: Devuelve todos los usuarios
 User <-- App: Muestra el historial de usuarios
+end
 ----
 
 === Consulta del historial de preguntas generadas
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Historial preguntas",png]
 ----
 actor User
 participant App
-database DB
+participant Gateway
+participant GeneratedQuestionService
+database DBgeneratedquestions
 
+alt usuario admin
 User -> App: Selecciona opción de ver el historial de preguntas generadas
-App -> DB: Consulta el historial de preguntas generadas
-App <-- DB: Devuelve el historial de preguntas generadas
+App -> Gateway: Pide el historial de preguntas generadas
+Gateway -> GeneratedQuestionService: Pide el historial de preguntas generadas
+GeneratedQuestionService -> DBgeneratedquestions: Pide todas las preguntas generadas
+GeneratedQuestionService <-- DBgeneratedquestions: Devuelve todas las preguntas generadas
+Gateway <-- GeneratedQuestionService: Devuelve todas las preguntas generadas
+App <-- Gateway: Devuelve todas las preguntas generadas
 User <-- App: Muestra el historial de preguntas generadas
+end
 ----
 
 === Consulta del historial de jugadas
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Historial jugadas",png]
 ----
 actor User
 participant App
-database DB
+participant Gateway
+participant RecordService
+database DBrecord
 
 User -> App: Selecciona opción de ver el historial de jugadas
-App -> DB: Consulta el historial de jugadas
-App <-- DB: Devuelve el historial de jugadas
+App -> Gateway: Pide el historial de jugadas
+Gateway -> RecordService: Pide el historial de jugadas
+RecordService-> DBrecord: Pide todas las jugadas
+RecordService<-- DBrecord: Devuelve todas las jugadas
+Gateway <-- RecordService: Devuelve todas las jugadas
+App <-- Gateway: Devuelve todas las jugadas
 User <-- App: Muestra el historial de jugadas
 ----
 
 === Consulta del ranking
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Ranking usuarios",png]
 ----
 actor User
 participant App
-database DB
+participant Gateway
+participant RankingService
+database DBranking
 
 User -> App: Selecciona opción de ver el ranking
-App -> DB: Consulta el ranking
-App <-- DB: Devuelve el ranking
+App -> Gateway: Pide el ranking
+Gateway -> RankingService: Pide el ranking
+RankingService-> DBranking: Pide todos los rankings
+RankingService<-- DBranking: Devuelve todos los rankings
+Gateway <-- RankingService: Devuelve todos los rankings
+App <-- Gateway: Devuelve todos los rankings
 User <-- App: Muestra el ranking
 ----
 
 === Cambio de ajustes de partida
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Ajustes partida",png]
 ----
 actor User
 participant App
-database DB
+participant Navegador
 
 User -> App: Selecciona opción de ajustes de partida
-App -> User: Muestra ajustes de partida actuales
+App-> Navegador: Pide los ajustes de partida actuales
+App <-- Navegador: Devuelve ajustes de partida actuales
+User <-- App: Muestra ajustes de partida actuales
 User -> App: Cambia ajustes de partida actuales
+App-> Navegador: Guarda ajustes de partida actuales
 ----

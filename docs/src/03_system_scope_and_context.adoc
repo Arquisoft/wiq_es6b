@@ -37,9 +37,12 @@ Para el desarrollo de este proyecto, utilizaremos la API de Wikidata tanto para 
 | React
 | Librería JavaScript que nos permitirá construir la interfaz de la aplicación.
 
-| MongoDB
+| MongoDB Cloud
 | Base de datos NoSQL.
 
 | Node.Js
 | Entorno de servidor para tratar los endpoints.
+
+| Azure
+| Usado para el despliegue de la aplicación en la nube.
 |===

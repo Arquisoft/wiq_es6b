@@ -10,8 +10,9 @@ ifndef::imagesdir[:imagesdir: ../images]
 Tambien hay personas del equipo de desarrollo familiarizadas con el uso de esta libreria, por lo que pueden ayudar al resto del equipo con la implementacion del front-end.
 |Javascript |Elegimos seguir con Javascript para el desarrollo de esta aplicación web porque ya teniamos conocimientos de este lenguaje. Tambien porque es un lenguaje ampliamente
 conocido por su uso en aplicaciones web, permitiendo mejoras en la interfaz de usuario y paginas web dinámicas.
-|Mongodb |Para el back-end hemos decidido usar la base de datos NoSQL Mongodb, creemos que es una opcion adecuada para almacenar los datos necesarios para el desarrollo de la
-aplicacion.
+|Mongodb Cloud| Lo consideramos más práctico puesto que todos los cambios hechos eran visibles por todos los miembros del grupo, especialmente a la hora de necesitar añadir datos por ejemplo para hacer pruebas o para las bases de las preguntas usadas para generar las preguntas completas de wikidata, de esta manera no necesitábamos añadirlos los cuatro en local para probar la aplicación. 
 |Node.js |Para interactuar con la base de datos decidimos usar Node.js. Es una entorno de ejecucion muy conocido para el desarrollo del back-end de aplicaciones web, por lo que creemos que es
 buena idea usarlo.
+|Microservicios|Permite descomponer la aplicación en distintos componentes independientes, que fecilitan la escalabilidad y el despliegue independiente. También resulta mas sencillo a la hora de su mantenimiento.
+|Azure|A pesar de que no tenemos una gran experiencia con Azure, contamos con más conocimiento sobre esta plataforma en comparación con otros competidores, ya que ha sido utilizada anteriormente en otras asignaturas de esta carrera.
 |===

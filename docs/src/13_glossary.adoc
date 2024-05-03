@@ -7,9 +7,6 @@ ifndef::imagesdir[:imagesdir: ../images]
 |===
 | Término | Definición
 
-| BodyQuestions
-| Los diferentes cuerpos que vamos a utilizar de las preguntas base.
-
 | TypeQuestions
 | Las distintas categorias que hay de preguntas.
 
