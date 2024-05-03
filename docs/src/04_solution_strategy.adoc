@@ -11,7 +11,7 @@ Para desarrollar la aplicación, seleccionamos las siguientes tecnologías:
 * JavaScript: Es un lenguaje de programacion orientado a objetos, ​ basado en prototipos, imperativo, débilmente tipado y dinámico.
 * Node.js: Es una entorno de ejecucion muy conocido para el desarrollo del back-end de aplicaciones web
 * Wikidata: Base de conocimientos que usaremos para realizar las preguntasd de nuestra aplicación.
-* MongoDB: Es un sistema de base de datos NoSQL, orientado a documentos y de código abierto.
+* MongoDB Cloud: Es un sistema de base de datos NoSQL, orientado a documentos y de código abierto.
 * GitHub: Es una plataforma para alojar proyectos utilizando el sistema de control de versiones Gitç
 * Microsoft Azure: Es una plataforma de servicios en la nube que usaremos para el despliegue de la aplicación.
 
@@ -57,4 +57,8 @@ Usaremos PlantUML, VisualParadigm y Draw.io para la creacion de diagramas para l
 - *Problemas:* Todos los problemas encontrados y las tareas encomendads se documentarán como "issues" en GitHub.
 - *GitHub:* Con esta herramienta conseguiremos trabajar cooperativamente y usar las herramientas que ofrece para juntar los proyectos de los diferentes integrantes del equipo.
 - *Comunicacion*: Para la comunicación entre los integrantes del equipo, usaremos tanto la aplicacion de mensajeria móvil "WhatsApp", como "Discord".
-
+- *Revisiones periódicas*: Para hacer una en común de lo realizado, decisiones del trabajo que se iba a realizar a posterior, apertura y asignación de issues (apertura también de issues que se pudieran incorporar de cara al futuro). También lse llevan a cobo reuniones extraordinarias para cercionarnos que cumpliamos con todo correctamente en cada entrega. 
+- *Actas*: Realización de hay un acta por cada reunión realizada, incluidas las extraordinarias, en ellas especificábamos los miembros que acudieron, la revisión de logros de lo llevado desde la última reunión, la toma de decisiones y las issues asignadas a cada persona. 
+- *No división entre front y back*: Para trabajar todos los miembros en ambas partes y principalmente para no vernos limitados a que las personas dedicadas al front tengan que adaptarse a los tiempos y esperar a que se tenga terminado el back y de esta manera hacer un trabajo más fluido.
+- *Ramas*: Se decidió crear una rama para cada miembro del equipo, una rama Dev en la que volcaríamos el trabajo de cada rama individual y que posteriormente iría a máster. También se podrían crear otras ramas si se considerase necesario.  
+- *Issues*: Las issues deben estan asignadas al menos a un par de personas para garantizar su desarrollo.
