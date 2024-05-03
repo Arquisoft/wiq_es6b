@@ -19,7 +19,9 @@ La vista general de la aplicación y de su entorno es sencilla a la par que esqu
 Bloques contenidos::
 |===
 |Nombre|Responsabilidad
+|_User_| Se trata del usuario que accede a la aplicación.
 |_WIQ_| Se trata del bloque genérico que contiene *todo* lo relativo a la aplicación que desarrollaremos.
+|_WikiData API_| Se trata de la api de Wikidata que da el contenido para la creación de las preguntas.
 |===
 
 
@@ -48,7 +50,7 @@ image::05_bbv_level03.jpg["Level3"]
 
 Este esquema concreta la estructura interna del bloque "Users Managemer" que se encarga, descrito de manera rápida y locuaz, de gestionar las credenciales, fechas de registro y peticiones de login de los usuarios ya registrados y también de aquellos que traten de registrarse por primera vez en nuestra aplicación. También está entre sus labores la de mantener un registro actualizado del ranking (porcentaje de aciertos, numero de partidas jugadas...) de cada uno de los usuarios registrado (lo hará en una base de datos dedicada específicamente a ello). 
 
-El diagrama se divide en cuatro principales componentes (_User Service_, _Authentication Service_, _Ranking Service_) que interactuan con sus respectivas bases de datos. 
+El diagrama se divide en tres principales componentes (_User Service_, _Authentication Service_, _Ranking Service_) que interactuan con sus respectivas bases de datos. 
 
 |===
 |Nombre|Responsabilidad

@@ -35,4 +35,6 @@ y la disponibilidad.
 reduciendo drásticamente el uso de software bajo licencia.
 * El uso de Wikidata reducirá la carga de trabajo de la aplicación, al no tener
 que trabajar sobre una base de datos local.
+* Al usar la api de Wikidata somos dependientes de su disponiblidad y en caso 
+de fallar tambien fallaria nuestra aplicación.
 

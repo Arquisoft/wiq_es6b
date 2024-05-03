@@ -5,28 +5,41 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 === Registro en la aplicación
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Registro",png]
 ----
 actor User
 participant App
-database DB
+participant Gateway
+participant UserService
+database DBuser
 
 User -> App: Selecciona opción de registro
 User <-- App: Muestra pantalla de registro
 User -> App: Ingresa datos de registro
-App -> DB: Comprueba los datos
-App <-- DB: Valida los datos
+App -> Gateway: Envía los datos
+Gateway -> UserService: Envía los datos
+UserService -> UserService: Comprueba los datos
+
 alt usuario válido
-    App -> DB: Guarda datos de registro
-    App <-- DB: Confirma registro
+
+    UserService -> DBuser: Guarda datos de registro
+    UserService <-- DBuser: Confirma registro
+    Gateway <-- UserService : Confirma registro
+    App<-- Gateway: Confirma registro
     User <-- App: Confirma Registro
-alt usuario inválido
+
+else usuario no valido
+
+    Gateway <-- UserService: Deniega registro
+    App <-- Gateway: Deniega registro
     User <-- App: Deniega registro
+
+end
 ----
 
 === Inicio de sesión en la aplicación 
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Login",png]
 ----
 actor User
 participant App
@@ -48,7 +61,7 @@ else credenciales inválidas
 
 === Generacion de preguntas
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Generacion",png]
 ----
 participant WApi
 database DB
@@ -61,7 +74,7 @@ loop cada 2 segundos
 
 === Respuesta a una pregunta
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Respuesta",png]
 ----
 actor User
 participant App
@@ -99,7 +112,7 @@ else tiempo finalizado
 
 === Consulta del historial de usuarios
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Usuarios",png]
 ----
 actor User
 participant App
@@ -113,7 +126,7 @@ User <-- App: Muestra el historial de usuarios
 
 === Consulta del historial de preguntas generadas
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Preguntas",png]
 ----
 actor User
 participant App
@@ -127,7 +140,7 @@ User <-- App: Muestra el historial de preguntas generadas
 
 === Consulta del historial de jugadas
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Jugadas",png]
 ----
 actor User
 participant App
@@ -141,7 +154,7 @@ User <-- App: Muestra el historial de jugadas
 
 === Consulta del ranking
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Ranking",png]
 ----
 actor User
 participant App
@@ -155,7 +168,7 @@ User <-- App: Muestra el ranking
 
 === Cambio de ajustes de partida
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Ajustes",png]
 ----
 actor User
 participant App

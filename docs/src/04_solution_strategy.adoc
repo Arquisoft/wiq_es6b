@@ -18,7 +18,7 @@ Para desarrollar la aplicación, seleccionamos las siguientes tecnologías:
 === Descomposición de alto nivel
 
 ==== Herramientas de diagramado
-Usaremos VisualParadigm y Draw.io para la creacion de diagramas para la documentacion.
+Usaremos PlantUML, VisualParadigm y Draw.io para la creacion de diagramas para la documentacion.
 
 === Enfoques para lograr objetivos de máxima calidad
 
@@ -47,8 +47,8 @@ Usaremos VisualParadigm y Draw.io para la creacion de diagramas para la document
 | Optimizaremos las consultas a Wikidata y el codigo para minimzar los tiempos de respuesta.
 
 | Disponibilidad 
-| La aplicación estará disponible durante al menos el 98% del tiempo para permitir a los usuarios jugar la mayor cantidad de tiempo posible. 
-| Se minimizaran interrupciones dejando unas 3 horas y media de mantenimiento semanales. 
+| La aplicación estará disponible durante al menos el 95% del tiempo para permitir a los usuarios jugar la mayor cantidad de tiempo posible. 
+| Se minimizaran interrupciones dejando unas 8 horas y media de mantenimiento semanales. 
 |===
 
 === Decisiones de organizacion

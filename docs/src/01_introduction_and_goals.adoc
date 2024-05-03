@@ -30,7 +30,7 @@ Los objetivos de calidad en orden de prioridad son los siguientes:
 |===
 | Objetivo | Escenario | Prioridad
 | Usabilidad | La aplicación contará con una interfaz clara y fácil de entender, permitiendo a cualquier usuario jugar sin dificultades. | Alta
-| Disponibilidad | La aplicación estará disponible durante al menos el 98% del tiempo para permitir a los usuarios jugar la mayor cantidad de tiempo posible minimizando interrupciones dejando unas 3 horas y media de mantenimiento semanales. | Alta
+| Disponibilidad | La aplicación estará disponible durante al menos el 95% del tiempo para permitir a los usuarios jugar la mayor cantidad de tiempo posible minimizando interrupciones dejando unas 8 horas y media de mantenimiento semanales. | Alta
 | Rendimiento | Los usuarios tendrán tiempos de respuesta cortos por parte del sistema contando con un máximo de 2 segundos para garantizar una mejor experiencia durante el juego. | Media/Alta
 | Mantenibilidad | La aplicación debe programarse de manera que no genere muchos problemas hacer un cambio. | Media
 | Accesibilidad | Cualquier usuario tendrá las mismas oportunidades que el resto sin importar sus capacidades físicas o cognitivas. | Media
