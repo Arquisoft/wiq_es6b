@@ -640,7 +640,7 @@ For documentation of your own system you use better the <em>plain</em> version.<
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Disponibilidad</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">La aplicación estará disponible durante al menos el 98% del tiempo para permitir a los usuarios jugar la mayor cantidad de tiempo posible minimizando interrupciones dejando unas 3 horas y media de mantenimiento semanales.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">La aplicación estará disponible durante al menos el 95% del tiempo para permitir a los usuarios jugar la mayor cantidad de tiempo posible minimizando interrupciones dejando unas 8 horas y media de mantenimiento semanales.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Alta</p></td>
 </tr>
 <tr>
@@ -774,6 +774,10 @@ reduciendo drásticamente el uso de software bajo licencia.</p>
 <p>El uso de Wikidata reducirá la carga de trabajo de la aplicación, al no tener
 que trabajar sobre una base de datos local.</p>
 </li>
+<li>
+<p>Al usar la api de Wikidata somos dependientes de su disponiblidad y en caso
+de fallar tambien fallaria nuestra aplicación.</p>
+</li>
 </ul>
 </div>
 <div style="page-break-after: always;"></div>
@@ -833,12 +837,16 @@ que trabajar sobre una base de datos local.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Librería JavaScript que nos permitirá construir la interfaz de la aplicación.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MongoDB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MongoDB Cloud</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Base de datos NoSQL.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Node.Js</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Entorno de servidor para tratar los endpoints.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Azure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Usado para el despliegue de la aplicación en la nube.</p></td>
 </tr>
 </tbody>
 </table>
@@ -872,7 +880,7 @@ que trabajar sobre una base de datos local.</p>
 <p>Wikidata: Base de conocimientos que usaremos para realizar las preguntasd de nuestra aplicación.</p>
 </li>
 <li>
-<p>MongoDB: Es un sistema de base de datos NoSQL, orientado a documentos y de código abierto.</p>
+<p>MongoDB Cloud: Es un sistema de base de datos NoSQL, orientado a documentos y de código abierto.</p>
 </li>
 <li>
 <p>GitHub: Es una plataforma para alojar proyectos utilizando el sistema de control de versiones Gitç</p>
@@ -888,7 +896,7 @@ que trabajar sobre una base de datos local.</p>
 <div class="sect3">
 <h4 id="_herramientas_de_diagramado">4.2.1. Herramientas de diagramado</h4>
 <div class="paragraph">
-<p>Usaremos VisualParadigm y Draw.io para la creacion de diagramas para la documentacion.</p>
+<p>Usaremos PlantUML, VisualParadigm y Draw.io para la creacion de diagramas para la documentacion.</p>
 </div>
 </div>
 </div>
@@ -935,8 +943,8 @@ que trabajar sobre una base de datos local.</p>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Disponibilidad</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">La aplicación estará disponible durante al menos el 98% del tiempo para permitir a los usuarios jugar la mayor cantidad de tiempo posible.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Se minimizaran interrupciones dejando unas 3 horas y media de mantenimiento semanales.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">La aplicación estará disponible durante al menos el 95% del tiempo para permitir a los usuarios jugar la mayor cantidad de tiempo posible.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Se minimizaran interrupciones dejando unas 8 horas y media de mantenimiento semanales.</p></td>
 </tr>
 </tbody>
 </table>
@@ -956,6 +964,21 @@ que trabajar sobre una base de datos local.</p>
 </li>
 <li>
 <p><strong>Comunicacion</strong>: Para la comunicación entre los integrantes del equipo, usaremos tanto la aplicacion de mensajeria móvil "WhatsApp", como "Discord".</p>
+</li>
+<li>
+<p><strong>Revisiones periódicas</strong>: Para hacer una en común de lo realizado, decisiones del trabajo que se iba a realizar a posterior, apertura y asignación de issues (apertura también de issues que se pudieran incorporar de cara al futuro). También lse llevan a cobo reuniones extraordinarias para cercionarnos que cumpliamos con todo correctamente en cada entrega.</p>
+</li>
+<li>
+<p><strong>Actas</strong>: Realización de hay un acta por cada reunión realizada, incluidas las extraordinarias, en ellas especificábamos los miembros que acudieron, la revisión de logros de lo llevado desde la última reunión, la toma de decisiones y las issues asignadas a cada persona.</p>
+</li>
+<li>
+<p><strong>No división entre front y back</strong>: Para trabajar todos los miembros en ambas partes y principalmente para no vernos limitados a que las personas dedicadas al front tengan que adaptarse a los tiempos y esperar a que se tenga terminado el back y de esta manera hacer un trabajo más fluido.</p>
+</li>
+<li>
+<p><strong>Ramas</strong>: Se decidió crear una rama para cada miembro del equipo, una rama Dev en la que volcaríamos el trabajo de cada rama individual y que posteriormente iría a máster. También se podrían crear otras ramas si se considerase necesario.</p>
+</li>
+<li>
+<p><strong>Issues</strong>: Las issues deben estan asignadas al menos a un par de personas para garantizar su desarrollo.</p>
 </li>
 </ul>
 </div>
@@ -999,8 +1022,16 @@ que trabajar sobre una base de datos local.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Responsabilidad</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>User</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Se trata del usuario que accede a la aplicación.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>WIQ</em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Se trata del bloque genérico que contiene <strong>todo</strong> lo relativo a la aplicación que desarrollaremos.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em>WikiData API</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Se trata de la api de Wikidata que da el contenido para la creación de las preguntas.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1063,7 +1094,7 @@ que trabajar sobre una base de datos local.</p>
 <p>Este esquema concreta la estructura interna del bloque "Users Managemer" que se encarga, descrito de manera rápida y locuaz, de gestionar las credenciales, fechas de registro y peticiones de login de los usuarios ya registrados y también de aquellos que traten de registrarse por primera vez en nuestra aplicación. También está entre sus labores la de mantener un registro actualizado del ranking (porcentaje de aciertos, numero de partidas jugadas&#8230;&#8203;) de cada uno de los usuarios registrado (lo hará en una base de datos dedicada específicamente a ello).</p>
 </div>
 <div class="paragraph">
-<p>El diagrama se divide en cuatro principales componentes (<em>User Service</em>, <em>Authentication Service</em>, <em>Ranking Service</em>) que interactuan con sus respectivas bases de datos.</p>
+<p>El diagrama se divide en tres principales componentes (<em>User Service</em>, <em>Authentication Service</em>, <em>Ranking Service</em>) que interactuan con sus respectivas bases de datos.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1107,7 +1138,7 @@ que trabajar sobre una base de datos local.</p>
 <p>Cabe destacar que los microservicios <em>"GeneratedQuestion Service"</em> y <em>"Create Service"</em> comparten una misma base de datos "questiondb" pero utilizan dos colecciones diferentes ("generatedquestions" y "questions" respectivamente). El microservicio "GeneratedQuestions" se encarga de almacenar preguntas completas y, solamente, las respuestas correctas de cada una de las preguntas (lo hace para poder mostrar en cierta funcionalidad del juego las preguntas que ya han sido generadas a modo de "enciclopedia"). Por otro lado el microservicio "Create Service" almacena en su base de datos las plantillas de las preguntas (p.e: "¿Cuál es la capital de ") y el "typeQuestion" (cadena de texto) que resulta relevante dentro de la lógica del microservicio para extraer la "query" (consulta de WikiData) idónea para conseguir completar la pregunta y obtener sus respuestas correctas e incorrectas.</p>
 </div>
 <div class="paragraph">
-<p>Los otros dos microservicios son "QuestionGenerator" y "Record". Cada uno de ellos utiliza una base de datos separada para almacenar: el primero de ellos las preguntas con todas sus respuestas (correcta e incorrectas); el segundo de ellos las puntuaciones de cada una de las partidas que se juegen por cada uno de los usuarios.</p>
+<p>Los otros dos microservicios son "QuestionGenerator" y "Record". Cada uno de ellos utiliza una base de datos separada para almacenar: el primero de ellos las preguntas con todas sus respuestas (correcta e incorrectas) que se irían generando en el "CreateService"; el segundo de ellos las puntuaciones de cada una de las partidas que se juegen por cada uno de los usuarios.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1135,10 +1166,28 @@ que trabajar sobre una base de datos local.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Record Service</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Registra las estadísticas <em>de cada una de las partidas</em> (de manera independiente para cada partida) de cada uno de los jugadores.</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Question Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contiene dos colecciones, una con las bases de las preguntas para generar las preguntas completas usando la API de wikidata y la segunda para almacenar las preguntas y respuestas correctas (que corresponderían a las que le han sido mostradas al usuario).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">QuestionGenerator Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Almacena las preguntas generadas de wikidata junto con su respuesta correcta y sus tres incorrectas.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Record Database</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Almacena todas las jugadas realizadas.</p></td>
+</tr>
 </tbody>
 </table>
+</div>
+<div class="sect3">
+<h4 id="_gateway_service">5.3.3. Gateway Service</h4>
 <div class="paragraph">
-<p><em>Cabe destacar que hemos situado <strong>Record Service</strong> en el paquete relativo a las preguntas. Esto lo hemos hecho así porque creemos que mantiene mayor relación con las mismas y con el "juego" en sí, más que con el paquete relativo a la información de los usuarios. Sin embargo, la decisión contraria también tiene su lógica.</em></p>
+<p>Se trataría de un microservicio que hace de nexo entre los diferentes microservicos y las a estos desde el frontend</p>
+</div>
+<div class="paragraph">
+<p><em>*Cabe destacar que hemos situado <strong>Record Service</strong> en el paquete relativo a las preguntas. Esto lo hemos hecho así porque creemos que mantiene mayor relación con las mismas y con el "juego" en sí, más que con el paquete relativo a la información de los usuarios. Sin embargo, la decisión contraria también tiene su lógica.</em></p>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -1152,7 +1201,7 @@ que trabajar sobre una base de datos local.</p>
 <h3 id="_registro_en_la_aplicación">6.1. Registro en la aplicación</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Registro.png" alt="Registro" width="443" height="507">
+<img src="./images/Registro.png" alt="Registro" width="686" height="669">
 </div>
 </div>
 </div>
@@ -1160,7 +1209,7 @@ que trabajar sobre una base de datos local.</p>
 <h3 id="_inicio_de_sesión_en_la_aplicación">6.2. Inicio de sesión en la aplicación</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Login.png" alt="Login" width="660" height="523">
+<img src="./images/Login.png" alt="Login" width="594" height="596">
 </div>
 </div>
 </div>
@@ -1168,7 +1217,7 @@ que trabajar sobre una base de datos local.</p>
 <h3 id="_generacion_de_preguntas">6.3. Generacion de preguntas</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Generacion.png" alt="Generacion" width="393" height="278">
+<img src="./images/Generacion.png" alt="Generacion" width="1113" height="572">
 </div>
 </div>
 </div>
@@ -1176,7 +1225,7 @@ que trabajar sobre una base de datos local.</p>
 <h3 id="_respuesta_a_una_pregunta">6.4. Respuesta a una pregunta</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Respuesta.png" alt="Respuesta" width="834" height="925">
+<img src="./images/Respuesta.png" alt="Respuesta" width="1774" height="1148">
 </div>
 </div>
 </div>
@@ -1184,7 +1233,7 @@ que trabajar sobre una base de datos local.</p>
 <h3 id="_consulta_del_historial_de_usuarios">6.5. Consulta del historial de usuarios</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Usuarios.png" alt="Usuarios" width="567" height="305">
+<img src="./images/Usuarios.png" alt="Usuarios" width="933" height="458">
 </div>
 </div>
 </div>
@@ -1192,7 +1241,7 @@ que trabajar sobre una base de datos local.</p>
 <h3 id="_consulta_del_historial_de_preguntas_generadas">6.6. Consulta del historial de preguntas generadas</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Preguntas.png" alt="Preguntas" width="711" height="305">
+<img src="./images/Preguntas.png" alt="Preguntas" width="1270" height="458">
 </div>
 </div>
 </div>
@@ -1200,7 +1249,7 @@ que trabajar sobre una base de datos local.</p>
 <h3 id="_consulta_del_historial_de_jugadas">6.7. Consulta del historial de jugadas</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Jugadas.png" alt="Jugadas" width="559" height="305">
+<img src="./images/Jugadas.png" alt="Jugadas" width="894" height="426">
 </div>
 </div>
 </div>
@@ -1208,7 +1257,7 @@ que trabajar sobre una base de datos local.</p>
 <h3 id="_consulta_del_ranking">6.8. Consulta del ranking</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Ranking.png" alt="Ranking" width="419" height="305">
+<img src="./images/Ranking.png" alt="Ranking" width="838" height="426">
 </div>
 </div>
 </div>
@@ -1216,7 +1265,7 @@ que trabajar sobre una base de datos local.</p>
 <h3 id="_cambio_de_ajustes_de_partida">6.9. Cambio de ajustes de partida</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Ajustes.png" alt="Ajustes" width="359" height="274">
+<img src="./images/Ajustes.png" alt="Ajustes" width="558" height="365">
 </div>
 </div>
 <div style="page-break-after: always;"></div>
@@ -1443,14 +1492,21 @@ Tambien hay personas del equipo de desarrollo familiarizadas con el uso de esta 
 conocido por su uso en aplicaciones web, permitiendo mejoras en la interfaz de usuario y paginas web dinámicas.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mongodb</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Para el back-end hemos decidido usar la base de datos NoSQL Mongodb, creemos que es una opcion adecuada para almacenar los datos necesarios para el desarrollo de la
-aplicacion.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mongodb Cloud</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lo consideramos más práctico puesto que todos los cambios hechos eran visibles por todos los miembros del grupo, especialmente a la hora de necesitar añadir datos por ejemplo para hacer pruebas o para las bases de las preguntas usadas para generar las preguntas completas de wikidata, de esta manera no necesitábamos añadirlos los cuatro en local para probar la aplicación.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Node.js</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Para interactuar con la base de datos decidimos usar Node.js. Es una entorno de ejecucion muy conocido para el desarrollo del back-end de aplicaciones web, por lo que creemos que es
 buena idea usarlo.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Microservicios</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Permite descomponer la aplicación en distintos componentes independientes, que fecilitan la escalabilidad y el despliegue independiente. También resulta mas sencillo a la hora de su mantenimiento.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Azure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A pesar de que no tenemos una gran experiencia con Azure, contamos con más conocimiento sobre esta plataforma en comparación con otros competidores, ya que ha sido utilizada anteriormente en otras asignaturas de esta carrera.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1509,7 +1565,7 @@ buena idea usarlo.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">*</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Variedad y Precisión</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Variabilidad y Precisión</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Las preguntas y las respuestas generadas por nuestra aplicación  deberán caracterizarse por tener la mayor precisión posible para garantizar que la respuesta correcta sea única. Además deberán abarcar diversos temas para no crear un juego de preguntas monotemáticas.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">SC3</p></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -1663,6 +1719,11 @@ buena idea usarlo.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Que un miembro deje el trabajo significaría tener que repartir sus tareas y que aumente la carga de trabajo.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Asignar cada tarea a más de una persona e intentar ayudar para evitar un abandono.</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fallo de servicios externos</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Un servicio externo utilizado en la aplicación cómo Wikidata o Azure dejan de funcionar durante un tiempo.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Estar atentos a las novedades de los mismos e intentar que funcione de nuevo lo antes posible.</p></td>
+</tr>
 </tbody>
 </table>
 <div class="paragraph">
@@ -1711,13 +1772,30 @@ buena idea usarlo.</p></td>
 <div class="sect2">
 <h3 id="_tests_unitarios">12.1. Tests Unitarios</h3>
 <div class="paragraph">
-<p>En nuestro proyecto, los tests unitarios son fundamentales para garantizar la correcta funcionalidad de cada componente del código. Cada función, método o clase será probado exhaustivamente para asegurar su integridad y rendimiento.</p>
+<p>En nuestro proyecto, los tests unitarios son fundamentales para garantizar la correcta funcionalidad de cada componente del código. Cada función, método o clase será probado exhaustivamente para asegurar su integridad y rendimiento. Se intenta tener en todo momento un coverage al menos del 80% y que las pruebas comprueben todas las posibles opciones. En la parte del front y en el gateway utilizamos mocks para su realización.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_e2e_tests_de_integración">12.2. E2E. Tests de integración</h3>
 <div class="paragraph">
-<p>Buscaremos garantizar que la aplicación sea fácil de usar para proporcionar una experiencia satisfactoria al usuario. Nos centraremos en verificar diversas funcionalidades, desde la jugabilidad hasta acciones como el registro e inicio de sesión. Simularemos interacciones que haría un usuario real para asegurar que la aplicación sea intuitiva y funcione correctamente.</p>
+<p>Buscaremos garantizar que la aplicación sea fácil de usar para proporcionar una experiencia satisfactoria al usuario. Nos centraremos en verificar diversas funcionalidades, desde la jugabilidad hasta acciones como el registro e inicio de sesión. Simularemos interacciones que haría un usuario real para asegurar que la aplicación sea intuitiva y funcione correctamente.
+Las funcionalidades probadas han sido:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Registro</p>
+</li>
+<li>
+<p>Login</p>
+</li>
+<li>
+<p>Registro + Login</p>
+</li>
+<li>
+<p>Mostrado del juego</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
