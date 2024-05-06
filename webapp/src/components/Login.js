@@ -172,6 +172,7 @@ const Login = ({ setLogged }) => {
                   label="Username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  inputProps={{ maxLength: 20 }}
                 />
                 <TextField
                   name = "password"
@@ -181,6 +182,7 @@ const Login = ({ setLogged }) => {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  inputProps={{ maxLength: 30 }}
                 />
                 <Button variant="contained" color="primary" onClick={loginUser}>
                   Iniciar sesión
